@@ -35,6 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
                 <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+		<a href="https://www.facebook.com/dialog/oauth?client_id=1142793035779809&redirect_uri=http://localhost/qarddeck/web/social/facebook/auth&scope=email">sign in with facebook</a><br>
+		<a href="https://www.facebook.com/dialog/oauth?client_id=1142793035779809&redirect_uri=http://localhost/qarddeck/web/social/facebook/auth&scope=email">sign in with twitor</a><br>
+		<a href="https://www.facebook.com/dialog/oauth?client_id=1142793035779809&redirect_uri=http://localhost/qarddeck/web/social/facebook/auth&scope=email">sign in with gmail</a>
             </div>
         </div>
 

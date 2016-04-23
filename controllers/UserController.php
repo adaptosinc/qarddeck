@@ -67,7 +67,8 @@ class UserController extends Controller
 		$profile = new Profile();
 		
         if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
-			$model->setPassword($model->password);
+	
+	    $model->setPassword($model->password);
 			$model->generateAuthKey();
 			
 			if($model->save(false)){
@@ -153,4 +154,14 @@ class UserController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    /*
+     * providing registration with facebook 
+     * 
+     */
+    protected function actionFacebookreg(){
+	
+    }
+    
+    
 }
