@@ -40,7 +40,7 @@ class UserProfile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['user_id'], 'required'],
+            [['user_id'], 'required'],
             [['user_id', 'profile_status', 'profile_privacy'], 'integer'],
             [['profile_url', 'short_description', 'display_url', 'profile_bg_image', 'bg_properties'], 'string'],
             [['firstname', 'lastname', 'profile_photo', 'display_email'], 'string', 'max' => 255],
@@ -62,7 +62,7 @@ class UserProfile extends \yii\db\ActiveRecord
             'lastname' => 'Lastname',
             'profile_url' => 'Profile Url',
             'profile_photo' => 'Profile Photo',
-            'short_description' => 'Description',
+            'short_description' => 'Short Description',
             'display_url' => 'Display Url',
             'display_email' => 'Display Email',
             'profile_bg_image' => 'Profile Bg Image',
