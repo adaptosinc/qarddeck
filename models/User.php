@@ -8,6 +8,8 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
+use yii\web\UploadedFile;
+
 /**
  * User model
  *
@@ -50,15 +52,31 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
+	//public $file;
+	//public $image;
+
+	
     public function rules()
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 			[['username','password','verify_password'],'required'],
+		//	[['username','password','verify_password'],'required', 'on'=>'registration'],
 			['email', 'email'],
 			['verify_password', 'compare', 'compareAttribute' => 'password'],
+/* 			[['file'], 'file'],
+			[['image'], 'image'], */
+		
+			
         ];
+    }
+    public function scenarios()
+
+    {
+        $scenarios = parent::scenarios();
+       // $scenarios['login'] = ['name','password'];//Scenario Values Only Accepted
+        return $scenarios;
     }
 
     /**
@@ -187,8 +205,21 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Removes password reset token
      */
+	 
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
     }
+	
+	/**
+	 * Identify AuthKey
+	 */
+	
+	public static function findByAuthKey($key)
+    {
+        $trst = static::findOne(['auth_key' => $key, 'status' => self::STATUS_ACTIVE]);
+		return $trst;
+    }	 
+	
+	
 }
