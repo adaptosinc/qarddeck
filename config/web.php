@@ -72,9 +72,7 @@ if (YII_ENV_DEV) {
     $config['modules']['social'] = [
         'class' => 'app\modules\social\Social',
     ];
-    $config['modules'] ['blocks'] = [
-            'class' => 'app\modules\blocks\Blocks',
-    ];
+   
 }
 
 return $config;
