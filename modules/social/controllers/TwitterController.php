@@ -3,7 +3,7 @@
 namespace app\modules\social\controllers;
 
 use Yii;
-use app\libraries\twitter\Twitteroauth;
+use app\libraries\twitter\Twitteroauth;// call twitter library to  get authorize
 use app\models\User;
 use app\models\UserProfile as Profile;
 
@@ -22,32 +22,40 @@ class TwitterController extends \yii\web\Controller
 
     }
 
+    /*
+     * to get access token 
+     * @retrun it sets the session to get access token in next phase
+     */
     public function actionSignin(){
 	
-	
-       
 	$session = Yii::$app->session;
 	
-       $connection = new Twitteroauth($this->CONSUMER_KEY,$this->CONSUMER_SECRET );
-       
-       $request_token = $connection->getRequestToken($this->OAUTH_CALLBACK);
+	$connection = new Twitteroauth($this->CONSUMER_KEY,$this->CONSUMER_SECRET );//passing key and secret key 
+
+	$request_token = $connection->getRequestToken($this->OAUTH_CALLBACK);// to get access token
+	
        //Received token info from twitter
 	$session->set('token_key',$request_token['oauth_token']);
 	$session->set('token_secret', $request_token['oauth_token_secret']);
-       
-       if($connection->http_code == '200')
-	{
-		//redirect user to twitter
-		$twitter_url = $connection->getAuthorizeURL($request_token['oauth_token']);
-		header('Location: ' . $twitter_url); 
-		exit(0);
+	if($connection->http_code == '200')
+	 {
+	    
+	    //redirect user to twitter
+	    $twitter_url = $connection->getAuthorizeURL($request_token['oauth_token']);
+	    header('Location: ' . $twitter_url); 
+	    exit(0);
 	}else{
-	    Yii::$app->getSession()->setFlash('error', "error connecting to twitter! try again later!");
-	    return $this->redirect(['../site/login']);
+	    Yii::$app->getSession()->setFlash('error', "Error connecting to twitter! try again later!");
+	    return $this->redirect(['../site/index']);
 		
 	}
       
    }
+   
+   /*
+    * it gets the userdetails and store in db
+    * @return : fail return error : success then  redirect to home page
+    */
    
    public function actionRedirectUrl() {
        $user=new User();
@@ -79,6 +87,11 @@ class TwitterController extends \yii\web\Controller
        
        
    }
+   /*
+     * to check and insert into database
+     * @result array name,email,fd id etc
+     * @return redirect : fail to  model error   : success true
+     */
    public function insertRecord($result){
        
 	$model=new User();

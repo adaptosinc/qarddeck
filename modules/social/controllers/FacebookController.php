@@ -80,7 +80,7 @@ class FacebookController extends \yii\web\Controller
     /*
      * to check and insert into database
      * @result array name,email,fd id etc
-     * @return redirect : fail to  login page  : success to home page
+     * @return redirect : fail to  model error   : success true
      */
     public function insertRecord($result){
        
