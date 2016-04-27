@@ -4,13 +4,19 @@ namespace app\controllers;
 
 use Yii;
 use app\models\User;
+
 //use app\models\UserProfile as Profile;
 use app\models\UserProfile;
+
+use app\models\UserProfile as Profile;
+
 use app\models\search\User as UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
 use yii\web\UploadedFile;
+
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -54,11 +60,12 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+
 		$profile = UserProfile::findOne(['user_id' => $id]);
 		
         return $this->render('view', [
             'model' => $this->findModel($id),
-			'profile' => $profile ,	
+			'profile' => $profile ,
         ]);
     }
 	/**
@@ -66,59 +73,70 @@ class UserController extends Controller
 	 * If creation is successful, the browser will be redirected to the 'login' page.
 	 * @return mixed
 	 */
-	 public function actionRegister()
-	 {
-		$model = new User(); 
-		$model->scenario = 'registration';
-		$profile = new UserProfile();
-		
-		//if ($model->load(Yii::$app->request->post())) {
-        if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
-			$model->setPassword($model->password);
-			$model->generateAuthKey();
-			
-			if($model->save(false)){
-				
-				$profile->user_id = $model->id;			
-				$profile->save();				
-				
-				//mail function	
-				
-				$subject = "Please verify your email address";
-				$ref = "http://localhost/qarddeck/web/site/activate?key=".$model->auth_key;
-			
-				$param = "Hi ".$model->username.", <br>Help us secure your qarddeck account by verifying your email address (nandhini@abacies.com). This lets you access all of qarddeck's features.<br>Please click on the link to make it acess<br><a href=".$ref.">check";
-				
-				Yii::$app->mailer->compose()
-				->setFrom('nandhini@abacies.com')
-				->setTo('nandhinicomforters@gmail.com')
-				->setSubject($subject)
-				->setHtmlBody($param)
-				->send();
-				
-				return $this->redirect(['view', 'id' => $model->id]);
-			}
-				
-        } else {
-            return $this->render('register', [
-                'model' => $model,
-				'profile' => $profile,
-            ]);
+    public function actionRegister(){
+        $model = new User(); 
+
+        $model->scenario = 'registration';
+        $profile = new UserProfile();
+
+               //if ($model->load(Yii::$app->request->post())) {
+       if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
+            $model->setPassword($model->password);
+            $model->generateAuthKey();
+
+            if($model->save(false)){
+
+                $profile->user_id = $model->id;			
+                $profile->save();				
+
+                //mail function	
+
+                $subject = "Please verify your email address";
+                $ref = "http://localhost/qarddeck/web/site/activate?key=".$model->auth_key;
+
+                $param = "Hi ".$model->username.", <br>Help us secure your qarddeck account by verifying your email address (nandhini@abacies.com). This lets you access all of qarddeck's features.<br>Please click on the link to make it acess<br><a href=".$ref.">check";
+
+                Yii::$app->mailer->compose()
+                ->setFrom('nandhini@abacies.com')
+                ->setTo('nandhinicomforters@gmail.com')
+                ->setSubject($subject)
+                ->setHtmlBody($param)
+                ->send();
+                $profile = new Profile();
+                    if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
+
+                        $model->setPassword($model->password);
+                                    $model->generateAuthKey();
+
+                                    if($model->save(false)){
+                                            $profile->user_id = $model->id;
+                                            //print_r($profile);exit;
+                                            $profile->save();
+
+                                            return $this->redirect(['view', 'id' => $model->id]);
+                                    }
+
+                    } else {
+                        return $this->render('register', [
+                            'model' => $model,
+                                            'profile' => $profile,
+                        ]);
+                    }
         }
-	 }
+       }
+    }
     /**
      * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
-     */
-    public function actionCreate()
-    {
+     */    
+    public function actionCreate(){
         $model = new User();
 
         if ($model->load(Yii::$app->request->post())) {
 			$model->setPassword($model->password);
 			$model->generateAuthKey();
-			
+
 			if($model->save())
 				return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -133,13 +151,20 @@ class UserController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+
      **/
-    public function actionUpdate($id){		
+  
+    public function actionUpdate($id)
+    {
         $model = $this->findModel($id);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('update', ['model' => $model,]);
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+
         }
     }
 
@@ -171,6 +196,7 @@ class UserController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 	protected function findProfile($id)
     {
         if (($model = UserProfile::findOne(['user_id' => $id])) !== null) {
@@ -212,3 +238,6 @@ class UserController extends Controller
 		
 	}	
 }
+
+
+

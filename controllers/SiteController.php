@@ -58,6 +58,7 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
+
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -136,11 +137,12 @@ class SiteController extends Controller
 	public function actionActivate($key,$red_url=null){
 		$validUser = User::find()->where(['auth_key' => $key])->one();		
 		$profile = UserProfile::find()->where(['user_id' => $validUser->id])->one();	
-	
+
 		if (isset($validUser)) {
 			$validUser->status = 10;
 			//print_r($validUser);exit;
 			if($validUser->save()){
+                            	echo "<pre>";print_r($validUser);die;
 				Yii::$app->user->login($validUser,'3600*24*30');		
 				Yii::$app->getSession()->setFlash('Success', 'Your Account Is Acivated Successfully');	
 
@@ -148,10 +150,11 @@ class SiteController extends Controller
 					//wil be handled later
 				}
 						//then redirect to the specified url
-				else
-					return $this->redirect(['user/profile']);
+				
 					
-			}
+			}else{
+					return $this->redirect(['user/profile']);
+                                }
 					
 		
 		}	
