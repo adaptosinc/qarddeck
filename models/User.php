@@ -1,13 +1,13 @@
 <?php
 
 namespace app\models;
-
+//&eea+D_!,SeM
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-
+use app\models\UserProfile;
 /**
  * User model
  *
@@ -26,7 +26,10 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
-
+	public $verify_password;
+	public $password;
+	public $firstname;
+	
     /**
      * @inheritdoc
      */
@@ -53,6 +56,10 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+	    [['username','password','verify_password'],'required'],
+	    [['username','email'],'unique'],
+	    ['email', 'email'],
+	    ['verify_password', 'compare', 'compareAttribute' => 'password'],
         ];
     }
 
@@ -61,7 +68,10 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+	$profile = UserProfile::find(['user_id'=>$id])->one();
+        $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+	$user->firstname= $profile->firstname.' '.$profile->lastname;
+	return $user;
     }
 
     /**
@@ -185,5 +195,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+    /*
+     * to check whether id is already present in db or not
+     */
+    public function checkId($username){
+	return User::find()->where(['username'=>$username])->one();
+	
     }
 }

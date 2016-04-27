@@ -38,14 +38,22 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        /*
+        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+//	'view' => [
+//            'theme' => [
+//                'basePath' => '@app/themes',
+//                'baseUrl' => '@web/themes',
+//                'pathMap' => [
+//                    '@app/views' => '@app/themes/',
+//                ],
+//            ],
+//        ],
     ],
     'params' => $params,
 ];
@@ -60,6 +68,12 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
+    ];
+    $config['modules']['social'] = [
+        'class' => 'app\modules\social\Social',
+    ];
+    $config['modules'] ['blocks'] = [
+            'class' => 'app\modules\blocks\Blocks',
     ];
 }
 
