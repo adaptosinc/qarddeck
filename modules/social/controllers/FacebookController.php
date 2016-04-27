@@ -50,9 +50,6 @@ class FacebookController extends \yii\web\Controller
     public function actionGetToken($code)
     {
 	
-
-	$model=new User();
-	
 	$token_url = $this->requestForToken($code);
 	
 	$response=$this->curlExecutionHttps($token_url);
@@ -66,13 +63,11 @@ class FacebookController extends \yii\web\Controller
 	
 	$status=$this->insertRecord($result);
 	//if true means throws errors
-	if(is_array($status)){
-	    //pass errors status
-	    //echo "<pre>"; print_r($status);die;
+	if(!empty($status->errors)){
 	    Yii::$app->session->setFlash('error', 'Email is already used..');
 	    return $this->redirect(['../site/index']);
 	}else{
-	    Yii::$app->user->login($model, '3600*24*30');
+	    Yii::$app->user->login($status, '3600*24*30');
 	    return $this->redirect(['../site/index']);
 	}
     }
@@ -94,7 +89,7 @@ class FacebookController extends \yii\web\Controller
 	//to check already present or not
 	$user = User::find()->where(['username'=>$model->username])->one();
 	if($user){ //yes   
-	    return true;
+	    return $user;
 	}	
 	$model->created_at=time();
 	$model->updated_at=time();

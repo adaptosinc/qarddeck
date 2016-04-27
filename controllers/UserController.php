@@ -67,16 +67,16 @@ class UserController extends Controller
 		$profile = new Profile();
 		
         if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
-	
 	    $model->setPassword($model->password);
-			$model->generateAuthKey();
-			
-			if($model->save(false)){
-				$profile->user_id = $model->id;
-				//print_r($profile);exit;
-				$profile->save();
-				return $this->redirect(['view', 'id' => $model->id]);
-			}
+	    $model->generateAuthKey();
+
+	    if($model->save(false)){
+		$profile->user_id = $model->id;
+		//print_r($profile);exit;
+		$profile->save();
+		
+		return $this->redirect(['view', 'id' => $model->id]);
+	    }
 				
         } else {
             return $this->render('register', [
@@ -97,7 +97,7 @@ class UserController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 			$model->setPassword($model->password);
 			$model->generateAuthKey();
-			print_r($model);
+			
 			if($model->save())
 				return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -154,14 +154,5 @@ class UserController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
-    /*
-     * providing registration with facebook 
-     * 
-     */
-    protected function actionFacebookreg(){
-	
-    }
-    
     
 }

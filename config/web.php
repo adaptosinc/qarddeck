@@ -45,15 +45,6 @@ $config = [
             'rules' => [
             ],
         ],
-//	'view' => [
-//            'theme' => [
-//                'basePath' => '@app/themes',
-//                'baseUrl' => '@web/themes',
-//                'pathMap' => [
-//                    '@app/views' => '@app/themes/',
-//                ],
-//            ],
-//        ],
     ],
     'params' => $params,
 ];
@@ -71,8 +62,6 @@ if (YII_ENV_DEV) {
     ];
     $config['modules']['social'] = [
         'class' => 'app\modules\social\Social',
-    ];
-   
+    ];  
 }
-
 return $config;

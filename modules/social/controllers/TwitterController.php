@@ -58,7 +58,6 @@ class TwitterController extends \yii\web\Controller
     */
    
    public function actionRedirectUrl() {
-       $user=new User();
        $session = Yii::$app->session;
        //Successful response returns oauth_token, oauth_token_secret, user_id, and screen_name
 	$connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $session->get('token_key') , $session->get('token_secret'));
@@ -72,11 +71,11 @@ class TwitterController extends \yii\web\Controller
 		//Insert user into the database
 		$user_info = json_decode(json_encode($connection->get('account/verify_credentials')),true); 
 		$status=$this->insertRecord($user_info);
-		if(is_array($status)){
+		if(!empty($status->errors)){
 		    //pass errors status
 		    return $this->redirect(['../site/index']);
 		}else{
-		    Yii::$app->user->login($user, '3600*24*30');
+		    Yii::$app->user->login($status, '3600*24*30');
 		    return $this->redirect(['../site/index']);
 		}
 	}else{
@@ -103,7 +102,7 @@ class TwitterController extends \yii\web\Controller
 	//to check already present or not
 	 $user = User::find()->where(['username'=>$model->username])->one();
 	if($user){ //yes   
-	    return true;
+	    return $user;
 	}
 	$model->created_at=time();
 	$model->updated_at=time();

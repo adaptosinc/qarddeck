@@ -10,7 +10,6 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
 <div class="site-login">
     
     <?= Yii::$app->session->getFlash('error'); ?>

@@ -13,22 +13,46 @@ AppAsset::register($this);
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
+<meta charset="<?= Yii::$app->charset ?>">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?= Html::csrfMetaTags() ?>
+<title><?= Html::encode($this->title) ?></title>
+<?php $this->head() ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
 <div class="container-fluid">
-                
-                <!-- header -->
+    
+    <!-- header -->
                 <header>
                     <div class="logo pull-left">
-                        <a href=""><img src="<?= Yii::$app->request->baseUrl?>/images/logo.png" alt="Home"><span>QardDeck</span></a>
+                        <a href="index.html"><img src="<?= Yii::$app->request->baseUrl?>/images/logo.png" alt="Home"><span>QardDeck</span></a>
                     </div>
+                   
+
                     <ul class="pull-right">
+                     <?php if(\Yii::$app->user->id){ ?>
+                        <li>
+                            <button class="btn btn-default qard" data-toggle="modal" data-target="#myModaledit">Edit</button>
+                        </li>
+                        <li>
+                            <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
+                        </li>
+                        <li>
+                            <h4>User Full Name</h4>
+                            <p>100 Followers  |  100 Following</p>
+                        </li>
+                        <li>
+                            <button class="btn btn-default qard" data-toggle="modal" data-target="">Wall</button>
+                        </li>
+                        <li>
+                            <button class="btn btn-default qard" data-toggle="modal" data-target="">Qards</button>
+                        </li>
+                        <li>
+                            <button class="btn btn-default qard" data-toggle="modal" data-target="">Deck</button>
+                        </li>
+
+                    <?php } ?>                       
                         <li class="addnew">
                             <div class="dropdown">
                               <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -39,11 +63,8 @@ AppAsset::register($this);
                               <ul class="dropdown-menu" aria-labelledby="dLabel">
                                             <li>
                                                 <div class="col-sm-3 col-md-3 col-md-offset-2">
-						    <a href="<?= Yii::$app->request->baseUrl.'/blocks/blocks/create'?>">
                                                     <img src="<?= Yii::$app->request->baseUrl?>/images/newqard.png" alt="">
-						    
                                                     <h3>Create New Qard</h3>
-						    </a>
                                                 </div>
                                                 <div class="col-sm-3 col-md-3 col-md-offset-1">
                                                     <img src="<?= Yii::$app->request->baseUrl?>/images/newdeck.png" alt="">
@@ -57,8 +78,19 @@ AppAsset::register($this);
                         <li>
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Qard Stream</button>
                         </li>                        
-                        <li>
-                            <button class="btn btn-default signin" data-toggle="modal" data-target="#myModal" id="mysignin">Sign In/Sign Up</button>
+                        <li><?php if(\Yii::$app->user->id){ 
+
+	                        echo Html::beginForm(['/site/logout'], 'post');
+	               			echo Html::submitButton(
+	                   				'Logout',
+	                   			['class' => 'btn btn-default signin']
+	               			);
+	               			echo Html::endForm();
+
+               } else { ?>
+                            <button class="btn btn-default signin" data-toggle="modal" data-target="#myModal">Sign In/Sign Up</button>			    
+			<?php }?>
+
                         </li>
                         <li>
                             <nav class="navbar">
@@ -88,116 +120,116 @@ AppAsset::register($this);
                         </li>
                     </ul>
                 </header>
-                
-                <!-- signup popup -->
+    
+    <!-- signup popup -->
 
-                <div class="modal fade" tabindex="-1" id="myModal" role="dialog" aria-labelledby="myModalLabel">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"></h4>
-                      </div>
-                      <div class="modal-body">
-                        <h3>Almost There...</h3>
-			<p></p>
-                        <p>Choose how you want to sign in/sign up</p>
-                        <div class="sign-buttons">
-                            <p><a href="<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/facebook/index'; ?>"><button class="btn btn-lg btn-primary"><i class="fa fa-facebook"></i> Sign In/Sign Up with facebook</button></a></p>
-                            <p><a href="<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/twitter/signin'; ?>"><button class="btn btn-lg btn-info"><i class="fa fa-twitter"></i> Sign In/Sign Up with Twitter</button></a></p>
-                            <p><button class="btn btn-lg btn-default" data-toggle="modal" data-target="#myModalemail"><i class="fa fa-envelope"></i> Sign In/Sign Up with Email</button></p>
-                        </div>
-                      </div>
-
-                    </div><!-- /.modal-content -->
-                  </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-		
-		<div class="modal fade" tabindex="-1" id="myModalError" role="dialog" aria-labelledby="myModalLabel">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"></h4>
-                      </div>
-                      <div class="modal-body">
-			  <h3><?= Yii::$app->session->getFlash('error');?></h3>
-			
-                      </div>
-
-                    </div><!-- /.modal-content -->
-                  </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-                
-                
-                <!-- signup with email popup -->
-
-                <div class="modal fade" tabindex="-1" id="myModalemail" role="dialog" aria-labelledby="myModalLabel">
-                  <div class="modal-dialog">
-                    <div class="container">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"></h4>
-                      </div>
-                      <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-4 col-md-4 col-md-offset-1">
-                                <h3>Sign In Here</h3>
-                                <form>
-                                    <div class="form-group">
-                                        <img src="<?= Yii::$app->request->baseUrl?>/images/user.png" alt="" class="user-img"><input type="text" name="username" class="form-control" placeholder="Username/Email address">
-                                    </div>
-                                    <div class="form-group">
-                                        <img src="<?= Yii::$app->request->baseUrl?>/images/pass.png" alt="" class="pass-img"><input type="text" name="password" class="form-control" placeholder="Password">
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-lg btn-default">Sign In</button>
-                                    </div>                                    
-                                </form>
-                            </div>
-                            <div class="col-sm-4 col-md-4 col-md-offset-1">
-                                <h3>Sign Up Here</h3>
-                                <form>
-                                    <div class="form-group">
-                                        <img src="<?= Yii::$app->request->baseUrl?>/images/user.png" alt="" class="user-img"><input type="text" name="firstname" class="form-control" placeholder="First name">
-                                    </div>
-                                    <div class="form-group">
-                                        <img src="<?= Yii::$app->request->baseUrl?>/images/user.png" alt="" class="user-img"><input type="text" name="lastname" class="form-control" placeholder="Last Name">
-                                    </div>
-                                    <div class="form-group">
-                                        <img src="<?= Yii::$app->request->baseUrl?>/images/mail.png" alt="" class="mail-img"><input type="text" name="email" class="form-control" placeholder="Email">
-                                    </div>
-                                    <div class="form-group">
-                                        <img src="<?= Yii::$app->request->baseUrl?>/images/pass.png" alt="" class="pass-img"><input type="text" name="password" class="form-control" placeholder="Password">
-                                    </div>
-                                    <div class="form-group">
-                                        <img src="<?= Yii::$app->request->baseUrl?>/images/pass.png" alt="" class="pass-img"><input type="text" name="password" class="form-control" placeholder="Re-enter Password">
-                                    </div>                                    
-                                    <div class="form-group">
-                                        <button class="btn btn-lg btn-default">Sign Up</button>
-                                    </div>                                    
-                                </form>
-                            </div>                            
-                        </div>
-
-                      </div>
-
-                    </div><!-- /.modal-content -->
-                    </div>
-                  </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->                
-                <?= $content ?> 
-                
+    <div class="modal fade" tabindex="-1" id="myModal" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            <h3>Almost There...</h3>
+<p></p>
+            <p>Choose how you want to sign in/sign up</p>
+            <div class="sign-buttons">
+                <p><a href="<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/facebook/index'; ?>"><button class="btn btn-lg btn-primary"><i class="fa fa-facebook"></i> Sign In/Sign Up with facebook</button></a></p>
+                <p><a href="<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/twitter/signin'; ?>"><button class="btn btn-lg btn-info"><i class="fa fa-twitter"></i> Sign In/Sign Up with Twitter</button></a></p>
+                <p><button class="btn btn-lg btn-default" data-toggle="modal" data-target="#myModalemail"><i class="fa fa-envelope"></i> Sign In/Sign Up with Email</button></p>
             </div>
+          </div>
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" id="myModalError" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+  <h3><?= Yii::$app->session->getFlash('error');?></h3>
+
+          </div>
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     
     
+    <!-- signup with email popup -->
+
+    <div class="modal fade" tabindex="-1" id="myModalemail" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+        <div class="container">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-4 col-md-4 col-md-offset-1">
+                    <h3>Sign In Here</h3>
+                    <form>
+                        <div class="form-group">
+                            <img src="<?= Yii::$app->request->baseUrl?>/images/user.png" alt="" class="user-img"><input type="text" name="username" class="form-control" placeholder="Username/Email address">
+                        </div>
+                        <div class="form-group">
+                            <img src="<?= Yii::$app->request->baseUrl?>/images/pass.png" alt="" class="pass-img"><input type="text" name="password" class="form-control" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-default">Sign In</button>
+                        </div>                                    
+                    </form>
+                </div>
+                <div class="col-sm-4 col-md-4 col-md-offset-1">
+                    <h3>Sign Up Here</h3>
+                    <form>
+                        <div class="form-group">
+                            <img src="<?= Yii::$app->request->baseUrl?>/images/user.png" alt="" class="user-img"><input type="text" name="firstname" class="form-control" placeholder="First name">
+                        </div>
+                        <div class="form-group">
+                            <img src="<?= Yii::$app->request->baseUrl?>/images/user.png" alt="" class="user-img"><input type="text" name="lastname" class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="form-group">
+                            <img src="<?= Yii::$app->request->baseUrl?>/images/mail.png" alt="" class="mail-img"><input type="text" name="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <img src="<?= Yii::$app->request->baseUrl?>/images/pass.png" alt="" class="pass-img"><input type="text" name="password" class="form-control" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <img src="<?= Yii::$app->request->baseUrl?>/images/pass.png" alt="" class="pass-img"><input type="text" name="password" class="form-control" placeholder="Re-enter Password">
+                        </div>                                    
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-default">Sign Up</button>
+                        </div>                                    
+                    </form>
+                </div>                            
+            </div>
+
+          </div>
+
+        </div><!-- /.modal-content -->
+        </div>
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->                
+    <?= $content ?> 
     
+</div>
+
+
+
 <?php $this->endBody() ?>
 </body>
 <?php
 if(Yii::$app->session->getFlash('error')){
-    echo '<script>$(document).ready(function(){$("#myModalError").modal("show");});</script>';
+echo '<script>$(document).ready(function(){$("#myModalError").modal("show");});</script>';
 }
 ?>
 </html>
