@@ -50,7 +50,7 @@ class TwitterController extends \yii\web\Controller
    }
    
    public function actionRedirectUrl() {
-       
+       $user=new User();
        $session = Yii::$app->session;
        //Successful response returns oauth_token, oauth_token_secret, user_id, and screen_name
 	$connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $session->get('token_key') , $session->get('token_secret'));
@@ -63,8 +63,14 @@ class TwitterController extends \yii\web\Controller
 		
 		//Insert user into the database
 		$user_info = json_decode(json_encode($connection->get('account/verify_credentials')),true); 
-		$this->insertRecord($user_info);
-		
+		$status=$this->insertRecord($user_info);
+		if(is_array($status)){
+		    //pass errors status
+		    return $this->redirect(['../site/index']);
+		}else{
+		    Yii::$app->user->login($user, '3600*24*30');
+		    return $this->redirect(['../site/index']);
+		}
 	}else{
 	    
 		Yii::$app->getSession()->setFlash('error', "error, try again later!");
@@ -84,8 +90,7 @@ class TwitterController extends \yii\web\Controller
 	//to check already present or not
 	 $user = User::find()->where(['username'=>$model->username])->one();
 	if($user){ //yes   
-	    Yii::$app->user->login($user, '3600*24*30');
-	    return $this->redirect(['../site/index']);
+	    return true;
 	}
 	$model->created_at=time();
 	$model->updated_at=time();
@@ -100,21 +105,11 @@ class TwitterController extends \yii\web\Controller
 		//$profile->lastname=$result['last_name'];
 		//$profile->display_email=$result['email'];
 		if($profile->save()){
-		    Yii::$app->user->login($model, '3600*24*30');
-		    return $this->redirect(['../site/index']);
-		}else{
-		    Yii::$app->getSession()->setFlash('error', "Unable to store Please try later!");
-		    return $this->redirect(['../site/login']);
+		    return true;
 		}
-	    }else{
-		Yii::$app->getSession()->setFlash('error', "Unable to store Please try later!");
-		return $this->redirect(['../site/login']);
 	    }
-	   
 	}else{
-	    
-	    Yii::$app->getSession()->setFlash('error', "Unable to store Please try later!");
-	    return $this->redirect(['../site/login']);
+	    return $model->errors;
 	}
    }
 }

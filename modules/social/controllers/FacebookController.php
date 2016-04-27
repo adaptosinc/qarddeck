@@ -64,19 +64,17 @@ class FacebookController extends \yii\web\Controller
 	
 	$result=json_decode($this->curlExecutionHttps($token_url),true);
 	
-	$model->username='fb_'.$result['id'];
-	$model->email=$result['email'];
-	$model->password=$result['id'];
-	
-	//to check already present or not
-	 $user = User::find()->where(['username'=>$model->username])->one();
-	if($user){ //yes   
-	    Yii::$app->user->login($user, '3600*24*30');
+	$status=$this->insertRecord($result);
+	//if true means throws errors
+	if(is_array($status)){
+	    //pass errors status
+	    //echo "<pre>"; print_r($status);die;
+	    Yii::$app->session->setFlash('error', 'Email is already used..');
+	    return $this->redirect(['../site/index']);
+	}else{
+	    Yii::$app->user->login($model, '3600*24*30');
 	    return $this->redirect(['../site/index']);
 	}
-	$this->insertRecord($result);
-	exit(0);
-	
     }
     
     /*
@@ -88,24 +86,16 @@ class FacebookController extends \yii\web\Controller
        
 	$model=new User();
 	$profile=new Profile();
-       
+	$model->scenario='registration';
+	
 	$model->username='fb_'.$result['id'];
-	//$model->email=$result['email'];
+	$model->email=$result['email'];
 	$model->password=$result['id'];
 	//to check already present or not
-	 $user = User::find()->where(['username'=>$model->username])->one();
+	$user = User::find()->where(['username'=>$model->username])->one();
 	if($user){ //yes   
-	    Yii::$app->user->login($user, '3600*24*30');
-	    return $this->redirect(['../site/index']);
-	}
-	$model->email=$result['email'];
-	$user = User::find()->where(['email'=>$model->email])->one();
-	if($user){ //yes   
-	   
-	    Yii::$app->getSession()->setFlash('error', "Email-id Already Used!...");	   
-	    return $this->redirect(['../site/login']);
-	    
-	}
+	    return true;
+	}	
 	$model->created_at=time();
 	$model->updated_at=time();
 	$model->verify_password=$result['id'];
@@ -119,21 +109,11 @@ class FacebookController extends \yii\web\Controller
 		$profile->lastname=$result['last_name'];
 		$profile->display_email=$result['email'];
 		if($profile->save()){
-		    Yii::$app->user->login($model, '3600*24*30');
-		    return $this->redirect(['../site/index']);
-		}else{
-		    Yii::$app->getSession()->setFlash('error', "Unable to store Please try later!");
-		    return $this->redirect(['../site/login']);
+		    return true;
 		}
-	    }else{
-		Yii::$app->getSession()->setFlash('error', "Unable to store Please try later!");
-		return $this->redirect(['../site/login']);
 	    }
-	   
 	}else{
-	    
-	    Yii::$app->getSession()->setFlash('error', "Unable to store Please try later!");
-	    return $this->redirect(['../site/login']);
+	    return $model->errors;
 	}
    }
    

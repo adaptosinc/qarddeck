@@ -58,7 +58,7 @@ AppAsset::register($this);
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Qard Stream</button>
                         </li>                        
                         <li>
-                            <button class="btn btn-default signin" data-toggle="modal" data-target="#myModal">Sign In/Sign Up</button>
+                            <button class="btn btn-default signin" data-toggle="modal" data-target="#myModal" id="mysignin">Sign In/Sign Up</button>
                         </li>
                         <li>
                             <nav class="navbar">
@@ -100,12 +100,29 @@ AppAsset::register($this);
                       </div>
                       <div class="modal-body">
                         <h3>Almost There...</h3>
+			<p></p>
                         <p>Choose how you want to sign in/sign up</p>
                         <div class="sign-buttons">
                             <p><a href="<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/facebook/index'; ?>"><button class="btn btn-lg btn-primary"><i class="fa fa-facebook"></i> Sign In/Sign Up with facebook</button></a></p>
                             <p><a href="<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/twitter/signin'; ?>"><button class="btn btn-lg btn-info"><i class="fa fa-twitter"></i> Sign In/Sign Up with Twitter</button></a></p>
                             <p><button class="btn btn-lg btn-default" data-toggle="modal" data-target="#myModalemail"><i class="fa fa-envelope"></i> Sign In/Sign Up with Email</button></p>
                         </div>
+                      </div>
+
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+		
+		<div class="modal fade" tabindex="-1" id="myModalError" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"></h4>
+                      </div>
+                      <div class="modal-body">
+			  <h3><?= Yii::$app->session->getFlash('error');?></h3>
+			
                       </div>
 
                     </div><!-- /.modal-content -->
@@ -173,7 +190,15 @@ AppAsset::register($this);
                 <?= $content ?> 
                 
             </div>
+    
+    
+    
 <?php $this->endBody() ?>
 </body>
+<?php
+if(Yii::$app->session->getFlash('error')){
+    echo '<script>$(document).ready(function(){$("#myModalError").modal("show");});</script>';
+}
+?>
 </html>
 <?php $this->endPage() ?>
