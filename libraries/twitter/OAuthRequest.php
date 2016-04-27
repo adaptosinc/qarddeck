@@ -1,5 +1,5 @@
 <?php
-namespace app\libraries;
+namespace app\libraries\twitter;
 
 class OAuthRequest {
   private $parameters;

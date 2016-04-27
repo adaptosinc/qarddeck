@@ -1,6 +1,6 @@
 <?php
 
-namespace app\libraries;
+namespace app\libraries\twitter;
 
 /**
  * A class for implementing a Signature Method

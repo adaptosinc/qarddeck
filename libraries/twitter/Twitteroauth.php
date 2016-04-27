@@ -1,5 +1,5 @@
 <?php
-namespace app\libraries;
+namespace app\libraries\twitter;
 /*
  * Abraham Williams (abraham@abrah.am) http://abrah.am
  *
@@ -7,7 +7,7 @@ namespace app\libraries;
  */
 
 /* Load OAuth lib. You can find it at http://oauth.net */
-use app\libraries\OAuthUtil;
+use app\libraries\twitter\OAuthUtil;
 
 /**
  * Twitter OAuth class

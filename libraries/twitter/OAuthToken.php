@@ -1,6 +1,6 @@
 <?php
 
-namespace app\libraries;
+namespace app\libraries\twitter;
 
 class OAuthToken {
   // access tokens and request tokens

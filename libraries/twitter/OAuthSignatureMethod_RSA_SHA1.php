@@ -1,7 +1,7 @@
 <?php
-namespace app\libraries;
+namespace app\libraries\twitter;
 
-use app\libraries\OAuthSignatureMethod;
+use app\libraries\twitter\OAuthSignatureMethod;
 
 /**
  * The RSA-SHA1 signature method uses the RSASSA-PKCS1-v1_5 signature algorithm as defined in 

@@ -1,53 +1,36 @@
-<?php
-
-/* @var $this yii\web\View */
-
-$this->title = 'My Yii Application';
-?>
-<div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+<section class="home-main content">
+    <h3>Share what you love,think and know. <strong>Easily.</strong></h3>
+    <div class="action-qard">
+	<button class="btn btn-default qard">Qards in Action</button>
+	<button class="btn btn-warning">Create a Qard</button>
+	<button class="btn btn-default qard">Introductory Video</button>
     </div>
+    <div class="qards-list">        <!-- qard list -->
+	<div class="row">
+	    <div class="col-sm-3 col-md-3">     <!-- qard -->
+		<div class="qard-content">
 
-    <div class="body-content">
+		</div>
+		<div class="qard-bottom">
+		    <h4>Curate & Create</h4>
+		</div>
+	    </div>
+	    <div class="col-sm-3 col-md-3 col-md-offset-1">     <!-- qard -->
+		<div class="qard-content">
 
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+		</div>
+		<div class="qard-bottom">
+		    <h4>Share</h4>
+		</div>
+	    </div>
+	    <div class="col-sm-3 col-md-3 col-md-offset-1">     <!-- qard -->
+		<div class="qard-content">
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
-    </div>
-</div>
+		</div>
+		<div class="qard-bottom">
+		    <h4>Link</h4>
+		</div>
+	    </div>                            
+	</div>      <!-- row  -->
+    </div>      <!-- qard list -->
+</section>

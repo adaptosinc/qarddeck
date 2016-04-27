@@ -19,7 +19,9 @@ input:focus, select:focus, textarea:focus   {
     box-shadow: none !important;
     border-color: #8d8d8d !important;
 }
-
+.btn-warning {
+    background: #ff741b;
+}
 
 /* ==============================
     Header
@@ -30,6 +32,7 @@ header {
     width: 100%;
     display: inline-block;     
 }
+
 .logo span {
     font-weight: 600;
     font-size: 24px;
@@ -58,8 +61,9 @@ header {
 }
 ul.pull-right li {
     float: left;
-    padding: 10px 15px;
+    padding: 10px 6px;
 }
+
 .navbar-toggle {
     margin: 0;
     z-index: 8;
@@ -122,6 +126,35 @@ i.fa.fa-times-thin:before {
     font-size: 50px;
     color: #fff;
 }
+
+
+/* =============================
+    homepage main content
+============================== */
+section.home-main {
+    text-align: center;
+}
+.action-qard {
+    padding: 20px;
+}
+.qards-list {
+    padding: 40px 0 40px 80px;
+}
+.qards-list .qard-bottom {
+    padding: 20px;
+}
+.qards-list .qard-bottom h4 {
+    color: #000;
+    text-align: center;
+}
+.qards-list .qard-content {
+    box-shadow: 1px 1px 10px #545454;
+    min-height: 450px;
+}
+.action-qard button {
+    margin-right: 10px;
+}
+
 
 
 /* ===============================
@@ -215,26 +248,27 @@ button.qard {
     margin-bottom: 40px;
 }
 
-#myModalemail input {
+#myModalemail input{
     border-radius: 50px;
     background: #eaeaea;
     padding: 30px 50px;
     border: 0;
     box-shadow: none;
 }
+
 #myModalemail {
     background: rgba(255, 255, 255, 0.95);
 }
-#myModalemail .btn-default {
+#myModalemail .btn-default, #myModaledit .btn-default{
     border-radius: 50px;
     border: 1px solid #f47325;
     background: transparent;
     width: 100%;
 }
-#myModalemail .modal-dialog {
+#myModalemail .modal-dialog, #myModaledit .modal-dialog {
     width: 100%;
 }
-#myModalemail .form-group {
+#myModalemail .form-group, #myModaledit .form-group {
     position: relative;
 }
 #myModalemail img {
@@ -242,6 +276,7 @@ button.qard {
     left: 12px;
     
 }
+
 .pass-img {
     top: 10px;
 }
@@ -374,11 +409,153 @@ button[name="preview"] {
     padding: 20px;
 }
 
+/* ===========================
+ * Profile
+ * ========================= */
+header ul.pull-right button.btn {
+    font-size: 13px;
+}
+#myModaledit input  {
+    border-radius: 0px;
+    background: transparent;
+    padding: 30px 50px;
+    border: 0;
+    border-bottom: 1px solid #eaeaea;
+    box-shadow: none;    
+}
+
+#myModaledit {
+    background: linear-gradient(rgba(255, 255, 255, 0.9), #fff);
+    text-align: left;
+}
+.profile-img img {
+    position: relative !Important;
+    float: left;
+}
+#myModaledit .profile-content img {
+    position: absolute;
+    left: 12px;
+    top: 20px;
+}
+#myModaledit .public-profile h3 {
+    text-align: left;
+}
+h3.main-title, .social-ccount h3 {
+    text-align: left;
+    color: #ff741b;
+}
+.social-ccount {
+    text-align: left;
+}
+.social-ccount button{
+    border-radius: 50px;
+}
+.btn-warning {
+    border-radius: 30px;
+}
+ul.profile-title {
+    float: left;
+    width: 100%;
+    margin-bottom: 20px;
+    background: #eaeaea;
+    padding: 10px;
+}
+ul.profile-title li {
+    float: left;
+    padding: 0 15px;
+    vertical-align: middle;
+}
+.profile-content span {
+    position: relative;
+    top: -17px;
+    font-size: 13px;
+}
+section.main-profile .main-content {
+    text-align: center;
+}
+.qard-content {
+    min-height: 350px;
+    border: 2px solid #8d8d8d;
+    box-shadow: 1px 3px 10px #E6E6E6;
+    border-radius: 2px;
+}
+.qard-bottom ul {
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+}
+.qard-bottom ul li {
+    float: left;
+    padding: 5px 10px;
+}
+.qard-bottom ul li a {
+    color: #000;
+}
+.qard-bottom ul li.pull-right {
+    color: #000 !important;
+}
+.qard-bottom h4 {
+    color: #ff741b;
+    text-align: left;
+    padding: 0 10px;
+    margin: 0;
+}
+.qard-bottom ul.qard-tags li{
+    color: #ff741b;
+}
+.popular-qards {
+    margin: 40px 0;
+}
+
+/* side bar */
+.featured-tags {
+    padding: 20px;
+    background: #eaeaea;
+    text-align: left;
+}
+.featured-tags .btn-default{
+    border: 1px solid #0082d5;
+    background: transparent;
+    border-radius: 20px;
+    padding:5px 20px;
+    text-transform: uppercase;
+}
+.sidebar-qard {
+    margin: 20px 0;
+}
+.sidebar-qard .qard-content {
+    min-height: 250px;
+}
 
 
-
-
-
+/* ===========================
+    Qard Stream
+========================== */
+.qard-bottom {
+    border: 1px solid #eaeaea;
+    box-shadow: 1px 2px 5px #D6D6D6;
+    
+}
+.comments {
+    border: 1px solid #eaeaea;
+    padding: 5px;
+    text-align: left;
+}
+.comments p{
+    color: #ccc;
+}
+ul.comment-tags {
+    width: 100%;
+    display: inline-block;
+    margin: 0;
+}
+ul.comment-tags li{
+    color: #ff741b;
+    font-size: 12px;
+}
+ul.comment-tags li.pull-right{
+    color: #000 !important;
+}
 
 
 

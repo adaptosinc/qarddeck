@@ -2,18 +2,25 @@
 
 namespace app\modules\social\controllers;
 
-use yii;
-use app\libraries\Twitteroauth;
+use Yii;
+use app\libraries\twitter\Twitteroauth;
 use app\models\User;
 use app\models\UserProfile as Profile;
 
 class TwitterController extends \yii\web\Controller
 {
     
-    public $CONSUMER_KEY='VJPyNIpFA3BxklMznstgmAYo1';
-    public $CONSUMER_SECRET='XBAv492XUtDY4SnjbxGcysrHZPMbGzhkMCdz1M65ICEy7ogY5Q';
-    public $OAUTH_CALLBACK='http://localhost/qarddeck/web/social/twitter/redirect-url';
+    public $CONSUMER_KEY,$CONSUMER_SECRET,$OAUTH_CALLBACK,$servername,$base_url;
+    
+    public function init(){
+    $this->CONSUMER_KEY='VJPyNIpFA3BxklMznstgmAYo1';// app id from twitter app
+    $this->CONSUMER_SECRET='XBAv492XUtDY4SnjbxGcysrHZPMbGzhkMCdz1M65ICEy7ogY5Q'; // app secret key from twitter app
+    $this->base_url=Yii::$app->request->baseUrl;  //base url
+    $this->servername=  filter_input(INPUT_SERVER, 'SERVER_NAME');  //server name of working server
+    $this->OAUTH_CALLBACK='http://'.$this->servername.$this->base_url.'/social/twitter/redirect-url';
+    
 
+    }
 
     public function actionSignin(){
 	
@@ -58,8 +65,6 @@ class TwitterController extends \yii\web\Controller
 		$user_info = json_decode(json_encode($connection->get('account/verify_credentials')),true); 
 		$this->insertRecord($user_info);
 		
-		
-		//header('Location: index.php');
 	}else{
 	    
 		Yii::$app->getSession()->setFlash('error', "error, try again later!");
@@ -73,7 +78,7 @@ class TwitterController extends \yii\web\Controller
 	$model=new User();
 	$profile=new Profile();
        
-	$model->username='fb_'.$result['id'];
+	$model->username='tw_'.$result['id'];
 	//$model->email=$result['email'];
 	$model->password=$result['id'];
 	//to check already present or not

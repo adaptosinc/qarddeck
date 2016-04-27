@@ -1,6 +1,6 @@
 <?php
 
-namespace app\libraries;
+namespace app\libraries\twitter;
 // vim: foldmethod=marker
 
 /* Generic exception class
@@ -11,15 +11,15 @@ namespace app\libraries;
 //  }
 //}
 
-use app\libraries\OAuthtoken;
-use app\libraries\OAuthConsumer;
-use app\libraries\OAuthSignatureMethod;
-use app\libraries\OAuthSignatureMethod_RSA_SHA1;
-use app\libraries\OAuthSignatureMethod_HMAC_SHA1;
-use app\libraries\OAuthSignatureMethod_PLAINTEXT;
-use app\libraries\OAuthRequest;
-use app\libraries\OAuthServer;
-use app\libraries\OAuthDataStore;
+use app\libraries\twitter\OAuthtoken;
+use app\libraries\twitter\OAuthConsumer;
+use app\libraries\twitter\OAuthSignatureMethod;
+use app\libraries\twitter\OAuthSignatureMethod_RSA_SHA1;
+use app\libraries\twitter\OAuthSignatureMethod_HMAC_SHA1;
+use app\libraries\twitter\OAuthSignatureMethod_PLAINTEXT;
+use app\libraries\twitter\OAuthRequest;
+use app\libraries\twitter\OAuthServer;
+use app\libraries\twitter\OAuthDataStore;
 
 class OAuthUtil {
     
