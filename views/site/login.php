@@ -10,7 +10,11 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="site-login">
+    
+    <?= Yii::$app->session->getFlash('error'); ?>
+    
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>Please fill out the following fields to login:</p>
@@ -36,8 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-offset-1 col-lg-11">
                 <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
 		<a href="https://www.facebook.com/dialog/oauth?client_id=1142793035779809&redirect_uri=http://localhost/qarddeck/web/social/facebook/auth&scope=email">sign in with facebook</a><br>
-		<a href="https://www.facebook.com/dialog/oauth?client_id=1142793035779809&redirect_uri=http://localhost/qarddeck/web/social/facebook/auth&scope=email">sign in with twitor</a><br>
-		<a href="https://www.facebook.com/dialog/oauth?client_id=1142793035779809&redirect_uri=http://localhost/qarddeck/web/social/facebook/auth&scope=email">sign in with gmail</a>
+		<a href="http://localhost/qarddeck/web/social/twitter/signin">sign in with twitor</a><br>
+		
             </div>
         </div>
 

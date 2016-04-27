@@ -32,7 +32,24 @@ class FacebookController extends \yii\web\Controller
 	 $user = User::find()->where(['username'=>$model->username])->one();
 	if($user){ //yes   
 	    Yii::$app->user->login($user, '3600*24*30');
-	    return $this->redirect(['site/index']);
+	    return $this->redirect(['../site/index']);
+	}
+	$this->insertRecord($result);
+	
+    }
+    public function insertRecord($result){
+       
+	$model=new User();
+	$profile=new Profile();
+       
+	$model->username='fb_'.$result['id'];
+	//$model->email=$result['email'];
+	$model->password=$result['id'];
+	//to check already present or not
+	 $user = User::find()->where(['username'=>$model->username])->one();
+	if($user){ //yes   
+	    Yii::$app->user->login($user, '3600*24*30');
+	    return $this->redirect(['../site/index']);
 	}
 	$model->created_at=time();
 	$model->updated_at=time();
@@ -43,21 +60,27 @@ class FacebookController extends \yii\web\Controller
 	if($model->validate()){
 	    if($model->save(false)){
 		$profile->user_id=$model->id;
-		$profile->firstname=$result['first_name'];
-		$profile->lastname=$result['last_name'];
-		$profile->display_email=$result['email'];
+		$profile->firstname=$result['name'];
+		//$profile->lastname=$result['last_name'];
+		//$profile->display_email=$result['email'];
 		if($profile->save()){
 		    Yii::$app->user->login($model, '3600*24*30');
-		    return $this->redirect(['site/index']);
+		    return $this->redirect(['../site/index']);
+		}else{
+		    Yii::$app->getSession()->setFlash('error', "Unable to store Please try later!");
+		    return $this->redirect(['../site/login']);
 		}
+	    }else{
+		Yii::$app->getSession()->setFlash('error', "Unable to store Please try later!");
+		return $this->redirect(['../site/login']);
 	    }
 	   
+	}else{
+	    
+	    Yii::$app->getSession()->setFlash('error', "Unable to store Please try later!");
+	    return $this->redirect(['../site/login']);
 	}
-
-	
-	return $this->render('auth',['model' => $model,]);
-	
-    }
+   }
    
     public function curlExecutionHttps($url){
         $curl = curl_init();
