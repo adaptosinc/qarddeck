@@ -1,3 +1,4 @@
+
 <section class="home-main content">
     <h3>Share what you love,think and know. <strong>Easily.</strong></h3>
     <div class="action-qard">
