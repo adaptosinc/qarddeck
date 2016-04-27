@@ -61,6 +61,9 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
     ];
+    $config['modules']['social'] = [
+        'class' => 'app\modules\social\Social',
+    ];
 }
 
 return $config;
