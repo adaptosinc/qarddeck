@@ -68,9 +68,12 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-	$profile = UserProfile::find(['user_id'=>$id])->one();
+ 
+	$profile = UserProfile::find()->where(['user_id'=>$id])->one();
         $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
-	$user->firstname= $profile->firstname.' '.$profile->lastname;
+        if(!empty($profile->firstname)){
+		$user->firstname= $profile->firstname.' '.$profile->lastname;
+	}
 	return $user;
     }
 
