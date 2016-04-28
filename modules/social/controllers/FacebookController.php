@@ -14,9 +14,12 @@ class FacebookController extends \yii\web\Controller
     public function init() {
 	$this->client_id='1142793035779809';//app id of facebook
 	$this->client_secret='8dc64cf509704e2cd4e2dcd5ed1a1aea';//app secret key of facebook
-	$this->base_url=Yii::$app->request->baseUrl;  
-	$this->servername=  filter_input(INPUT_SERVER, 'SERVER_NAME');  //server name of working server
+	$this->base_url=Yii::$app->request->baseUrl; 
+	//\Yii::$app->request->BaseUrl 
+	
+	$this->servername=  $_SERVER['HTTP_HOST'];  //server name of working server
 	$this->callback_url='http://'.$this->servername.$this->base_url.'/social/facebook/get-token';// callback url to get access token and other information
+	//echo $this->callback_url;exit;
 	
     }
     
@@ -27,6 +30,7 @@ class FacebookController extends \yii\web\Controller
 	
 	
 	$url='https://www.facebook.com/dialog/oauth?client_id='.$this->client_id.'&redirect_uri='.$this->callback_url.'&scope=email';
+	echo 
 	header('Location:'.$url);
 	exit(0);
 	
