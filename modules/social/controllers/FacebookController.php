@@ -20,7 +20,6 @@ class FacebookController extends \yii\web\Controller
 	
     }
     
-    
     /*
      * redirect to facebook page
      */
