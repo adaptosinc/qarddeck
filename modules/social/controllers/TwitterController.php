@@ -16,7 +16,8 @@ class TwitterController extends \yii\web\Controller
     $this->CONSUMER_KEY='VJPyNIpFA3BxklMznstgmAYo1';// app id from twitter app
     $this->CONSUMER_SECRET='XBAv492XUtDY4SnjbxGcysrHZPMbGzhkMCdz1M65ICEy7ogY5Q'; // app secret key from twitter app
     $this->base_url=Yii::$app->request->baseUrl;  //base url
-    $this->servername=  filter_input(INPUT_SERVER, 'SERVER_NAME');  //server name of working server
+    //$this->servername=  filter_input(INPUT_SERVER, 'SERVER_NAME');  //server name of working server
+    $this->servername = $_SERVER['HTTP_HOST']; 
     $this->OAUTH_CALLBACK='http://'.$this->servername.$this->base_url.'/social/twitter/redirect-url';
     
 
