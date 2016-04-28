@@ -30,7 +30,6 @@ class FacebookController extends \yii\web\Controller
 	
 	
 	$url='https://www.facebook.com/dialog/oauth?client_id='.$this->client_id.'&redirect_uri='.$this->callback_url.'&scope=email';
-	echo 
 	header('Location:'.$url);
 	exit(0);
 	
@@ -84,7 +83,7 @@ class FacebookController extends \yii\web\Controller
        
 	$model=new User();
 	$profile=new Profile();
-	$model->scenario='registration';
+	//$model->scenario='registration';
 	
 	$model->username='fb_'.$result['id'];
 	$model->email=$result['email'];
@@ -107,11 +106,11 @@ class FacebookController extends \yii\web\Controller
 		$profile->lastname=$result['last_name'];
 		$profile->display_email=$result['email'];
 		if($profile->save()){
-		    return true;
+		    return $model;
 		}
 	    }
 	}else{
-	    return $model->errors;
+	    return $model;
 	}
    }
    

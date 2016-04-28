@@ -26,7 +26,7 @@ AppAsset::register($this);
     <!-- header -->
                 <header>
                     <div class="logo pull-left">
-                        <a href="index.html"><img src="<?= Yii::$app->request->baseUrl?>/images/logo.png" alt="Home"><span>QardDeck</span></a>
+                        <a href="<?= Yii::$app->request->baseUrl?>/site/index"><img src="<?= Yii::$app->request->baseUrl?>/images/logo.png" alt="Home"><span>QardDeck</span></a>
                     </div>
                    
 
@@ -39,7 +39,7 @@ AppAsset::register($this);
                             <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
                         </li>
                         <li>
-                            <h4>User Full Name</h4>
+                            <h4><?= Yii::$app->user->identity->firstname; ?></h4>
                             <p>100 Followers  |  100 Following</p>
                         </li>
                         <li>

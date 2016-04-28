@@ -22,6 +22,10 @@ input:focus, select:focus, textarea:focus   {
 .btn-warning {
     background: #ff741b;
 }
+.btn-warning:hover {
+    background: #ff741b;
+}
+
 
 /* ==============================
     Header
@@ -428,6 +432,7 @@ header ul.pull-right button.btn {
     background: linear-gradient(rgba(255, 255, 255, 0.9), #fff);
     text-align: left;
 }
+
 .profile-img img {
     position: relative !Important;
     float: left;
@@ -556,6 +561,85 @@ ul.comment-tags li{
 ul.comment-tags li.pull-right{
     color: #000 !important;
 }
+
+
+/* ==================================
+ *  Template Selection
+ *  =============================== */
+.qard-top .btn-sm {
+    background: #000;
+    color: #fff;
+    border-radius: 20px;
+}
+.qard-top {
+    margin-bottom: 20px;
+}
+.qard-top p {
+    color: #ccc;
+}
+#myModaltemplate {
+    background: linear-gradient(rgba(255, 255, 255, 0.9), #fff);
+    text-align: left;    
+}
+#myModaltemplate h3, #myModaltemplate h4 {
+    text-align: left;
+}
+#myModaltemplate .modal-dialog {
+    width: 80%;
+    border: 2px solid #000;
+}
+.template-content {
+    text-align: left;
+    margin: 20px 0;
+}
+.template-buttons .btn-default {
+    border-radius: 20px;
+}
+
+
+/* ==================================
+ *  Qard Theme
+ *  ============================= */
+
+.theme-content input.form-control {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #eaeaea;
+    border-radius: 0;
+    box-shadow: none;
+}
+.theme-content ul li {
+    float: left;
+}
+.theme-content .form-group {
+    clear: both;
+    display: inline-block;
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
