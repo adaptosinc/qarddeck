@@ -65,8 +65,12 @@ class QardController extends Controller
     {
         $model = new Qard();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->qard_id]);
+        if (Yii::$app->request->post()) {
+	    echo "viay";
+	    print_r($_POST);
+	    print_r($_FILES);
+	    exit(0);
+           // return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 
 /* @var $this yii\web\View */
@@ -15,11 +16,12 @@ $this->title = 'Create Qard';
 
 <section class="create-card">
     <div class="row">
-	<div class="add-block col-sm-4 col-md-4">
-	    <div class="text-block">
-		<p></p>
+	<form  method="POST" id="add_block_frm" name="add_block_frm" enctype="multipart/form-data">
+	<div class="col-sm-4 col-md-4">
+	    <div class="qard-div add-block">
+		<div  id="cur_block" class="cur_block"></div>
+		<h4 class="add-another" onclick="add_block()">Add another block <span><img src="<?= Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
 	    </div>
-	    <h4 class="add-another">Add another block <span><img src="<?= Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
 	</div>
 	<div class="col-sm-8 col-md-8">
 	    <div id="cardtabs">
@@ -39,11 +41,11 @@ $this->title = 'Create Qard';
 		    <fieldset>
 			<div class="form-group col-sm-6 col-md-6">
 			    <h4>Block Size</h4>
-			    <input type="text" name="size" class="form-control" placeholder="Number of block units(2)">
+			    <input type="text" name="blk-size" id="blk-size" pattern="^\d{2}$" class="form-control" placeholder="Number of block units(2)" maxlength="2" min="1" >
 			</div>
 			<div class="form-group col-sm-6 col-md-6">
 			    <h4>Block Background Color</h4>
-			    <input type="text" name="size" class="form-control" placeholder="Background color (#0000)">
+			    <input type="text" name="blk-color" id="blk-color" class="form-control" placeholder="Background color (#0000)">
 			</div>
 			<ul class="on-off pull-right">
 			    <li>
@@ -60,8 +62,8 @@ $this->title = 'Create Qard';
 			    </li>                                              
 			</ul>                                          
 		    </fieldset>
-		    <div id="descfield" style="display: none;">
-			<textarea name="desc" placeholder="Enter The Text"></textarea>
+		    <div id="descfield" style="//display: none;">
+			<textarea name="desc" placeholder="Enter The Text" id="block-txt"></textarea>
 		    </div>
 		</div>
 		<div role="tabpanel" class="tab-pane" id="fileblock">
@@ -129,7 +131,8 @@ $this->title = 'Create Qard';
 
 	    </div>
 
-	</div>                    
+	</div>  
+	</form>>
     </div>
 	    <div class="bottom-card row">
 		<div class="col-sm-8 col-md-8">
@@ -147,7 +150,7 @@ $this->title = 'Create Qard';
 			<li><a href="javascript:void(0)"><img src="<?= Yii::$app->request->baseUrl?>/images/comment.png" alt=""></a></li>
 			<li><a href="javascript:void(0)"><img src="<?= Yii::$app->request->baseUrl?>/images/icon-paint.png" alt=""></a></li>
 			<li><button class="btn btn-sm btn-default" name="preview">Preview</button></li>
-			<li><button class="btn btn-sm btn-default" name="preview">Save</button></li>
+			<li><button class="btn btn-sm btn-default" name="preview" type="submit">Save</button></li>
 		    </ul>
 		</div>
 	    </div>   
@@ -171,33 +174,98 @@ function showtext() {
 </script>        
 <script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>
 <script type="text/javascript">
-    !(function(){
+    
+    $(function(){
+	
     $('#cardtabs a').click(function (e) {
       e.preventDefault();
       $(this).tab('show');
     });
     var myDropzone = new Dropzone("div#myId", { url: "/file/post"});});
-var citynames = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-  queryTokenizer: Bloodhound.tokenizers.whitespace,
-  prefetch: {
-    url: "<?=Url::to(['tag/get-all-tags'],true)?>",
-    filter: function(list) {
-      return $.map(list, function(cityname) {
-        return { name: cityname }; });
-    }
-  }
-});
-citynames.initialize();
 
-$('#tabletags').tagsinput({
-  typeaheadjs: {
-    name: 'citynames',
-    displayKey: 'name',
-    valueKey: 'name',
-    source: citynames.ttAdapter()
-  }
-});
+    
+    /*
+     *  this to create tag on tags
+     */
+    var citynames = new Bloodhound({
+      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      prefetch: {
+	url: "<?=Url::to(['tag/get-all-tags'],true)?>",
+	filter: function(list) {
+	  return $.map(list, function(cityname) {
+	    return { name: cityname }; });
+	}
+      }
+    });
+    citynames.initialize();
+
+    $('#tabletags').tagsinput({
+      typeaheadjs: {
+	name: 'citynames',
+	displayKey: 'name',
+	valueKey: 'name',
+	source: citynames.ttAdapter()
+      }
+    });
+
+
+    /*
+     * to display text on block
+     */
+    $("#block-txt").on('keyup',function(){
+	$div_cur_size=parseInt($("#blk-size").val() || 1)*40;
+	
+	
+	$("#cur_block").text($(this).val());
+	if($("#cur_block").height()>$div_cur_size){
+	    
+	}
+	
+    });
+    
+    
+    /*
+    * Changing color of block 
+     */
+    $("#blk-color").on('keyup',function(){
+	//console.log();
+	$("#cur_block").css('background-color',$(this).val());
+    });
+    /*
+    * Changing size of block 
+     */
+    $("#blk-size").on('keyup',function(){
+	//console.log();
+	var size=30*parseInt($(this).val());
+	
+	$("#cur_block").css('height',size);
+    });
+    
+    /*
+    * condition
+     */
+     function add_block(){
+	 $("#add_block_frm").submit();
+	 
+     }
+     
+     $("#add_block_frm").submit(function(){
+	 $.ajax({
+            type: 'post',
+            url: "<?=Url::to(['qard/create'],true)?>",
+            data: $('form').serialize(),
+            success: function () {
+              alert('form was submitted');
+            }
+          });
+	 
+	return false;
+    });
+
 </script>
+
+
+
 
 

@@ -150,6 +150,23 @@ i.fa.fa-times-thin:before {
 }
 
 
+/* qard-div */
+.qard-div{
+    width: 386px;
+    height: 600px;
+}
+
+/* for one block unit */
+.cur_block{
+    //height: 37.5px;
+    width: 385px;
+    word-wrap: break-word;
+    //overflow: hidden;   
+}
+
+
+
+
 /* =============================
     homepage main content
 ============================== */
