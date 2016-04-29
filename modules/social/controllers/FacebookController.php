@@ -5,21 +5,17 @@ namespace app\modules\social\controllers;
 use Yii;
 use app\models\User;
 use app\models\UserProfile as Profile;
+use yii\helpers\Url;
 
 
 class FacebookController extends \yii\web\Controller
 {
-    public $client_id,$client_secret,$callback_url,$servername,$base_url;
+    public $client_id,$client_secret,$callback_url;
     
     public function init() {
 	$this->client_id='1142793035779809';//app id of facebook
 	$this->client_secret='8dc64cf509704e2cd4e2dcd5ed1a1aea';//app secret key of facebook
-	$this->base_url=Yii::$app->request->baseUrl; 
-	//\Yii::$app->request->BaseUrl 
-	
-	$this->servername=  $_SERVER['HTTP_HOST'];  //server name of working server
-	$this->callback_url='http://'.$this->servername.$this->base_url.'/social/facebook/get-token';// callback url to get access token and other information
-	//echo $this->callback_url;exit;
+	$this->callback_url=Url::to(['/social/facebook/get-token'],true);// callback url to get access token and other information
 	
     }
     

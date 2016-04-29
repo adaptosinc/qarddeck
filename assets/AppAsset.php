@@ -22,11 +22,16 @@ class AppAsset extends AssetBundle
 	'css/dropzone.css',
         'css/master.css',
 	'font-awesome/css/font-awesome.css',
-    ];
-    public $js = [
-	'js/jquery.min.js',
+	//'js/jquery.min.js',
 	'js/bootstrap.min.js',
     ];
+    public $js = [
+	//'js/jquery.min.js',
+	'js/bootstrap.min.js',
+    ];
+    public $jsOptions = array(
+    'position' => \yii\web\View::POS_HEAD
+);
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',

@@ -25,6 +25,24 @@ input:focus, select:focus, textarea:focus   {
 .btn-warning:hover {
     background: #ff741b;
 }
+/* typeahead */
+.bootstrap-tagsinput {
+    border: 0 !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #eaeaea !important;
+    border-radius: 0 !important;
+    width: 100%;
+    
+}
+.bootstrap-tagsinput .label-info{
+    background-color: #ff741b !important;
+}
+.tt-menu {
+    border: 1px solid #eaeaea;
+    width: 100%;
+    margin-top: 10px;
+    padding: 5px 10px;    
+}
 
 
 /* ==============================

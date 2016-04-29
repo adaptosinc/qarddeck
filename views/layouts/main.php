@@ -63,8 +63,11 @@ AppAsset::register($this);
                               <ul class="dropdown-menu" aria-labelledby="dLabel">
                                             <li>
                                                 <div class="col-sm-3 col-md-3 col-md-offset-2">
+						    <a href="<?= Yii::$app->request->baseUrl?>/qard/create">
                                                     <img src="<?= Yii::$app->request->baseUrl?>/images/newqard.png" alt="">
                                                     <h3>Create New Qard</h3>
+						    </a>
+						    
                                                 </div>
                                                 <div class="col-sm-3 col-md-3 col-md-offset-1">
                                                     <img src="<?= Yii::$app->request->baseUrl?>/images/newdeck.png" alt="">

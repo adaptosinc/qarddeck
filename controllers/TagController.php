@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Qard;
-use app\models\search\SearchQard;
+use app\models\Tag;
+use app\models\search\SearchTag;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * QardController implements the CRUD actions for Qard model.
+ * TagController implements the CRUD actions for Tag model.
  */
-class QardController extends Controller
+class TagController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class QardController extends Controller
     }
 
     /**
-     * Lists all Qard models.
+     * Lists all Tag models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SearchQard();
+        $searchModel = new SearchTag();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class QardController extends Controller
     }
 
     /**
-     * Displays a single Qard model.
+     * Displays a single Tag model.
      * @param integer $id
      * @return mixed
      */
@@ -57,16 +57,16 @@ class QardController extends Controller
     }
 
     /**
-     * Creates a new Qard model.
+     * Creates a new Tag model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Qard();
+        $model = new Tag();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->qard_id]);
+            return $this->redirect(['view', 'id' => $model->tag_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -75,7 +75,7 @@ class QardController extends Controller
     }
 
     /**
-     * Updates an existing Qard model.
+     * Updates an existing Tag model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -85,7 +85,7 @@ class QardController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->qard_id]);
+            return $this->redirect(['view', 'id' => $model->tag_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -94,7 +94,7 @@ class QardController extends Controller
     }
 
     /**
-     * Deletes an existing Qard model.
+     * Deletes an existing Tag model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,24 +107,30 @@ class QardController extends Controller
     }
 
     /**
-     * Finds the Qard model based on its primary key value.
+     * Finds the Tag model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Qard the loaded model
+     * @return Tag the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Qard::findOne($id)) !== null) {
+        if (($model = Tag::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
-   
-    public function actionTest() {	
-	return $this->render('test');
+    /*
+     * get all tags
+     * @return json array of tags 
+     */
+     public function actionGetAllTags() {
+	 $tag=new Tag();
+	$allTags=$tag->getAllTags();
+	echo json_encode($allTags);
+	exit(0);
+	
 	
     }
 }

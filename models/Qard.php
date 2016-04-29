@@ -23,6 +23,7 @@ use Yii;
  * @property QardComments[] $qardComments
  * @property QardDeck[] $qardDecks
  * @property QardPermissions[] $qardPermissions
+ * @property QardTags[] $qardTags
  */
 class Qard extends \yii\db\ActiveRecord
 {
@@ -113,5 +114,13 @@ class Qard extends \yii\db\ActiveRecord
     public function getQardPermissions()
     {
         return $this->hasMany(QardPermissions::className(), ['qard_id' => 'qard_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getQardTags()
+    {
+        return $this->hasMany(QardTags::className(), ['qard_id' => 'qard_id']);
     }
 }
