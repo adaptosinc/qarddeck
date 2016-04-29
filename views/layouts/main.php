@@ -20,7 +20,6 @@ AppAsset::register($this);
 <?= Html::csrfMetaTags() ?>
 <title><?= Html::encode($this->title) ?></title>
 <?php $this->head() ?>
-<script src="<?= Yii::$app->request->baseUrl?>/js/jquery.min.js">
 </script>
 <script>
   $(document).ready(function(){

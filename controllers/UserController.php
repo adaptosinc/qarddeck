@@ -63,7 +63,8 @@ class UserController extends Controller
 	 * @return mixed
 	 */
 	 public function actionRegister(){
-      		$model = new User(); 
+		 
+      	$model = new User(); 
 		$profile = new Profile();
                 
                 $model->username = Yii::$app->request->post('username');
