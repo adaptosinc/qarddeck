@@ -7,8 +7,8 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\User */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+<?= \Yii::$app->session->getFlash('email_reg_error'); ?>
 <div class="user-form">
-
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'username', [

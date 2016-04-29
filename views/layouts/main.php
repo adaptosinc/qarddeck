@@ -20,16 +20,6 @@ AppAsset::register($this);
 <?= Html::csrfMetaTags() ?>
 <title><?= Html::encode($this->title) ?></title>
 <?php $this->head() ?>
-</script>
-<script>
-  $(document).ready(function(){
-       $(".signin").click(function(){
-		alert("sign");
-	});
-      
-  });  
-    
-</script>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -156,8 +146,43 @@ AppAsset::register($this);
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+	
+    <div class="modal fade" tabindex="-1" id="myModalemail" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+        <div class="container">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-4 col-md-4 col-md-offset-1">
+                    <h3>Sign In Here</h3>
+					<?php
+					use app\components\SignIn;
+					if(!Yii::$app->user->id)
+						echo SignIn::widget();
+					?>
+                </div>
+                <div class="col-sm-4 col-md-4 col-md-offset-1">
+                    <h3>Sign Up Here</h3>
+					<?php
+					use app\components\SignUp;
+					if(!Yii::$app->user->id)
+						echo SignUp::widget();
+					?>
+                     
+                </div>                            
+            </div>
 
-<div class="modal fade" tabindex="-1" id="myModalError" role="dialog" aria-labelledby="myModalLabel">
+          </div>
+
+        </div><!-- /.modal-content -->
+        </div>
+      </div><!-- /.modal-dialog -->
+    </div>
+	<div class="modal fade" tabindex="-1" id="myModalError" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -165,15 +190,14 @@ AppAsset::register($this);
             <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body">
-  <h3><?= Yii::$app->session->getFlash('error');?></h3>
-
+				<h3><?= Yii::$app->session->getFlash('error');?></h3>
           </div>
 
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     
-               
+    <?= Yii::$app->session->getFlash('success');?>         
     <?= $content ?> 
     
 </div>
@@ -183,8 +207,8 @@ AppAsset::register($this);
 <?php $this->endBody() ?>
 </body>
 <?php
-if(Yii::$app->session->getFlash('error')){
-echo '<script>$(document).ready(function(){$("#myModalError").modal("show");});</script>';
+if(Yii::$app->session->getFlash('email_reg_error')){
+	echo '<script>$(document).ready(function(){$("#myModalemail").modal("show");});</script>';
 }
 ?>
 </html>
