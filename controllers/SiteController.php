@@ -8,6 +8,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\User;
+use app\models\UserProfile as Profile;
 
 class SiteController extends Controller
 {
@@ -49,7 +51,12 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new User(); 
+        $profile = new Profile();
+        return $this->render('index', [
+            'model' => $model,
+            'profile' => $profile,
+        ]);
     }
 
     public function actionLogin()
@@ -97,4 +104,37 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+    public function actionActivate($key,$red_url=null){
+        
+		$validUser = User::find()->where(['auth_key' => $key])->one();		
+		$profile = Profile::find()->where(['user_id' => $validUser->id])->one();		
+		if (isset($validUser)) {
+			$validUser->status = 10;
+			if($validUser->save()){
+				Yii::$app->user->login($validUser,'3600*24*30');		
+				Yii::$app->getSession()->setFlash('Success', 'Your Account Is Acivated Successfully');	
+
+				if($red_url)	{
+					//wil be handled later
+				}
+						//then redirect to the specified url					
+			}else{
+                            return $this->redirect(array('/user/profile', 'id' => $validUser->id));
+                            //return $this->redirect('../user/profile');
+                        
+                        }
+					
+		
+		}	
+		
+    }
+     public function beforeAction($action){            
+        
+        if ($action->id == 'register') {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
+    }
+    
 }

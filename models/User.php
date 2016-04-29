@@ -56,8 +56,12 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-	    [['username','password','verify_password'],'required'],
-	    [['username','email'],'unique'],
+	    //[['username','password','verify_password'],'required'],
+            [['password','verify_password'],'required'],
+            //[['username','password','verify_password']],
+	    //[['username','email'],'unique'],
+            [['email'],'unique'],
+            //[['username'],'unique'],
 	    ['email', 'email'],
 	    ['verify_password', 'compare', 'compareAttribute' => 'password'],
         ];
