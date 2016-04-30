@@ -56,10 +56,10 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-	    [['username','password','verify_password'],'required'],
-	    [['username','email'],'unique'],
-	    ['email', 'email'],
-	    ['verify_password', 'compare', 'compareAttribute' => 'password'],
+            [['username','email','password','verify_password'],'required'],
+            [['username'],'unique'],
+			['email', 'email'],
+			['verify_password', 'compare', 'compareAttribute' => 'password'],
         ];
     }
 
@@ -68,9 +68,12 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-	$profile = UserProfile::find(['user_id'=>$id])->one();
+ 
+	$profile = UserProfile::find()->where(['user_id'=>$id])->one();
         $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
-	$user->firstname= $profile->firstname.' '.$profile->lastname;
+        if(!empty($profile->firstname)){
+		$user->firstname= $profile->firstname.' '.$profile->lastname;
+	}
 	return $user;
     }
 

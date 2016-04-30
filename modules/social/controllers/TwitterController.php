@@ -59,6 +59,7 @@ class TwitterController extends \yii\web\Controller
     */
    
    public function actionRedirectUrl() {
+     
        $session = Yii::$app->session;
        //Successful response returns oauth_token, oauth_token_secret, user_id, and screen_name
 	$connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $session->get('token_key') , $session->get('token_secret'));
@@ -118,11 +119,13 @@ class TwitterController extends \yii\web\Controller
 		//$profile->lastname=$result['last_name'];
 		//$profile->display_email=$result['email'];
 		if($profile->save()){
-		    return true;
+		    $user = User::find()->where(['id'=>$model->id])->one();
+		    
+		    return $user;
 		}
 	    }
 	}else{
-	    return $model->errors;
+	    return $model;
 	}
    }
 }

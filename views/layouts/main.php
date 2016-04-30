@@ -2,10 +2,12 @@
 
 /* @var $this \yii\web\View */
 /* @var $content string */
-
+/* @var $this yii\web\View */
+/* @var $model app\models\User */
+/* @var $form yii\widgets\ActiveForm */
 use yii\helpers\Html;
 use app\assets\AppAsset;
-
+use yii\widgets\ActiveForm;
 AppAsset::register($this);
 
 ?>
@@ -39,7 +41,7 @@ AppAsset::register($this);
                             <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
                         </li>
                         <li>
-                            <h4>User Full Name</h4>
+                            <h4><?= Yii::$app->user->identity->firstname; ?></h4>
                             <p>100 Followers  |  100 Following</p>
                         </li>
                         <li>
@@ -144,26 +146,7 @@ AppAsset::register($this);
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-<div class="modal fade" tabindex="-1" id="myModalError" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"></h4>
-          </div>
-          <div class="modal-body">
-  <h3><?= Yii::$app->session->getFlash('error');?></h3>
-
-          </div>
-
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    
-    
-    <!-- signup with email popup -->
-
+	
     <div class="modal fade" tabindex="-1" id="myModalemail" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog">
         <div class="container">
@@ -176,40 +159,20 @@ AppAsset::register($this);
             <div class="row">
                 <div class="col-sm-4 col-md-4 col-md-offset-1">
                     <h3>Sign In Here</h3>
-                    <form>
-                        <div class="form-group">
-                            <img src="<?= Yii::$app->request->baseUrl?>/images/user.png" alt="" class="user-img"><input type="text" name="username" class="form-control" placeholder="Username/Email address">
-                        </div>
-                        <div class="form-group">
-                            <img src="<?= Yii::$app->request->baseUrl?>/images/pass.png" alt="" class="pass-img"><input type="text" name="password" class="form-control" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-lg btn-default">Sign In</button>
-                        </div>                                    
-                    </form>
+					<?php
+					use app\components\SignIn;
+					if(!Yii::$app->user->id)
+						echo SignIn::widget();
+					?>
                 </div>
                 <div class="col-sm-4 col-md-4 col-md-offset-1">
                     <h3>Sign Up Here</h3>
-                    <form>
-                        <div class="form-group">
-                            <img src="<?= Yii::$app->request->baseUrl?>/images/user.png" alt="" class="user-img"><input type="text" name="firstname" class="form-control" placeholder="First name">
-                        </div>
-                        <div class="form-group">
-                            <img src="<?= Yii::$app->request->baseUrl?>/images/user.png" alt="" class="user-img"><input type="text" name="lastname" class="form-control" placeholder="Last Name">
-                        </div>
-                        <div class="form-group">
-                            <img src="<?= Yii::$app->request->baseUrl?>/images/mail.png" alt="" class="mail-img"><input type="text" name="email" class="form-control" placeholder="Email">
-                        </div>
-                        <div class="form-group">
-                            <img src="<?= Yii::$app->request->baseUrl?>/images/pass.png" alt="" class="pass-img"><input type="text" name="password" class="form-control" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <img src="<?= Yii::$app->request->baseUrl?>/images/pass.png" alt="" class="pass-img"><input type="text" name="password" class="form-control" placeholder="Re-enter Password">
-                        </div>                                    
-                        <div class="form-group">
-                            <button class="btn btn-lg btn-default">Sign Up</button>
-                        </div>                                    
-                    </form>
+					<?php
+					use app\components\SignUp;
+					if(!Yii::$app->user->id)
+						echo SignUp::widget();
+					?>
+                     
                 </div>                            
             </div>
 
@@ -218,7 +181,23 @@ AppAsset::register($this);
         </div><!-- /.modal-content -->
         </div>
       </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->                
+    </div>
+	<div class="modal fade" tabindex="-1" id="myModalError" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+				<h3><?= Yii::$app->session->getFlash('error');?></h3>
+          </div>
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
+    <?= Yii::$app->session->getFlash('success');?>         
     <?= $content ?> 
     
 </div>
@@ -228,8 +207,8 @@ AppAsset::register($this);
 <?php $this->endBody() ?>
 </body>
 <?php
-if(Yii::$app->session->getFlash('error')){
-echo '<script>$(document).ready(function(){$("#myModalError").modal("show");});</script>';
+if(Yii::$app->session->getFlash('email_reg_error')){
+	echo '<script>$(document).ready(function(){$("#myModalemail").modal("show");});</script>';
 }
 ?>
 </html>
