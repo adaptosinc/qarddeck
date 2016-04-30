@@ -9,12 +9,13 @@ use app\models\search\User as UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
 class UserController extends Controller
-{
+{       
     /**
      * @inheritdoc
      */
@@ -61,22 +62,46 @@ class UserController extends Controller
 	 * If creation is successful, the browser will be redirected to the 'login' page.
 	 * @return mixed
 	 */
-	 public function actionRegister()
-	 {
-		$model = new User(); 
+	 public function actionRegister(){
+		 
+      	$model = new User(); 
 		$profile = new Profile();
+                
+                $model->username = Yii::$app->request->post('username');
+                $model->email = Yii::$app->request->post('email');
+                $model->password = Yii::$app->request->post('password');
+                $profile->firstname = Yii::$app->request->post('firstname');
+                $profile->lastname = Yii::$app->request->post('lastname');
 		
-        if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
-	    $model->setPassword($model->password);
-	    $model->generateAuthKey();
-
-	    if($model->save(false)){
-		$profile->user_id = $model->id;
-		//print_r($profile);exit;
-		$profile->save();
+		//if ($model->load(Yii::$app->request->post())) {
+       // if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
+          if (Yii::$app->request->post()) {      
+         
+			$model->setPassword($model->password);
+			$model->generateAuthKey();
+			
+			if($model->save(false)){
+				
+				$profile->user_id = $model->id;			
+				$profile->save();				
+				
+				//mail function	
+				
+				$subject = "Please verify your email address";
+				$ref = "http://localhost/qarddeck/web/site/activate?key=".$model->auth_key;
+			
+				$param = "Hi ".$model->username.", <br>Help us secure your qarddeck account by verifying your email address (nandhini@abacies.com). This lets you access all of qarddeck's features.<br>Please click on the link to make it acess<br><a href=".$ref.">check";
+				
+				Yii::$app->mailer->compose()
+				->setFrom('nandhini@abacies.com')
+				->setTo('nandhinicomforters@gmail.com')
+				->setSubject($subject)
+				->setHtmlBody($param)
+				->send();
 		
-		return $this->redirect(['view', 'id' => $model->id]);
-	    }
+				 Yii::$app->user->login($model, '3600*24*30');
+                                 return $this->redirect(['site/index']);
+			}
 				
         } else {
             return $this->render('register', [
@@ -84,6 +109,25 @@ class UserController extends Controller
 				'profile' => $profile,
             ]);
         }
+                
+              /*  if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
+                    $model->setPassword($model->password);
+                    $model->generateAuthKey();
+
+                    if($model->save(false)){
+                        $profile->user_id = $model->id;
+                        //print_r($profile);exit;
+                        $profile->save();
+
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+
+                } else {
+                    return $this->render('register', [
+                        'model' => $model,
+                                        'profile' => $profile,
+                    ]);
+                }*/
 	 }
     /**
      * Creates a new User model.
@@ -154,5 +198,56 @@ class UserController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+     /**
+     * @inheritdoc
+     */
+    public function beforeAction($action){            
+        
+        if ($action->id == 'register') {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
+    }
     
+    	protected function findProfile($id)
+    {
+        if (($model = Profile::findOne(['user_id' => $id])) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+	public function actionProfile($id){
+            
+		$model = User::find()->where(['id' => $id])->one();		// \Yii::$app->user->id] 
+		$profile = Profile::find()->where(['user_id' => $id])->one();	// \Yii::$app->user->id]
+		
+       // if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {		
+                if(Yii::$app->request->post()){		
+                    $profile->profile_photo = UploadedFile::getInstance($profile, 'profile_photo');
+                    $profile->profile_bg_image = UploadedFile::getInstance($profile, 'profile_bg_image');		
+                    $prof_img_path =  $profile->profile_photo->baseName . '.' . $profile->profile_photo->extension;
+                    $background_img_path =  $profile->profile_bg_image->baseName . '.' .$profile->profile_bg_image->extension;
+                    $idToUpdate =  \Yii::$app->user->id;				
+            //if ($model->validate()) {       
+                    $profile->profile_photo->saveAs('uploads/'.$profile->profile_photo->baseName . '.' . $profile->profile_photo->extension);
+                    $profile->profile_bg_image->saveAs('uploads/'.$profile->profile_bg_image->baseName . '.' . $profile->profile_bg_image->extension);
+                    //$base_url = Yii::$app->baseUrl();
+                    $profile->profile_photo  = '/uploads/'.$prof_img_path;
+                    $profile->profile_bg_image = '/uploads/'.$background_img_path;
+                    $model->save();
+                    $profile->save();
+            //}
+            //save both profile and user\
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {     
+           
+			return $this->render('profile', [
+				'model' => $model,
+				'profile' => $profile
+			]);
+		}
+		
+	}	
 }
