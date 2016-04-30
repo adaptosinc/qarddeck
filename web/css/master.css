@@ -158,10 +158,16 @@ i.fa.fa-times-thin:before {
 
 /* for one block unit */
 .cur_block{
-    //height: 37.5px;
+    height: 38px;
     width: 385px;
     word-wrap: break-word;
-    //overflow: hidden;   
+    display:block;
+    overflow: hidden;   
+    //text-overflow: ellipsis;
+}
+.qard-div p{
+    font-size: 13px !important;
+    word-wrap: break-word;
 }
 
 
