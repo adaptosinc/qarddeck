@@ -47,11 +47,11 @@ class SignUp extends Widget
 					$param = "Hi ".$model->username.", <br>Help us secure your qarddeck account by verifying your email address (nandhini@abacies.com). This lets you access all of qarddeck's features.<br>Please click on the link to make it acess<br><a href=".$ref.">check";
 					
 					Yii::$app->mailer->compose()
-					->setFrom('nandhini@abacies.com')
-					->setTo($model->email)
-					->setSubject($subject)
-					->setHtmlBody($param)
-					->send();
+						->setFrom('admin@wordpressmonks.com')
+						->setTo($model->email)
+						->setSubject($subject)
+						->setHtmlBody($param)
+						->send();
 					\Yii::$app->getSession()->setFlash('success', "Please dont forget to verify your email. Have a great day");
 					\Yii::$app->user->login($model, '3600*24*30');
 					\Yii::$app->controller->redirect(['site/index']);
