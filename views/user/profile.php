@@ -80,14 +80,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                                 <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
                             </div>
                         </div>          <!-- row -->
-                        <div class="social-ccount">
-                            <h3>Connect Social Accounts</h3>
-                            <div class="form-group">
-                                <button class="btn btn-lg btn-primary"><i class="fa fa-facebook"></i> Connect facebook account</button>
-                                <button class="btn btn-lg btn-info"><i class="fa fa-twitter"></i>Connect Twitter account</button>
-                            </div>
-                            
-                        </div>
+                      
                         <div class="form-group">
                             <ul class="pull-right">
                                 <li><button class="btn btn-lg btn-default">Cancel</button></li>

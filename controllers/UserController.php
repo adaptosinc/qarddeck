@@ -67,11 +67,11 @@ class UserController extends Controller
       	$model = new User(); 
 		$profile = new Profile();
                 
-                $model->username = Yii::$app->request->post('username');
-                $model->email = Yii::$app->request->post('email');
-                $model->password = Yii::$app->request->post('password');
-                $profile->firstname = Yii::$app->request->post('firstname');
-                $profile->lastname = Yii::$app->request->post('lastname');
+//                $model->username = Yii::$app->request->post('username');
+//                $model->email = Yii::$app->request->post('email');
+//                $model->password = Yii::$app->request->post('password');
+//                $profile->firstname = Yii::$app->request->post('firstname');
+//                $profile->lastname = Yii::$app->request->post('lastname');
 		
 		//if ($model->load(Yii::$app->request->post())) {
        // if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
@@ -252,9 +252,9 @@ class UserController extends Controller
             //}
             //save both profile and user\
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {     
-           
-			return $this->render('profile', [
+        } else {
+            
+            return $this->render('profile', [
 				'model' => $model,
 				'profile' => $profile
 			]);

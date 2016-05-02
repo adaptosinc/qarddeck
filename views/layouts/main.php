@@ -182,6 +182,26 @@ AppAsset::register($this);
         </div>
       </div><!-- /.modal-dialog -->
     </div>
+    
+    
+    
+    <div class="modal fade" tabindex="-1" id="myModaledit" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title"></h4>
+            </div>
+              <?php
+              use app\components\ProfileWidget;
+              if(Yii::$app->user->id)
+                      echo ProfileWidget::widget();
+              ?>
+              
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->   
+      
 	<div class="modal fade" tabindex="-1" id="myModalError" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -190,25 +210,20 @@ AppAsset::register($this);
             <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body">
-				<h3><?= Yii::$app->session->getFlash('error');?></h3>
+		<h3><?= Yii::$app->session->getFlash('error');?></h3>
           </div>
 
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    
+    </div><!-- /.modal -->    
     <?= Yii::$app->session->getFlash('success');?>         
-    <?= $content ?> 
-    
+    <?= $content ?>     
 </div>
-
-
-
 <?php $this->endBody() ?>
 </body>
 <?php
 if(Yii::$app->session->getFlash('email_reg_error')){
-	echo '<script>$(document).ready(function(){$("#myModalemail").modal("show");});</script>';
+    echo '<script>$(document).ready(function(){$("#myModalemail").modal("show");});</script>';
 }
 ?>
 </html>
