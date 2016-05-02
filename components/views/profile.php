@@ -77,16 +77,16 @@ $this->params['breadcrumbs'][] = 'Edit';
 
                     <?= $form->field($model, 'password', [
 			'template' => "{input}\n{hint}\n{error}"
-		])->passwordInput(['class' => 'form-control','placeholder'=>'Password']) ?>
+		])->passwordInput(['class' => 'form-control password','placeholder'=>'Password']) ?>
                     <?= $form->field($model, 'verify_password', [
 			'template' => "{input}\n{hint}\n{error}"
-		])->passwordInput(['class' => 'form-control','placeholder'=>'Re-enter Password']) ?>
+		])->passwordInput(['class' => 'form-control verify_password','placeholder'=>'Re-enter Password']) ?>
  
                       <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
                   </div>
               </div>          <!-- row -->
               <div class="form-group">
-                        <?= Html::submitButton('Update', ['class' => 'btn btn-lg btn-default']) ?>
+                        <?= Html::submitButton('Update', ['class' => 'btn btn-lg btn-default updatebtn']) ?>
               </div>                        
             </div>                    
 <style>
@@ -125,15 +125,16 @@ $this->params['breadcrumbs'][] = 'Edit';
                     });
         }); 
         
-        $('#verify_password').on('blur', function() {
-            var password = $('#password').val();
-            var verify_password = $('#verify_password').val();
-            if(password!=verify_password){
+        $('.verify_password').on('blur', function() {
+        
+            var password = $('.password').val();
+            var verify_password = $('.verify_password').val();
+            if(password != verify_password){
                  $('#displayerr').show();
-                 $("#save").attr("disabled", "disabled");
+                 $(".updatebtn").attr("disabled", "disabled");
             }  else{
                 $('#displayerr').hide();
-                $("#save").removeAttr("disabled");             
+                $(".updatebtn").removeAttr("disabled");             
             }
         });     
         
