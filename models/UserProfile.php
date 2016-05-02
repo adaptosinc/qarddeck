@@ -26,6 +26,8 @@ use Yii;
  */
 class UserProfile extends \yii\db\ActiveRecord
 {
+    //public $verify_password;
+    //public $password;
     /**
      * @inheritdoc
      */
@@ -40,12 +42,12 @@ class UserProfile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
             [['user_id', 'profile_status', 'profile_privacy'], 'integer'],
             [['profile_url', 'short_description', 'display_url', 'profile_bg_image', 'bg_properties'], 'string'],
             [['firstname', 'lastname', 'profile_photo', 'display_email'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['profile_privacy'], 'exist', 'skipOnError' => true, 'targetClass' => Privacy::className(), 'targetAttribute' => ['profile_privacy' => 'privacy_id']],
+          //  ['verify_password', 'compare', 'compareAttribute' => 'password'],
         ];
     }
 
