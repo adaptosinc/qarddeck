@@ -7,8 +7,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Edit Profile', 'url' => ['profile'
 $this->params['breadcrumbs'][] = 'Edit';
 ?>      
 <!-- Edit Account -->
-
-                <div class="modal fade" tabindex="-1" id="myModaledit" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" tabindex="-1" id="myModaledit" role="dialog" aria-labelledby="myModalLabel">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -80,7 +79,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                                 <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
                             </div>
                         </div>          <!-- row -->
-                      
+                     
                         <div class="form-group">
                             <ul class="pull-right">
                                 <li><button class="btn btn-lg btn-default">Cancel</button></li>

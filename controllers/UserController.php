@@ -283,6 +283,8 @@ class UserController extends Controller
                    move_uploaded_file($_FILES['file']['tmp_name'], $move.$_FILES["file"]['name']);
                    $prof_img_path =  $_FILES["file"]['name'];
                    $profile->profile_photo = "uploads/".$prof_img_path;    
+                   $session = Yii::$app->session;
+                   $session->set('profpic',$profile->profile_photo);
                    $profile->save();
                    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                              return [
@@ -290,4 +292,23 @@ class UserController extends Controller
                              ];
                }  
 	}	
+        
+     /**
+     * Checks The Current Password Exists
+     * @return uploaded file name
+     */    
+        public function actionPassword(){    
+           
+                if (Yii::$app->request->isAjax) { 
+                   $checkPswd =  Yii::$app->request->post('data');
+                   $idToUpdate =  \Yii::$app->user->id;
+                   $model = User::find()->where(['id' => $idToUpdate])->one();
+                   $status = $model->validatePassword($checkPswd);                  
+                   \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                             return [
+                                 'result' => $status,
+                             ];
+               }  
+                                
+	}
 }

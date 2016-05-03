@@ -32,11 +32,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                                        </div>
                           <div class="profile-content col-sm-10 col-md-10">
                               <h3>@<?= Html::encode($this->title) ?></h3>
-                              <?php $form = ActiveForm::begin([
-                                  //'id' => 'edit_form_profile',
-                                  'options' => ['enctype' => 'multipart/form-data']
-                                  
-                                  ]); ?>
+                              <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
                               <div class="form-group">
                               <?= $form->field($profile, 'firstname', [
                                               'template' => "{input}\n{hint}\n{error}"
@@ -73,11 +69,9 @@ $this->params['breadcrumbs'][] = 'Edit';
                               </div>                                            
                               </div>
                               <div class="form-group">
-                                            <img src="<?= Yii::$app->request->baseUrl?>/images/link-trans.png" alt="">
-                               <?= $form->field($profile, 'profile_url', [
-                                              'template' => "{input}\n{hint}\n{error}"
-                                      ])->textInput(['class' => 'form-control link','placeholder'=>'Link Optional']) ?>               
+                                            <img src="<?= Yii::$app->request->baseUrl?>/images/link-trans.png" alt=""><input type="text" class="form-control" id="link" name="fullname" placeholder="Link Optional">
                               </div>       
+                          <span id="islinkvalid" class="text-danger">Link Should Contains HTTP</span>
       
                           </div>
                       </div>
@@ -85,32 +79,24 @@ $this->params['breadcrumbs'][] = 'Edit';
                   
                   <div class="col-sm-4 col-md-4 col-md-offset-1">
                       <h3 class="main-title">Change Your Password</h3>
-                         <input type="password" id="cur_password" class="form-control" name="cur_password" placeholder="Current Password">          
-                   <span id="ispswdvalid" class="text-danger">Please Enter The Correct Password</span>  
-  <?= $form->field($profile, 'password', [
+                         <input type="password" id="cur_password" class="form-control" name="cur_password" placeholder="New Password">
+               <span id="ispswdvalid" class="text-danger">Please Enter The Correct Password</span>           
+                    <?= $form->field($model, 'password', [
 			'template' => "{input}\n{hint}\n{error}"
-		])->passwordInput(['class' => 'form-control password','placeholder'=>'New Password']) ?>
-                    <?= $form->field($profile, 'verify_password', [
+		])->passwordInput(['class' => 'form-control password','placeholder'=>'Password']) ?>
+                    <?= $form->field($model, 'verify_password', [
 			'template' => "{input}\n{hint}\n{error}"
 		])->passwordInput(['class' => 'form-control verify_password','placeholder'=>'Re-enter Password']) ?>
-                     <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
+ 
+                      <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
                   </div>
               </div>          <!-- row -->
-               <div class="social-ccount">
-                            <h3>Connect Social Accounts</h3>
-                            <div class="form-group">
-                                <button class="btn btn-lg btn-primary"><i class="fa fa-facebook"></i> Connect facebook account</button>
-                                <button class="btn btn-lg btn-info"><i class="fa fa-twitter"></i>Connect Twitter account</button>
-                            </div>
-                            
-                        </div>
               <div class="form-group">
                     <ul class="pull-right">
                   <li> <?= Html::submitButton('Cancel', ['class' => 'btn btn-lg btn-default']) ?>  </li>
                   <li> <?= Html::submitButton('Update', ['class' => 'btn btn-lg btn-warning updatebtn']) ?></li>
                     </ul>
-              </div>   
-              <?php ActiveForm::end(); ?>
+              </div>                        
             </div>                    
 <style>
    .profImg{   
@@ -118,10 +104,10 @@ $this->params['breadcrumbs'][] = 'Edit';
        height: 108px;
        width: 106px;
    }
-</style>       
+</style>                
 <script>
   $(document).ready(function(){
-   var count =1;
+      var count =1;
         $('#displayerr').hide();
         $('#ispswdvalid').hide();
         $('#islinkvalid').hide();
@@ -150,12 +136,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                     });
         }); 
         $('#cur_password').change(function(e){
-            if($('#cur_password').val()!=''){
-               checkPassword();
-            }else{
-                $('#ispswdvalid').hide();
-                $(".updatebtn").removeAttr("disabled");      
-            }
+           checkPassword();
         });
         $('#link').change(function(e){
            var val = $('#link').val();            

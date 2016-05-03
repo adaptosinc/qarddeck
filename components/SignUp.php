@@ -36,6 +36,7 @@ class SignUp extends Widget
 			}
 			else{
 				$model->setPassword($model->password);
+                               // print_r($model->password);die;
 				$model->generateAuthKey();	
                                 
 				if($model->save(false)){			

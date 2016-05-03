@@ -22,15 +22,33 @@ class ProfileWidget extends Widget
         $model = User::find()->where(['id' => $id])->one();		
         $profile = Profile::find()->where(['user_id' => $id])->one();	
         if($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())){
-            $model->setPassword($model->password);
+            
+            
+            $profile->validate();
+            //$model->validate();
+            if($profile->errors || $model->errors){
+                    foreach($model->errors as $error){
+                            \Yii::$app->getSession()->setFlash('profile_update_error', $error[0]);
+                    }
+                    foreach($profile->errors as $error){
+                            \Yii::$app->getSession()->setFlash('profile_update_error', $error[0]);
+                    }
+                    
+                    return $this->render('profile', [
+                             'model' => $model,
+                             'profile' => $profile
+                     ]);              
+//                print_r($profile->errors);
+//                die;
+            };
+            $model->setPassword($profile->password);
             $model->save();
             $profile->save();    
             \Yii::$app->controller->goBack();
 
          } 
          else 
-         {                
-            \Yii::$app->getSession()->setFlash('prof_error', 'good');             
+         {                        
             return $this->render('profile', [
                     'model' => $model,
                     'profile' => $profile

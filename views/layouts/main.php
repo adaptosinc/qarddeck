@@ -38,8 +38,9 @@ AppAsset::register($this);
                             <button class="btn btn-default qard" data-toggle="modal" data-target="#myModaledit">Edit</button>
                         </li>
                         <li>
-                            <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
+                             <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
                         </li>
+                        
                         <li>
                             <h4><?= Yii::$app->user->identity->firstname; ?></h4>
                             <p>100 Followers  |  100 Following</p>
@@ -212,7 +213,6 @@ AppAsset::register($this);
           <div class="modal-body">
 		<h3><?= Yii::$app->session->getFlash('error');?></h3>
           </div>
-
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->    
@@ -224,6 +224,9 @@ AppAsset::register($this);
 <?php
 if(Yii::$app->session->getFlash('email_reg_error')){
     echo '<script>$(document).ready(function(){$("#myModalemail").modal("show");});</script>';
+}
+if(Yii::$app->session->getFlash('profile_update_error')){
+    echo '<script>$(document).ready(function(){$("#myModaledit").modal("show");});</script>';
 }
 ?>
 </html>
