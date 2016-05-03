@@ -131,4 +131,8 @@ class QardController extends Controller
 	return $this->render('test');
 	
     }
+    public function actionWyiswyg() {	
+	return $this->render('wyiswyg');
+	
+    }
 }

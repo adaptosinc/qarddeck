@@ -4,6 +4,7 @@
 <script src="<?= Yii::$app->request->baseUrl?>/js/typeahead.js" type="text/javascript"></script>
 
 <input type="text" id="vijatags"  data-role="tagsinput" />
+
 <script>
 var citynames = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
