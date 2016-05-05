@@ -22,19 +22,6 @@ input:focus, select:focus, textarea:focus   {
 .btn-warning {
     background: #ff741b;
 }
-.text-warning {
-    color: #ff741b;
-}
-.btn-warning:hover {
-    background: #ff741b;
-}
-
-.btn-sm.btn-default:hover {
-    background: #ff741b;
-    color: #fff;
-}
-
-
 
 /* ==============================
     Header
@@ -54,7 +41,7 @@ header {
 .logo a {
     text-decoration: none;
 }
-button.signin {
+.pull-right button.signin {
     border-radius: 20px;
     border: 1px solid #f47325;
     color: #f47325;
@@ -238,44 +225,6 @@ button.close {
 .modal-content p{
     color: #a4a4a4;
 }
-.signback {
-    width: 100%;
-    display: inline-block;
-}
-.signback button {
-    width: 200px !important;
-    font-size: 14px;
-    margin: 0 auto;
-    float: none;
-    padding: 10px;
-    color: #000;
-    border-color: #4778E3 !important; 
-}
-.signback button:hover {
-    color: #000 !important;
-}
-.signin-new input {
-    border-radius: 0 !important;
-    border: 0 !important;
-    border-bottom: 1px solid #eaeaea !important;
-    background: transparent !important;
-    padding: 30px 10px !important; 
-}
-.signup-new input {
-    border-radius: 0 !important;
-    border: 0 !important;
-    border-bottom: 1px solid #eaeaea !important;
-    background: transparent !important;
-    padding: 30px 10px !important; 
-}
-#myModalemail .modal-footer {
-    text-align: center;
-}
-.signin-new .btn-default {
-    background: #ccc !important;
-    border-color: transparent !important;
-    color: #fff !important;
-}
 
 /* ====================
  * Search
@@ -365,7 +314,7 @@ h4.add-another {
     border-radius: 0;
     box-shadow: none;
 }
-#linkblock fieldset  {
+#cardblock fieldset, #linkblock fieldset  {
     padding: 20px;
     border: 2px dashed #f47325;
 }
@@ -374,40 +323,6 @@ h4.add-another {
 }
 section.create-card {
     padding: 20px;
-}
-ul.text-elements li {
-    float: left;
-    padding: 5px 10px;
-    background: #ccc;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    border-top: 1px solid;
-}
-ul.text-elements li a {
-    color: #000;
-    font-weight: bold;
-}
-li.underline a {
-    border-bottom: 1px solid;
-}
-ul.text-elements li:first-child {
-    border-left: 1px solid;
-}
-ul.align-elements li {
-    float: left;
-}
-.image-elements ul li {
-    float: left;
-    padding: 0 15px;
-}
-.image-elements {
-    margin: 20px 0;
-}
-.image-elements .col-sm-3.col-md-3 {
-    padding: 0 5px;
-}
-#linkblock .dropzone {
-    border: 0;
 }
 
 /* toggle switch */
@@ -462,14 +377,8 @@ input.cmn-toggle-round:checked + label:after {
   margin-left: 38px;
 }
 
-ul.on-off  {
-    margin: 10px 0;
-}
-ul.on-off li {
-    float: left;
-    padding: 0px 15px;
-}
-.on-off span {
+
+ul.on-off span {
     position: relative;
     top: -15px;
 }
@@ -519,7 +428,6 @@ header ul.pull-right button.btn {
     background: linear-gradient(rgba(255, 255, 255, 0.9), #fff);
     text-align: left;
 }
-
 .profile-img img {
     position: relative !Important;
     float: left;
@@ -564,7 +472,6 @@ ul.profile-title li {
 }
 section.main-profile .main-content {
     text-align: center;
-    clear: both;
 }
 .qard-content {
     min-height: 350px;
@@ -651,239 +558,27 @@ ul.comment-tags li.pull-right{
 }
 
 
-/* ==================================
- *  Template Selection
- *  =============================== */
-.qard-top .btn-sm {
-    background: #000;
-    color: #fff;
-    border-radius: 20px;
-}
-.qard-top {
-    margin-bottom: 20px;
-}
-.qard-top p {
-    color: #ccc;
-}
-#myModaltemplate {
-    background: linear-gradient(rgba(255, 255, 255, 0.9), #fff);
-    text-align: left;    
-}
-#myModaltemplate h3, #myModaltemplate h4 {
-    text-align: left;
-}
-#myModaltemplate .modal-dialog {
-    width: 80%;
-    border: 2px solid #000;
-}
-.template-content {
-    text-align: left;
-    margin: 20px 0;
-}
-.template-buttons .btn-default {
-    border-radius: 20px;
-}
-
-
-/* ==================================
- *  Qard Theme
- *  ============================= */
-
-.theme-content input.form-control {
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid #eaeaea;
-    border-radius: 0;
-    box-shadow: none;
-}
-.theme-content ul li {
-    float: left;
-}
-.theme-content .form-group {
-    clear: both;
-    display: inline-block;
-    width: 100%;
-}
-
-
-
-
-
-
-
-/* ==============================
-    Mobile view
-    ============================ */
-.container-fluid.mobile-page {
-    padding: 0;
-}
-header .col-xs-2.col-sm-2 {
-    padding: 0;
-    position: inherit;
-}
-.logo.col-xs-6.col-sm-6 {
-    padding: 0;
-    text-align: center;
-}
-.logo.col-xs-6.col-sm-6 span{
-    font-size: 16px;
-}
-.col-xs-4.col-sm-4 {
-    padding: 10px 0;
-}
-.logo.col-xs-8.col-sm-8 {
-    padding: 0;
-    text-align: center;
-}
-.logo.col-xs-8.col-sm-8 span{
-    font-size: 16px;
-}
-.col-xs-2.col-sm-2 {
-    padding: 10px 0;
-}
-button.btn.btn-sm.btn-default.signin {
-    font-size: 11px;
-    padding: 5px;
-}
-.mobile-page .btn-sm.btn-default:hover {
-    background: transparent;
-    color: #ff741b;
-    border: 1px solid #ff741b;
-}
-.mobile-page .qards-list {
-    padding: 20px;
-}
-.mobile-page .home-main h3 {
-    font-size: 16px;
-}
-button.mobile {
-    background: transparent;
-    border: 1px solid #fff;
-    border-radius: 20px;
-    color: #fff;
-}
-button.mobile:hover {
-    background: transparent;
-    border: 1px solid #fff;
-    border-radius: 20px;
-    color: #fff;    
-}
-
-/* Mobile Search */
-.search {
-    font-size: 20px;
-    text-align: center;
-    position: inherit;
-}
-.search a {
-    color: #000;
-}
-.search ul.dropdown-menu {
-    width: 100%;
-    top: 0;
-    padding: 10px;
-    height: 100%;
-    background: linear-gradient(rgba(255, 255, 255, 0.91), #fff);
-}
-.search ul.dropdown-menu li {
-    background: transparent; 
-}
-.search ul.dropdown-menu li i {
-    float: right;
-}
-.search ul.dropdown-menu li i:before{
-    color: #ff741b; 
-}
-.search ul.dropdown-menu li input {
-    width: 100%;
-    padding: 10px;
-    border: 0;
-    border-bottom: 1px solid #eaeaea;
-    border-radius: 0;
-}
-.search ul.dropdown-menu li button {
-    width: 100%;
-    margin: 10px 0;
-}
-.search li.dropdown {
-    position: inherit;
-}
-ul.profile-title.mobile-page .btn-default {
-    background: transparent;
-    border-radius: 20px;
-}
-
-/* Mobile Signup */
-.signup.mobile h3, .signup.mobile{
-    text-align: center;
-    
-}
-.signup.mobile input {
-    border: 0;
-    box-shadow: none;
-    border-bottom: 1px solid #eaeaea;
-    border-radius: 0;
-}
-.btn-default {
-    border-radius: 20px;
-}
-.back {
-    font-size: 30px;
-    color: #ff741b;
-    margin: 0;
-}
-.back i {
-    margin: 0;
-}
-
-
-
-
-
-
-
-
-
-
-
 
 /* ======================================
     Media Queries
 ======================================= */
 
 @media (min-width: 768px) {
-    .navbar-collapse.collapse {
-        display: none!important;
-        padding-bottom: 0;
-        overflow: visible!important;
-    }
-    .navbar-toggle {
-        display: block;
-    }
-    .collapse.in {
-        display: block !important;
-    }
+.navbar-collapse.collapse {
+    display: none!important;
+    padding-bottom: 0;
+    overflow: visible!important;
 }
-
-@media only screen and (min-width:480px) {
-    .mobile-page {
-        display: none;
-    }
+.navbar-toggle {
+    display: block;
 }
-
+.collapse.in {
+    display: block !important;
+}
+}
 
 @media only screen and (max-width:479px) {
     #myModalemail .col-sm-4.col-md-4 {
         margin: 20px 0;
-    }
-    .desktop-view {
-        display: none;
-    }
-    .popular-qards .col-sm-3.col-md-3 {
-        margin: 20px 0;
-    }
-    .qard-bottom {
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
     }
 }

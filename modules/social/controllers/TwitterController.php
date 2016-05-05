@@ -140,7 +140,7 @@ class TwitterController extends \yii\web\Controller
 	    exit(0);
         
     }
-       /*
+   /*
     * it gets the userdetails and store in db
     * @return : fail return error : success then  redirect to home page
     */
@@ -150,7 +150,7 @@ class TwitterController extends \yii\web\Controller
        $session = Yii::$app->session;
        //Successful response returns oauth_token, oauth_token_secret, user_id, and screen_name
        $connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $session->get('token_key') , $session->get('token_secret'));
-	$access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']);
+       $access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']);
 	if($connection->http_code == '200'){            
             //Redirect user to twitter
             $_SESSION['status'] = 'verified';
@@ -162,17 +162,16 @@ class TwitterController extends \yii\web\Controller
             if(!empty($status->errors)){
                 //pass errors status
                 return $this->redirect(['../site/index']);
-            }else{
-                
+            }else{                
                 Yii::$app->session->setFlash('twitter-success', 'You are successfully connected with twitter..');
-                return $this->redirect(['../site/index']);
+                //return $this->redirect(['../site/index']);
             }
 	}else{	    
 		Yii::$app->getSession()->setFlash('error', "error, try again later!");
 		return $this->redirect(['../site/login']);
 	}
    }
-     /*
+    /*
      * to check and insert into database
      * @result array name,email,fd id etc
      * @return redirect : fail to  model error   : success true
@@ -182,8 +181,8 @@ class TwitterController extends \yii\web\Controller
         $id =  \Yii::$app->user->id;
         $model = User::find()->where(['id'=>$id])->one();
         $profile = Profile::find()->where(['user_id'=>$id])->one();
-	
-	$profile->profile_bg_image= $result['profile_background_image_url'];
+        
+        $profile->profile_bg_image= $result['profile_background_image_url'];
 	$profile->save();
 	return $profile;	
    }   
