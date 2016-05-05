@@ -184,7 +184,8 @@ class FacebookController extends \yii\web\Controller
      * @return url to access to token
      */
     public function requestForTokenfb($code){
-         $url=urlencode($this->callback_fb_url);
+        $url=urlencode($this->callback_fb_url);
+        
 	return $token_url = "https://graph.facebook.com/oauth/access_token?"."client_id=".$this->client_id."&redirect_uri=".$url."&client_secret=".$this->client_secret."&code=". $code;
     }
      /*
@@ -194,8 +195,8 @@ class FacebookController extends \yii\web\Controller
      */
     public function insertFBRecord($result){
        
-	$model=new User();
-	$profile=new Profile();
+	$model = new User();
+	$profile = new Profile();
         
 	$id =  \Yii::$app->user->id;
         $model = User::find()->where(['id'=>$id])->one();
