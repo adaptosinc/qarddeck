@@ -99,11 +99,12 @@ $this->params['breadcrumbs'][] = 'Edit';
                <div class="social-ccount">
                             <h3>Connect Social Accounts</h3>
                             <div class="form-group">
-                                <button class="btn btn-lg btn-primary"><i class="fa fa-facebook"></i> Connect facebook account</button>
-                                <button class="btn btn-lg btn-info"><i class="fa fa-twitter"></i>Connect Twitter account</button>
+                            
+                            <button class="btn btn-lg btn-primary fb-btn"><i class="fa fa-facebook"></i> Connect facebook account</button>
+                            <button class="btn btn-lg btn-info  twit-btn"><i class="fa fa-twitter"></i>Connect Twitter account
                             </div>
                             
-                        </div>
+                </div>
               <div class="form-group">
                     <ul class="pull-right">
                   <li> <?= Html::submitButton('Cancel', ['class' => 'btn btn-lg btn-default']) ?>  </li>
@@ -188,7 +189,6 @@ $this->params['breadcrumbs'][] = 'Edit';
       }
         
     $('.verify_password').on('blur', function() {
-
         var password = $('.password').val();
         var verify_password = $('.verify_password').val();
         if(password != verify_password){
@@ -201,7 +201,18 @@ $this->params['breadcrumbs'][] = 'Edit';
             checkPassword();
         }
     });     
-        
+    $('.twit-btn').click(function(e) {
+        alert("twiiter");
+        e.preventDefault();
+        window.location.replace("<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/twitter/connecttwitter'; ?>");
+    });   
+    $('.fb-btn').click(function(e) {
+        alert("twiiter");
+        e.preventDefault();
+        window.location.replace("<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/facebook/facebook'; ?>");
+    }); 
+    
+    
    });    
 </script>
                                                                

@@ -293,22 +293,28 @@ class UserController extends Controller
                }  
 	}	
         
-     /**
-     * Checks The Current Password Exists
-     * @return uploaded file name
-     */    
-        public function actionPassword(){    
-           
-                if (Yii::$app->request->isAjax) { 
-                   $checkPswd =  Yii::$app->request->post('data');
-                   $idToUpdate =  \Yii::$app->user->id;
-                   $model = User::find()->where(['id' => $idToUpdate])->one();
-                   $status = $model->validatePassword($checkPswd);                  
-                   \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                             return [
-                                 'result' => $status,
-                             ];
-               }  
-                                
-	}
+    /**
+    * Checks The Current Password Exists
+    * @return uploaded file name
+    */    
+   public function actionPassword(){               
+           if (Yii::$app->request->isAjax) { 
+              $checkPswd =  Yii::$app->request->post('data');
+              $idToUpdate =  \Yii::$app->user->id;
+              $model = User::find()->where(['id' => $idToUpdate])->one();
+              $status = $model->validatePassword($checkPswd);                  
+              \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                        return [
+                            'result' => $status,
+                        ];
+          }                                  
+   }
+   
+    /**
+    * connect with twitter
+    * @return uploaded file name
+    */    
+   public function actionConnectTwitter(){               
+           echo "hi";die;
+   }
 }

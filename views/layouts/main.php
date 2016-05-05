@@ -29,8 +29,7 @@ AppAsset::register($this);
                 <header>
                     <div class="logo pull-left">
                         <a href="index.html"><img src="<?= Yii::$app->request->baseUrl?>/images/logo.png" alt="Home"><span>QardDeck</span></a>
-                    </div>
-                   
+                    </div>                   
 
                     <ul class="pull-right">
                      <?php if(\Yii::$app->user->id){ ?>
@@ -44,6 +43,7 @@ AppAsset::register($this);
                         <li>
                             <h4><?= Yii::$app->user->identity->firstname; ?></h4>
                             <p>100 Followers  |  100 Following</p>
+                            
                         </li>
                         <li>
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Wall</button>
@@ -119,7 +119,6 @@ AppAsset::register($this);
                                     <li><a href="#contact">Contact Us</a></li>
                                   </ul>
                                 </div><!--/.nav-collapse -->
-
                         </li>
                     </ul>
                 </header>

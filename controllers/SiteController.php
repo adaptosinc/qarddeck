@@ -120,13 +120,11 @@ class SiteController extends Controller
                         }		
 		}			
     }
-     public function beforeAction($action){            
+    public function beforeAction($action){       
         
         if ($action->id == 'register') {
             $this->enableCsrfValidation = false;
         }
-
         return parent::beforeAction($action);
-    }
-    
+    }    
 }
