@@ -22,9 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
 			'template' => "{input}\n{hint}\n{error}"
 		])->passwordInput(['class' => 'form-control','placeholder'=>'Password']) ?>
 		
-		<div class="form-group">
-			<?= Html::submitButton('Sign In', ['class' => 'btn btn-lg btn-default']) ?>
-		</div>
+        <div class="form-group">
+                <?= Html::submitButton('Sign In', ['class' => 'btn btn-lg btn-default']) ?>
+        </div>
   
-		<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 </div>
