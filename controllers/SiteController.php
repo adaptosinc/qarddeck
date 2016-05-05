@@ -117,19 +117,14 @@ class SiteController extends Controller
                             return $this->redirect(array('/user/profile', 'id' => $validUser->id));
                             //return $this->redirect('../user/profile');
                         
-                        }
-					
-		
-		}	
-		
+                        }		
+		}			
     }
-     public function beforeAction($action){            
+    public function beforeAction($action){       
         
         if ($action->id == 'register') {
             $this->enableCsrfValidation = false;
         }
-
         return parent::beforeAction($action);
-    }
-    
+    }    
 }

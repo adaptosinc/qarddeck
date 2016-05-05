@@ -9,17 +9,17 @@ use app\models\UserProfile as Profile;
 
 class FacebookController extends \yii\web\Controller
 {
-    public $client_id,$client_secret,$callback_url,$servername,$base_url;
+    public $client_id,$client_secret,$callback_url,$callback_fb_url,$servername,$base_url;
     
     public function init() {
-	$this->client_id='1142793035779809';//app id of facebook
-	$this->client_secret='8dc64cf509704e2cd4e2dcd5ed1a1aea';//app secret key of facebook
+	$this->client_id= '1043423809058490';//;'1142793035779809';//app id of facebook
+	$this->client_secret= '63c5ad6dbb65d60777a183fadb4c79c0';//8dc64cf509704e2cd4e2dcd5ed1a1aea';//app secret key of facebook
 	$this->base_url=Yii::$app->request->baseUrl; 
 	//\Yii::$app->request->BaseUrl 
 	
 	$this->servername=  $_SERVER['HTTP_HOST'];  //server name of working server
 	$this->callback_url='http://'.$this->servername.$this->base_url.'/social/facebook/get-token';// callback url to get access token and other information
-	//echo $this->callback_url;exit;
+        $this->callback_fb_url='http://'.$this->servername.$this->base_url.'/social/facebook/get-tokenfb';// callback url to get access token and other information
 	
     }
     
@@ -50,10 +50,8 @@ class FacebookController extends \yii\web\Controller
      * @return redirect : fail to  login page  : success to home page
      */
     public function actionGetToken($code)
-    {
-	
+    {	
 	$token_url = $this->requestForToken($code);
-	
 	$response=$this->curlExecutionHttps($token_url);
 	$params = null;
 	
@@ -67,10 +65,10 @@ class FacebookController extends \yii\web\Controller
 	//if true means throws errors
 	if(!empty($status->errors)){
 	    Yii::$app->session->setFlash('error', 'Email is already used..');
-	    return $this->redirect(['../site/index']);
+	   return $this->redirect(['../site/index']);
 	}else{
 	    Yii::$app->user->login($status, '3600*24*30');
-	    return $this->redirect(['../site/index']);
+	  return $this->redirect(['../site/index']);
 	}
     }
     
@@ -113,8 +111,7 @@ class FacebookController extends \yii\web\Controller
 	    return $model;
 	}
    }
-   
-   
+      
    /*
     * to execute curl request for the page
     */
@@ -139,5 +136,76 @@ class FacebookController extends \yii\web\Controller
         
         return $result;
     }
-
+    
+       /*
+     * after redirect from  login page of facebook return tempaorary access token
+     * @code temporary access token
+     * @return redirect : fail to  login page  : success to home page
+     */
+    public function actionGetTokenfb($code)
+    {
+        $token_url = $this->requestForTokenfb($code);
+	$response=$this->curlExecutionHttps($token_url);
+	$params = null;
+	
+	parse_str($response, $params);//convert string to array to get access_token
+	
+	$token_url='https://graph.facebook.com/me?fields=id,email,first_name,last_name&access_token='.$params['access_token'];
+	
+	$result=json_decode($this->curlExecutionHttps($token_url),true);
+	
+	$status=$this->insertFBRecord($result);
+       
+	//if true means throws errors
+	if(!empty($status->errors)){
+	    Yii::$app->session->setFlash('error', 'Email is already used..');
+	   // return $this->redirect(['../site/index']);
+	}else{
+	   // Yii::$app->user->login($status, '3600*24*30');
+               echo "<script type='text/javascript'>alert('You are successfully connected with fb');</script>";
+                Yii::$app->session->setFlash('fb-success', 'You are successfully connected with fb..');
+	  return $this->redirect(['../site/index']);
+	}
+	
+    }
+    
+    /*
+     * redirect to facebook page
+     */
+    public function actionFacebook(){
+       	
+	$url='https://www.facebook.com/dialog/oauth?client_id='.$this->client_id.'&redirect_uri='.$this->callback_fb_url.'&scope=email';
+	header('Location:'.$url);
+	exit(0);
+    }
+     /*
+     * return url to get access token 
+     * @code string get the temporary access token
+     * @return url to access to token
+     */
+    public function requestForTokenfb($code){
+         $url=urlencode($this->callback_fb_url);
+	return $token_url = "https://graph.facebook.com/oauth/access_token?"."client_id=".$this->client_id."&redirect_uri=".$url."&client_secret=".$this->client_secret."&code=". $code;
+    }
+     /*
+     * to check and insert into database
+     * @result array name,email,fd id etc
+     * @return redirect : fail to  model error   : success true
+     */
+    public function insertFBRecord($result){
+       
+	$model=new User();
+	$profile=new Profile();
+        
+	$id =  \Yii::$app->user->id;
+        $model = User::find()->where(['id'=>$id])->one();
+        $profile = Profile::find()->where(['user_id'=>$id])->one();
+	
+	$user = User::find()->where(['username'=>$model->username])->one();
+        $profile->display_email=$result['email'];
+            if($profile->save()){
+             
+                return $profile;
+            } 	
+     }    
 }

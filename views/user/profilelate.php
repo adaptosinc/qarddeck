@@ -1,13 +1,19 @@
 <?php
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
-use yii\helpers\Url;
+
 $this->title = $profile->firstname;
 $this->params['breadcrumbs'][] = ['label' => 'Edit Profile', 'url' => ['profile']];
 $this->params['breadcrumbs'][] = 'Edit';
+
 ?>      
+
+
+
+
 <!-- Edit Account -->
-    <div class="modal fade" tabindex="-1" id="myModaledit" role="dialog" aria-labelledby="myModalLabel">
+
+                <div class="modal fade" tabindex="-1" id="myModaledit" role="dialog" aria-labelledby="myModalLabel">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -21,16 +27,8 @@ $this->params['breadcrumbs'][] = 'Edit';
                                 <h3 class="main-title">Public Profile</h3>
                                 <div class="row">
                                     <div class="profile-img col-sm-2 col-md-2">
-                                        <?php if($profile->profile_photo==''){?>
-                                        <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png" alt="">
-                                        <?php } ?>
-                                        <?php if($profile->profile_photo!=''){?>
-                                        <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl.'/'.$profile->profile_photo?>" alt="">
-                                        <?php } ?>
-                                   
-                                
-                                        <input id="profile-image-upload" name="image" class="hidden" type="file">
-                                                 </div>
+                                        <img src="images/avatar-lg.png" alt="">
+                                    </div>
                                     <div class="profile-content col-sm-10 col-md-10">
                                         <h3>@<?= Html::encode($this->title) ?></h3>
                                         <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
@@ -40,29 +38,27 @@ $this->params['breadcrumbs'][] = 'Edit';
                                          <div class="form-group">
                                             <input type="text" value="<?php echo $profile->lastname;?>" class="form-control" name="lastname" placeholder="Last Name">   
                                         </div>  
-                                        <div class="form-group">
+                                  <div class="form-group">
                                             <input type="text" class="form-control" name="short_description" placeholder="Something about yourself (x char max)">
                                         </div>
                                         
-                                  <!--<div class="form-group">    
-                                   <!-- < ?= 
-                                            //$form->field($profile, 'profile_photo')->fileInput() //? >
-                                    < ?= $form->field($profile, 'profile_bg_image')->fileInput() ?> 
-                                  </div>-->
-                                    <div class="form-group" style="display: inline-block;">
+                                  <div class="form-group">     
+                                    <?= $form->field($profile, 'profile_photo')->fileInput() ?>
+                                    <?= $form->field($profile, 'profile_bg_image')->fileInput() ?>
+                                  </div>
+                                        <div class="form-group" style="display: inline-block;">
                                       <div class="col-sm-6 col-md-6">
-                                        <img src="<?= Yii::$app->request->baseUrl?>/images/email-trans.png" alt="">
-                                        <input type="text"  id="profemail" value="<?php echo $model->email;?>" class="form-control" name="email" type="email" placeholder="Email Adddress">
-                                      </div>
-                                        <div class="col-sm-6 col-md-6">
-                                            <div class="switch">
-                                                <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                                <label for="cmn-toggle-4"></label>
-                                            </div>  <span>Display email on public profile</span>                                                   
-                                        </div>                                            
+                                                <img src="images/email-trans.png" alt=""><input type="text"  value="<?php echo $model->email;?>" class="form-control" name="email" type="email" placeholder="Email Adddress">
+                                            </div>
+                                            <div class="col-sm-6 col-md-6">
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                    <label for="cmn-toggle-4"></label>
+                                                </div>  <span>Display email on public profile</span>                                                   
+                                            </div>                                            
                                         </div>
                                         <div class="form-group">
-                                            <img src="<?= Yii::$app->request->baseUrl?>/images/link-trans.png" alt=""><input type="text" class="form-control" name="fullname" placeholder="Link Optional">
+                                            <img src="images/link-trans.png" alt=""><input type="text" class="form-control" name="fullname" placeholder="Link Optional">
                                         </div>                                        
                                     </div>
                                 </div>
@@ -71,19 +67,25 @@ $this->params['breadcrumbs'][] = 'Edit';
                                 <h3 class="main-title">Change Your Password</h3>
                          
                                 <div class="form-group">
-                                    <input type="password" id="password" class="form-control" name="password" placeholder="New Password">
+                                    <input type="password" class="form-control" name="password" placeholder="New Password">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" id="verify_password" class="form-control" name="verify_password" placeholder="Confirm New Password">
-                                </div>  
-                                <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
+                                    <input type="password" class="form-control" name="password" placeholder="Confirm New Password">
+                                </div>                                  
                             </div>
                         </div>          <!-- row -->
-                     
+                        <div class="social-ccount">
+                            <h3>Connect Social Accounts</h3>
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-primary"><i class="fa fa-facebook"></i> Connect facebook account</button>
+                                <button class="btn btn-lg btn-info"><i class="fa fa-twitter"></i>Connect Twitter account</button>
+                            </div>
+                            
+                        </div>
                         <div class="form-group">
                             <ul class="pull-right">
                                 <li><button class="btn btn-lg btn-default">Cancel</button></li>
-                                <li><button id="save" class="btn btn-lg btn-warning">Save</button></li>                     
+                                <li><button class="btn btn-lg btn-warning">Save</button></li>                     
                             </ul>
                         </div>
                         
@@ -172,48 +174,3 @@ $this->params['breadcrumbs'][] = 'Edit';
                         </div>
                     </div>
                 </section>
-<style>
-   .profImg{   
-       border-radius: 50%;
-       height: 108px;
-       width: 106px;
-   }
-</style>                
-<script>
-  $(document).ready(function(){
-      var count =1;
-        $('#displayerr').hide();
-	$('#profImg').on('click', function() {
-           
-            $('#profile-image-upload').click();
-               var file_data = $('#profile-image-upload').prop('files')[0];   
-               var form_data = new FormData();                  
-               form_data.append('file', file_data);
-               console.log('<?= $profile->user_id?>');
-                    $.ajax({
-                           url: "<?=Url::to(['user/photo'], true)?>",
-                           cache: false,
-                           contentType: false,
-                           processData: false,
-                           data: form_data,                        
-                           type: 'post',
-                           success: function(response){                               
-                               $('#profImg').attr('src', '<?= Yii::$app->request->baseUrl?>/uploads/'+response.code);
-                               count++;
-                           }
-                    });
-        }); 
-        
-        $('#verify_password').on('blur', function() {
-            var password = $('#password').val();
-            var verify_password = $('#verify_password').val();
-            if(password!=verify_password){
-                 $('#displayerr').show();
-                 $("#save").attr("disabled", "disabled");
-            }  else{
-                $('#displayerr').hide();
-                $("#save").removeAttr("disabled");             
-            }
-        });                 
-   });    
-</script>
