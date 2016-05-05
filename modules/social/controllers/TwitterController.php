@@ -60,23 +60,22 @@ class TwitterController extends \yii\web\Controller
        $connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $session->get('token_key') , $session->get('token_secret'));
        $access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']);
        if($connection->http_code == '200'){            
-		//Redirect user to twitter
-		$_SESSION['status'] = 'verified';
-		$_SESSION['request_vars'] = $access_token;		
-		//Insert user into the database
-		$user_info = json_decode(json_encode($connection->get('account/verify_credentials')),true); 
-              
-		$status=$this->insertUserRecord($user_info);
-		if(!empty($status->errors)){
-		    //pass errors status
-		    return $this->redirect(['../site/index']);
-		}else{
-		    Yii::$app->user->login($status, '3600*24*30');                    
-		    return $this->redirect(['../site/index']);
-		}
-	}else{	    
-		Yii::$app->getSession()->setFlash('error', "error, try again later!");
-		return $this->redirect(['../site/login']);
+            //Redirect user to twitter
+            $_SESSION['status'] = 'verified';
+            $_SESSION['request_vars'] = $access_token;		
+            //Insert user into the database
+            $user_info = json_decode(json_encode($connection->get('account/verify_credentials')),true); 
+            $status=$this->insertUserRecord($user_info);
+            if(!empty($status->errors)){
+                //pass errors status
+                return $this->redirect(['../site/index']);
+            }else{
+                Yii::$app->user->login($status, '3600*24*30');                    
+                return $this->redirect(['../site/index']);
+            }
+	} else{	    
+            Yii::$app->getSession()->setFlash('error', "error, try again later!");
+            return $this->redirect(['../site/login']);
 	}
    }
    /*
