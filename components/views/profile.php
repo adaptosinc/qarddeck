@@ -145,6 +145,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                            type: 'post',
                            success: function(response){   
                                
+                               $('.profpic').attr('src', '<?= Yii::$app->request->baseUrl?>/uploads/'+response.code);                         
                                $('#profImg').attr('src', '<?= Yii::$app->request->baseUrl?>/uploads/'+response.code);
                                count++;
                            }

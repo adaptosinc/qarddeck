@@ -12,8 +12,8 @@ class FacebookController extends \yii\web\Controller
     public $client_id,$client_secret,$callback_url,$callback_fb_url,$servername,$base_url;
     
     public function init() {
-	$this->client_id= '1043423809058490';//;'1142793035779809';//app id of facebook
-	$this->client_secret= '63c5ad6dbb65d60777a183fadb4c79c0';//8dc64cf509704e2cd4e2dcd5ed1a1aea';//app secret key of facebook
+	$this->client_id= '1142793035779809';//app id of facebook
+	$this->client_secret= '8dc64cf509704e2cd4e2dcd5ed1a1aea';//app secret key of facebook
 	$this->base_url=Yii::$app->request->baseUrl; 
 	//\Yii::$app->request->BaseUrl 
 	

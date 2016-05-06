@@ -21,6 +21,13 @@ AppAsset::register($this);
 <title><?= Html::encode($this->title) ?></title>
 <?php $this->head() ?>
 </head>
+<style>
+   .profPic{   
+       border-radius: 50%;
+       height: 39px;
+       width: 44px;
+   }
+</style> 
 <body>
 <?php $this->beginBody() ?>
 <div class="container-fluid">    
@@ -30,19 +37,22 @@ AppAsset::register($this);
                         <a href="index.html"><img src="<?= Yii::$app->request->baseUrl?>/images/logo.png" alt="Home"><span>QardDeck</span></a>
                     </div>                   
 
-                    <ul class="pull-right">
+                    <ul class="pull-right">                        
                      <?php if(\Yii::$app->user->id){ ?>
                         <li>
                             <button class="btn btn-default qard" data-toggle="modal" data-target="#myModaledit">Edit</button>
                         </li>
                         <li>
-                             <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
-                        </li>
-                        
+                            <?php if(\Yii::$app->user->identity->profile_photo){ ?>
+                                <img id="profpic" class="profPic" src="<?=\Yii::$app->user->identity->profile_photo?>" alt="">
+                            <?php } ?>  
+                            <?php if(!\Yii::$app->user->identity->profile_photo){ ?>
+                                <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
+                            <?php } ?>      
+                        </li>                        
                         <li>
-                            <h4><?= Yii::$app->user->identity->firstname; ?></h4>
-                            <p>100 Followers  |  100 Following</p>
-                            
+                              <h4><?= Yii::$app->user->identity->firstname; ?></h4>
+                              <p>100 Followers  |  100 Following</p>
                         </li>
                         <li>
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Wall</button>
@@ -52,7 +62,7 @@ AppAsset::register($this);
                         </li>
                         <li>
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Deck</button>
-                        </li>
+                        </li>                        
 
                     <?php } ?>                       
                         <li class="addnew">
@@ -81,7 +91,6 @@ AppAsset::register($this);
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Qard Stream</button>
                         </li>                        
                         <li><?php if(\Yii::$app->user->id){ 
-
 	                        echo Html::beginForm(['/site/logout'], 'post');
 	               			echo Html::submitButton(
 	                   				'Logout',
@@ -90,9 +99,8 @@ AppAsset::register($this);
 	               			echo Html::endForm();
 
                } else { ?>
-                            <button class="btn btn-default signin" data-toggle="modal" data-target="#myModal">Sign In/Sign Up</button>			    
-			<?php }?>
-
+                        <button class="btn btn-default signin" data-toggle="modal" data-target="#myModal">Sign In/Sign Up</button>			    
+	        <?php }?>
                         </li>
                         <li>
                             <nav class="navbar">
@@ -120,15 +128,15 @@ AppAsset::register($this);
                                 </div><!--/.nav-collapse -->
                         </li>
                     </ul>
-                </header>
-    
+                </header>    
     <!-- signup popup -->
-
     <div class="modal fade" tabindex="-1" id="myModal" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
             <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body">
@@ -144,7 +152,7 @@ AppAsset::register($this);
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-	
+    	
     <div class="modal fade" tabindex="-1" id="myModalemail" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog">
         <div class="container">
@@ -174,10 +182,8 @@ AppAsset::register($this);
 					if(!Yii::$app->user->id)
 						echo SignUp::widget();
 					?>                     
-                </div>       
-                  
+                </div>                         
             </div>
-
           </div>
             <div class="modal-footer">
                             <p>You agree to our Tems and Conditions of use by publishing your Qard</p>
