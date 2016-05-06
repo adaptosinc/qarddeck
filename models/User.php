@@ -29,7 +29,7 @@ class User extends ActiveRecord implements IdentityInterface
     public $verify_password;
     public $password;
     public $firstname;
-	
+    public $profile_photo;	
     /**
      * @inheritdoc
      */
@@ -73,6 +73,9 @@ class User extends ActiveRecord implements IdentityInterface
         $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
         if(!empty($profile->firstname)){
 		$user->firstname= $profile->firstname.' '.$profile->lastname;
+	}
+        if(!empty($profile->profile_photo)){
+            $user->profile_photo= $profile->profile_photo;
 	}
 	return $user;
     }
