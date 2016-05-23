@@ -4,8 +4,6 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use app\assets\AppAsset;
 ?>
-
-
 <section class="home-main content">
     
     <h3>Share what you love,think and know. <strong>Easily.</strong></h3>
