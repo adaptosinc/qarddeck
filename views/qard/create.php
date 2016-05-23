@@ -314,8 +314,9 @@ function showtext() {
      */
      function add_block(){
 	 
-	 var text=$("#working_div").text() || 0;
-	 var extra_text=$("#extra_text").text() || 0;
+	 var text=$("#working_div").html() || 0;
+	 
+	 var extra_text=$("#extra_text").html() || 0;
 	 var block_id=$("#block_id").val() || 0;
 	 var qard_id=$("#qard_id").val() || 0;
 	 var qard_title=$("#qard_title").val() || 0;

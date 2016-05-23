@@ -10,6 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Qard;
 use app\models\Theme;
+use app\models\QardTags;
+use app\models\Tag;
 
 /**
  * BlockController implements the CRUD actions for Block model.
@@ -66,24 +68,28 @@ class BlockController extends Controller
     public function actionCreate()
     {
         $model = new Block();
-	$qard=new Qard();
-	
+	$post=Yii::$app->request->post();
 	echo "viay";
-	print_r(\Yii::$app->request->post());
+//	print_r(\Yii::$app->request->post());
+	
 	die;
 	$model->text=Yii::$app->request->post('text');
 	$model->extra_text=Yii::$app->request->post('extra_text');
-	//is qard id is empty then insert new record
-	if(empty(Yii::$app->request->post('qard_id'))){
-	    $qard->title=Yii::$app->request->post('qard_title');
-	    $qard->url='test url';
-	    //$qard->user_id=Yii::$app->
-	    
-	}else{
-	    echo "crate code to update qard ";
-	    exit(0);
-	}
 	
+	//to create theme for qard
+	$theme=$this->createTheme($post);
+	
+	if(empty($theme->errors) && !is_array($theme)){
+	    
+	    $qard=$this->createQard($post, $theme->theme_id);
+	    if(empty($qard->errors) && !is_array($qard)){
+		
+	    }else{
+		
+	    }
+	    $tags=$this->createTagsQard($post,$qard->qard_id);
+	    
+	}
 	
 //	$model->=\Yii::$app->request->post('tags');
 
@@ -177,5 +183,90 @@ class BlockController extends Controller
 	);
 	
 	return serialize($theme_properties);
+    }
+    
+    /*
+     * to create Qard if created then update the qard
+     */
+    public function createQard($post,$theme_id){
+	$qard=new Qard();
+	if(empty($post['qard_title']) && empty(Yii::$app->user->id) && empty($theme_id)){
+	    $qard->title=$post['qard_title'];
+	    $qard->url='test url';
+	    $qard->user_id=Yii::$app->user->id;
+	    $qard->status=0;
+	    $qard->qard_privacy=1;
+	    $qard->qard_theme=$theme_id;
+	    if(empty($post['qard_id'])){
+		$qard->validate();
+		$qard->save();
+		return $qard;
+	    }else{
+		$qard->qard_id=$post['qard_id'];
+		$qard->validate();
+		$qard->update();
+		return $qard;
+		
+	    }
+	    
+	}else{
+	    return array('error'=>"empty fields!...");
+	}
+	
+	
+    }
+    
+    /*
+     * create theme for qard
+     */
+    public function createTheme($post){
+	
+	$theme=new Theme();
+	$theme->theme_type=1; //theme type 1 define theme for qard o theme for block
+	$theme->theme_properties='test'; // serialized data all theme details
+	
+	//checking whether id present then update or else insert 
+	if(empty($post['theme_id'])){
+	    $theme->validate();
+	    $theme->save();
+	    return $theme;
+	}else{
+	    $theme->validate();
+	    $theme->update();
+	    return $theme;
+	}
+    }
+    /*
+     * 
+     */
+    public function createTagsQard($post,$qard_id){
+	$qardTags=new QardTags();
+	$tags=new Tag();
+	//checking whether tags are present or not
+	if(!empty($post['tags'])){
+	    // tags are in string with comm format 
+	    $tags=  explode(',', $post['tags']);
+	    //deleting all records that are present with qard_id
+	    echo "dlelete".QardTags::deleteAll()->where(['qard_id'=>$qard_id]);
+	    $tag_details='';
+	    foreach ($tags as $tag) {
+		// checking whether entered tags present in db or not if not then skip to insert
+		$tag_details=Tag::find()->where(['name'=>$tag])->one();
+		if(!empty($tag_details)){
+		    $qardTags->qard_id=$qard_id;
+		    $qardTags->tag_id=$tag_details->tag_id;
+		    if($qardTags->validate()){
+			$qardTags->save();
+		    }
+		    print_r($qardTags);	
+		}
+		
+	    }
+	}else{
+	    return array("empty tags!...");
+	}
+	
+	
+	
     }
 }
