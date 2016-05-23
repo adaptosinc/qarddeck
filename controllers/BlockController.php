@@ -75,9 +75,13 @@ class BlockController extends Controller
 	$model->extra_text=Yii::$app->request->post('extra_text');
 	//is qard id is empty then insert new record
 	if(empty(Yii::$app->request->post('qard_id'))){
-	    $model->qard=\Yii::$app->request->post('qard_title');
-	}else{
+	    $qard->title=Yii::$app->request->post('qard_title');
+	    $qard->url='test url';
+	    //$qard->user_id=Yii::$app->
 	    
+	}else{
+	    echo "crate code to update qard ";
+	    exit(0);
 	}
 	
 	
