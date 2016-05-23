@@ -1319,3 +1319,145 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1464011688.63
     'REQUEST_TIME' => 1464011688
 ]
+2016-05-23 13:57:18 [127.0.0.1][-][-][error][yii\base\UnknownPropertyException] exception 'yii\base\UnknownPropertyException' with message 'Getting unknown property: app\modules\social\controllers\TwitterController::servername' in /var/www/html/qarddeck/vendor/yiisoft/yii2/base/Component.php:143
+Stack trace:
+#0 /var/www/html/qarddeck/modules/social/controllers/TwitterController.php(130): yii\base\Component->__get('servername')
+#1 [internal function]: app\modules\social\controllers\TwitterController->actionConnecttwitter()
+#2 /var/www/html/qarddeck/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#3 /var/www/html/qarddeck/vendor/yiisoft/yii2/base/Controller.php(154): yii\base\InlineAction->runWithParams(Array)
+#4 /var/www/html/qarddeck/vendor/yiisoft/yii2/base/Module.php(454): yii\base\Controller->runAction('connecttwitter', Array)
+#5 /var/www/html/qarddeck/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('social/twitter/...', Array)
+#6 /var/www/html/qarddeck/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#7 /var/www/html/qarddeck/web/index.php(12): yii\base\Application->run()
+#8 {main}
+2016-05-23 13:57:16 [127.0.0.1][-][-][info][application] $_GET = [
+    'r' => 'social/twitter/connecttwitter'
+]
+
+$_COOKIE = [
+    '_js_datr' => 'jy3dVr9nsbtQlQqGN9kEf7EE'
+    'fbm_1031393523550536' => 'base_domain=.localhost'
+    'fbm_1031301240226431' => 'base_domain=.localhost'
+    'fbss_' => 'GHTEFn9Rvhrz-CwdiPYvksFkpPqsZFfwgf4_fW6nh0M.eyJkb21haW4iOiJsb2NhbGhvc3QiLCJpZCI6IjhhYzY0NTEwYTVjNmVkOTMwN2QzZDg0ZDI4YzA0NTc3IiwiYWxnb3JpdGhtIjoiSE1BQy1TSEEyNTYiLCJpc3N1ZWRfYXQiOjE0NTY5MTE3NzJ9'
+    'PHPSESSID' => 'hvcd8d64fhhbgh1qotsdhjals3'
+    '_csrf' => '422745ce5dfe9481e1d260136ca039d0f73eec8429dbef3d94c8012a15775d4fa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"PJlUJTlMl84lwmgIdna7dDu4WF5ajKcR\";}'
+    '_identity' => '6e7a863f436c95d0c3831565ac5cf7a7312a825bb32134427ae2142341570d01a:2:{i:0;s:9:\"_identity\";i:1;s:52:\"[11,\"KQVtnFqCuwsuC9ORA28y6mHxYEg_8NuA\",\"3600*24*30\"]\";}'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.5'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_REFERER' => 'http://localhost/qarddeck/web/site/index'
+    'HTTP_COOKIE' => '_js_datr=jy3dVr9nsbtQlQqGN9kEf7EE; fbm_1031393523550536=base_domain=.localhost; fbm_1031301240226431=base_domain=.localhost; fbss_=GHTEFn9Rvhrz-CwdiPYvksFkpPqsZFfwgf4_fW6nh0M.eyJkb21haW4iOiJsb2NhbGhvc3QiLCJpZCI6IjhhYzY0NTEwYTVjNmVkOTMwN2QzZDg0ZDI4YzA0NTc3IiwiYWxnb3JpdGhtIjoiSE1BQy1TSEEyNTYiLCJpc3N1ZWRfYXQiOjE0NTY5MTE3NzJ9; PHPSESSID=hvcd8d64fhhbgh1qotsdhjals3; _csrf=422745ce5dfe9481e1d260136ca039d0f73eec8429dbef3d94c8012a15775d4fa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22PJlUJTlMl84lwmgIdna7dDu4WF5ajKcR%22%3B%7D; _identity=6e7a863f436c95d0c3831565ac5cf7a7312a825bb32134427ae2142341570d01a%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A52%3A%22%5B11%2C%22KQVtnFqCuwsuC9ORA28y6mHxYEg_8NuA%22%2C%223600%2A24%2A30%22%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.12 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.12 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www/html'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/html'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/html/qarddeck/web/index.php'
+    'REMOTE_PORT' => '45878'
+    'REDIRECT_QUERY_STRING' => 'r=social/twitter/connecttwitter'
+    'REDIRECT_URL' => '/qarddeck/web/social/twitter/connecttwitter'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=social/twitter/connecttwitter'
+    'REQUEST_URI' => '/qarddeck/web/social/twitter/connecttwitter'
+    'SCRIPT_NAME' => '/qarddeck/web/index.php'
+    'PHP_SELF' => '/qarddeck/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1464011836.737
+    'REQUEST_TIME' => 1464011836
+]
+2016-05-23 13:57:18 [127.0.0.1][11][hvcd8d64fhhbgh1qotsdhjals3][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request: social/twitter/sizzle.min.map' in /var/www/html/qarddeck/vendor/yiisoft/yii2/base/Controller.php:125
+Stack trace:
+#0 /var/www/html/qarddeck/vendor/yiisoft/yii2/base/Module.php(454): yii\base\Controller->runAction('sizzle.min.map', Array)
+#1 /var/www/html/qarddeck/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('social/twitter/...', Array)
+#2 /var/www/html/qarddeck/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 /var/www/html/qarddeck/web/index.php(12): yii\base\Application->run()
+#4 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'Page not found.' in /var/www/html/qarddeck/vendor/yiisoft/yii2/web/Application.php:96
+Stack trace:
+#0 /var/www/html/qarddeck/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 /var/www/html/qarddeck/web/index.php(12): yii\base\Application->run()
+#2 {main}
+2016-05-23 13:57:18 [127.0.0.1][11][hvcd8d64fhhbgh1qotsdhjals3][info][application] $_GET = [
+    'r' => 'social/twitter/sizzle.min.map'
+]
+
+$_COOKIE = [
+    '_js_datr' => 'jy3dVr9nsbtQlQqGN9kEf7EE'
+    'fbm_1031393523550536' => 'base_domain=.localhost'
+    'fbm_1031301240226431' => 'base_domain=.localhost'
+    'fbss_' => 'GHTEFn9Rvhrz-CwdiPYvksFkpPqsZFfwgf4_fW6nh0M.eyJkb21haW4iOiJsb2NhbGhvc3QiLCJpZCI6IjhhYzY0NTEwYTVjNmVkOTMwN2QzZDg0ZDI4YzA0NTc3IiwiYWxnb3JpdGhtIjoiSE1BQy1TSEEyNTYiLCJpc3N1ZWRfYXQiOjE0NTY5MTE3NzJ9'
+    'PHPSESSID' => 'hvcd8d64fhhbgh1qotsdhjals3'
+    '_csrf' => '422745ce5dfe9481e1d260136ca039d0f73eec8429dbef3d94c8012a15775d4fa:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"PJlUJTlMl84lwmgIdna7dDu4WF5ajKcR\";}'
+    '_identity' => '6e7a863f436c95d0c3831565ac5cf7a7312a825bb32134427ae2142341570d01a:2:{i:0;s:9:\"_identity\";i:1;s:52:\"[11,\"KQVtnFqCuwsuC9ORA28y6mHxYEg_8NuA\",\"3600*24*30\"]\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    'token_key' => '1rBtwQAAAAAAux0kAAABVN3npBs'
+    'token_secret' => 'TAGfQLLIBrquKiNS28pVZHjl3KItd7K9'
+    'status' => 'verified'
+    'request_vars' => [
+        'oauth_token' => '723494220871421954-cVvoiIXXmVqyTF9KHGsPGI0lJKyHB5d'
+        'oauth_token_secret' => '5zwhESwaHBGqLGQqzzC1EdEo5flsNGeAqzGkJMAUt6ANc'
+        'user_id' => '723494220871421954'
+        'screen_name' => 'vijay0757'
+        'x_auth_expires' => '0'
+    ]
+    '__id' => 11
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:46.0) Gecko/20100101 Firefox/46.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.5'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_COOKIE' => '_js_datr=jy3dVr9nsbtQlQqGN9kEf7EE; fbm_1031393523550536=base_domain=.localhost; fbm_1031301240226431=base_domain=.localhost; fbss_=GHTEFn9Rvhrz-CwdiPYvksFkpPqsZFfwgf4_fW6nh0M.eyJkb21haW4iOiJsb2NhbGhvc3QiLCJpZCI6IjhhYzY0NTEwYTVjNmVkOTMwN2QzZDg0ZDI4YzA0NTc3IiwiYWxnb3JpdGhtIjoiSE1BQy1TSEEyNTYiLCJpc3N1ZWRfYXQiOjE0NTY5MTE3NzJ9; PHPSESSID=hvcd8d64fhhbgh1qotsdhjals3; _csrf=422745ce5dfe9481e1d260136ca039d0f73eec8429dbef3d94c8012a15775d4fa%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22PJlUJTlMl84lwmgIdna7dDu4WF5ajKcR%22%3B%7D; _identity=6e7a863f436c95d0c3831565ac5cf7a7312a825bb32134427ae2142341570d01a%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A52%3A%22%5B11%2C%22KQVtnFqCuwsuC9ORA28y6mHxYEg_8NuA%22%2C%223600%2A24%2A30%22%5D%22%3B%7D'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_PRAGMA' => 'no-cache'
+    'HTTP_CACHE_CONTROL' => 'no-cache'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.12 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.12 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www/html'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/html'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/html/qarddeck/web/index.php'
+    'REMOTE_PORT' => '45900'
+    'REDIRECT_QUERY_STRING' => 'r=social/twitter/sizzle.min.map'
+    'REDIRECT_URL' => '/qarddeck/web/social/twitter/sizzle.min.map'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'r=social/twitter/sizzle.min.map'
+    'REQUEST_URI' => '/qarddeck/web/social/twitter/sizzle.min.map'
+    'SCRIPT_NAME' => '/qarddeck/web/index.php'
+    'PHP_SELF' => '/qarddeck/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1464011838.392
+    'REQUEST_TIME' => 1464011838
+]
