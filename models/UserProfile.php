@@ -26,6 +26,8 @@ use Yii;
  */
 class UserProfile extends \yii\db\ActiveRecord
 {
+    public $verify_password;
+    public $password;
     /**
      * @inheritdoc
      */
@@ -40,12 +42,15 @@ class UserProfile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
             [['user_id', 'profile_status', 'profile_privacy'], 'integer'],
             [['profile_url', 'short_description', 'display_url', 'profile_bg_image', 'bg_properties'], 'string'],
             [['firstname', 'lastname', 'profile_photo', 'display_email'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['profile_privacy'], 'exist', 'skipOnError' => true, 'targetClass' => Privacy::className(), 'targetAttribute' => ['profile_privacy' => 'privacy_id']],
+            [['profile_url'],'url'],
+        //    [['password','verify_password'],'safe'],
+           // ['verify_password', 'compare', 'compareAttribute' => 'password'],
+          //  ['verify_password', 'compare', 'compareAttribute' => 'password'],
         ];
     }
 
@@ -64,6 +69,7 @@ class UserProfile extends \yii\db\ActiveRecord
             'profile_photo' => 'Profile Photo',
             'short_description' => 'Short Description',
             'display_url' => 'Display Url',
+            'profile_url' => 'Profile Url',
             'display_email' => 'Display Email',
             'profile_bg_image' => 'Profile Bg Image',
             'bg_properties' => 'Bg Properties',

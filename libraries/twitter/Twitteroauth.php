@@ -225,7 +225,6 @@ class Twitteroauth {
     curl_close ($ci);
     return $response;
   }
-
   /**
    * Get the header info to store.
    */

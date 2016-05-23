@@ -2,7 +2,7 @@
 .idea
 
 # netbeans project files
-nbproject
+#nbproject
 
 # zend studio for eclipse project files
 .buildpath
@@ -15,8 +15,10 @@ Thumbs.db
 # composer vendor dir
 #vendor
 
+
 # database config file
-config
+#config
+
 
 # composer itself is not needed
 composer.phar

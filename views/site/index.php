@@ -2,9 +2,13 @@
 <?php
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
+use app\assets\AppAsset;
 ?>
 <section class="home-main content">
+    
     <h3>Share what you love,think and know. <strong>Easily.</strong></h3>
+    <h5 class="text-success"><b><?= Yii::$app->session->getFlash('twitter-success');?></b></h5>
+    <h5 class="text-success><b><?= Yii::$app->session->getFlash('fb-success');?></b?</h5>
     <div class="action-qard">
 	<button class="btn btn-default qard">Qards in Action</button>
 	<button class="btn btn-warning">Create a Qard</button>

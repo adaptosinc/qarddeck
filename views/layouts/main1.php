@@ -21,39 +21,28 @@ AppAsset::register($this);
 <title><?= Html::encode($this->title) ?></title>
 <?php $this->head() ?>
 </head>
-<style>
-   .profPic{   
-       border-radius: 50%;
-       height: 39px;
-       width: 44px;
-   }
-</style> 
 <body>
 <?php $this->beginBody() ?>
 <div class="container-fluid">    
     <!-- header -->
                 <header>
                     <div class="logo pull-left">
-                        <a href="<?= Yii::$app->request->baseUrl?>/site/index"><img src="<?= Yii::$app->request->baseUrl?>/images/logo.png" alt="Home"><span>QardDeck</span></a>
-                    </div>
-                  
+                        <a href="index.html"><img src="<?= Yii::$app->request->baseUrl?>/images/logo.png" alt="Home"><span>QardDeck</span></a>
+                    </div>                   
 
-                    <ul class="pull-right">                        
+                    <ul class="pull-right">
                      <?php if(\Yii::$app->user->id){ ?>
                         <li>
                             <button class="btn btn-default qard" data-toggle="modal" data-target="#myModaledit">Edit</button>
                         </li>
                         <li>
-                            <?php if(\Yii::$app->user->identity->profile_photo){ ?>
-                                <img id="profpic" class="profPic" src="<?=\Yii::$app->user->identity->profile_photo?>" alt="">
-                            <?php } ?>  
-                            <?php if(!\Yii::$app->user->identity->profile_photo){ ?>
-                                <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
-                            <?php } ?>      
-                        </li>                        
+                             <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
+                        </li>
+                        
                         <li>
-                              <h4><?= Yii::$app->user->identity->firstname; ?></h4>
-                              <p>100 Followers  |  100 Following</p>
+                            <h4><?= Yii::$app->user->identity->firstname; ?></h4>
+                            <p>100 Followers  |  100 Following</p>
+                            
                         </li>
                         <li>
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Wall</button>
@@ -63,7 +52,7 @@ AppAsset::register($this);
                         </li>
                         <li>
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Deck</button>
-                        </li>                        
+                        </li>
 
                     <?php } ?>                       
                         <li class="addnew">
@@ -76,11 +65,8 @@ AppAsset::register($this);
                               <ul class="dropdown-menu" aria-labelledby="dLabel">
                                             <li>
                                                 <div class="col-sm-3 col-md-3 col-md-offset-2">
-						    <a href="<?= Yii::$app->request->baseUrl?>/qard/create">
                                                     <img src="<?= Yii::$app->request->baseUrl?>/images/newqard.png" alt="">
                                                     <h3>Create New Qard</h3>
-						    </a>
-						    
                                                 </div>
                                                 <div class="col-sm-3 col-md-3 col-md-offset-1">
                                                     <img src="<?= Yii::$app->request->baseUrl?>/images/newdeck.png" alt="">
@@ -95,6 +81,7 @@ AppAsset::register($this);
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Qard Stream</button>
                         </li>                        
                         <li><?php if(\Yii::$app->user->id){ 
+
 	                        echo Html::beginForm(['/site/logout'], 'post');
 	               			echo Html::submitButton(
 	                   				'Logout',
@@ -103,8 +90,9 @@ AppAsset::register($this);
 	               			echo Html::endForm();
 
                } else { ?>
-                        <button class="btn btn-default signin" data-toggle="modal" data-target="#myModal">Sign In/Sign Up</button>			    
-	        <?php }?>
+                            <button class="btn btn-default signin" data-toggle="modal" data-target="#myModal">Sign In/Sign Up</button>			    
+			<?php }?>
+
                         </li>
                         <li>
                             <nav class="navbar">
@@ -132,20 +120,21 @@ AppAsset::register($this);
                                 </div><!--/.nav-collapse -->
                         </li>
                     </ul>
-                </header>    
+                </header>
+    
     <!-- signup popup -->
+
     <div class="modal fade" tabindex="-1" id="myModal" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body">
             <h3>Almost There...</h3>
 <p></p>
+            <p>Choose how you want to sign in/sign up</p>
             <div class="sign-buttons">
                 <p><a href="<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/facebook/index'; ?>"><button class="btn btn-lg btn-primary"><i class="fa fa-facebook"></i> Sign In/Sign Up with facebook</button></a></p>
                 <p><a href="<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/twitter/signin'; ?>"><button class="btn btn-lg btn-info"><i class="fa fa-twitter"></i> Sign In/Sign Up with Twitter</button></a></p>
@@ -156,7 +145,7 @@ AppAsset::register($this);
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    	
+	
     <div class="modal fade" tabindex="-1" id="myModalemail" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog">
         <div class="container">
@@ -166,10 +155,6 @@ AppAsset::register($this);
             <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body">
-               <div class="signback">
-                           <h3>Almost There...</h3>
-                           <button type="button" class="btn btn-sm btn-default close"  data-dismiss="modal" aria-label="Close">Back to Social Login</button> 
-               </div>
             <div class="row">
                 <div class="col-sm-4 col-md-4 col-md-offset-1">
                     <h3>Sign In Here</h3>
@@ -178,19 +163,24 @@ AppAsset::register($this);
 					if(!Yii::$app->user->id)
 						echo SignIn::widget();
 					?>
-                </div> 
+                </div>
+                
+
                 <div class="col-sm-4 col-md-4 col-md-offset-1">
-                    <h3 class="text-warning">Sign Up Here</h3>
+                    <h3>Sign Up Here</h3>
 					<?php
 					use app\components\SignUp;
 					if(!Yii::$app->user->id)
 						echo SignUp::widget();
-					?>                     
-                </div>                         
+					?>
+                     
+                </div>       
+                  
             </div>
+
           </div>
-            <div class="modal-footer">
-                            <p>You agree to our Tems and Conditions of use by publishing your Qard</p>
+            <div style="margin-left:321px;" class="col-sm-4 col-md-4 col-md-offset-1">
+             You agree to our Terms and Conditions of use by publishing your Qard
             </div>
         </div><!-- /.modal-content -->
         </div>
@@ -242,3 +232,4 @@ if(Yii::$app->session->getFlash('profile_update_error')){
 ?>
 </html>
 <?php $this->endPage() ?>
+

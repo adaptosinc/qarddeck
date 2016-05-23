@@ -26,10 +26,10 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
-	public $verify_password;
-	public $password;
-	public $firstname;
-	
+    public $verify_password;
+    public $password;
+    public $firstname;
+    public $profile_photo;	
     /**
      * @inheritdoc
      */
@@ -51,15 +51,15 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules(){
+        
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             [['username','email','password','verify_password'],'required'],
             [['username'],'unique'],
-			['email', 'email'],
-			['verify_password', 'compare', 'compareAttribute' => 'password'],
+	    ['email', 'email'],
+	    ['verify_password', 'compare', 'compareAttribute' => 'password'],
         ];
     }
 
@@ -73,6 +73,9 @@ class User extends ActiveRecord implements IdentityInterface
         $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
         if(!empty($profile->firstname)){
 		$user->firstname= $profile->firstname.' '.$profile->lastname;
+	}
+        if(!empty($profile->profile_photo)){
+            $user->profile_photo= $profile->profile_photo;
 	}
 	return $user;
     }
