@@ -22,6 +22,7 @@ class AppAsset extends AssetBundle
 
 		'css/dropzone.css',
 		'css/master.css',
+		'css/custom.css',
 		'font-awesome/css/font-awesome.css',
 
     ];

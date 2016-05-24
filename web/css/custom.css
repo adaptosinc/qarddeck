@@ -1,0 +1,37 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 23 May, 2016, 2:34:19 PM
+    Author     : abacies
+*/
+
+
+
+/* qard-div */
+.qard-div{
+    width: 386px;
+    height: 600px;
+    overflow: hidden;   
+}
+
+/* for one block unit */
+.cur_block{
+    height: 37.5px;
+   // max-height: 600px;
+    width: 385px;
+    word-wrap: break-word;
+    display:block;
+    overflow: hidden;   
+    //background-color: red;
+    //text-overflow: ellipsis;
+}
+/* for extra text */
+
+#extra_text {
+    border: 1px solid;
+    height: 400px;
+}
+
