@@ -77,7 +77,7 @@ class TwitterController extends \yii\web\Controller
             $_SESSION['request_vars'] = $access_token;		
             //Insert user into the database
             $user_info = json_decode(json_encode($connection->get('account/verify_credentials')),true); 
-            $status=$this->insertUserRecord($user_info);
+            $status=$this->insertRecord($user_info);
             if(!empty($status->errors)){
                 //pass errors status
                 return $this->redirect(['../site/index']);
