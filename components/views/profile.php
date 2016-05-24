@@ -65,9 +65,16 @@ $this->params['breadcrumbs'][] = 'Edit';
                                               'template' => "{input}\n{hint}\n{error}"
                                       ])->textInput(['class' => 'form-control','placeholder'=>'Email Adddress']) ?>
                             </div>
-                              <div class="col-sm-6 col-md-6">
+                             <div class="col-sm-6 col-md-6">
                                   <div class="switch">
+                                      
+                                      <?php if($profile->isEmailEnabled==0){?>
                                       <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                      <?php }?>
+                                      <?php if($profile->isEmailEnabled==1){?>
+                                      <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round"  checked="checked" type="checkbox">
+                                      <?php $profile->public_email;}?>
+                                      
                                       <label for="cmn-toggle-4"></label>
                                   </div>  <span>Display email on public profile</span>                                                   
                               </div>                                            
@@ -231,6 +238,21 @@ $this->params['breadcrumbs'][] = 'Edit';
         e.preventDefault();
         window.location.replace("<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/facebook/dis-facebook'; ?>");
     });     
+        $("#cmn-toggle-4").click(function(e){        
+         if($(this).prop("checked") == true){
+             file_data = 1;
+        }else{
+             file_data = 0;
+        }
+        $.ajax({
+                               url: "<?=Url::to(['user/display'], true)?>",                           
+                               data: {data: file_data },                        
+                               type: 'post',
+                               success: function(){   
+                                 
+                               }
+                        });
+    });
    });    
 </script>
                                                                
