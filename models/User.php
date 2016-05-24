@@ -60,9 +60,8 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             [['username','email','password','verify_password'],'required'],
             [['username'],'unique'],
-			['email', 'email'],
-			['verify_password', 'compare', 'compareAttribute' => 'password'],
-			['password_hash','safe']
+            ['email', 'email'],
+            ['verify_password', 'compare', 'compareAttribute' => 'password'],
         ];
     }
 
@@ -187,6 +186,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
+       // echo "here";die;
 		//echo "gere::".$password;echo Yii::$app->security->generatePasswordHash($password);die;
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
 		
