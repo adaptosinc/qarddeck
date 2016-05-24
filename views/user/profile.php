@@ -94,10 +94,6 @@ $this->params['breadcrumbs'][] = 'Edit';
                 </div><!-- /.modal -->                
                 
                 <section class="main-profile">
-                    <ul class="profile-title">
-                        <li>@username</li>
-                        <li><i class="fa fa-envelope"></i>email@address.com</li>
-                    </ul>
                     
                     <div class="main-content">
                         <h3>To get you started, we've added some of our popular content on your wall</h3>
