@@ -44,6 +44,8 @@ class Block extends \yii\db\ActiveRecord
             [['qard_id', 'theme_id', 'status', 'is_title', 'block_priority'], 'integer'],
             [['text', 'extra_text', 'link_url', 'link_image', 'link_document', 'link_title', 'link_description', 'placeholder_text', 'help_text'], 'string'],
             [['block_name'], 'string', 'max' => 255],
+	    [['link_image'],'file','skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+	    [['link_document'],'file','skipOnEmpty' => true, 'extensions' => 'pdf,docx,doc'],
         ];
     }
 
@@ -72,3 +74,4 @@ class Block extends \yii\db\ActiveRecord
         ];
     }
 }
+

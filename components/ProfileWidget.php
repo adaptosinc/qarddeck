@@ -45,8 +45,9 @@ class ProfileWidget extends Widget
 				$model->setPassword($model->password );
                                 $model->generateAuthKey();	
 			}
-                        $model->save(false);	
 
+
+			$model->save(false);	
             $profile->save();    
             \Yii::$app->controller->goBack();
 
