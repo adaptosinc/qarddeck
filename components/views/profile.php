@@ -94,10 +94,10 @@ $this->params['breadcrumbs'][] = 'Edit';
                       <h3 class="main-title">Change Your Password</h3>
                          <input type="password" id="cur_password" class="form-control" name="cur_password" placeholder="Current Password">          
                    <span id="ispswdvalid" class="text-danger">Please Enter The Correct Password</span>  
-  <?= $form->field($profile, 'password', [
+  <?= $form->field($profile, 'password_profile', [
 			'template' => "{input}\n{hint}\n{error}"
 		])->passwordInput(['class' => 'form-control password','placeholder'=>'New Password']) ?>
-                    <?= $form->field($profile, 'verify_password', [
+                    <?= $form->field($profile, 'verify_password_profile', [
 			'template' => "{input}\n{hint}\n{error}"
 		])->passwordInput(['class' => 'form-control verify_password','placeholder'=>'Re-enter Password']) ?>
                      <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
