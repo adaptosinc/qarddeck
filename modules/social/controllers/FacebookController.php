@@ -5,25 +5,28 @@ namespace app\modules\social\controllers;
 use Yii;
 use app\models\User;
 use app\models\UserProfile as Profile;
-use yii\helpers\Url;
 
 
 class FacebookController extends \yii\web\Controller
 {
-    public $client_id,$client_secret,$callback_url;
+    public $client_id,$client_secret,$callback_url,$callback_fb_url,$servername,$base_url;
     
     public function init() {
-	$this->client_id='1142793035779809';//app id of facebook
-	$this->client_secret='8dc64cf509704e2cd4e2dcd5ed1a1aea';//app secret key of facebook
-	$this->callback_url=Url::to(['/social/facebook/get-token'],true);// callback url to get access token and other information
+	$this->client_id= '1142793035779809';//app id of facebook//'1054501381284066';//
+	$this->client_secret= '8dc64cf509704e2cd4e2dcd5ed1a1aea';//app secret key of facebook//'b4e61fed905c6866bfd1bf2a99fd3e2d';//
+	$this->base_url=Yii::$app->request->baseUrl; 
+	//\Yii::$app->request->BaseUrl 
+	
+	$this->servername=  $_SERVER['HTTP_HOST'];  //server name of working server
+	$this->callback_url='http://'.$this->servername.$this->base_url.'/social/facebook/get-token';// callback url to get access token and other information
+        $this->callback_fb_url='http://'.$this->servername.$this->base_url.'/social/facebook/get-tokenfb';// callback url to get access token and other information
 	
     }
     
     /*
      * redirect to facebook page
      */
-    public function actionIndex(){
-	
+    public function actionIndex(){	
 	
 	$url='https://www.facebook.com/dialog/oauth?client_id='.$this->client_id.'&redirect_uri='.$this->callback_url.'&scope=email';
 	header('Location:'.$url);
@@ -158,9 +161,9 @@ class FacebookController extends \yii\web\Controller
 	   // return $this->redirect(['../site/index']);
 	}else{
 	   // Yii::$app->user->login($status, '3600*24*30');
-               echo "<script type='text/javascript'>alert('You are successfully connected with fb');</script>";
+	  
                 Yii::$app->session->setFlash('fb-success', 'You are successfully connected with fb..');
-	  return $this->redirect(['../site/index']);
+	 	return $this->redirect(['../site/index']);     
 	}
 	
     }
@@ -199,10 +202,24 @@ class FacebookController extends \yii\web\Controller
         $profile = Profile::find()->where(['user_id'=>$id])->one();
 	
 	$user = User::find()->where(['username'=>$model->username])->one();
-        $profile->display_email=$result['email'];
-            if($profile->save()){
-             
+        $profile->display_email = $result['email'];
+        $profile->fb_status = 1;
+            if($profile->save()){             
                 return $profile;
             } 	
      }    
+     
+         /*
+     * to disconnect
+     * @return inde page
+     */
+    public function actionDisFacebook(){
+         $id =  \Yii::$app->user->id;
+        $model = User::find()->where(['id'=>$id])->one();
+        $profile = Profile::find()->where(['user_id'=>$id])->one();
+        $profile->fb_status = 0;
+	$profile->save();
+	     return $this->redirect(['../site/index']);       
+    }
+
 }
