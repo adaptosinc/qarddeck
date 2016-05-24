@@ -44,7 +44,7 @@ class ProfileWidget extends Widget
 			if($profile->password){
 				$model->setPassword($profile->password);			
 			}
-			$model->save();	
+			$model->save(false);	
             $profile->save();    
             \Yii::$app->controller->goBack();
 
