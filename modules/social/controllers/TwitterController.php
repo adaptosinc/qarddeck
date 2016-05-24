@@ -6,17 +6,33 @@ use Yii;
 use app\libraries\twitter\Twitteroauth;// call twitter library to  get authorize
 use app\models\User;
 use app\models\UserProfile as Profile;
-use yii\helpers\Url;
 
 class TwitterController extends \yii\web\Controller
 {
     
-    public $CONSUMER_KEY,$CONSUMER_SECRET,$OAUTH_CALLBACK;
+    public $CONSUMER_KEY,$CONSUMER_SECRET,$OAUTH_CALLBACK,$servername,$base_url;
     
-    public function init(){
-	$this->CONSUMER_KEY='VJPyNIpFA3BxklMznstgmAYo1';// app id from twitter app
-	$this->CONSUMER_SECRET='XBAv492XUtDY4SnjbxGcysrHZPMbGzhkMCdz1M65ICEy7ogY5Q'; // app secret key from twitter app
-	$this->OAUTH_CALLBACK=Url::to(['/social/twitter/redirect-url'],true);
+    public function init(){      
+        $this->CONSUMER_KEY='VJPyNIpFA3BxklMznstgmAYo1';// app id from twitter app
+        $this->CONSUMER_SECRET='XBAv492XUtDY4SnjbxGcysrHZPMbGzhkMCdz1M65ICEy7ogY5Q'; // app secret key from twitter app
+        $this->base_url=Yii::$app->request->baseUrl;  //base url
+        //$this->servername=  filter_input(INPUT_SERVER, 'SERVER_NAME');  //server name of working server
+        $this->servername = $_SERVER['HTTP_HOST']; 
+        $this->OAUTH_CALLBACK= 'http://'.$this->servername.$this->base_url.'/social/twitter/redirect-url';
+    }
+    
+    
+     /*
+     * to disconnect
+     * @return index page
+     */
+    public function actionDisTwitter(){
+         $id =  \Yii::$app->user->id;
+        $model = User::find()->where(['id'=>$id])->one();
+        $profile = Profile::find()->where(['user_id'=>$id])->one();
+        $profile->tw_status = 0;
+	$profile->save();
+	     return $this->redirect(['../site/index']);       
     }
 
     /*
@@ -40,10 +56,8 @@ class TwitterController extends \yii\web\Controller
 	    exit(0);
 	}else{
 	    Yii::$app->getSession()->setFlash('error', "Error connecting to twitter! try again later!");
-	    return $this->redirect(['../site/index']);
-		
-	}
-      
+	    return $this->redirect(['../site/index']);		
+	}      
    }
    
    /*
@@ -63,7 +77,7 @@ class TwitterController extends \yii\web\Controller
             $_SESSION['request_vars'] = $access_token;		
             //Insert user into the database
             $user_info = json_decode(json_encode($connection->get('account/verify_credentials')),true); 
-            $status=$this->insertRecord($user_info);
+            $status=$this->insertUserRecord($user_info);
             if(!empty($status->errors)){
                 //pass errors status
                 return $this->redirect(['../site/index']);
@@ -160,9 +174,10 @@ class TwitterController extends \yii\web\Controller
             if(!empty($status->errors)){
                 //pass errors status
                 return $this->redirect(['../site/index']);
-            }else{                
-                Yii::$app->session->setFlash('twitter-success', 'You are successfully connected with twitter..');
-                //return $this->redirect(['../site/index']);
+            }else{     
+            	         
+                Yii::$app->session->setFlash('twitter-success', 'You are successfully connected with twitter..');  
+                return $this->redirect(['../site/index']);                
             }
 	}else{	    
 		Yii::$app->getSession()->setFlash('error', "error, try again later!");
@@ -181,7 +196,11 @@ class TwitterController extends \yii\web\Controller
         $profile = Profile::find()->where(['user_id'=>$id])->one();
         
         $profile->profile_bg_image= $result['profile_background_image_url'];
+        $profile->tw_status = 1;
 	$profile->save();
 	return $profile;	
    }   
+   
+   
+    
 }
