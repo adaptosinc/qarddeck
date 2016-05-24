@@ -32,8 +32,8 @@ $this->title = 'Create Qard';
 	<div class="col-sm-4 col-md-4">
 	    <div class="qard-div add-block">
 	    <div  id="cur_block" class="cur_block">	
-		<div  id="working_div" class="working_div cur_blk " contenteditable="true" unselectable="off">
-			this is editable text
+		<div  id="working_div" class="working_div cur_blk " contenteditable="true" unselectable="off" style="background-color:greenyellow">
+			
 		    </div>
 	    </div>
 		<h4 class="add-another" onclick="add_block()">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
@@ -91,13 +91,13 @@ $this->title = 'Create Qard';
 			<ul class="on-off pull-left">
 			    <li>
 				<div class="switch">
-				    <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox">
+				    <input id="cmn-toggle-5" name="is_extra_text" class="cmn-toggle cmn-toggle-round" type="checkbox">
 				    <label for="cmn-toggle-5" onclick="showtext()"></label>
 				</div>  <span>Extra Text</span>                                          
 			    </li>
 			    <li>
 				<div class="switch">
-				    <input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+				    <input id="cmn-toggle-6" name="is_title" value="1"  class="cmn-toggle cmn-toggle-round" type="checkbox">
 				    <label for="cmn-toggle-6"></label>
 				</div>  <span>Make Qard Title</span>                                          
 			    </li>                                              
@@ -123,9 +123,9 @@ $this->title = 'Create Qard';
 			</ul>                                     
 		</div>-->
 		<div role="tabpanel" class="tab-pane" id="imgblock">
-		    <form action="/file-upload" class="dropzone">
+		    <form action="<?=Url::to(['block/upload'],true)?>" class="dropzone" enctype="multipart/form-data">
 		      <div class="fallback">
-			<input name="file" type="file" multiple />
+			<input name="file" type="file" />
 		      </div>
 		    </form>
 		    <div class="form-group image-elements">
@@ -267,7 +267,8 @@ function showtext() {
 
 <script type="text/javascript">
     if (document.getElementById('myId')) {
-	    var myDropzone = new Dropzone("div#myId", { url: "/file/post"});
+	
+	    var myDropzone = new Dropzone("div#myId", { url: ""});
 	    // other code here
 	  }
     $(function(){
@@ -321,11 +322,19 @@ function showtext() {
 	 var qard_id=$("#qard_id").val() || 0;
 	 var qard_title=$("#qard_title").val() || 0;
 	 var tags=$("#tags").val() || 0;
+	 var is_title=$("[name='is_title']:checked").val() || 0;
+	 if(!qard_title){
+	     return false;
+	 }
+	 
+	 
 	 $.ajax({
 	    url:"<?=  Url::to(['block/create'], true)?>",
 	    type:"POST",
-	    data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags},
+	    data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title},
 	    success:function(data){
+		
+		
 		console.log(data);
 	    }
 	    

@@ -33,7 +33,7 @@ class QardTags extends \yii\db\ActiveRecord
             [['qard_id', 'tag_id'], 'required'],
             [['qard_id', 'tag_id'], 'integer'],
             [['qard_id'], 'exist', 'skipOnError' => true, 'targetClass' => Qard::className(), 'targetAttribute' => ['qard_id' => 'qard_id']],
-            [['tag_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tags::className(), 'targetAttribute' => ['tag_id' => 'tag_id']],
+            [['tag_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tag::className(), 'targetAttribute' => ['tag_id' => 'tag_id']],
         ];
     }
 
@@ -62,6 +62,6 @@ class QardTags extends \yii\db\ActiveRecord
      */
     public function getTag()
     {
-        return $this->hasOne(Tags::className(), ['tag_id' => 'tag_id']);
+        return $this->hasOne(Tag::className(), ['tag_id' => 'tag_id']);
     }
 }

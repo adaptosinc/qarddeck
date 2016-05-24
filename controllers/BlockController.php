@@ -67,14 +67,11 @@ class BlockController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Block();
+        
 	$post=Yii::$app->request->post();
-	echo "viay";
-//	print_r(\Yii::$app->request->post());
+	echo "viay";	
 	
-	die;
-	$model->text=Yii::$app->request->post('text');
-	$model->extra_text=Yii::$app->request->post('extra_text');
+	
 	
 	//to create theme for qard
 	$theme=$this->createTheme($post);
@@ -82,13 +79,31 @@ class BlockController extends Controller
 	if(empty($theme->errors) && !is_array($theme)){
 	    
 	    $qard=$this->createQard($post, $theme->theme_id);
+	    
 	    if(empty($qard->errors) && !is_array($qard)){
+		$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
+		$tags=$this->createTagsQard($post,$qard->qard_id);
+		
+		if(empty($block->errors) && !is_array($block)){
+		   // echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id));
+		    echo "vijay";
+		    exit;
+		    
+		}  else {
+		    echo "unable to create block";
+		    print_r($block->errors);
+		}
 		
 	    }else{
+		echo "unable to create qard";
 		
+		print_r($qard);
+		echo Theme::findOne($theme->theme_id)->delete();
 	    }
-	    $tags=$this->createTagsQard($post,$qard->qard_id);
 	    
+	}else{
+	    echo "unable to create theme";
+	    print_r($theme->errors);
 	}
 	
 //	$model->=\Yii::$app->request->post('tags');
@@ -190,7 +205,7 @@ class BlockController extends Controller
      */
     public function createQard($post,$theme_id){
 	$qard=new Qard();
-	if(empty($post['qard_title']) && empty(Yii::$app->user->id) && empty($theme_id)){
+	if(!empty($post['qard_title']) && !empty(Yii::$app->user->id) && !empty($theme_id)){
 	    $qard->title=$post['qard_title'];
 	    $qard->url='test url';
 	    $qard->user_id=Yii::$app->user->id;
@@ -247,26 +262,74 @@ class BlockController extends Controller
 	    // tags are in string with comm format 
 	    $tags=  explode(',', $post['tags']);
 	    //deleting all records that are present with qard_id
-	    echo "dlelete".QardTags::deleteAll()->where(['qard_id'=>$qard_id]);
+	    QardTags::deleteAll(['qard_id'=>$qard_id]);
 	    $tag_details='';
 	    foreach ($tags as $tag) {
 		// checking whether entered tags present in db or not if not then skip to insert
 		$tag_details=Tag::find()->where(['name'=>$tag])->one();
+		
 		if(!empty($tag_details)){
+		    $qardTags=new QardTags();
 		    $qardTags->qard_id=$qard_id;
 		    $qardTags->tag_id=$tag_details->tag_id;
 		    if($qardTags->validate()){
 			$qardTags->save();
+		    }else{
+			QardTags::deleteAll(['qard_id'=>$qard_id]);
+			return $qardTags;
 		    }
-		    print_r($qardTags);	
 		}
 		
 	    }
 	}else{
 	    return array("empty tags!...");
 	}
+    }
+    
+    public function createBlock($post,$qard_id,$theme_id){
+	
+	$block=new Block();
+	
+	$block->qard_id=$qard_id;
+	$block->theme_id=$theme_id;
+	// 0 for temp, 1 form active , 2 delete, 3 for template
+	$block->status=0;
+	// 0 for no and 1 for yes
+	$block->is_title=$post['is_title'];
+	
+	//for text
+	
+	$block->text=$post['text'];
+	$block->extra_text=$post['extra_text'];
 	
 	
+	$block->validate();
+	//if($post['block_id']){
+	$block->save();
+//	
+//	}else{
+//	    $block->block_id=$post['block_id'];
+//	    $block->udpate();
+//	}
+	
+	/*`block_id`, `qard_id`, `theme_id`, `status`, `is_title`, `text`, `extra_text`, `link_url`, `link_image`, `link_document`, `link_title`, `link_description`, `block_priority`, `block_name`, `placeholder_text`, `help_text`
+	
+	$block->link_url=$post['link_url'];
+	$block->link_image=$post['link_image'];
+	$block->link_document=$post['link_document'];
+	$block->link_title=$post['link_title'];
+	$block->link_description['link_description'];
+	*/
+	
+	
+    }
+    
+    /* 
+     * for image
+     */
+    public function actionUpload(){
+	echo "http://localhost/qarddeck/web/uploads/3.png";
+	die;
 	
     }
 }
