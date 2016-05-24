@@ -311,10 +311,18 @@ class UserController extends Controller
    }
    
     /**
-    * connect with twitter
+    * Update Display Email Public 
     * @return uploaded file name
     */    
-   public function actionConnectTwitter(){               
-           echo "hi";die;
+   public function actionDisplay(){               
+           if (Yii::$app->request->isAjax) { 
+              $emailStatus =  Yii::$app->request->post('data');
+              $idToUpdate =  \Yii::$app->user->id;
+              $profile = Profile::find()->where(['user_id' => $idToUpdate])->one();
+              $profile->isEmailEnabled = $emailStatus;      
+              $profile->save();
+            //  \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+             
+          }                                  
    }
 }
