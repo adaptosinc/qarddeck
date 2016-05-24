@@ -33,7 +33,7 @@ $this->title = 'Create Qard';
 	    <div class="qard-div add-block">
 	    <div  id="cur_block" class="cur_block">	
 		<div  id="working_div" class="working_div cur_blk " contenteditable="true" unselectable="off" style="background-color:greenyellow">
-			
+			this
 		    </div>
 	    </div>
 		<h4 class="add-another" onclick="add_block()">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
@@ -123,9 +123,9 @@ $this->title = 'Create Qard';
 			</ul>                                     
 		</div>-->
 		<div role="tabpanel" class="tab-pane" id="imgblock">
-		    <form action="<?=Url::to(['block/upload'],true)?>" class="dropzone" enctype="multipart/form-data">
+		    <form  class="dropzone" id="imageupload" enctype="multipart/form-data" >
 		      <div class="fallback">
-			<input name="file" type="file" />
+			<input name="image" type="file" />
 		      </div>
 		    </form>
 		    <div class="form-group image-elements">
@@ -266,12 +266,29 @@ function showtext() {
 </script>        
 
 <script type="text/javascript">
-    if (document.getElementById('myId')) {
-	
-	    var myDropzone = new Dropzone("div#myId", { url: ""});
-	    // other code here
-	  }
+   	  
     $(function(){
+	// var myDropzone = new Dropzone("#mydivimage", { url: "<?=  Url::to(['block/upload'],true)?>"});
+	
+	 
+	Dropzone.autoDiscover = false;
+$('#imageupload').dropzone ({
+        url: "<?=  Url::to(['block/upload'],true)?>",
+        init: function() {
+            this.on("sending", function(file, xhr, formData){
+		
+		var qard_title=$("#qard_title").val() || 0;
+		var tags=$("#tags").val() || 0;
+	
+                formData.append("tags", tags);
+		formData.append("qard_title", qard_title);
+		
+            }),
+            this.on("success", function(file, xhr){
+                alert(file.xhr.response);
+            })
+        },
+});
 	
 	
     
