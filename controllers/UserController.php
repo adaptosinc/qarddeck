@@ -74,8 +74,8 @@ class UserController extends Controller
 //                $profile->lastname = Yii::$app->request->post('lastname');
 		
 		//if ($model->load(Yii::$app->request->post())) {
-       // if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
-          if (Yii::$app->request->post()) {      
+        if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {
+         // if (Yii::$app->request->post()) {      
          
 			$model->setPassword($model->password);
 			$model->generateAuthKey();

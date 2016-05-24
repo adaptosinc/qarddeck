@@ -19,6 +19,7 @@ class SignIn extends Widget
     {
 
         $model = new LoginForm();	    
+		
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             \Yii::$app->controller->goBack();
         }

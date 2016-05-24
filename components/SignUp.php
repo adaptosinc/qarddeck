@@ -19,9 +19,10 @@ class SignUp extends Widget
     public function run()
     {
       	$model = new User(); 
-	$profile = new Profile();
+		$profile = new Profile();
 
         if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post()) ) {
+			//print_r(Yii::$app->request->post());die;
 			$model->validate();
 			if($model->errors){
 				foreach($model->errors as $error){
@@ -36,14 +37,12 @@ class SignUp extends Widget
 			}
 			else{
 				$model->setPassword($model->password);
-                               // print_r($model->password);die;
+                              // print_r($model->password);die;
 				$model->generateAuthKey();	
-                                
-				if($model->save(false)){			
-                                    
-                                        $profile->user_id = $model->id; 
-					$profile->save();
-                                    
+                          // print_r($model); die;
+				if($model->save(false)){			                                    
+                    $profile->user_id = $model->id; 
+					$profile->save();                                    
 					//mail function					
 					$subject = "Please verify your email address";
 					$ref = "http://localhost/qarddeck/web/site/activate?key=".$model->auth_key;
