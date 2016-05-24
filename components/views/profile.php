@@ -96,12 +96,25 @@ $this->params['breadcrumbs'][] = 'Edit';
                      <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
                   </div>
               </div>          <!-- row -->
+              <?php if(Yii::$app->session->getFlash('twitter-success')){?>
+              <h5 class="text-success" style="margin-left:10px;"><b>You are successfully connected with twitter..</b></h5>
+              <?php } ?>
+               <?php if(Yii::$app->session->getFlash('fb-success')){?>
+              <h5 class="fb-success" style="margin-left:10px;"><b>You are successfully connected with fb..</b></h5>
+              <?php } ?>
                <div class="social-ccount">
                             <h3>Connect Social Accounts</h3>
                             <div class="form-group">
-                            
-                            <button class="btn btn-lg btn-primary fb-btn"><i class="fa fa-facebook"></i> Connect facebook account</button>
+                            <?php if(!$profile->fb_status){?>     
+                            <button class="btn btn-lg btn-primary fb-btn"><i class="fa fa-facebook"></i> Connect facebook account</button><?php } ?>
+                             <?php if(!$profile->tw_status){?>  
                             <button class="btn btn-lg btn-info  twit-btn"><i class="fa fa-twitter"></i>Connect Twitter account
+                                <?php } ?>
+                              <?php if($profile->fb_status){?>    
+                                 <button class="btn btn-lg btn-danger fb-dsbtn"><i class="fa fa-facebook"></i> Disconnect facebook account</button><?php } ?>
+                              <?php if($profile->tw_status){?>  
+                            <button class="btn btn-lg btn-danger  twit-dsbtn"><i class="fa fa-twitter"></i>Disconnect Twitter account
+                                  <?php } ?>
                             </div>
                             
                 </div>
@@ -145,7 +158,6 @@ $this->params['breadcrumbs'][] = 'Edit';
                            type: 'post',
                            success: function(response){   
                                
-                               $('.profpic').attr('src', '<?= Yii::$app->request->baseUrl?>/uploads/'+response.code);                         
                                $('#profImg').attr('src', '<?= Yii::$app->request->baseUrl?>/uploads/'+response.code);
                                count++;
                            }
@@ -203,17 +215,22 @@ $this->params['breadcrumbs'][] = 'Edit';
         }
     });     
     $('.twit-btn').click(function(e) {
-        alert("twiiter");
         e.preventDefault();
         window.location.replace("<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/twitter/connecttwitter'; ?>");
+        
     });   
     $('.fb-btn').click(function(e) {
-        alert("twiiter");
         e.preventDefault();
         window.location.replace("<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/facebook/facebook'; ?>");
     }); 
-    
-    
+     $('.twit-dsbtn').click(function(e) {
+        e.preventDefault();
+        window.location.replace("<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/twitter/dis-twitter'; ?>");        
+    });   
+    $('.fb-dsbtn').click(function(e) {
+        e.preventDefault();
+        window.location.replace("<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/facebook/dis-facebook'; ?>");
+    });     
    });    
 </script>
                                                                
