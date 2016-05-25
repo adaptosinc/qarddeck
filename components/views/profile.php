@@ -89,19 +89,21 @@ $this->params['breadcrumbs'][] = 'Edit';
                           </div>
                       </div>
                   </div>          <!-- public profile -->
-                  
-                  <div class="col-sm-4 col-md-4 col-md-offset-1">
-                      <h3 class="main-title">Change Your Password</h3>
-                         <input type="password" id="cur_password" class="form-control" name="cur_password" placeholder="Current Password">          
-                   <span id="ispswdvalid" class="text-danger">Please Enter The Correct Password</span>  
-  <?= $form->field($profile, 'password_profile', [
-			'template' => "{input}\n{hint}\n{error}"
-		])->passwordInput(['class' => 'form-control password','placeholder'=>'New Password']) ?>
-                    <?= $form->field($profile, 'verify_password_profile', [
-			'template' => "{input}\n{hint}\n{error}"
-		])->passwordInput(['class' => 'form-control verify_password','placeholder'=>'Re-enter Password']) ?>
-                     <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
-                  </div>
+                  <?php if(\Yii::$app->user->identity->login_type == 'email'){  ?>
+					  <div class="col-sm-4 col-md-4 col-md-offset-1">
+						  <h3 class="main-title">Change Your Password</h3>
+							 <input type="password" id="cur_password" class="form-control" name="cur_password" placeholder="Current Password">          
+					   <span id="ispswdvalid" class="text-danger">Please Enter The Correct Password</span>  
+							<?= $form->field($profile, 'password_profile', [
+								'template' => "{input}\n{hint}\n{error}"
+								])->passwordInput(['class' => 'form-control password','placeholder'=>'New Password']) ?>
+							<?= $form->field($profile, 'verify_password_profile', [
+								'template' => "{input}\n{hint}\n{error}"
+								])->passwordInput(['class' => 'form-control verify_password','placeholder'=>'Re-enter Password']) ?>
+						 <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
+					  </div>					  
+				 <?php  } ?>
+
               </div>          <!-- row -->
               <?php if(Yii::$app->session->getFlash('twitter-success')){?>
               <h5 class="text-success" style="margin-left:10px;"><b>You are successfully connected with twitter..</b></h5>
@@ -112,9 +114,9 @@ $this->params['breadcrumbs'][] = 'Edit';
                <div class="social-ccount">
                             <h3>Connect Social Accounts</h3>
                             <div class="form-group">
-                            <?php if(!$profile->fb_status){?>     
+                            <?php if(\Yii::$app->user->identity->login_type != 'facebook' && !$profile->fb_status){?>     
                             <button class="btn btn-lg btn-primary fb-btn"><i class="fa fa-facebook"></i> Connect facebook account</button><?php } ?>
-                             <?php if(!$profile->tw_status){?>  
+                             <?php if(\Yii::$app->user->identity->login_type != 'twitter' && !$profile->tw_status){?>  
                             <button class="btn btn-lg btn-info  twit-btn"><i class="fa fa-twitter"></i>Connect Twitter account
                                 <?php } ?>
                               <?php if($profile->fb_status){?>    

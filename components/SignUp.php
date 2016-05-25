@@ -40,6 +40,7 @@ class SignUp extends Widget
 				$model->setPassword($model->password);
                               // print_r($model->password);die;
 				$model->generateAuthKey();	
+				$model->login_type = "email";
                           // print_r($model); die;
 				if($model->save(false)){			                                    
                     $profile->user_id = $model->id; 
