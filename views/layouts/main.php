@@ -132,6 +132,7 @@ AppAsset::register($this);
                                 </div><!--/.nav-collapse -->
                         </li>
                     </ul>
+
 					<?php 
 					if(Yii::$app->user->id){ ?>
 						<ul class="profile-title">
@@ -140,6 +141,7 @@ AppAsset::register($this);
 						</ul>						
 					<?php }
 					?>
+
 
                 </header>    
     <!-- signup popup -->

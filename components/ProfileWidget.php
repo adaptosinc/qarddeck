@@ -37,13 +37,16 @@ class ProfileWidget extends Widget
                     return $this->render('profile', [
                              'model' => $model,
                              'profile' => $profile
-                     ]);              
-//                print_r($profile->errors);
-//                die;
+                     ]);
             };
-			if($profile->password){
-				$model->setPassword($profile->password);			
+	
+            if($profile->password_profile){
+                $model->password = $profile->password_profile;
+				$model->setPassword($model->password );
+                                $model->generateAuthKey();	
 			}
+
+
 			$model->save(false);	
             $profile->save();    
             \Yii::$app->controller->goBack();

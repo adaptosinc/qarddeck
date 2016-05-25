@@ -286,7 +286,7 @@ class BlockController extends Controller
 	}
     }
     
-    public function createBlock($post,$qard_id,$theme_id){
+    public function createText($post,$qard_id,$theme_id){
 	
 	$block=new Block();
 	
@@ -324,12 +324,47 @@ class BlockController extends Controller
 	
     }
     
+    /**
+    * @inheritdoc
+    */
+    public function beforeAction($action)
+    {            
+	if ($action->id == 'upload') {
+	    $this->enableCsrfValidation = false;
+	}
+
+	return parent::beforeAction($action);
+    }
+    
     /* 
      * for image
      */
     public function actionUpload(){
-	echo "http://localhost/qarddeck/web/uploads/3.png";
+	
+	$block=new Block();
+	
+	$block->qard_id=26;
+	$block->theme_id=38;
+	// 0 for temp, 1 form active , 2 delete, 3 for template
+	$block->status=0;
+	// 0 for no and 1 for yes
+	$block->is_title=0;
+	
+	
+        if(isset($_POST['Item']))
+        {
+            $block->link_image=CUploadedFile::getInstance($block,'link_image');
+	    $filename=time().'-'.$qard->qard_id.'.'.$block->link_image->extension;
+            if($block->save())
+            {
+                $block->link_image->saveAs(Yii::$app->basePath.'/web/uploads/block/'.$filename);
+                // redirect to success page
+            }
+	    print_r($block);
+	}
 	die;
+	
+	
 	
     }
 }
