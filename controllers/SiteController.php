@@ -49,23 +49,26 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex()
-    {
+    public function actionIndex(){
         $model = new User(); 
         $profile = new Profile();
-        return $this->render('index', [
-            'model' => $model,
-            'profile' => $profile,
-        ]);
+        if(!$this->isMobile()){
+            return $this->render('index', [
+                'model' => $model,
+                'profile' => $profile,
+            ]);        
+        }else{
+             return $this->render('mobile/home', [
+                'model' => $model,
+                'profile' => $profile,
+            ]);   
+        }
     }
 
-    public function actionLogin()
-    {
-
+    public function actionLogin(){
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new LoginForm();	    
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
@@ -74,7 +77,6 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
-
     public function actionLogout()
     {
         Yii::$app->user->logout();
@@ -115,8 +117,7 @@ class SiteController extends Controller
 						//then redirect to the specified url					
 			}else{
                             return $this->redirect(array('/user/profile', 'id' => $validUser->id));
-                            //return $this->redirect('../user/profile');
-                        
+                            //return $this->redirect('../user/profile');                        
                         }		
 		}			
     }
@@ -126,5 +127,9 @@ class SiteController extends Controller
             $this->enableCsrfValidation = false;
         }
         return parent::beforeAction($action);
-    }    
+    } 
+    
+    public function isMobile(){
+         return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+    }
 }

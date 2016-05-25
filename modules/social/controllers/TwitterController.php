@@ -121,16 +121,14 @@ class TwitterController extends \yii\web\Controller
 		//$profile->lastname=$result['last_name'];
 		//$profile->display_email=$result['email'];
 		if($profile->save()){
-		    $user = User::find()->where(['id'=>$model->id])->one();
-		    
+		    $user = User::find()->where(['id'=>$model->id])->one();		    
 		    return $user;
 		}
 	    }
 	//}else{
 	//    return $model;
 	//}
-   }
-   
+   }   
      /*
      * to get access token 
      * @retrun it sets the session to get access token in next phase
