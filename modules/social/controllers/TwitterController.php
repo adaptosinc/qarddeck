@@ -114,7 +114,7 @@ class TwitterController extends \yii\web\Controller
 	$model->setPassword($model->password);
 	$model->generateAuthKey();	
 	
-	if($model->validate()){
+	//if($model->validate()){
 	    if($model->save(false)){
 		$profile->user_id=$model->id;
 		$profile->firstname=$result['name'];
@@ -126,9 +126,9 @@ class TwitterController extends \yii\web\Controller
 		    return $user;
 		}
 	    }
-	}else{
-	    return $model;
-	}
+	//}else{
+	//    return $model;
+	//}
    }
    
      /*
@@ -199,8 +199,6 @@ class TwitterController extends \yii\web\Controller
         $profile->tw_status = 1;
 	$profile->save();
 	return $profile;	
-   }   
-   
-   
+   }  
     
 }
