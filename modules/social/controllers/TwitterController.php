@@ -113,7 +113,7 @@ class TwitterController extends \yii\web\Controller
 	$model->verify_password=$result['id'];
 	$model->setPassword($model->password);
 	$model->generateAuthKey();	
-	
+	$model->login_type = "twitter";
 	if($model->validate()){
 	    if($model->save(false)){
 		$profile->user_id=$model->id;

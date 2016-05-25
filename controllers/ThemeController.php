@@ -64,16 +64,11 @@ class ThemeController extends Controller
     public function actionCreate()
     {
         $model = new Theme();
-	
-	echo "viajyu";
-	die;
-	
-	
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->theme_id]);
         } else {
-            return $this->render('create', [
+            return $this->render('create_theme', [
                 'model' => $model,
             ]);
         }
