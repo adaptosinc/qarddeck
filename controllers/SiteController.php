@@ -58,6 +58,7 @@ class SiteController extends Controller
                 'profile' => $profile,
             ]);        
         }else{
+            $this->layout = 'mobilelayout';
              return $this->render('mobile/home', [
                 'model' => $model,
                 'profile' => $profile,
@@ -130,23 +131,6 @@ class SiteController extends Controller
     } 
     
     public function isMobile(){
-         $aMobileUA = array(
-        '/iphone/i' => 'iPhone', 
-        '/ipod/i' => 'iPod', 
-        '/ipad/i' => 'iPad', 
-        '/android/i' => 'Android', 
-        '/blackberry/i' => 'BlackBerry', 
-        '/webos/i' => 'Mobile'
-    );
-
-    //Return true if Mobile User Agent is detected
-    foreach($aMobileUA as $sMobileKey => $sMobileOS){
-        if(preg_match($sMobileKey, $_SERVER['HTTP_USER_AGENT'])){
-            return true;
-        }
-    }
-    //Otherwise return false..  
-    return false;
-       //  return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+         return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
     }
 }

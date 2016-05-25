@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <title>Qard Deck</title>
-            
-            <!-- css -->
-            <!-- Latest compiled and minified CSS -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">            
-            <link rel="stylesheet" href="<?= Yii::$app->request->baseUrl?>/font-awesome/css/font-awesome.css" media="all">
-            <link rel="stylesheet" href="<?= Yii::$app->request->baseUrl?>/css/master.css" media="all">
-            
-        </head>
-        <body>
-
-            
                 <!-- mobile view qard half -->
                 <div class="container-fluid mobile-page">
                     <section class="home-main content">
@@ -31,15 +16,4 @@
                         
                     </section>                    
                     
-                </div>                
-            
-            
-        </body>
-        
-        <!-- javascript -->
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>        
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        
-    </html>
+                </div>     

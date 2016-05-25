@@ -33,8 +33,8 @@ class QardController extends Controller
      * Lists all Qard models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex(){
+        
         $searchModel = new SearchQard();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -76,10 +76,10 @@ class QardController extends Controller
                     'model' => $model,
                 ]);
             }else{
+                $this->layout = 'mobilelayout';
                 return $this->render('mobile/create', [
                     'model' => $model,
-                ]);
-                
+                ]);                
             }
         }
     }
