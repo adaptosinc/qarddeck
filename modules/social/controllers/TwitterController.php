@@ -120,6 +120,7 @@ class TwitterController extends \yii\web\Controller
 	    if($model->save(false)){
 		$profile->user_id=$model->id;
 		$profile->firstname=$result['name'];
+		$profile->profile_photo = $result['profile_image_url'];
 		//$profile->lastname=$result['last_name'];
 		//$profile->display_email=$result['email'];
 		if($profile->save()){
@@ -196,9 +197,10 @@ class TwitterController extends \yii\web\Controller
         $profile = Profile::find()->where(['user_id'=>$id])->one();
         
         $profile->profile_bg_image= $result['profile_background_image_url'];
+		$profile->profile_photo = $result['profile_image_url'];
         $profile->tw_status = 1;
-	$profile->save();
-	return $profile;	
+		$profile->save();
+		return $profile;	
    }  
     
 }
