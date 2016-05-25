@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-
+use app\models\Block;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
@@ -18,13 +18,18 @@ $this->title = 'Create Qard';
 
 <!-- requiered for fore color of text -->
 <link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-colorpicker.min.css" rel="stylesheet">
-<script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-colorpicker.js" type="text/javascript"></script>
+
+<!--for image crop-->
+<link href="<?= Yii::$app->request->baseUrl?>/css/html5imageupload.css" rel="stylesheet">
+
+
+<script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-colorpicker.js" type="text/javascript"></script>	
 
 <!-- requiered for get selected fiels in text editing -->
 <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.selection.js" type="text/javascript"></script>
 
 <!-- requiered for drop down of an image -->
-<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>
+<!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
 
 <section class="create-card">
     <div class="row">
@@ -123,11 +128,19 @@ $this->title = 'Create Qard';
 			</ul>                                     
 		</div>-->
 		<div role="tabpanel" class="tab-pane" id="imgblock">
-		    <form  class="dropzone" id="imageupload" enctype="multipart/form-data" >
-		      <div class="fallback">
-			<input name="image" type="file" />
-		      </div>
-		    </form>
+		    
+		    <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
+		      
+			  
+		    <div class="drop-image">
+			<form action="<?=Url::to(['block/upload'],true)?>" method="post" enctype="multipart/form-data" >
+			    <div class="dropzone" id="image_upload" data-width="960" data-height="540" data-resize="true" data-ajax="false"   style="width: 100%;">
+				<input type="file" name="thumb" />
+			    </div>  
+			    <button class="btn btn-default" type="submit">Submit</button>
+			</form>
+		    </div>
+<!--		    </form>-->
 		    <div class="form-group image-elements">
 			<div class="col-sm-3 col-md-3">
 			    <input type="text" name="name" class="form-control" placeholder="Image Opacity (%)">
@@ -264,33 +277,19 @@ function showtext() {
 }
 
 </script>        
-
+<script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
 <script type="text/javascript">
-   	  
+	  
     $(function(){
-	// var myDropzone = new Dropzone("#mydivimage", { url: "<?=  Url::to(['block/upload'],true)?>"});
-	
-	 
-	Dropzone.autoDiscover = false;
-$('#imageupload').dropzone ({
-        url: "<?=  Url::to(['block/upload'],true)?>",
-        init: function() {
-            this.on("sending", function(file, xhr, formData){
-		
-		var qard_title=$("#qard_title").val() || 0;
-		var tags=$("#tags").val() || 0;
-	
-                formData.append("tags", tags);
-		formData.append("qard_title", qard_title);
-		
-            }),
-            this.on("success", function(file, xhr){
-                alert(file.xhr.response);
-            })
-        },
-});
 	
 	
+
+	 $('#image_upload').html5imageupload({
+	    
+	 });
+	 $("#image_upload .btn-done").on("click",function(){
+	     console.log("viajy");
+	 });
     
 	$('#text_color').colorpicker();
 	

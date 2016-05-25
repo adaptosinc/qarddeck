@@ -1185,3 +1185,16 @@ ul.font-elements li {
         border-bottom-right-radius: 10px;
     }
 }*/
+
+.drop-image {
+    width: 100%;
+    min-height: 300px;
+}
+.dropzone.smalltools.smalltext {
+    width: 100% !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+}
+.dropzone img.ghost {
+    opacity: 0 !important;
+}

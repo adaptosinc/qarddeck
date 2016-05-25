@@ -12,6 +12,7 @@ use app\models\Qard;
 use app\models\Theme;
 use app\models\QardTags;
 use app\models\Tag;
+use yii\web\UploadedFile;
 
 /**
  * BlockController implements the CRUD actions for Block model.
@@ -341,6 +342,14 @@ class BlockController extends Controller
      */
     public function actionUpload(){
 	
+	
+	$res=  json_decode($_POST['thumb_values']);
+	$image=  base64_decode($res->data);
+	
+	file_put_contents(Yii::$app->basePath.'/web/uploads/block/'.'vijay.jpg', $image);
+	
+	die;
+	
 	$block=new Block();
 	
 	$block->qard_id=26;
@@ -351,17 +360,23 @@ class BlockController extends Controller
 	$block->is_title=0;
 	
 	
-        if(isset($_POST['Item']))
-        {
-            $block->link_image=CUploadedFile::getInstance($block,'link_image');
+        
+            $image=UploadedFile::getInstance($block,'link_image');
+	    print_r($image);
+	    die;
 	    $filename=time().'-'.$qard->qard_id.'.'.$block->link_image->extension;
-            if($block->save())
+	    echo Yii::$app->basePath.'/web/uploads/block/'.$filename;die;
+	    
+	    if($block->validate())
             {
-                $block->link_image->saveAs(Yii::$app->basePath.'/web/uploads/block/'.$filename);
-                // redirect to success page
-            }
-	    print_r($block);
-	}
+		if($block->save())
+		{
+		    $block->link_image->saveAs();
+		    // redirect to success page
+		}
+	    }
+	    print_r($block->errors);
+	
 	die;
 	
 	
