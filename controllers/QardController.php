@@ -71,7 +71,7 @@ class QardController extends Controller
 	    exit(0);
            // return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
-            if($this->isMobile()){ 
+            if(!$this->isMobile()){ 
                 return $this->render('create', [
                     'model' => $model,
                 ]);
