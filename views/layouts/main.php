@@ -132,14 +132,19 @@ AppAsset::register($this);
                                 </div><!--/.nav-collapse -->
                         </li>
                     </ul>
-                    <?php 
-                    if(Yii::$app->user->id){ ?>
-                            <ul class="profile-title">
-                                    <li>@<?php echo Yii::$app->user->identity->username; ?></li>
-                                    <li><i class="fa fa-envelope"></i>email@address.com</li>
-                            </ul>						
-                    <?php }
-                    ?>
+
+					<?php 
+					if(Yii::$app->user->id){ ?>
+						<ul class="profile-title">
+							<li>@<?php echo Yii::$app->user->identity->username; ?></li>
+							<?php if(Yii::$app->user->identity->isPublicEmail){ ?>
+								<li><i class="fa fa-envelope"></i><?php echo Yii::$app->user->identity->showEmail; ?></li>	
+							<?php } ?>
+							
+						</ul>						
+					<?php }
+					?>
+
 
                 </header>    
     <!-- signup popup -->

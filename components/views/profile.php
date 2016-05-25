@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                                       <?php }?>
                                       <?php if($profile->isEmailEnabled==1){?>
                                       <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round"  checked="checked" type="checkbox">
-                                      <?php $profile->public_email;}?>
+                                      <?php $profile->display_email;}?>
                                       
                                       <label for="cmn-toggle-4"></label>
                                   </div>  <span>Display email on public profile</span>                                                   
