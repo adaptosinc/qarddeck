@@ -52,7 +52,7 @@ class SiteController extends Controller
     public function actionIndex(){
         $model = new User(); 
         $profile = new Profile();
-        if(!$this->isMobile()){
+        if($this->isMobile()){
             return $this->render('index', [
                 'model' => $model,
                 'profile' => $profile,
