@@ -30,11 +30,10 @@ class User extends ActiveRecord implements IdentityInterface
     public $password;
     public $firstname;
     public $profile_photo;	
-	
-	//for email and public status of email
-	public $display_email;
-	public $is_email_public;
-	
+
+    public $isPublicEmail;
+    public $showEmail;
+
     /**
      * @inheritdoc
      */
@@ -75,22 +74,25 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findIdentity($id)
     {
  
-		$profile = UserProfile::find()->where(['user_id'=>$id])->one();
-		$user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
-		if(isset($profile)){
-			$user->display_email = '';
-/* 			if(!empty($profile->display_email)){ 
-				$user->display_email = $profile->display_email;
-			}
-			$user->is_email_public = $profile->is_email_public; */
-			if(!empty($profile->firstname)){
-				$user->firstname= $profile->firstname.' '.$profile->lastname;
-			}
-			if(!empty($profile->profile_photo)){
-				$user->profile_photo= $profile->profile_photo;
-			}			
-		}
-		return $user;
+
+	$profile = UserProfile::find()->where(['user_id'=>$id])->one();
+        $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        if(!empty($profile->firstname)){
+		$user->firstname= $profile->firstname.' '.$profile->lastname;
+	}
+        if(!empty($profile->profile_photo)){
+            $user->profile_photo= $profile->profile_photo;
+	}
+        if($profile->isEmailEnabled!=0){
+		$user->isPublicEmail=1;
+                  $user->showEmail= 'email@address.com';
+	}
+        if($profile->isEmailEnabled==0){
+		$user->isPublicEmail=0;
+                $user->showEmail= $user->email;
+	}
+	return $user;
+
     }
 
     /**

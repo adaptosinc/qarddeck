@@ -13,18 +13,13 @@
 Thumbs.db
 
 # composer vendor dir
-#vendor
-/runtime/*
-<<<<<<< HEAD
-#config
-=======
-
+vendor
+runtime/*
+config/db.php
 
 # database config file
 #config
 
-
->>>>>>> add_blocks
 # composer itself is not needed
 composer.phar
 

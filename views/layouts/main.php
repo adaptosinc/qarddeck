@@ -136,7 +136,7 @@ AppAsset::register($this);
 					if(Yii::$app->user->id){ ?>
 						<ul class="profile-title">
 							<li>@<?php echo Yii::$app->user->identity->username; ?></li>
-							<li><i class="fa fa-envelope"></i>email@address.com</li>
+							<li><i class="fa fa-envelope"></i><?php echo Yii::$app->user->identity->showEmail; ?></li>
 						</ul>						
 					<?php }
 					?>
