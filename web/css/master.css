@@ -1038,7 +1038,15 @@ ul.font-elements li {
     min-height: 70px;
     
 }
-.themebg1 .bgcolor {
+input[type="color"] {
+	background:transparent;
+	padding:0;
+	border:0;
+}
+a.on {
+    color: #F57D35 !important;
+}
+/*.themebg1 .bgcolor {
     background: #0b1120;
 }
 .themebg2 .bgcolor {
@@ -1052,9 +1060,25 @@ ul.font-elements li {
 }
 .themebg5 .bgcolor {
     background: #8bfae0;
+}*/
+
+button#align_list {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    margin-right: 5px;
 }
-
-
+#align_list .caret {
+    margin-left: -10px;
+}
+#align_list ul li a {
+    color: grey;
+    
+}
+ ul.dropdown-menu>li>a {
+    color: grey !important;
+    font-size: 28px;
+}
 /* =====================
  *   Theme Selection
  *   ================ */
