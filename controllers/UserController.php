@@ -236,6 +236,7 @@ class UserController extends Controller
                     $profile->firstname = Yii::$app->request->post('firstname');
                     $profile->lastname = Yii::$app->request->post('lastname');
                     $profile->short_description = Yii::$app->request->post('short_description');
+                     $profile->display_email = Yii::$app->request->post('display_email');
                    // $profile->profile_photo = UploadedFile::getInstance($profile, 'profile_photo');
                    /// $profile->profile_bg_image = UploadedFile::getInstance($profile, 'profile_bg_image');		
                    // $prof_img_path =  $profile->profile_photo->baseName . '.' . $profile->profile_photo->extension;
@@ -266,8 +267,7 @@ class UserController extends Controller
      * @return uploaded file name
      */    
         public function actionPhoto(){
-            $session = Yii::$app->session;
-            $language = $session->get('userid');
+
             $idToUpdate =  \Yii::$app->user->id;
             $profile = Profile::find()->where(['user_id' => $idToUpdate])->one();
                 if (Yii::$app->request->isAjax) {                
@@ -277,19 +277,17 @@ class UserController extends Controller
                    $_FILES["file"]['size'];
                    $_FILES['file']['error'];
                         if(file_exists($move.$_FILES["file"]['name'])) {
-                             chmod($move.$_FILES["file"]['name'],0755); //Change the file permissions if allowed
+                             //chmod($move.$_FILES["file"]['name'],0755); //Change the file permissions if allowed
                              unlink($move.$_FILES["file"]['name']); //remove the file
                          }
                    move_uploaded_file($_FILES['file']['tmp_name'], $move.$_FILES["file"]['name']);
                    $prof_img_path =  $_FILES["file"]['name'];
-                   $profile->profile_photo = "uploads/".$prof_img_path;    
-                   $session = Yii::$app->session;
-                   $session->set('profpic',$profile->profile_photo);
-                   $profile->save();
+                   $profile->temp_image = "uploads/".$prof_img_path; 
+                   $profile->save(false);
                    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                             return [
-                                 'code' => $_FILES["file"]['name'],
-                             ];
+                    return [
+                        'code' => $_FILES["file"]['name'],
+                    ];
                }  
 	}	
         

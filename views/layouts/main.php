@@ -30,13 +30,14 @@ AppAsset::register($this);
 </style> 
 <body>
 <?php $this->beginBody() ?>
-<div class="container-fluid">    
+<div class="container-fluid desktop-view">    
     <!-- header -->
                 <header>
                     <div class="logo pull-left">
+                        
                         <a href="<?= Yii::$app->request->baseUrl?>/site/index"><img src="<?= Yii::$app->request->baseUrl?>/images/logo.png" alt="Home"><span>QardDeck</span></a>
-                    </div>
-                  
+                        
+                    </div>                  
 
                     <ul class="pull-right">                        
                      <?php if(\Yii::$app->user->id){ ?>
@@ -46,17 +47,11 @@ AppAsset::register($this);
                         <li>
                             <?php if(\Yii::$app->user->identity->profile_photo){ ?>
                                 <img id="profpic" class="profPic" src="<?=\Yii::$app->user->identity->profile_photo?>" alt="">
-                            <?php } ?>  
-                            <?php if(\Yii::$app->user->identity->login_type != 'facebook' && !\Yii::$app->user->identity->profile_photo){ ?>
+                            <?php }else { ?>  
+
                                 <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
                             <?php } ?>  
-						    <?php if(\Yii::$app->user->identity->login_type == 'facebook') {
-							//fetch id here
-							$arr = explode('_',\Yii::$app->user->identity->username);
-							$f_id = $arr[1];
-						    ?>
-						    <img id="profpic" class="profPic" src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=small">
-						    <?php } ?>							
+						
                         </li>                        
                         <li>
                               <h4><?= Yii::$app->user->identity->firstname; ?></h4>

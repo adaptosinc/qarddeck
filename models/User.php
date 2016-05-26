@@ -85,7 +85,7 @@ class User extends ActiveRecord implements IdentityInterface
 	}
         if($profile->isEmailEnabled!=0){
 		$user->isPublicEmail=1;
-                  $user->showEmail= $user->email;
+                  $user->showEmail= $profile->display_email;//$user->email;
 	}
         if($profile->isEmailEnabled==0){
 		$user->isPublicEmail=0;

@@ -9,9 +9,17 @@
 =======
         <group name="wordpress"/>
         <group>
+<<<<<<< HEAD
+            <file>file:/C:/xampp/htdocs/qarddeck/controllers/UserController.php</file>
+            <file>file:/C:/xampp/htdocs/qarddeck/controllers/SiteController.php</file>
+            <file>file:/C:/xampp/htdocs/qarddeck/models/User.php</file>
+            <file>file:/C:/xampp/htdocs/qarddeck/models/UserProfile.php</file>
+            <file>file:/C:/xampp/htdocs/qarddeck/views/layouts/main.php</file>
+=======
             <file>file:/C:/xampp/htdocs/qarddeck/components/ProfileWidget.php</file>
             <file>file:/C:/xampp/htdocs/qarddeck/config/db.php</file>
 >>>>>>> 5c6b8173a360bb41038d505961a58c21b56586f2
+>>>>>>> ac83433818dbc6d5b04c7f06a052438bc5efbfec
         </group>
     </open-files>
 </project-private>
