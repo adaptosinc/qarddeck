@@ -286,7 +286,9 @@ class BlockController extends Controller
 	    return array("empty tags!...");
 	}
     }
-    public function createText($post,$qard_id,$theme_id){
+    
+    
+    public function createBlock($post,$qard_id,$theme_id){
 	
 	$block=new Block();
 	
@@ -297,20 +299,30 @@ class BlockController extends Controller
 	// 0 for no and 1 for yes
 	$block->is_title=$post['is_title'];
 	
+	$is_true=false;
 	//for text
+	if(!empty($post['text'])){
+	    $block->text=$post['text'];
+	    $block->extra_text=$post['extra_text'];
+	    $is_true=true;
+	}
+	if(!empty($post['link_image'])){
+	    $block->link_image=$post['link_image'];
+	    $is_true=true;
+	}
+	if($is_true){
+	    
+	    //if($post['block_id']){
+	    $block->save();
+	    return $block;
+	//	
+	//	}else{
+	//	    $block->block_id=$post['block_id'];
+	//	    $block->udpate();
+	//	}    
+	}
+	return array("empty block!...");;
 	
-	$block->text=$post['text'];
-	$block->extra_text=$post['extra_text'];
-	
-	
-	$block->validate();
-	//if($post['block_id']){
-	$block->save();
-//	
-//	}else{
-//	    $block->block_id=$post['block_id'];
-//	    $block->udpate();
-//	}
 	
 	/*`block_id`, `qard_id`, `theme_id`, `status`, `is_title`, `text`, `extra_text`, `link_url`, `link_image`, `link_document`, `link_title`, `link_description`, `block_priority`, `block_name`, `placeholder_text`, `help_text`
 	
@@ -349,59 +361,77 @@ class BlockController extends Controller
      */
     public function actionUpload(){
 	
+	$image_name='83571464244259-7.JPG';
+	echo json_encode(array('success'=>'true','response'=>$image_name));
+	exit;
 	
-	print_r($_POST);die;
+	$post=Yii::$app->request->post();
 	
-	$res=  json_decode($_POST['thumb_values']);
-//	print_r($_POST['thumb_values']);die;
+	//to create theme for qard
+	$theme=$this->createTheme($post);
 	
-//	$image=  base64_decode($res->data);
-//	
-//	
-	//$img = $_POST['img'];
-	$img = str_replace('data:image/jpeg;base64,', '', $res->data);
-	$img = str_replace(' ', '+', $img);
-	$data = base64_decode($img);
-	$file = Yii::$app->basePath.'/web/uploads/block/' . 'vijay' . '.JPG';
-	$success = file_put_contents($file, $data);
-	
-	
-	//header("Content-type: image/gif");
-//	echo '<img src="'.$res->data.'" />';
-//	file_put_contents('1.JPG', $image);
-	
-	die;
-	
-	$block=new Block();
-	
-	$block->qard_id=26;
-	$block->theme_id=38;
-	// 0 for temp, 1 form active , 2 delete, 3 for template
-	$block->status=0;
-	// 0 for no and 1 for yes
-	$block->is_title=0;
-	
-	
-        
-            $image=UploadedFile::getInstance($block,'link_image');
-	    print_r($image);
-	    die;
-	    $filename=time().'-'.$qard->qard_id.'.'.$block->link_image->extension;
-	    echo Yii::$app->basePath.'/web/uploads/block/'.$filename;die;
+	if(empty($theme->errors) && !is_array($theme)){
 	    
-	    if($block->validate())
-            {
-		if($block->save())
-		{
-		    $block->link_image->saveAs();
-		    // redirect to success page
+	    $qard=$this->createQard($post, $theme->theme_id);
+	    
+	    if(empty($qard->errors) && !is_array($qard)){
+		
+		/*
+		* to upload image 
+		*/
+		$image=  json_decode($post['thumb_values']);
+		$img = str_replace('data:image/jpeg;base64,', '', $image->data);
+		$img = str_replace(' ', '+', $img);
+		$image_data = base64_decode($img);
+		$image_name=rand(0000,9999).time().'-'.$qard->qard_id.'.JPG';
+		$file = Yii::$app->basePath.'/web/uploads/block/' .$image_name;
+		$success = file_put_contents($file, $image_data);
+		if(!$success){
+		    
+		    Qard::findOne($qard->qard_id)->delete();
+		    Theme::findOne($theme->theme_id)->delete();
 		}
+		$post['link_image']=$image_name;
+		$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
+		$tags=$this->createTagsQard($post,$qard->qard_id);
+		
+		if(empty($block->errors) && !is_array($block)){
+		   // echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id));
+		    echo json_encode(array('success'=>'true','response'=>$image_name));
+		    exit;
+		    
+		}  else {
+		    
+		    Qard::findOne($qard->qard_id)->delete();
+		    Theme::findOne($theme->theme_id)->delete();
+		    unlink($file);
+		    echo "unable to create block";
+		    exit();
+		}
+		
+	    }else{
+		echo "unable to create qard";
+		
+		print_r($qard);
+		echo Theme::findOne($theme->theme_id)->delete();
 	    }
-	    print_r($block->errors);
+	    
+	}else{
+	    echo "unable to create theme";
+	    print_r($theme->errors);
+	}
 	
-	die;
+//	$model->=\Yii::$app->request->post('tags');
+
+	exit(0);
 	
-	
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->block_id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
 	
     }
 }

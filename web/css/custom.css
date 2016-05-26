@@ -33,5 +33,11 @@ and open the template in the editor.
 #extra_text {
     border: 1px solid;
     height: 400px;
+    min-height: 400px;
+    background-color: yellow;
+}
+#working_div div{
+    min-height: 37.5px;
+    //background-color: greenyellow;
 }
 
