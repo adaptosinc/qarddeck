@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                               <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type == 'twitter'){?>
                               <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
                               <?php } ?>
-                              <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type != 'twitter'){?>
+                              <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type != 'twitter' && \Yii::$app->user->identity->login_type != 'facebook'){?>
                               <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl.'/'.$profile->profile_photo?>" alt="">
                               <?php } ?>
 							  <?php if(\Yii::$app->user->identity->login_type == 'facebook') {
