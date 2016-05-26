@@ -76,20 +76,22 @@ class User extends ActiveRecord implements IdentityInterface
  
 
 	$profile = UserProfile::find()->where(['user_id'=>$id])->one();
-        $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+	if($user){
         if(!empty($profile->firstname)){
-		$user->firstname= $profile->firstname.' '.$profile->lastname;
-	}
+			$user->firstname= $profile->firstname.' '.$profile->lastname;
+		}
         if(!empty($profile->profile_photo)){
             $user->profile_photo= $profile->profile_photo;
-	}
+		}
         if($profile->isEmailEnabled!=0){
-		$user->isPublicEmail=1;
+					$user->isPublicEmail=1;
                   $user->showEmail= $user->email;
-	}
+		}
         if($profile->isEmailEnabled==0){
-		$user->isPublicEmail=0;
+				$user->isPublicEmail=0;
                 $user->showEmail= 'email@address.com';
+		}		
 	}
 	return $user;
 
