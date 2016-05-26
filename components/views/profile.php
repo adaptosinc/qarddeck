@@ -24,17 +24,13 @@ $this->params['breadcrumbs'][] = 'Edit';
                       <h3 class="main-title">Public Profile</h3>
                            <div class="row">
                           <div class="profile-img col-sm-2 col-md-2">
-                              <?php if(\Yii::$app->user->identity->login_type != 'facebook' && $profile->profile_photo==''){?>
+                              <?php if($profile->profile_photo==''){?>
                               <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png" alt="">
-                              <?php } ?>
-                              <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type == 'twitter'){?>
+                              <?php }else { ?>
+                             
                               <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
                               <?php } ?>
-                              <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type != 'twitter'){?>
-                              <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
-                           
-                             <?=  $form->field($profile, 'profile_photo')->hiddenInput(['value' => $profile->temp_image])->label(false);?>
-                              <?php } ?>
+
 							  <?php if(\Yii::$app->user->identity->login_type == 'facebook') {
 								//fetch id here
 								$arr = explode('_',\Yii::$app->user->identity->username);
@@ -42,6 +38,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 							  ?>
 							  <img id="profImg" class="profImg" src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=large">
 							  <?php } ?>
+
 							  
                               <input id="profile-image-upload" name="image" class="hidden" type="file">
                                        </div>
@@ -252,10 +249,10 @@ $this->params['breadcrumbs'][] = 'Edit';
         window.location.replace("<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/facebook/dis-facebook'; ?>");
     });   
     
-      $('.cancelbtn').click(function(e) {
-          alert("canc");
+      $('.cancelbtn').click(function(e) {          
         e.preventDefault();
-        $( ".close" ).trigger( "click" );
+          location.reload();
+        //$( ".close" ).trigger( "click" );
     }); 
         $("#cmn-toggle-4").click(function(e){        
          if($(this).prop("checked") == true){
