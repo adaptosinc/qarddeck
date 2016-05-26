@@ -426,8 +426,9 @@ function showtext() {
 //	imageonly();
 //
 //	return false;
-
-
+	//for image
+	var data=$("#image_upload").serializeArray() || 0;
+	
 	var image_opacity=$("#working_div img").css("opacity") || 1; 
 	var div_opacity=$("#working_div div").css("opacity");
 	var div_bgcolor=$("#working_div div").css("background-color");
@@ -435,6 +436,7 @@ function showtext() {
 	
 	var text=$("#working_div div").html() || 0; 
 	var extra_text=$("#extra_text").html() || 0;
+	
 	var block_id=$("#block_id").val() || 0;
 	var qard_id=$("#qard_id").val() || 0;
 	var qard_title=$("#qard_title").val() || 0;
@@ -446,12 +448,12 @@ function showtext() {
 	if(!qard_title){
 	    return false;
 	}
-	var data=$(this).serializeArray();
+	
 
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
-	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title},
+	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title,'image_opacity':image_opacity,'div_opacity':div_opacity,'div_bgcolor':div_bgcolor,'height':height,'image':data},
 	   success:function(data){
 
 

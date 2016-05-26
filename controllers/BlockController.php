@@ -70,7 +70,9 @@ class BlockController extends Controller
     {
         
 	$post=Yii::$app->request->post();
-	echo "viay";	
+	echo "viay";
+	print_r($post);
+	die;
 	
 	
 	
@@ -240,6 +242,12 @@ class BlockController extends Controller
 	$theme=new Theme();
 	$theme->theme_type=1; //theme type 1 define theme for qard o theme for block
 	$theme->theme_properties='test'; // serialized data all theme details
+	
+	$serilized_arr['image_opacity']=$post['image_opacity'];
+	$serilized_arr['div_opacity']=$post['div_opacity'];
+	$serilized_arr['div_bgcolor']=$post['div_bgcolor'];
+	$serilized_arr['height']=$post['height'];
+	$theme->theme_properties=  serialize($serilized_arr);
 	
 	//checking whether id present then update or else insert 
 	if(empty($post['theme_id'])){
