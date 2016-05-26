@@ -277,12 +277,12 @@ class UserController extends Controller
                    $_FILES["file"]['size'];
                    $_FILES['file']['error'];
                         if(file_exists($move.$_FILES["file"]['name'])) {
-                             chmod($move.$_FILES["file"]['name'],0755); //Change the file permissions if allowed
+                             //chmod($move.$_FILES["file"]['name'],0755); //Change the file permissions if allowed
                              unlink($move.$_FILES["file"]['name']); //remove the file
                          }
                    move_uploaded_file($_FILES['file']['tmp_name'], $move.$_FILES["file"]['name']);
                    $prof_img_path =  $_FILES["file"]['name'];
-                   $profile->profile_photo = "uploads/".$prof_img_path;    
+                   $profile->profile_photo = \Yii::$app->homeUrl."uploads/".$prof_img_path;    
                    $session = Yii::$app->session;
                    $session->set('profpic',$profile->profile_photo);
                    $profile->save();
