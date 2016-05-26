@@ -33,6 +33,9 @@ input:focus, select:focus, textarea:focus   {
     background: #ff741b;
     color: #fff;
 }
+.form-control {
+	height:auto;
+}
 
 
 
