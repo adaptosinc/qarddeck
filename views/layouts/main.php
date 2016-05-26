@@ -46,8 +46,8 @@ AppAsset::register($this);
                         <li>
                             <?php if(\Yii::$app->user->identity->profile_photo){ ?>
                                 <img id="profpic" class="profPic" src="<?=\Yii::$app->user->identity->profile_photo?>" alt="">
-                            <?php } ?>  
-                            <?php else { ?>
+                            <?php }else { ?>  
+
                                 <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
                             <?php } ?>  
 						

@@ -23,8 +23,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                           <div class="profile-img col-sm-2 col-md-2">
                               <?php if($profile->profile_photo==''){?>
                               <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png" alt="">
-                              <?php } ?>
-                              <?php else($profile->profile_photo!=''){?>
+                              <?php }else {?>
                               <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
                               <?php } ?>
 							  
