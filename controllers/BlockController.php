@@ -286,7 +286,6 @@ class BlockController extends Controller
 	    return array("empty tags!...");
 	}
     }
-    
     public function createText($post,$qard_id,$theme_id){
 	
 	$block=new Block();
@@ -325,16 +324,24 @@ class BlockController extends Controller
 	
     }
     
+    
     /**
     * @inheritdoc
     */
     public function beforeAction($action)
     {            
-	if ($action->id == 'upload') {
+	if ($action->id == 'upload' || $action->id == 'deleteBlock') {
 	    $this->enableCsrfValidation = false;
 	}
 
 	return parent::beforeAction($action);
+    }
+    
+    
+    public function actionDeleteBlock(){
+	$id=Yii::$app->request->post('block_id');
+	Block::deleteAll(['block_id'=>$id]);
+		
     }
     
     /* 
@@ -343,10 +350,25 @@ class BlockController extends Controller
     public function actionUpload(){
 	
 	
-	$res=  json_decode($_POST['thumb_values']);
-	$image=  base64_decode($res->data);
+	print_r($_POST);die;
 	
-	file_put_contents(Yii::$app->basePath.'/web/uploads/block/'.'vijay.jpg', $image);
+	$res=  json_decode($_POST['thumb_values']);
+//	print_r($_POST['thumb_values']);die;
+	
+//	$image=  base64_decode($res->data);
+//	
+//	
+	//$img = $_POST['img'];
+	$img = str_replace('data:image/jpeg;base64,', '', $res->data);
+	$img = str_replace(' ', '+', $img);
+	$data = base64_decode($img);
+	$file = Yii::$app->basePath.'/web/uploads/block/' . 'vijay' . '.JPG';
+	$success = file_put_contents($file, $data);
+	
+	
+	//header("Content-type: image/gif");
+//	echo '<img src="'.$res->data.'" />';
+//	file_put_contents('1.JPG', $image);
 	
 	die;
 	
