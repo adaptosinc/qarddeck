@@ -12,6 +12,7 @@ use app\models\Qard;
 use app\models\Theme;
 use app\models\QardTags;
 use app\models\Tag;
+use yii\web\UploadedFile;
 
 /**
  * BlockController implements the CRUD actions for Block model.
@@ -285,7 +286,6 @@ class BlockController extends Controller
 	    return array("empty tags!...");
 	}
     }
-    
     public function createText($post,$qard_id,$theme_id){
 	
 	$block=new Block();
@@ -324,22 +324,53 @@ class BlockController extends Controller
 	
     }
     
+    
     /**
     * @inheritdoc
     */
     public function beforeAction($action)
     {            
-	if ($action->id == 'upload') {
+	if ($action->id == 'upload' || $action->id == 'deleteBlock') {
 	    $this->enableCsrfValidation = false;
 	}
 
 	return parent::beforeAction($action);
     }
     
+    
+    public function actionDeleteBlock(){
+	$id=Yii::$app->request->post('block_id');
+	Block::deleteAll(['block_id'=>$id]);
+		
+    }
+    
     /* 
      * for image
      */
     public function actionUpload(){
+	
+	
+	print_r($_POST);die;
+	
+	$res=  json_decode($_POST['thumb_values']);
+//	print_r($_POST['thumb_values']);die;
+	
+//	$image=  base64_decode($res->data);
+//	
+//	
+	//$img = $_POST['img'];
+	$img = str_replace('data:image/jpeg;base64,', '', $res->data);
+	$img = str_replace(' ', '+', $img);
+	$data = base64_decode($img);
+	$file = Yii::$app->basePath.'/web/uploads/block/' . 'vijay' . '.JPG';
+	$success = file_put_contents($file, $data);
+	
+	
+	//header("Content-type: image/gif");
+//	echo '<img src="'.$res->data.'" />';
+//	file_put_contents('1.JPG', $image);
+	
+	die;
 	
 	$block=new Block();
 	
@@ -351,17 +382,23 @@ class BlockController extends Controller
 	$block->is_title=0;
 	
 	
-        if(isset($_POST['Item']))
-        {
-            $block->link_image=CUploadedFile::getInstance($block,'link_image');
+        
+            $image=UploadedFile::getInstance($block,'link_image');
+	    print_r($image);
+	    die;
 	    $filename=time().'-'.$qard->qard_id.'.'.$block->link_image->extension;
-            if($block->save())
+	    echo Yii::$app->basePath.'/web/uploads/block/'.$filename;die;
+	    
+	    if($block->validate())
             {
-                $block->link_image->saveAs(Yii::$app->basePath.'/web/uploads/block/'.$filename);
-                // redirect to success page
-            }
-	    print_r($block);
-	}
+		if($block->save())
+		{
+		    $block->link_image->saveAs();
+		    // redirect to success page
+		}
+	    }
+	    print_r($block->errors);
+	
 	die;
 	
 	

@@ -19,18 +19,16 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
    
     public $css = [
-
-		'css/dropzone.css',
-		'css/master.css',
-		'css/custom.css',
-		'font-awesome/css/font-awesome.css',
-
+	'font-awesome/css/font-awesome.css',
+	//'css/html5imageupload.css',
+	'css/master.css',
+	'css/custom.css',
     ];
     public $jsOptions = [
-	    'position' => \yii\web\view::POS_HEAD,
+	'position' => \yii\web\view::POS_HEAD,
     ];
     public $js = [
-		'js/bootstrap.min.js',
+	'js/bootstrap.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
