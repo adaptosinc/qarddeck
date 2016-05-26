@@ -20,6 +20,7 @@ use Yii;
  * @property string $profile_bg_image
  * @property string $bg_properties
  * @property integer $profile_privacy
+ * @property string $temp_image
  *
  * @property User $user
  * @property Privacy $profilePrivacy
@@ -28,6 +29,7 @@ class UserProfile extends \yii\db\ActiveRecord
 {
     public $verify_password_profile;
     public $password_profile;
+    public $imageFile;
     /**
      * @inheritdoc
      */
@@ -44,11 +46,12 @@ class UserProfile extends \yii\db\ActiveRecord
         return [
             [['user_id', 'profile_status', 'profile_privacy'], 'integer'],
             [['profile_url', 'short_description', 'display_url', 'profile_bg_image', 'bg_properties'], 'string'],
-            [['firstname', 'lastname', 'profile_photo', 'display_email'], 'string', 'max' => 255],
+            [['firstname', 'lastname', 'profile_photo', 'temp_image','display_email'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['profile_privacy'], 'exist', 'skipOnError' => true, 'targetClass' => Privacy::className(), 'targetAttribute' => ['profile_privacy' => 'privacy_id']],
             [['profile_url'],'url'],
             [['password_profile','verify_password_profile'],'safe'],
+           // [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg' ]
            // ['verify_password', 'compare', 'compareAttribute' => 'password'],
           //  ['verify_password', 'compare', 'compareAttribute' => 'password'],
         ];
@@ -91,5 +94,14 @@ class UserProfile extends \yii\db\ActiveRecord
     public function getProfilePrivacy()
     {
         return $this->hasOne(Privacy::className(), ['privacy_id' => 'profile_privacy']);
+    }
+      public function upload()
+    {
+        if ($this->validate()) {
+            $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

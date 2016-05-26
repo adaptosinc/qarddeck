@@ -34,9 +34,10 @@ AppAsset::register($this);
     <!-- header -->
                 <header>
                     <div class="logo pull-left">
+                        
                         <a href="<?= Yii::$app->request->baseUrl?>/site/index"><img src="<?= Yii::$app->request->baseUrl?>/images/logo.png" alt="Home"><span>QardDeck</span></a>
-                    </div>
-                  
+                        
+                    </div>                  
 
                     <ul class="pull-right">                        
                      <?php if(\Yii::$app->user->id){ ?>

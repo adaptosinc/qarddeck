@@ -10,19 +10,20 @@ $this->params['breadcrumbs'][] = ['label' => 'Edit Profile', 'url' => ['profile'
 $this->params['breadcrumbs'][] = 'Edit';
 ?>      
 <!-- Edit Account -->
-            <div id="editd" class="modal-header">       
+            <div class="modal-header">       
               <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
               <h3>Edit Account Info</h3>
               <div class="row">
-                   <?php $form = ActiveForm::begin([
+             <?php $form = ActiveForm::begin([
                                   //'id' => 'edit_form_profile',
                                   'options' => ['enctype' => 'multipart/form-data']
-                       ]); ?>
+                                  
+                                  ]); ?>
                   <div class="public-profile col-sm-7 col-md-7">      <!-- public profile -->
                       <h3 class="main-title">Public Profile</h3>
-                           <div class="row">
+                      <div class="row">
                           <div class="profile-img col-sm-2 col-md-2">
                               <?php if(\Yii::$app->user->identity->login_type != 'facebook' && $profile->profile_photo==''){?>
                               <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png" alt="">
@@ -31,7 +32,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                               <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
                               <?php } ?>
                               <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type != 'twitter'){?>
-                              <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
+                              <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl.'/'.$profile->profile_photo?>" alt="">
                            
                              <?=  $form->field($profile, 'profile_photo')->hiddenInput(['value' => $profile->temp_image])->label(false);?>
                               <?php } ?>
@@ -40,14 +41,14 @@ $this->params['breadcrumbs'][] = 'Edit';
 								$arr = explode('_',\Yii::$app->user->identity->username);
 								$f_id = $arr[1];
 							  ?>
-							  <img id="profImg" class="profImg" src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=large">
+							  <img id="profImg" class="profImg"src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=large">
 							  <?php } ?>
 							  
                               <input id="profile-image-upload" name="image" class="hidden" type="file">
                                        </div>
                           <div class="profile-content col-sm-10 col-md-10">
                               <h3>@<?= Html::encode($this->title) ?></h3>
-                             
+                            
                               <div class="form-group">
                               <?= $form->field($profile, 'firstname', [
                                               'template' => "{input}\n{hint}\n{error}"
@@ -77,15 +78,17 @@ $this->params['breadcrumbs'][] = 'Edit';
                                       ])->textInput(['class' => 'form-control','placeholder'=>'Email Adddress']) ?>
                             </div>
                              <div class="col-sm-6 col-md-6">
-                                  <div class="switch">                                      
+                                  <div class="switch">
+                                      
                                       <?php if($profile->isEmailEnabled==0){?>
                                       <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
                                       <?php }?>
                                       <?php if($profile->isEmailEnabled==1){?>
                                       <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round"  checked="checked" type="checkbox">
-                                      <?php }?>                                      
+                                      <?php }?>
+                                      
                                       <label for="cmn-toggle-4"></label>
-                                  </div>  <span>Display email on public profile</span>                                          
+                                  </div>  <span>Display email on public profile</span>                                                   
                               </div>                                            
                               </div>
                               <div class="form-group">
@@ -138,9 +141,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                 </div>
               <div class="form-group">
                     <ul class="pull-right">
-                        <li> 
-                            <button class="btn btn-lg btn-default cancelbtn">Cancel </button>
-                        </li>
+                  <li> <?= Html::submitButton('Cancel', ['class' => 'btn btn-lg btn-default']) ?>  </li>
                   <li> <?= Html::submitButton('Update', ['class' => 'btn btn-lg btn-warning updatebtn']) ?></li>
                     </ul>
               </div>   
@@ -177,7 +178,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                            data: form_data,                        
                            type: 'post',
                            success: function(response){   
-                               console.log(response);
+                               
                                $('#profImg').attr('src', '<?= Yii::$app->request->baseUrl?>/uploads/'+response.code);
                                count++;
                            }
@@ -250,13 +251,7 @@ $this->params['breadcrumbs'][] = 'Edit';
     $('.fb-dsbtn').click(function(e) {
         e.preventDefault();
         window.location.replace("<?php echo 'http://'.$_SERVER['SERVER_NAME'].(Yii::$app->request->baseUrl).'/social/facebook/dis-facebook'; ?>");
-    });   
-    
-      $('.cancelbtn').click(function(e) {
-          alert("canc");
-        e.preventDefault();
-        $( ".close" ).trigger( "click" );
-    }); 
+    });     
         $("#cmn-toggle-4").click(function(e){        
          if($(this).prop("checked") == true){
              file_data = 1;
