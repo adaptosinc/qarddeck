@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use app\models\Block;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */

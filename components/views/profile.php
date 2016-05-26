@@ -21,13 +21,23 @@ $this->params['breadcrumbs'][] = 'Edit';
                       <h3 class="main-title">Public Profile</h3>
                       <div class="row">
                           <div class="profile-img col-sm-2 col-md-2">
-                              <?php if($profile->profile_photo==''){?>
+                              <?php if(\Yii::$app->user->identity->login_type != 'facebook' && $profile->profile_photo==''){?>
                               <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png" alt="">
                               <?php } ?>
-                              <?php if($profile->profile_photo!=''){?>
+                              <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type == 'twitter'){?>
+                              <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
+                              <?php } ?>
+                              <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type != 'twitter'){?>
                               <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl.'/'.$profile->profile_photo?>" alt="">
                               <?php } ?>
-
+							  <?php if(\Yii::$app->user->identity->login_type == 'facebook') {
+								//fetch id here
+								$arr = explode('_',\Yii::$app->user->identity->username);
+								$f_id = $arr[1];
+							  ?>
+							  <img id="profImg" class="profImg"src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=large">
+							  <?php } ?>
+							  
                               <input id="profile-image-upload" name="image" class="hidden" type="file">
                                        </div>
                           <div class="profile-content col-sm-10 col-md-10">
@@ -73,7 +83,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                                       <?php }?>
                                       <?php if($profile->isEmailEnabled==1){?>
                                       <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round"  checked="checked" type="checkbox">
-                                      <?php $profile->public_email;}?>
+                                      <?php }?>
                                       
                                       <label for="cmn-toggle-4"></label>
                                   </div>  <span>Display email on public profile</span>                                                   
@@ -89,19 +99,21 @@ $this->params['breadcrumbs'][] = 'Edit';
                           </div>
                       </div>
                   </div>          <!-- public profile -->
-                  
-                  <div class="col-sm-4 col-md-4 col-md-offset-1">
-                      <h3 class="main-title">Change Your Password</h3>
-                         <input type="password" id="cur_password" class="form-control" name="cur_password" placeholder="Current Password">          
-                   <span id="ispswdvalid" class="text-danger">Please Enter The Correct Password</span>  
-  <?= $form->field($profile, 'password', [
-			'template' => "{input}\n{hint}\n{error}"
-		])->passwordInput(['class' => 'form-control password','placeholder'=>'New Password']) ?>
-                    <?= $form->field($profile, 'verify_password', [
-			'template' => "{input}\n{hint}\n{error}"
-		])->passwordInput(['class' => 'form-control verify_password','placeholder'=>'Re-enter Password']) ?>
-                     <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
-                  </div>
+                  <?php if(\Yii::$app->user->identity->login_type == 'email'){  ?>
+					  <div class="col-sm-4 col-md-4 col-md-offset-1">
+						  <h3 class="main-title">Change Your Password</h3>
+							 <input type="password" id="cur_password" class="form-control" name="cur_password" placeholder="Current Password">          
+					   <span id="ispswdvalid" class="text-danger">Please Enter The Correct Password</span>  
+							<?= $form->field($profile, 'password_profile', [
+								'template' => "{input}\n{hint}\n{error}"
+								])->passwordInput(['class' => 'form-control password','placeholder'=>'New Password']) ?>
+							<?= $form->field($profile, 'verify_password_profile', [
+								'template' => "{input}\n{hint}\n{error}"
+								])->passwordInput(['class' => 'form-control verify_password','placeholder'=>'Re-enter Password']) ?>
+						 <span id="displayerr" class="text-danger">Password And The Confirm Password Should Be The Same</span>
+					  </div>					  
+				 <?php  } ?>
+
               </div>          <!-- row -->
               <?php if(Yii::$app->session->getFlash('twitter-success')){?>
               <h5 class="text-success" style="margin-left:10px;"><b>You are successfully connected with twitter..</b></h5>
@@ -112,9 +124,9 @@ $this->params['breadcrumbs'][] = 'Edit';
                <div class="social-ccount">
                             <h3>Connect Social Accounts</h3>
                             <div class="form-group">
-                            <?php if(!$profile->fb_status){?>     
+                            <?php if(\Yii::$app->user->identity->login_type != 'facebook' && !$profile->fb_status){?>     
                             <button class="btn btn-lg btn-primary fb-btn"><i class="fa fa-facebook"></i> Connect facebook account</button><?php } ?>
-                             <?php if(!$profile->tw_status){?>  
+                             <?php if(\Yii::$app->user->identity->login_type != 'twitter' && !$profile->tw_status){?>  
                             <button class="btn btn-lg btn-info  twit-btn"><i class="fa fa-twitter"></i>Connect Twitter account
                                 <?php } ?>
                               <?php if($profile->fb_status){?>    

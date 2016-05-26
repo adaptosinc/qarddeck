@@ -95,7 +95,7 @@ class FacebookController extends \yii\web\Controller
 	$model->verify_password=$result['id'];
 	$model->setPassword($model->password);
 	$model->generateAuthKey();	
-	
+	$model->login_type = "facebook";
 	if($model->validate()){
 	    if($model->save(false)){
 		$profile->user_id=$model->id;

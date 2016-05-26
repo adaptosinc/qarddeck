@@ -33,8 +33,8 @@ class QardController extends Controller
      * Lists all Qard models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex(){
+        
         $searchModel = new SearchQard();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -64,7 +64,6 @@ class QardController extends Controller
     public function actionCreate()
     {
         $model = new Qard();
-
         if (Yii::$app->request->post()) {
 	    echo "viay";
 	    print_r($_POST);
@@ -72,9 +71,16 @@ class QardController extends Controller
 	    exit(0);
            // return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if(!$this->isMobile()){ 
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }else{
+                $this->layout = 'mobilelayout';
+                return $this->render('mobile/create', [
+                    'model' => $model,
+                ]);                
+            }
         }
     }
 
@@ -124,9 +130,7 @@ class QardController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-    
-   
+    }     
     public function actionTest() {	
 	return $this->render('test');
 	
@@ -134,5 +138,8 @@ class QardController extends Controller
     public function actionWyiswyg() {	
 	return $this->render('wyiswyg');
 	
+    }
+     public function isMobile(){
+         return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
     }
 }

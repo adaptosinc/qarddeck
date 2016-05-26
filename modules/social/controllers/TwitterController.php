@@ -113,24 +113,25 @@ class TwitterController extends \yii\web\Controller
 	$model->verify_password=$result['id'];
 	$model->setPassword($model->password);
 	$model->generateAuthKey();	
+	$model->login_type = "twitter";
+
 	
-	if($model->validate()){
+	//if($model->validate()){
 	    if($model->save(false)){
 		$profile->user_id=$model->id;
 		$profile->firstname=$result['name'];
+		$profile->profile_photo = $result['profile_image_url'];
 		//$profile->lastname=$result['last_name'];
 		//$profile->display_email=$result['email'];
 		if($profile->save()){
-		    $user = User::find()->where(['id'=>$model->id])->one();
-		    
+		    $user = User::find()->where(['id'=>$model->id])->one();		    
 		    return $user;
 		}
 	    }
-	}else{
-	    return $model;
-	}
-   }
-   
+	//}else{
+	//    return $model;
+	//}
+   }   
      /*
      * to get access token 
      * @retrun it sets the session to get access token in next phase
@@ -196,11 +197,10 @@ class TwitterController extends \yii\web\Controller
         $profile = Profile::find()->where(['user_id'=>$id])->one();
         
         $profile->profile_bg_image= $result['profile_background_image_url'];
+		$profile->profile_photo = $result['profile_image_url'];
         $profile->tw_status = 1;
-	$profile->save();
-	return $profile;	
-   }   
-   
-   
+		$profile->save();
+		return $profile;	
+   }  
     
 }

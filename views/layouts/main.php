@@ -47,9 +47,16 @@ AppAsset::register($this);
                             <?php if(\Yii::$app->user->identity->profile_photo){ ?>
                                 <img id="profpic" class="profPic" src="<?=\Yii::$app->user->identity->profile_photo?>" alt="">
                             <?php } ?>  
-                            <?php if(!\Yii::$app->user->identity->profile_photo){ ?>
+                            <?php if(\Yii::$app->user->identity->login_type != 'facebook' && !\Yii::$app->user->identity->profile_photo){ ?>
                                 <img src="<?= Yii::$app->request->baseUrl?>/images/avatar.png" alt="">
-                            <?php } ?>      
+                            <?php } ?>  
+						    <?php if(\Yii::$app->user->identity->login_type == 'facebook') {
+							//fetch id here
+							$arr = explode('_',\Yii::$app->user->identity->username);
+							$f_id = $arr[1];
+						    ?>
+						    <img id="profpic" class="profPic" src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=small">
+						    <?php } ?>							
                         </li>                        
                         <li>
                               <h4><?= Yii::$app->user->identity->firstname; ?></h4>
@@ -79,8 +86,7 @@ AppAsset::register($this);
 						    <a href="<?= Yii::$app->request->baseUrl?>/qard/create">
                                                     <img src="<?= Yii::$app->request->baseUrl?>/images/newqard.png" alt="">
                                                     <h3>Create New Qard</h3>
-						    </a>
-						    
+						    </a>						    
                                                 </div>
                                                 <div class="col-sm-3 col-md-3 col-md-offset-1">
                                                     <img src="<?= Yii::$app->request->baseUrl?>/images/newdeck.png" alt="">
@@ -132,14 +138,19 @@ AppAsset::register($this);
                                 </div><!--/.nav-collapse -->
                         </li>
                     </ul>
+
 					<?php 
 					if(Yii::$app->user->id){ ?>
 						<ul class="profile-title">
 							<li>@<?php echo Yii::$app->user->identity->username; ?></li>
-							<li><i class="fa fa-envelope"></i>email@address.com</li>
+							<?php if(Yii::$app->user->identity->isPublicEmail){ ?>
+								<li><i class="fa fa-envelope"></i><?php echo Yii::$app->user->identity->showEmail; ?></li>	
+							<?php } ?>
+							
 						</ul>						
 					<?php }
 					?>
+
 
                 </header>    
     <!-- signup popup -->
