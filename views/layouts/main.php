@@ -30,7 +30,7 @@ AppAsset::register($this);
 </style> 
 <body>
 <?php $this->beginBody() ?>
-<div class="container-fluid">    
+<div class="container-fluid desktop-view">    
     <!-- header -->
                 <header>
                     <div class="logo pull-left">
