@@ -24,12 +24,12 @@ $this->params['breadcrumbs'][] = 'Edit';
                       <h3 class="main-title">Public Profile</h3>
                            <div class="row">
                           <div class="profile-img col-sm-2 col-md-2">
-                              <?php if($profile->profile_photo==''){?>
+                              <?php if(\Yii::$app->user->identity->login_type != 'facebook' && $profile->profile_photo==''){?>
                               <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png" alt="">
-                              <?php }else {?>
+                              <?php } ?>
+                              <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type == 'twitter'){?>
                               <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
                               <?php } ?>
-<<<<<<< HEAD
                               <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type != 'twitter'){?>
                               <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
                            
@@ -42,8 +42,6 @@ $this->params['breadcrumbs'][] = 'Edit';
 							  ?>
 							  <img id="profImg" class="profImg" src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=large">
 							  <?php } ?>
-=======
->>>>>>> ac83433818dbc6d5b04c7f06a052438bc5efbfec
 							  
                               <input id="profile-image-upload" name="image" class="hidden" type="file">
                                        </div>
@@ -255,7 +253,7 @@ $this->params['breadcrumbs'][] = 'Edit';
     });   
     
       $('.cancelbtn').click(function(e) {
-        
+          alert("canc");
         e.preventDefault();
         $( ".close" ).trigger( "click" );
     }); 
