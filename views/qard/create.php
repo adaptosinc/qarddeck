@@ -17,13 +17,18 @@ $this->title = 'Create Qard';
 
 <!-- requiered for fore color of text -->
 <link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-colorpicker.min.css" rel="stylesheet">
-<script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-colorpicker.js" type="text/javascript"></script>
+
+<!--for image crop-->
+<link href="<?= Yii::$app->request->baseUrl?>/css/html5imageupload.css" rel="stylesheet">
+
+
+<script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-colorpicker.js" type="text/javascript"></script>	
 
 <!-- requiered for get selected fiels in text editing -->
 <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.selection.js" type="text/javascript"></script>
 
 <!-- requiered for drop down of an image -->
-<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>
+<!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
 
 <section class="create-card">
     <div class="row">
@@ -122,11 +127,19 @@ $this->title = 'Create Qard';
 			</ul>                                     
 		</div>-->
 		<div role="tabpanel" class="tab-pane" id="imgblock">
-		    <form  class="dropzone" id="imageupload" enctype="multipart/form-data" >
-		      <div class="fallback">
-			<input name="image" type="file" />
-		      </div>
-		    </form>
+		    
+		    <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
+		      
+			  
+		    <div class="drop-image">
+			<form action="" id="image_upload"  method="post" enctype="multipart/form-data" >
+			    <div class="dropzone" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;">
+				<input type="text" name="vijay" value="hello">
+			      <input type="file" name="thumb" required="required" />
+			    </div>
+			</form>
+		    </div>
+<!--		    </form>-->
 		    <div class="form-group image-elements">
 			<div class="col-sm-3 col-md-3">
 			    <input type="text" name="name" class="form-control" placeholder="Image Opacity (%)">
@@ -155,11 +168,13 @@ $this->title = 'Create Qard';
 		</div>
 		<div role="tabpanel" class="tab-pane" id="linkblock">
 		    <fieldset>
-			<form action="/file-upload" class="dropzone">
-			  <div class="fallback">
-			    <input name="file" type="file" multiple />
-			  </div>
-			</form>                                        
+			<div class="drop-image">
+			    <form action="/file-upload" >
+			      <div class="fallback" >
+				<input name="file" type="file"  />
+			      </div>
+			    </form>  
+			</div>
 			<div class="form-group">
 			    <input type="text" name="url" class="form-control" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
 			    <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
@@ -263,40 +278,29 @@ function showtext() {
 }
 
 </script>        
-
+<script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
 <script type="text/javascript">
-   	  
+	  
     $(function(){
-	// var myDropzone = new Dropzone("#mydivimage", { url: "<?=  Url::to(['block/upload'],true)?>"});
+	// for image or file drop
+	$('.dropzone').html5imageupload();
 	
-	 
-	Dropzone.autoDiscover = false;
-$('#imageupload').dropzone ({
-        url: "<?=  Url::to(['block/upload'],true)?>",
-        init: function() {
-            this.on("sending", function(file, xhr, formData){
-		
-		var qard_title=$("#qard_title").val() || 0;
-		var tags=$("#tags").val() || 0;
-	
-                formData.append("tags", tags);
-		formData.append("qard_title", qard_title);
-		
-            }),
-            this.on("success", function(file, xhr){
-                alert(file.xhr.response);
-            })
-        },
-});
+	$('#for_image').html5imageupload({
+	    
+	// to delete image from database
+	    onAfterCancel:function(){
+		var block_id=$("#block_id").val()|| 16;
+		$.ajax({url:"<?=Url::to(['block/delete-block'], true)?>",type:'post',data:{'block_id':block_id},function(data){console.log(data);}});
+	    }
+	   
+	});
 	
 	
-    
 	$('#text_color').colorpicker();
-	
-    $('#cardtabs a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-    });
+	$('#cardtabs a').click(function (e) {
+	  e.preventDefault();
+	  $(this).tab('show');
+	});
     });
 
     
@@ -329,32 +333,37 @@ $('#imageupload').dropzone ({
     /*
     * condition
      */
-     function add_block(){
-	 
-	 var text=$("#working_div").html() || 0;
-	 
-	 var extra_text=$("#extra_text").html() || 0;
-	 var block_id=$("#block_id").val() || 0;
-	 var qard_id=$("#qard_id").val() || 0;
-	 var qard_title=$("#qard_title").val() || 0;
-	 var tags=$("#tags").val() || 0;
-	 var is_title=$("[name='is_title']:checked").val() || 0;
-	 if(!qard_title){
-	     return false;
-	 }
-	 
-	 
-	 $.ajax({
-	    url:"<?=  Url::to(['block/create'], true)?>",
-	    type:"POST",
-	    data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title},
-	    success:function(data){
-		
-		
-		console.log(data);
-	    }
-	    
-	 });
+    function add_block(){
+	
+	var image=$("#image_upload").serialize();
+//	$("#working_div").css('background-image','url(<?=Yii::$app->request->baseUrl."/uploads/block/vijay.JPG)"?>');
+
+	
+	console.log(image);
+	return false;
+	var text=$("#working_div").html() || 0; 
+	var extra_text=$("#extra_text").html() || 0;
+	var block_id=$("#block_id").val() || 0;
+	var qard_id=$("#qard_id").val() || 0;
+	var qard_title=$("#qard_title").val() || 0;
+	var tags=$("#tags").val() || 0;
+	var is_title=$("[name='is_title']:checked").val() || 0;
+	if(!qard_title){
+	    return false;
+	}
+	var data=$(this).serializeArray();
+
+	$.ajax({
+	   url:"<?=Url::to(['block/create'], true)?>",
+	   type:"POST",
+	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title},
+	   success:function(data){
+
+
+	       console.log(data);
+	   }
+
+	});
 	 
 	// $("#add_text").submit();
 	// $("#add_link").submit();
@@ -362,11 +371,8 @@ $('#imageupload').dropzone ({
 //	 var another_div='<div class="cur_block">'+another_p+'</div>';
 //	 $("#cur_block").clone().appendTo("#cur_block");
 	
-     }
-     
-    
-    
-     $("#working_div").on("change keydown",function(){
+    }
+    $("#working_div").on("change keydown",function(){
 	if($(this).height()>600){
 	   $("#Block_error").modal('show');
 	   $("#disp_error").text('can not write on card user extra text to continue!...');
@@ -375,79 +381,7 @@ $('#imageupload').dropzone ({
 	    var height=parseInt($("#cur_block").height())+37.5;
 	    $("#cur_block").css('height',height);
 	}
-     });
-     
-     $("#add_text").submit(function(){
-	var data=$(this).serializeArray(); 
-	// retriving block id
-	var block_id=$("#block_id").val() || '0';
-	data.push({name:'block_id',value:block_id});
-	// font name
-	var font=$("#working_blk").css('font-family');
-	data.push({name:'font',value:font});
-	// store font size
-	var font_size=$("#working_blk").css('font-size');
-	data.push({name:'font_size',value:font_size});
-	// text color
-	var text_color=$("#working_blk").css('color');
-	data.push({name:'text_color',value:text_color});
-	// text alignment
-	var text_align=$("#working_blk").css('text-align');
-	data.push({name:'text_align',value:text_align});
-	//text decoration	
-	var text_decoration=$("#working_blk").css('text-decoration');
-	data.push({name:'text_decoration',value:text_decoration});
-	//text background color
-	var blockbg_colour=$("#working_blk").css('background-color');
-	data.push({name:'blockbg_colour',value:blockbg_colour});
-	//text overlay color
-	var textbg_overlaycolour=$("#working_blk").css('background-color');
-	data.push({name:'textbg_overlaycolour',value:textbg_overlaycolour});
-	//text background color opacity
-	var textbg_overlayopacity=$("#working_blk").css('opacity');	 
-	data.push({name:'textbg_overlayopacity',value:textbg_overlayopacity});
-	
-
-	$.ajax({
-	   type: 'post',
-	   url: "<?=Url::to(['block/create'],true)?>",
-	   data: data,
-	   success: function (data) {
-	     console.log('form add text was submitted');
-	     
-	   }
-	 });
-	 
-	 
-	return false;
     });
-    
-    $("#add_link").submit(function(){
-    
-    return false;
-	var data=$(this).serializeArray();
-	//retriving block id
-	var block_id=$("#block_id").val() || '0';
-	data.push({name:'block_id',value:block_id});
-	// link color
-	var url_colour=$("#working_blk_link").css('color');
-	data.push({name:'url_colour',value:url_colour});
-	// link hover color
-	var url_hovercolour=$("#working_blk_link:hover").css('color'); 
-	data.push({name:'url_hovercolour',value:url_hovercolour});
-	 
-	$.ajax({
-	   type: 'post',
-	   url: "<?=Url::to(['block/create'],true)?>",
-	   data: data,
-	   success: function () {
-	     console.log('form add link was submitted');
-	   }
-	 });
-	 return false;
-	
-    });
-
 </script>
 
 <script type="text/javascript">

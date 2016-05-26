@@ -21,7 +21,7 @@ use app\models\UserProfile;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
-  * @property string $login_type
+ * @property string $login_type
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -76,20 +76,24 @@ class User extends ActiveRecord implements IdentityInterface
  
 
 	$profile = UserProfile::find()->where(['user_id'=>$id])->one();
-        $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+	if($user){
         if(!empty($profile->firstname)){
-		$user->firstname= $profile->firstname.' '.$profile->lastname;
-	}
+			$user->firstname= $profile->firstname.' '.$profile->lastname;
+		}
         if(!empty($profile->profile_photo)){
             $user->profile_photo= $profile->profile_photo;
-	}
+		}
         if($profile->isEmailEnabled!=0){
+
 		$user->isPublicEmail=1;
                   $user->showEmail= $profile->display_email;//$user->email;
 	}
+
         if($profile->isEmailEnabled==0){
-		$user->isPublicEmail=0;
+				$user->isPublicEmail=0;
                 $user->showEmail= 'email@address.com';
+		}		
 	}
 	return $user;
 
