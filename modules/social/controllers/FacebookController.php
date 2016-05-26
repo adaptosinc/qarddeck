@@ -102,6 +102,7 @@ class FacebookController extends \yii\web\Controller
 		$profile->firstname=$result['first_name'];
 		$profile->lastname=$result['last_name'];
 		$profile->display_email=$result['email'];
+		$profile->profile_photo = "//graph.facebook.com/".$result['id']."/picture?type=large";
 		if($profile->save()){
 		    return $model;
 		}

@@ -21,22 +21,12 @@ $this->params['breadcrumbs'][] = 'Edit';
                       <h3 class="main-title">Public Profile</h3>
                       <div class="row">
                           <div class="profile-img col-sm-2 col-md-2">
-                              <?php if(\Yii::$app->user->identity->login_type != 'facebook' && $profile->profile_photo==''){?>
+                              <?php if($profile->profile_photo==''){?>
                               <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png" alt="">
                               <?php } ?>
-                              <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type == 'twitter'){?>
+                              <?php else($profile->profile_photo!=''){?>
                               <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
                               <?php } ?>
-                              <?php if($profile->profile_photo!='' && \Yii::$app->user->identity->login_type != 'twitter' && \Yii::$app->user->identity->login_type != 'facebook'){?>
-                              <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl.'/'.$profile->profile_photo?>" alt="">
-                              <?php } ?>
-							  <?php if(\Yii::$app->user->identity->login_type == 'facebook') {
-								//fetch id here
-								$arr = explode('_',\Yii::$app->user->identity->username);
-								$f_id = $arr[1];
-							  ?>
-							  <img id="profImg" class="profImg"src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=large">
-							  <?php } ?>
 							  
                               <input id="profile-image-upload" name="image" class="hidden" type="file">
                                        </div>
