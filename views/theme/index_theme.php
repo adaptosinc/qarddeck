@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						</div>
 					';
 				if(\Yii::$app->user->id && \Yii::$app->user->identity->role == 'admin')
-					echo '<button class="btn btn-default edit_theme" onClick="window.location = \''. \Yii::$app->homeUrl.'/theme/update?id='.$model->theme_id.'\';">Edit</button>';
+					echo '<button class="btn btn-default edit_theme" onClick="window.location = \''. \Yii::$app->homeUrl.'/theme/update?id='.$model->theme_id.'\';">Edit Theme</button>';
 				echo "</div>";
 				
 			}?>
