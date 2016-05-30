@@ -226,7 +226,17 @@ class User extends ActiveRecord implements IdentityInterface
      * to check whether id is already present in db or not
      */
     public function checkId($username){
-	return User::find()->where(['username'=>$username])->one();
-	
+		return User::find()->where(['username'=>$username])->one();	
     }
+	
+	/**
+	 * Check if admin or not
+	 */
+	 public function isAdmin(){
+		 
+		 if(\Yii::$app->user->id && \Yii::$app->user->identity->role == 'admin')
+			 return true;
+		 else
+			 return false;
+	 }
 }

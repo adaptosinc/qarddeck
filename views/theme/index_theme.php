@@ -15,12 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		<div class="container">
 			<div class="row">
 			<?php
-			$i = 0;
 			foreach($models as $model){
 				$theme_properties = unserialize($model->theme_properties);
-				$class = '';
-
-				echo '<div class="qard-bg col-sm-2 col-md-2 '.$class.'">     <!-- qard -->
+				echo '<div class="qard-bg col-sm-2 col-md-2">     <!-- qard -->
 						<div class="qard-top">
 							<h4>'.$model->theme_name.'</h4>
 						</div>
@@ -41,8 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
 								<div class="bgcolor" style="background:'.$theme_properties['theme_color_5'].'"></div>
 							</div>                                      
 						</div>
-					</div>';
-					$i++;
+					';
+				if(\Yii::$app->user->id && \Yii::$app->user->identity->role == 'admin')
+					echo '<button class="btn btn-default qard" onClick="window.location = \''. \Yii::$app->homeUrl.'/theme/update?id='.$model->theme_id.'\';">Edit</button>';
+				echo "</div>";
 				
 			}?>
 			</div>
