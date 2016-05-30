@@ -9,7 +9,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		
 		<div class="action-qard">
 			<button class="btn btn-warning">Back to Templates</button>
-			<button class="btn btn-default qard">Create a New Theme</button>                        
+			<button class="btn btn-default qard" onClick="window.location = '<?php echo \Yii::$app->homeUrl?>/theme/create';">Create a New Theme</button>                        
 		</div>
 		<div class="themes-list">        <!-- qard list -->
 		<div class="container">

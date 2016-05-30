@@ -571,7 +571,7 @@ section.main-profile .main-content {
 }
 .qard-content {
     min-height: 350px;
-    border: 2px solid #8d8d8d;
+    /**border: 2px solid #8d8d8d;**/
     box-shadow: 1px 3px 10px #E6E6E6;
     border-radius: 2px;
 }
@@ -1053,9 +1053,8 @@ input[type="color"] {
 	border:0 !important;
 }
 /*.themebg1 .bgcolor {
-=======
+
 .themebg1 .bgcolor {
->>>>>>> 29b0de0d0f12da591c2848687e7fa40f412c1048
     background: #0b1120;
 }
 .themebg2 .bgcolor {
@@ -1069,9 +1068,8 @@ input[type="color"] {
 }
 .themebg5 .bgcolor {
     background: #8bfae0;
-<<<<<<< HEAD
 }*/
-=======
+
 }
 
 button#align_list {
@@ -1102,7 +1100,8 @@ button#align_list {
 a.on {
     color: #F5813B !important;
 }
-
+=======
+>>>>>>> 29b0de0d0f12da591c2848687e7fa40f412c1048
 
 /* =====================
  *   Theme Selection

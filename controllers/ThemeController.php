@@ -102,7 +102,7 @@ class ThemeController extends Controller
 			$model->theme_type = 1; //for qard
 			$model->theme_properties = serialize($theme_properties);
 			$model->save();
-            return $this->redirect(['view', 'id' => $model->theme_id]);
+            return $this->redirect(['select-theme']);
         } else {
             return $this->render('create_theme', [
                 'model' => $model,
@@ -165,7 +165,7 @@ class ThemeController extends Controller
 			$model->theme_type = 1; //for qard
 			$model->theme_properties = serialize($theme_properties);
 			$model->save();
-            return $this->redirect(['view', 'id' => $model->theme_id]);
+            return $this->redirect(['select-theme']);
         } else {
             return $this->render('create_theme', [
                 'model' => $model,
