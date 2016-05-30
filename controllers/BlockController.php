@@ -70,12 +70,7 @@ class BlockController extends Controller
     {
         
 	$post=Yii::$app->request->post();
-	echo "viay";
-	print_r($post);
-	die;
-	
-	
-	
+		
 	//to create theme for qard
 	$theme=$this->createTheme($post);
 	
@@ -88,8 +83,7 @@ class BlockController extends Controller
 		$tags=$this->createTagsQard($post,$qard->qard_id);
 		
 		if(empty($block->errors) && !is_array($block)){
-		   // echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id));
-		    echo "vijay";
+		    echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image));
 		    exit;
 		    
 		}  else {
@@ -228,6 +222,7 @@ class BlockController extends Controller
 	    }
 	    
 	}else{
+	    echo "qard_title".$post['qard_title'].'--user--'.Yii::$app->user->id."--theme--".$theme_id;
 	    return array('error'=>"empty fields!...");
 	}
 	
@@ -240,14 +235,14 @@ class BlockController extends Controller
     public function createTheme($post){
 	
 	$theme=new Theme();
-	$theme->theme_type=1; //theme type 1 define theme for qard o theme for block
+	$theme->theme_type=0; //theme type 1 define theme for qard o theme for block
 	$theme->theme_properties='test'; // serialized data all theme details
 	
 	$serilized_arr['image_opacity']=$post['image_opacity'];
 	$serilized_arr['div_opacity']=$post['div_opacity'];
 	$serilized_arr['div_bgcolor']=$post['div_bgcolor'];
 	$serilized_arr['height']=$post['height'];
-	$theme->theme_properties=  serialize($serilized_arr);
+	$theme->theme_properties=  serialize($serilized_arr);	
 	
 	//checking whether id present then update or else insert 
 	if(empty($post['theme_id'])){
@@ -269,7 +264,7 @@ class BlockController extends Controller
 	//checking whether tags are present or not
 	if(!empty($post['tags'])){
 	    // tags are in string with comm format 
-	    $tags=  explode(',', $post['tags']);
+	    $tags=  array_unique(explode(',', $post['tags']));
 	    //deleting all records that are present with qard_id
 	    QardTags::deleteAll(['qard_id'=>$qard_id]);
 	    $tag_details='';
@@ -314,7 +309,32 @@ class BlockController extends Controller
 	    $block->extra_text=$post['extra_text'];
 	    $is_true=true;
 	}
-	if(!empty($post['link_image'])){
+	if(!empty($post['thumb_values'])){
+	    
+	    
+	    //upload path for image
+	    $file_path=Yii::$app->basePath.'/web/uploads/block/';
+	    // TO Remove previous image
+	    if(!empty($post['image_name'])){
+		unlink($file_path.$post['image_name']);
+		
+	    }
+	    
+	    /*
+	    * to upload image 
+	    */
+	    $image=  json_decode($post['thumb_values']);
+	    $img = str_replace('data:image/jpeg;base64,', '', $image->data);
+	    $img = str_replace(' ', '+', $img);
+	    $image_data = base64_decode($img);
+	    $image_name='rand_'.rand(0000,9999).'time_'.time().'qid_'.$qard_id.'.JPG';
+	    $file = $file_path .$image_name;
+	    $success = file_put_contents($file, $image_data);
+	    if(!$success){
+		Qard::findOne($qard->qard_id)->delete();
+		Theme::findOne($theme->theme_id)->delete();
+	    }
+	    $post['link_image']=$image_name;
 	    $block->link_image=$post['link_image'];
 	    $is_true=true;
 	}

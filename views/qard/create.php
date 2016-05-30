@@ -35,11 +35,12 @@ $this->title = 'Create Qard';
 	
 	<div class="col-sm-4 col-md-4">
 	    <div class="qard-div add-block">
-	    <div  id="cur_block" class="cur_block">	
-		    <div  id="working_div" class="working_div cur_blk " contenteditable="true" unselectable="off" >
-			<div id="blk_1">
-			</div>
+	    <div  id="cur_block" class="cur_block">
+		
+		<div  id="working_div" class="working_div active"  >
+		    <div id="blk_1" contenteditable="true" unselectable="off">
 		    </div>
+		</div>
 	    </div>
 		<h4 class="add-another" onclick="add_block()">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
 	    </div>
@@ -174,7 +175,8 @@ $this->title = 'Create Qard';
 			      <div class="fallback" >
 				<input name="file" type="file"  />
 			      </div>
-			    </form>  
+			    </form> 
+			    
 			</div>
 			<div class="form-group">
 			    <input type="text" name="link_url" class="form-control" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
@@ -419,31 +421,47 @@ function showtext() {
     
      
     /*
-    * condition
-     */
+    * add_block with all values
+    */
     function add_block(){
 //	
 //	imageonly();
-//
 //	return false;
 	//for image
-	var data=$("#image_upload").serializeArray() || 0;
+	var data=$("#image_upload").serializeArray();
 	
 	var image_opacity=$("#working_div img").css("opacity") || 1; 
-	var div_opacity=$("#working_div div").css("opacity");
+	data.push({name: 'image_opacity', value: image_opacity});
+	
+	var div_opacity=$("#working_div div").css("opacity");	
+	data.push({name: 'div_opacity', value: div_opacity});
+	
 	var div_bgcolor=$("#working_div div").css("background-color");
-	var height=$("#working_div div").css("height");
+	data.push({name: 'div_bgcolor', value: div_bgcolor});
+	
+	var height=parseInt($("#working_div div").css("height"));
+	data.push({name: 'height', value: height});
 	
 	var text=$("#working_div div").html() || 0; 
+	data.push({name: 'text', value: text});
+	
 	var extra_text=$("#extra_text").html() || 0;
+	data.push({name: 'extra_text', value: extra_text});
 	
-	var block_id=$("#block_id").val() || 0;
+	var block_id=$("#block_id").val() || 0;	
+	data.push({name: 'block_id', value: block_id});
+	
 	var qard_id=$("#qard_id").val() || 0;
+	data.push({name: 'qard_id', value: qard_id});
+	
 	var qard_title=$("#qard_title").val() || 0;
+	data.push({name: 'qard_title', value: qard_title});
+	
 	var tags=$("#tags").val() || 0;
+	data.push({name: 'tags', value: tags});
+	
 	var is_title=$("[name='is_title']:checked").val() || 0;
-	
-	
+	data.push({name: 'is_title', value: is_title});
 	
 	if(!qard_title){
 	    return false;
@@ -453,11 +471,33 @@ function showtext() {
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
-	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title,'image_opacity':image_opacity,'div_opacity':div_opacity,'div_bgcolor':div_bgcolor,'height':height,'image':data},
+	   dataType:"json",
+	   data:data,
+//	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title,'image_opacity':image_opacity,'div_opacity':div_opacity,'div_bgcolor':div_bgcolor,'height':height,'image':data},
 	   success:function(data){
-
-
-	       console.log(data);
+	       
+		var qard='';
+		var theme='';
+		if(!qard_id){
+		    qard='<input id="qard_id" type="hidden" value="'+data.qard_id+'">';
+		}
+		
+//		if(!theme_id){
+//		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
+//		}		
+		var block=$("#working_div div").attr("id");
+		block_id=block.split('_');
+		var style='style="height:'+height+',position:relative,background-color:'+div_bgcolor+',opacity:'+div_opacity+'"';
+		var content=$("#working_div div").html();
+		var new_div='<div '+style+' id="'+block+'" >'+content+'</div>';
+		
+		$("#cur_block").css("height",(height+37.5));
+		$("#working_div div").remove();
+		$("#working_div").before(qard+theme+new_div);
+		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
+		$("#working_div").html(new_div);
+	       
+		console.log(data);
 	   }
 
 	});
@@ -471,9 +511,14 @@ function showtext() {
     }
     
     
+    $("#cur_block div").on("click",function(){
+	
+    });
+    
     //height overflow
-    $("#working_div").on("blur keydown",function(){
-	if($(this).height()>600){
+    $("#working_div div").on("blur keydown",function(){
+	
+	if($(this).scrollHeight>600){
 	   $("#Block_error").modal('show');
 	   $("#disp_error").text('can not write on card user extra text to continue!...');
 	   showtext();
