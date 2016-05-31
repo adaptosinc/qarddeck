@@ -41,6 +41,7 @@ class SignUp extends Widget
                               // print_r($model->password);die;
 				$model->generateAuthKey();	
 				$model->login_type = "email";
+				$profile->temp_image = "images/avatar.png";
                           // print_r($model); die;
 				if($model->save(false)){			                                    
                     $profile->user_id = $model->id; 
