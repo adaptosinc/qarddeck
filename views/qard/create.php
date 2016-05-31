@@ -170,7 +170,7 @@ $this->title = 'Create Qard';
 		</div>
 		<div role="tabpanel" class="tab-pane" id="linkblock">
 		    <fieldset>
-			<div class="drop-image">
+			<div class="drop-image" id="link_div">
 			    <form action="/file-upload" >
 			      <div class="fallback" >
 				<input name="file" type="file"  />
@@ -179,7 +179,7 @@ $this->title = 'Create Qard';
 			    
 			</div>
 			<div class="form-group">
-			    <input type="text" name="link_url" class="form-control" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
+			    <input type="text" id="link_url" name="link_url" class="form-control" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
 			    <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
 			</div>
 			<div class="form-group">
@@ -527,6 +527,22 @@ function showtext() {
 	    $("#cur_block").css('height',height);
 	}
     });
+	//ADDED BY DENCY
+	$('input[id=link_url]').on('change',function(){
+		console.log($(this).val());
+		var preview_url = $(this).val();
+		var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
+		$.ajax({
+			url : get_preview_url,
+			type : "GET",
+			data : {'url': preview_url},
+			success : function(data){
+				console.log(data);
+				$('#link_div').html(data);
+				//$('#link_div').load(preview_url);
+			}
+		});
+	});
 </script>
 
 <script type="text/javascript">

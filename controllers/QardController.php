@@ -134,6 +134,7 @@ class QardController extends Controller
 	 */
 	public function actionUrlPreview($url){
 		
+			//$url = $_POST['url'];		
 			$c = curl_init($url);			
 			$options = array(
 				CURLOPT_RETURNTRANSFER => true,     // return web page
@@ -149,6 +150,7 @@ class QardController extends Controller
 			);
 			curl_setopt_array( $c, $options );
 			$html = curl_exec($c);
+			//echo $html;
 			/******************************/
 			if (curl_error($c))
 			$status = curl_getinfo($c, CURLINFO_HTTP_CODE);
@@ -204,14 +206,40 @@ class QardController extends Controller
 					}
 			}
 			/******************************/
-			echo "<h1>".$title."</h1>";
+			echo "<div><h1>".$title."</h1>";
 			echo "<img src='".$image."' />";
 			echo "<p>".$content."</p>";
+			echo '<iframe sandbox="allow-scripts allow-forms" src="render-frame?url='.$url.'" style="border:none"  width="100%" height="500px" ></iframe></div>';
+			//full content
 
-			//then images
-			
 
 			//print_R($img_array);
+	}
+	public function actionRenderFrame($url){
+/* 		$c = curl_init($url);			
+		$options = array(
+			CURLOPT_RETURNTRANSFER => true,     // return web page
+			CURLOPT_HEADER         => false,    // don't return headers
+			CURLOPT_FOLLOWLOCATION => true,     // follow redirects
+			CURLOPT_ENCODING       => "",       // handle all encodings
+			CURLOPT_USERAGENT      => "spider", // who am i
+			CURLOPT_AUTOREFERER    => true,     // set referer on redirect
+			CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
+			CURLOPT_TIMEOUT        => 120,      // timeout on response
+			CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
+			CURLOPT_SSL_VERIFYPEER => false     // Disabled SSL Cert checks
+		);
+		curl_setopt_array( $c, $options );
+		$html = curl_exec($c);	 */	
+		$parse = parse_url($url);
+		$domain = $parse['scheme'] . '://' . $parse['host'] . '/';
+		$content = file_get_contents($url);
+		$base_url = '';
+		$content = str_replace('', $base_url . '', $content);
+		$content = str_replace('src="/', 'src="' . $domain, $content);
+		$content = str_replace('href="/', 'href="' . $domain, $content);
+
+		echo $content;
 	}
     /**
      * Finds the Qard model based on its primary key value.
