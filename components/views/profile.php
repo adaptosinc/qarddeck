@@ -25,10 +25,13 @@ $this->params['breadcrumbs'][] = 'Edit';
                            <div class="row">
                           <div class="profile-img col-sm-2 col-md-2">
                               <?php if($profile->profile_photo==''){?>
-                              <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png" alt="">
+                              <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png" alt=""> 
+							 
                               <?php }else { ?>
                              
                               <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
+							  <br>
+				<button type="button" class="btn  btn-warning remImg"><span class="glyphicon glyphicon-trash">RemoveImage</span></button>
                               <?php } ?>
 
 							  <?php if(\Yii::$app->user->identity->login_type == 'facebook') {
@@ -201,7 +204,13 @@ $this->params['breadcrumbs'][] = 'Edit';
         function checkPassword(){
         
             var file_data = $('#cur_password').val();   
-
+			if(file_data == ''){
+				   $('#ispswdvalid').show();
+                                        $(".updatebtn").attr("disabled", "disabled");
+			}else{
+				 $('#ispswdvalid').hide();
+                                        $(".updatebtn").removeAttr("disabled");     
+			}
                         $.ajax({
                                url: "<?=Url::to(['user/password'], true)?>",                           
                                data: {data: file_data },                        
@@ -221,6 +230,7 @@ $this->params['breadcrumbs'][] = 'Edit';
     $('.verify_password').on('blur', function() {
         var password = $('.password').val();
         var verify_password = $('.verify_password').val();
+		
         if(password != verify_password){
              $('#displayerr').show();
              $(".updatebtn").attr("disabled", "disabled");
@@ -267,8 +277,26 @@ $this->params['breadcrumbs'][] = 'Edit';
                                success: function(){   
                                  
                                }
-                        });
+             
+           });
     });
+	
+	 $(".remImg").click(function(e){   	
+	 
+	  $.ajax({
+                           url: "<?=Url::to(['user/remove'], true)?>",
+                           cache: false,
+                           contentType: false,
+                           processData: false,
+                                         
+                           type: 'post',
+                           success: function(response){   
+                               console.log(response);
+                               $('#profImg').attr('src', '<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png');
+                               count++;
+                           }
+                    });
+	 });
    });    
 </script>
                                                                

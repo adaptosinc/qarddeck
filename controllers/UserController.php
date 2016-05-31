@@ -323,4 +323,18 @@ class UserController extends Controller
              
           }                                  
    }
+    /**
+    * Remove Profile Picture
+    * @return uploaded file name
+    */    
+   public function actionRemove(){              
+		   $idToUpdate =  \Yii::$app->user->id;
+           if (Yii::$app->request->isAjax) { 
+              $profile = Profile::find()->where(['user_id' => $idToUpdate])->one();
+              $profile->temp_image = "images/avatar-lg.png";   
+              $profile->save();
+            //  \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+             
+          }                                  
+   }
 }
