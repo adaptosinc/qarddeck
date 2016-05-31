@@ -76,20 +76,22 @@ class User extends ActiveRecord implements IdentityInterface
  
 
 	$profile = UserProfile::find()->where(['user_id'=>$id])->one();
-        $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+	if($user){
         if(!empty($profile->firstname)){
 		$user->firstname= $profile->firstname.' '.$profile->lastname;
-	}
+		}
         if(!empty($profile->profile_photo)){
             $user->profile_photo= $profile->profile_photo;
-	}
+		}
         if($profile->isEmailEnabled!=0){
 		$user->isPublicEmail=1;
                   $user->showEmail= $profile->display_email;//$user->email;
-	}
+		}
         if($profile->isEmailEnabled==0){
 		$user->isPublicEmail=0;
                 $user->showEmail= 'email@address.com';
+		}		
 	}
 	return $user;
 
@@ -224,7 +226,17 @@ class User extends ActiveRecord implements IdentityInterface
      * to check whether id is already present in db or not
      */
     public function checkId($username){
-	return User::find()->where(['username'=>$username])->one();
-	
+		return User::find()->where(['username'=>$username])->one();	
     }
+	
+	/**
+	 * Check if admin or not
+	 */
+	 public function isAdmin(){
+		 
+		 if(\Yii::$app->user->id && \Yii::$app->user->identity->role == 'admin')
+			 return true;
+		 else
+			 return false;
+	 }
 }

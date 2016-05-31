@@ -45,6 +45,18 @@ class ThemeController extends Controller
     }
 
     /**
+     * Lists all Theme models.
+	 * Used for selecting the theme
+     * @return mixed
+     */	
+	 public function actionSelectTheme()
+	 {
+		$models = Theme::find(['theme_type'=>1])->all();
+		return $this->render('index_theme',[
+			'models' => $models
+		]);
+	 }
+    /**
      * Displays a single Theme model.
      * @param integer $id
      * @return mixed
@@ -64,9 +76,34 @@ class ThemeController extends Controller
     public function actionCreate()
     {
         $model = new Theme();
+		$model->scenario = 'qard_theme';
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->theme_id]);
+        if ($model->load(Yii::$app->request->post())) {
+			$theme_properties = [
+				'theme_color_1' => $model->theme_color_1,
+				'theme_color_2' => $model->theme_color_2,
+				'theme_color_3' => $model->theme_color_3,
+				'theme_color_4' => $model->theme_color_4,
+				'theme_color_5' => $model->theme_color_5,
+				'is_bold' => $model->is_bold,
+				'is_italics' => $model->is_italics,
+				'is_underline' => $model->is_underline,
+				'text_align' => $model->text_align,
+				'text_color' => $model->text_color,
+				'font_style' => $model->font_style,
+				'light_text_color' => $model->light_text_color,
+				'dark_text_color' => $model->dark_text_color,
+				'light_link_color' => $model->light_link_color,
+				'dark_link_color' => $model->dark_link_color,
+				'overlay_opacity' => $model->overlay_opacity,
+				'overlay_color' => $model->overlay_color,
+				'block_background_color' => $model->block_background_color,
+				'element_highlight_color' => $model->element_highlight_color,				
+			];
+			$model->theme_type = 1; //for qard
+			$model->theme_properties = serialize($theme_properties);
+			$model->save();
+            return $this->redirect(['select-theme']);
         } else {
             return $this->render('create_theme', [
                 'model' => $model,
@@ -83,11 +120,56 @@ class ThemeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->theme_id]);
+		$model->scenario = 'qard_theme';
+		$theme_properties = unserialize($model->theme_properties);
+		$model->theme_color_1 = $theme_properties['theme_color_1'];
+		$model->theme_color_2 = $theme_properties['theme_color_2'];
+		$model->theme_color_3 = $theme_properties['theme_color_3'];
+		$model->theme_color_4 = $theme_properties['theme_color_4'];
+		$model->theme_color_5 = $theme_properties['theme_color_5'];
+		$model->is_bold = $theme_properties['is_bold'];
+		$model->is_italics = $theme_properties['is_italics'];
+		$model->is_underline = $theme_properties['is_underline'];
+		$model->text_align = $theme_properties['text_align'];
+		$model->text_color = $theme_properties['text_color'];
+		$model->font_style = $theme_properties['font_style'];
+		$model->light_text_color = $theme_properties['light_text_color'];
+		$model->dark_text_color = $theme_properties['dark_text_color'];
+		$model->light_link_color = $theme_properties['light_link_color'];
+		$model->dark_link_color = $theme_properties['dark_link_color'];
+		$model->overlay_opacity = $theme_properties['overlay_opacity'];
+		$model->overlay_color = $theme_properties['overlay_color'];
+		$model->block_background_color = $theme_properties['block_background_color'];
+		$model->element_highlight_color = $theme_properties['element_highlight_color'];		
+	
+        if ($model->load(Yii::$app->request->post())) {
+			$theme_properties = [
+				'theme_color_1' => $model->theme_color_1,
+				'theme_color_2' => $model->theme_color_2,
+				'theme_color_3' => $model->theme_color_3,
+				'theme_color_4' => $model->theme_color_4,
+				'theme_color_5' => $model->theme_color_5,
+				'is_bold' => $model->is_bold,
+				'is_italics' => $model->is_italics,
+				'is_underline' => $model->is_underline,
+				'text_align' => $model->text_align,
+				'text_color' => $model->text_color,
+				'font_style' => $model->font_style,
+				'light_text_color' => $model->light_text_color,
+				'dark_text_color' => $model->dark_text_color,
+				'light_link_color' => $model->light_link_color,
+				'dark_link_color' => $model->dark_link_color,
+				'overlay_opacity' => $model->overlay_opacity,
+				'overlay_color' => $model->overlay_color,
+				'block_background_color' => $model->block_background_color,
+				'element_highlight_color' => $model->element_highlight_color,				
+			];
+			$model->theme_type = 1; //for qard
+			$model->theme_properties = serialize($theme_properties);
+			$model->save();
+            return $this->redirect(['select-theme']);
         } else {
-            return $this->render('update', [
+            return $this->render('create_theme', [
                 'model' => $model,
             ]);
         }

@@ -35,10 +35,12 @@ $this->title = 'Create Qard';
 	
 	<div class="col-sm-4 col-md-4">
 	    <div class="qard-div add-block">
-	    <div  id="cur_block" class="cur_block">	
-		<div  id="working_div" class="working_div cur_blk " contenteditable="true" unselectable="off" style="background-color:greenyellow">
-			this
+	    <div  id="cur_block" class="cur_block">
+		
+		<div  id="working_div" class="working_div active"  >
+		    <div id="blk_1" contenteditable="true" unselectable="off">
 		    </div>
+		</div>
 	    </div>
 		<h4 class="add-another" onclick="add_block()">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
 	    </div>
@@ -76,7 +78,7 @@ $this->title = 'Create Qard';
 			</div>
 			<div class="form-group col-sm-3 col-md-3">                                            
 			    <ul class="align-elements">
-				<li ><img src="<?=Yii::$app->request->baseUrl?>/images/icon-left.png" alt=""><select id="text_align">
+				<li ><img src="<?=Yii::$app->request->baseUrl?>/images/icon-left.png" alt="">				<select id="text_align">
 					    <option value="justifyLeft">left</option>
 					    <option value="justifyRight">right</option>
 					    <option value="justifyCenter">center</option>
@@ -107,8 +109,8 @@ $this->title = 'Create Qard';
 			    </li>                                              
 			</ul>                                          
 		    </fieldset>
-		    <div id="descfield" style="display: none;">
-			<div name="desc" id="extra_text" class="cur_blk " placeholder="Enter The Text" contenteditable="true" >hel</div>
+		    <div id="descfield" class="working_div" style="display: none;">
+			<div name="desc" id="extra_text" class="cur_blk " placeholder="Enter The Text" contenteditable="true" ></div>
 		    </div>
 		</div>
 		<!--<div role="tabpanel" class="tab-pane" id="fileblock">
@@ -142,18 +144,18 @@ $this->title = 'Create Qard';
 <!--		    </form>-->
 		    <div class="form-group image-elements">
 			<div class="col-sm-3 col-md-3">
-			    <input type="text" name="name" class="form-control" placeholder="Image Opacity (%)">
+			    <input type="text" id="image_opc" class="form-control" placeholder="Image Opacity (%)">
 			</div>
 			<div class="col-sm-3 col-md-3">
-			    <input type="text" name="name" class="form-control" placeholder="Overlay Color (#fff)">
+			    <input type="text" id="overlay_color"  class="form-control" placeholder="Overlay Color (#fff)">
 			</div>
 			<div class="col-sm-3 col-md-3">
-			    <input type="text" name="name" class="form-control" placeholder="Overlay Opacity (%)">
+			    <input type="text" id="overlay_opc" class="form-control" placeholder="Overlay Opacity (%)">
 			</div>
 			<div class="col-sm-3 col-md-3">
 			    <ul>
 				<li><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/place.png" alt=""></a></li>
-				<li><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
+				<li id="reset_image"><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
 			    </ul>
 			</div>                                        
 		    </div>
@@ -173,16 +175,22 @@ $this->title = 'Create Qard';
 			      <div class="fallback" >
 				<input name="file" type="file"  />
 			      </div>
-			    </form>  
+			    </form> 
+			    
 			</div>
 			<div class="form-group">
-			    <input type="text" name="url" class="form-control" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
+			    <input type="text" name="link_url" class="form-control" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
 			    <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
 			</div>
 			<div class="form-group">
-			    <img src="<?=Yii::$app->request->baseUrl?>/images/icon-left.png" alt="" class="col-sm-1 col-md-1" height="25px">
-			    <div class="col-sm-3 col-md-3"><input type="text" name="name" class="form-control" placeholder="Link Color (#ffffff)"></div>
-			    <div class="col-sm-4 col-md-4"><input type="text" name="name" class="form-control col-sm-5 col-md-5" placeholder="Link hover Color (#ffffff)"></div>
+			    <img src="<?=Yii::$app->request->baseUrl?>/images/icon-left.png" alt="" class="col-sm-1 col-md-1" height="25px"><select id="text_align">
+					    <option value="justifyLeft">left</option>
+					    <option value="justifyRight">right</option>
+					    <option value="justifyCenter">center</option>
+					    <option  value="justifyFull">justify</option>
+					</select>
+			    <div class="col-sm-3 col-md-3"><input type="text" id="link_color" class="form-control" placeholder="Link Color (#ffffff)"></div>
+			    <div class="col-sm-4 col-md-4"><input type="text" id="link_hcolor" class="form-control col-sm-5 col-md-5" placeholder="Link hover Color (#ffffff)"></div>
 			    <div class="col-sm-4 col-md-4 on-off">
 				<div class="switch">
 				    <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
@@ -206,11 +214,11 @@ $this->title = 'Create Qard';
 		    <fieldset>
 			<div class="form-group col-sm-6 col-md-6">
 			    <h4>Block Size</h4>
-			    <input type="text" name="blk_size" id="blk-size" pattern="^\d{2}$" class="form-control" placeholder="Number of block units(2)" maxlength="2" min="1" >
+			    <input type="text" name="blk_size" id="blk_size" pattern="^\d{2}$" class="form-control" placeholder="Number of block units(2)" maxlength="2" min="1" >
 			</div>
 			<div class="form-group col-sm-6 col-md-6">
 			    <h4>Block Background Color</h4>
-			    <input type="text" name="blk_color" id="blk-color" class="form-control" placeholder="Background color (#0000)">
+			    <input type="text" name="blk_color" id="bg_color" class="form-control" placeholder="Background color (#0000)">
 			</div>
 			                                         
 		    </fieldset>
@@ -291,12 +299,18 @@ function showtext() {
 	    onAfterCancel:function(){
 		var block_id=$("#block_id").val()|| 16;
 		$.ajax({url:"<?=Url::to(['block/delete-block'], true)?>",type:'post',data:{'block_id':block_id},function(data){console.log(data);}});
+	    },
+	    onSave:function(){
+		console.log("vijaysharma");
 	    }
 	   
 	});
 	
-	
-	$('#text_color').colorpicker();
+	$('.color_picker').colorpicker();
+	$("#link_color").colorpicker();
+	$("#link_hcolor").colorpicker();
+	$("#overlay_color").colorpicker();
+	$("#bg_color").colorpicker();
 	$('#cardtabs a').click(function (e) {
 	  e.preventDefault();
 	  $(this).tab('show');
@@ -329,38 +343,161 @@ function showtext() {
       }
     });
     
-     
-    /*
-    * condition
-     */
-    function add_block(){
+    // for image
+    $("#image_opc").on("keydown",function(){
+	var per=$(this).val();
+	$("#working_div img").css('opacity',per);
+    });
+    
+    $("#overlay_color").on("blur",function(){
+	var color=$(this).val();
+	console.log(color);
+	$("#working_div div").css('background-color',color);
+    });
+    
+    $("#overlay_opc").on("keyup",function(){
+	var per=$(this).val()/100;
+	$("#working_div div").css('opacity',per);
+    });
+    
+    $("#bg_color").on("blur",function(){
+	var color=$(this).val();
+	$("#working_div div").css('background-color',color);
+    });
+    
+    
+    //for block
+    $("#blk_size").on("keyup keydown",function(){
+	var blk_size=parseInt($(this).val()) || 1;
+	size=blk_size*37.5;
+	console.log(size);
+	if(size<600){
+	    $("#working_div").parent().css("height",size);
+	    $("#working_div div").css("min-height",size);
+	}
 	
-	var image=$("#image_upload").serialize();
-//	$("#working_div").css('background-image','url(<?=Yii::$app->request->baseUrl."/uploads/block/vijay.JPG)"?>');
-
+    });
+    
+    
+    function imageonly(){
+	var data=$("#image_upload").serializeArray();
+	//$("#working_div").children().css('background-image','url(<?=Yii::$app->request->baseUrl."/uploads/block/vijay.JPG)"?>');
 	
-	console.log(image);
+	$("#working_div").children().append('<img src="<?=Yii::$app->request->baseUrl.'/uploads/block/vijay.JPG'?>"></img>');
+	
 	return false;
-	var text=$("#working_div").html() || 0; 
-	var extra_text=$("#extra_text").html() || 0;
-	var block_id=$("#block_id").val() || 0;
+	var block_id=$("#block_id").val() || 0;	
+	data.push({name: 'block_id', value: block_id});
+	
 	var qard_id=$("#qard_id").val() || 0;
+	data.push({name: 'qard_id', value: qard_id});
+	
 	var qard_title=$("#qard_title").val() || 0;
+	data.push({name: 'qard_title', value: qard_title});
+	
 	var tags=$("#tags").val() || 0;
+	data.push({name: 'tags', value: tags});
+	
 	var is_title=$("[name='is_title']:checked").val() || 0;
+	data.push({name: 'is_title', value: is_title});
+	
 	if(!qard_title){
 	    return false;
 	}
-	var data=$(this).serializeArray();
+	$.ajax({
+	   url:"<?=Url::to(['block/upload'], true)?>",
+	   type:"POST",
+	   dataType: 'json',
+	   data:data,
+	   success:function(data){
+	       console.log(data);
+	       var image='<img src="<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.response+'" alt="not found">';
+	       //$("#working_div").html(image);
+	       $("#working_div").css("background-image","url(<?=Yii::$app->request->baseUrl?>/uploads/block/"+data.response+")");
+	   }
+
+	});
+    }
+    
+     
+    /*
+    * add_block with all values
+    */
+    function add_block(){
+//	
+//	imageonly();
+//	return false;
+	//for image
+	var data=$("#image_upload").serializeArray();
+	
+	var image_opacity=$("#working_div img").css("opacity") || 1; 
+	data.push({name: 'image_opacity', value: image_opacity});
+	
+	var div_opacity=$("#working_div div").css("opacity");	
+	data.push({name: 'div_opacity', value: div_opacity});
+	
+	var div_bgcolor=$("#working_div div").css("background-color");
+	data.push({name: 'div_bgcolor', value: div_bgcolor});
+	
+	var height=parseInt($("#working_div div").css("height"));
+	data.push({name: 'height', value: height});
+	
+	var text=$("#working_div div").html() || 0; 
+	data.push({name: 'text', value: text});
+	
+	var extra_text=$("#extra_text").html() || 0;
+	data.push({name: 'extra_text', value: extra_text});
+	
+	var block_id=$("#block_id").val() || 0;	
+	data.push({name: 'block_id', value: block_id});
+	
+	var qard_id=$("#qard_id").val() || 0;
+	data.push({name: 'qard_id', value: qard_id});
+	
+	var qard_title=$("#qard_title").val() || 0;
+	data.push({name: 'qard_title', value: qard_title});
+	
+	var tags=$("#tags").val() || 0;
+	data.push({name: 'tags', value: tags});
+	
+	var is_title=$("[name='is_title']:checked").val() || 0;
+	data.push({name: 'is_title', value: is_title});
+	
+	if(!qard_title){
+	    return false;
+	}
+	
 
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
-	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title},
+	   dataType:"json",
+	   data:data,
+//	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title,'image_opacity':image_opacity,'div_opacity':div_opacity,'div_bgcolor':div_bgcolor,'height':height,'image':data},
 	   success:function(data){
-
-
-	       console.log(data);
+	       
+		var qard='';
+		var theme='';
+		if(!qard_id){
+		    qard='<input id="qard_id" type="hidden" value="'+data.qard_id+'">';
+		}
+		
+//		if(!theme_id){
+//		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
+//		}		
+		var block=$("#working_div div").attr("id");
+		block_id=block.split('_');
+		var style='style="height:'+height+',position:relative,background-color:'+div_bgcolor+',opacity:'+div_opacity+'"';
+		var content=$("#working_div div").html();
+		var new_div='<div '+style+' id="'+block+'" >'+content+'</div>';
+		
+		$("#cur_block").css("height",(height+37.5));
+		$("#working_div div").remove();
+		$("#working_div").before(qard+theme+new_div);
+		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
+		$("#working_div").html(new_div);
+	       
+		console.log(data);
 	   }
 
 	});
@@ -372,8 +509,16 @@ function showtext() {
 //	 $("#cur_block").clone().appendTo("#cur_block");
 	
     }
-    $("#working_div").on("change keydown",function(){
-	if($(this).height()>600){
+    
+    
+    $("#cur_block div").on("click",function(){
+	
+    });
+    
+    //height overflow
+    $("#working_div div").on("blur keydown",function(){
+	
+	if($(this).scrollHeight>600){
 	   $("#Block_error").modal('show');
 	   $("#disp_error").text('can not write on card user extra text to continue!...');
 	   showtext();
@@ -386,48 +531,48 @@ function showtext() {
 
 <script type="text/javascript">
 $(function(){
- $('#working_div').focus();
+ $('.working_div').children('div').focus();
  
  /*
   * to make text as bold
   */
- $('#text_bold').click(function(){document.execCommand('bold', false, null);$('#working_div').focus();return false;});
+ $('#text_bold').click(function(){document.execCommand('bold', false, null);$('.working_div').children().focus();return false;});
  
  /*
   * to make text as italic
   */
- $('#text_italic').click(function(){document.execCommand('italic', false, null);$('#working_div').focus();return false;});
+ $('#text_italic').click(function(){document.execCommand('italic', false, null);$('.working_div').children().focus();return false;});
  
  /*
   * to make undeline on text
   */
-$('#text_underline').click(function(){document.execCommand('underline', false, null);$('#working_div').focus();return false;});
+$('#text_underline').click(function(){document.execCommand('underline', false, null);$('.working_div').children().focus();return false;});
 
 /*
  * to justify text
  */
 
 $('#text_align').change(function(){
-    document.execCommand($(this).val(), false, null);$('#working_div').focus();return false;});
+    document.execCommand($(this).val(), false, null);$('.working_div').children().focus();return false;});
 /*
  * to change the size of the text
  */
-$('#text_size').change(function(){document.execCommand("fontSize", false, $(this).val());$('#working_div').focus();return false;});
+$('#text_size').change(function(){document.execCommand("fontSize", false, $(this).val());$('.working_div').children().focus();return false;});
 
 /*
  * to change the font-family of text
  */
-$('#text_family').change(function(){document.execCommand("fontName", false, $(this).val());$('#working_div').focus();return false;});
+$('#text_family').change(function(){document.execCommand("fontName", false, $(this).val());$('.working_div').children().focus();return false;});
 
 /*
  * to change to fore color of the text
  */
-$('#text_color').colorpicker().on('changeColor', function(e) {document.execCommand("foreColor", false, e.color.toHex());$('#working_div').focus();return false;});
+$('#text_color').colorpicker().on('changeColor', function(e) {document.execCommand("foreColor", false, e.color.toHex());$('.working_div').children().focus();return false;});
 
 /*
  * to make text in indent
  */
-$('#text_indent').click(function(){document.execCommand('indent', false, null);$('#working_div').focus();return false;});
+$('#text_indent').click(function(){document.execCommand('indent', false, null);$('.working_div').children().focus();return false;});
 
 });
 </script>

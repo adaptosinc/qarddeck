@@ -12,7 +12,7 @@ and open the template in the editor.
 
 /* qard-div */
 .qard-div{
-    width: 386px;
+    width: 387px;
     height: 600px;
     overflow: hidden;   
 }
@@ -33,5 +33,19 @@ and open the template in the editor.
 #extra_text {
     border: 1px solid;
     height: 400px;
+    min-height: 400px;
+    background-color: #dbd3d3;
+}
+#working_div img{
+    width: 100%;
+    height: 100%;
+    
+   
+}
+
+#working_div div{
+    min-height: 37.5px;
+    background-color:#ede4e4;
+    border:.1px solid #000;
 }
 

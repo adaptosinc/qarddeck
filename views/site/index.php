@@ -11,7 +11,7 @@ use app\assets\AppAsset;
     <h5 class="text-success><b><?= Yii::$app->session->getFlash('fb-success');?></b?</h5>
     <div class="action-qard">
 	<button class="btn btn-default qard">Qards in Action</button>
-	<button class="btn btn-warning">Create a Qard</button>
+	<button class="btn btn-warning" onClick="window.location = '<?php echo \Yii::$app->homeUrl?>/qard/create';">Create a Qard</button>
 	<button class="btn btn-default qard">Introductory Video</button>
     </div>
     <div class="qards-list">        <!-- qard list -->
