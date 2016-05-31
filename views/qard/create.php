@@ -466,8 +466,6 @@ function showtext() {
 	if(!qard_title){
 	    return false;
 	}
-	
-
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
@@ -484,7 +482,10 @@ function showtext() {
 		
 //		if(!theme_id){
 //		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
-//		}		
+//		}
+//		if(!theme_id){
+//		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
+//		}
 		var block=$("#working_div div").attr("id");
 		block_id=block.split('_');
 		var style='style="height:'+height+',position:relative,background-color:'+div_bgcolor+',opacity:'+div_opacity+'"';
@@ -496,7 +497,6 @@ function showtext() {
 		$("#working_div").before(qard+theme+new_div);
 		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
 		$("#working_div").html(new_div);
-	       
 		console.log(data);
 	   }
 

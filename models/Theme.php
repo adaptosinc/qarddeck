@@ -57,7 +57,7 @@ class Theme extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['theme_name'], 'required'],
+            [['theme_name'], 'required',"on"=>"qard-theme"],
             [['theme_type'], 'integer'],
             [['theme_properties'], 'string'],
             [['theme_name'], 'string', 'max' => 255],
