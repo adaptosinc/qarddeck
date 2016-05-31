@@ -29,17 +29,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                               <?php }else { ?>
                              
                               <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
-                              <?php } ?>
-
-							  <?php if(\Yii::$app->user->identity->login_type == 'facebook') {
-								//fetch id here
-								$arr = explode('_',\Yii::$app->user->identity->username);
-								$f_id = $arr[1];
-							  ?>
-							  <img id="profImg" class="profImg" src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=large">
-							  <?php } ?>
-
-							  
+                              <?php } ?>							  
                               <input id="profile-image-upload" name="image" class="hidden" type="file">
                                        </div>
                           <div class="profile-content col-sm-10 col-md-10">

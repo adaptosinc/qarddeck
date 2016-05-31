@@ -51,7 +51,7 @@ class ThemeController extends Controller
      */	
 	 public function actionSelectTheme()
 	 {
-		$models = Theme::find()->all();
+		$models = Theme::find(['theme_type'=>1])->all();
 		return $this->render('index_theme',[
 			'models' => $models
 		]);
@@ -76,6 +76,7 @@ class ThemeController extends Controller
     public function actionCreate()
     {
         $model = new Theme();
+		$model->scenario = 'qard_theme';
 
         if ($model->load(Yii::$app->request->post())) {
 			$theme_properties = [
@@ -119,6 +120,7 @@ class ThemeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+		$model->scenario = 'qard_theme';
 		$theme_properties = unserialize($model->theme_properties);
 		$model->theme_color_1 = $theme_properties['theme_color_1'];
 		$model->theme_color_2 = $theme_properties['theme_color_2'];
