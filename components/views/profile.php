@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                               <?php }else { ?>
                              
                               <img id="profImg" class="profImg" src="<?= $profile->profile_photo?>" alt="">
-<<<<<<< HEAD
+
 							  <br>
 				<button type="button" class="btn  btn-warning remImg"><span class="glyphicon glyphicon-trash">RemoveImage</span></button>
                               <?php } ?>
@@ -43,10 +43,6 @@ $this->params['breadcrumbs'][] = 'Edit';
 							  <img id="profImg" class="profImg" src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=large">
 							  <?php } ?>
 
-							  
-=======
-                              <?php } ?>							  
->>>>>>> 059c353d20f71a0d7ea2bf7b60d20abecea55cb9
                               <input id="profile-image-upload" name="image" class="hidden" type="file">
                                        </div>
                           <div class="profile-content col-sm-10 col-md-10">
