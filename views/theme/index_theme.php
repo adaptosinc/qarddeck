@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<?php
 			foreach($models as $model){
 				$theme_properties = unserialize($model->theme_properties);
-				echo '<div class="qard-bg col-sm-2 col-md-2">     <!-- qard -->
+				echo '<div class="qard-bg col-sm-2 col-md-2" id="'.$model->theme_id.'">     <!-- qard -->
 						<div class="qard-top">
 							<h4>'.$model->theme_name.'</h4>
 						</div>
@@ -50,3 +50,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		</div>      <!-- template list -->
 		<h4 style="margin-top: 30px;">Select a Theme</h4>
 	</section>
+	<script>
+	$('.qard-bg').on('click',function(){
+		var id = $(this).attr('id');
+		window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+id;
+	});
+	</script>

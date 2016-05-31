@@ -356,7 +356,7 @@ function showtext() {
     });
     
     $("#overlay_opc").on("keyup",function(){
-	var per=$(this).val();
+	var per=$(this).val()/100;
 	$("#working_div div").css('opacity',per);
     });
     

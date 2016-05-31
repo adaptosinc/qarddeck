@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Qard;
+use app\models\Theme;
 use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -60,14 +61,25 @@ class QardController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($theme_id=null)
     {
         $model = new Qard();
+		if(!$theme_id){
+			//go and select a theme and then come back
+			return $this->redirect(['theme/select-theme']);
+		}
+		else{
+			$theme = Theme::findOne($theme_id);
+			if(!$theme){
+				\Yii::$app->getSession()->setFlash('error', 'Please select a theme');
+				return $this->redirect(['theme/select-theme']);
+			}
+		}
         if (Yii::$app->request->post()) {
-	    echo "viay";
-	    print_r($_POST);
-	    print_r($_FILES);
-	    exit(0);
+			echo "viay";
+			print_r($_POST);
+			print_r($_FILES);
+			exit(0);
            // return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
             if(!$this->isMobile()){ 
@@ -131,12 +143,10 @@ class QardController extends Controller
         }
     }     
     public function actionTest() {	
-	return $this->render('test');
-	
+		return $this->render('test');	
     }
     public function actionWyiswyg() {	
-	return $this->render('wyiswyg');
-	
+		return $this->render('wyiswyg');	
     }
      public function isMobile(){
          return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
