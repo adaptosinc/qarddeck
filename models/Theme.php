@@ -57,14 +57,19 @@ class Theme extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['theme_name'], 'required',"on"=>"qard-theme"],
+            [['theme_name'], 'required','on'=>'qard_theme'],
             [['theme_type'], 'integer'],
             [['theme_properties'], 'string'],
             [['theme_name'], 'string', 'max' => 255],
 			[['theme_color_1','theme_color_2','theme_color_3','theme_color_4','theme_color_5','is_bold','is_italics','is_underline','text_align','text_color','font_style','light_text_color','dark_text_color','light_link_color','dark_link_color','overlay_opacity','overlay_color','block_background_color','element_highlight_color'] , 'safe'	]
         ];
     }
-
+	public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['qard_theme'] = ['theme_name','theme_color_1','theme_color_2','theme_color_3','theme_color_4','theme_color_5','is_bold','is_italics','is_underline','text_align','text_color','font_style','light_text_color','dark_text_color','light_link_color','dark_link_color','overlay_opacity','overlay_color','block_background_color','element_highlight_color'];//Scenario Values Only Accepted
+        return $scenarios;
+    }
     /**
      * @inheritdoc
      */
