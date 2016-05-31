@@ -126,7 +126,93 @@ class QardController extends Controller
 
         return $this->redirect(['index']);
     }
+	/**
+	 * Fetch the h2 and image from a url 
+	 * For url preview
+	 * @param string $url
+	 * @return mixed
+	 */
+	public function actionUrlPreview($url){
+		
+			$c = curl_init($url);			
+			$options = array(
+				CURLOPT_RETURNTRANSFER => true,     // return web page
+				CURLOPT_HEADER         => false,    // don't return headers
+				CURLOPT_FOLLOWLOCATION => true,     // follow redirects
+				CURLOPT_ENCODING       => "",       // handle all encodings
+				CURLOPT_USERAGENT      => "spider", // who am i
+				CURLOPT_AUTOREFERER    => true,     // set referer on redirect
+				CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
+				CURLOPT_TIMEOUT        => 120,      // timeout on response
+				CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
+				CURLOPT_SSL_VERIFYPEER => false     // Disabled SSL Cert checks
+			);
+			curl_setopt_array( $c, $options );
+			$html = curl_exec($c);
+			/******************************/
+			if (curl_error($c))
+			$status = curl_getinfo($c, CURLINFO_HTTP_CODE);
+			curl_close($c);	
+			$doc = new \DOMDocument();
+			@$doc->loadHTML($html);
+			/******************************/
+			$img_array = [];
+			$content = false;
+			$title =false;
+			$image = false;
+			/******************************/
+			//h2's first
+			$titles = $doc->getElementsByTagName('title');
+			if($titles->length > 0){ 
+				foreach($titles as $title){
+					$title = $title->textContent;
+				}
+			}
+			/******************************/
+			//get image and content from meta
+			$metas = $doc->getElementsByTagName('meta');
+			if($metas->length > 0){
+				foreach($metas as $meta){
+					if($meta->getAttribute('property') == 'og:image' && $meta->getAttribute('content')!= '')
+						$img_array[] = $meta->getAttribute('content');
+					if($meta->getAttribute('name') && $meta->getAttribute('name')=='description')
+						$content = $meta->getAttribute('content');
+				}				
+			}
+			//if no image from meta
+			if(count($img_array) == 0 ){
+				$images = $doc->getElementsByTagName('img');
+				if($images->length > 0){
+					foreach($images as $img){
+						if($img->getAttribute('src')!='')
+							$img_array[] = $img->getAttribute('src');
+					}
+				}				
+			}
+			if(isset($img_array[0]))
+				$image = $img_array[0];
+			//if no content from meta
+			if(!$content){
+				$ps = $doc->getElementsByTagName('p');
+				if($ps->length > 0)
+					$i=0;
+					foreach($ps as $p){
+						//we need only the first P
+						if($i==0)
+							$content = $p->textContent;
+						$i++;
+					}
+			}
+			/******************************/
+			echo "<h1>".$title."</h1>";
+			echo "<img src='".$image."' />";
+			echo "<p>".$content."</p>";
 
+			//then images
+			
+
+			//print_R($img_array);
+	}
     /**
      * Finds the Qard model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
