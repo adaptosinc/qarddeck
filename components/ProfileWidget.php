@@ -27,9 +27,7 @@ class ProfileWidget extends Widget
         if($profile->load(Yii::$app->request->post())){
             
             $newProfile = Profile::find()->where(['user_id' => $id])->one();
-	
-				$profile->profile_photo = \Yii::$app->homeUrl.$newProfile->temp_image; 
-			
+			$profile->profile_photo = \Yii::$app->homeUrl.$newProfile->temp_image; 			
             $profile->validate();
             if($profile->errors || $model->errors){
                     foreach($model->errors as $error){

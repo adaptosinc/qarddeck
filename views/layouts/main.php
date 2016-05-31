@@ -45,7 +45,8 @@ AppAsset::register($this);
                             <button class="btn btn-default qard" data-toggle="modal" data-target="#myModaledit">Edit</button>
                         </li>
                         <li>
-                            <?php if(\Yii::$app->user->identity->profile_photo){ ?>
+						
+                            <?php if(\Yii::$app->user->identity->profile_photo !=Yii::$app->request->baseUrl){ ?>
                                 <img id="profpic" class="profPic" src="<?=\Yii::$app->user->identity->profile_photo?>" alt="">
                             <?php }else { ?>  
 
