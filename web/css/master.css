@@ -571,7 +571,7 @@ section.main-profile .main-content {
 }
 .qard-content {
     min-height: 350px;
-    border: 2px solid #8d8d8d;
+    /**border: 2px solid #8d8d8d;**/
     box-shadow: 1px 3px 10px #E6E6E6;
     border-radius: 2px;
 }
@@ -1001,9 +1001,17 @@ ul.font-elements li input {
     clear: both;
     display: block;
     border: 1px solid #eaeaea;
-    max-width: 40px;
+    max-width: 60px;
     min-height: 40px;
     margin: 0 auto;
+}
+ul.font-elements li div input {
+    border: 0;
+    border-bottom: 1px solid #eaeaea;
+}
+.font-elements div input {
+    border: 0;
+    border-bottom: 1px solid #eaeaea;
 }
 ul.font-elements li {
     float: left;
@@ -1022,7 +1030,7 @@ ul.font-elements li {
     clear: both;
     display: block;
     border: 1px solid #eaeaea;
-    max-width: 40px;
+    max-width: 60px;
     min-height: 40px;
     margin: 0 auto;
 }
@@ -1038,6 +1046,14 @@ ul.font-elements li {
     min-height: 70px;
     
 }
+
+input[type="color"] {
+	background:transparent;
+	padding:0;
+	border:0 !important;
+}
+/*.themebg1 .bgcolor {
+
 .themebg1 .bgcolor {
     background: #0b1120;
 }
@@ -1053,23 +1069,43 @@ ul.font-elements li {
 .themebg5 .bgcolor {
     background: #8bfae0;
 }
+
+}*/
+button.edit_theme {
+    border-radius: 10px;
+    border: 2px solid #8d8d8d;
+    margin-top: 8px;
+}
 button#align_list {
     padding: 0;
     background: transparent;
     border: 0;
     margin-right: 5px;
+    color: grey !important;
+    font-size: 28px;
 }
 #align_list .caret {
-    margin-left: -10px;
+    margin-left: -5px;
 }
 #align_list ul li a {
     color: grey;
     
 }
+.align_icon{
+    color: grey !important;
+    font-size: 28px;
+	padding: 6px !important;
+}
  ul.dropdown-menu>li>a {
     color: grey !important;
     font-size: 28px;
 }
+
+a.on {
+    color: #F5813B !important;
+}
+=======
+>>>>>>> 29b0de0d0f12da591c2848687e7fa40f412c1048
 
 /* =====================
  *   Theme Selection
@@ -1215,5 +1251,5 @@ button#align_list {
     max-height: 300px !important;
 }
 .dropzone img.ghost {
-    opacity: 0 !important;
+    opacity: 0;
 }
