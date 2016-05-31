@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Qard;
+use app\models\Theme;
 use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -60,14 +61,25 @@ class QardController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($theme_id=null)
     {
         $model = new Qard();
+		if(!$theme_id){
+			//go and select a theme and then come back
+			return $this->redirect(['theme/select-theme']);
+		}
+		else{
+			$theme = Theme::findOne($theme_id);
+			if(!$theme){
+				\Yii::$app->getSession()->setFlash('error', 'Please select a theme');
+				return $this->redirect(['theme/select-theme']);
+			}
+		}
         if (Yii::$app->request->post()) {
-	    echo "viay";
-	    print_r($_POST);
-	    print_r($_FILES);
-	    exit(0);
+			echo "viay";
+			print_r($_POST);
+			print_r($_FILES);
+			exit(0);
            // return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
             if(!$this->isMobile()){ 
@@ -114,7 +126,121 @@ class QardController extends Controller
 
         return $this->redirect(['index']);
     }
+	/**
+	 * Fetch the h2 and image from a url 
+	 * For url preview
+	 * @param string $url
+	 * @return mixed
+	 */
+	public function actionUrlPreview($url){
+		
+			//$url = $_POST['url'];		
+			$c = curl_init($url);			
+			$options = array(
+				CURLOPT_RETURNTRANSFER => true,     // return web page
+				CURLOPT_HEADER         => false,    // don't return headers
+				CURLOPT_FOLLOWLOCATION => true,     // follow redirects
+				CURLOPT_ENCODING       => "",       // handle all encodings
+				CURLOPT_USERAGENT      => "spider", // who am i
+				CURLOPT_AUTOREFERER    => true,     // set referer on redirect
+				CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
+				CURLOPT_TIMEOUT        => 120,      // timeout on response
+				CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
+				CURLOPT_SSL_VERIFYPEER => false     // Disabled SSL Cert checks
+			);
+			curl_setopt_array( $c, $options );
+			$html = curl_exec($c);
+			//echo $html;
+			/******************************/
+			if (curl_error($c))
+			$status = curl_getinfo($c, CURLINFO_HTTP_CODE);
+			curl_close($c);	
+			$doc = new \DOMDocument();
+			@$doc->loadHTML($html);
+			/******************************/
+			$img_array = [];
+			$content = false;
+			$title =false;
+			$image = false;
+			/******************************/
+			//h2's first
+			$titles = $doc->getElementsByTagName('title');
+			if($titles->length > 0){ 
+				foreach($titles as $title){
+					$title = $title->textContent;
+				}
+			}
+			/******************************/
+			//get image and content from meta
+			$metas = $doc->getElementsByTagName('meta');
+			if($metas->length > 0){
+				foreach($metas as $meta){
+					if($meta->getAttribute('property') == 'og:image' && $meta->getAttribute('content')!= '')
+						$img_array[] = $meta->getAttribute('content');
+					if($meta->getAttribute('name') && $meta->getAttribute('name')=='description')
+						$content = $meta->getAttribute('content');
+				}				
+			}
+			//if no image from meta
+			if(count($img_array) == 0 ){
+				$images = $doc->getElementsByTagName('img');
+				if($images->length > 0){
+					foreach($images as $img){
+						if($img->getAttribute('src')!='')
+							$img_array[] = $img->getAttribute('src');
+					}
+				}				
+			}
+			if(isset($img_array[0]))
+				$image = $img_array[0];
+			//if no content from meta
+			if(!$content){
+				$ps = $doc->getElementsByTagName('p');
+				if($ps->length > 0)
+					$i=0;
+					foreach($ps as $p){
+						//we need only the first P
+						if($i==0)
+							$content = $p->textContent;
+						$i++;
+					}
+			}
+			/******************************/
+			echo "<div><h1>".$title."</h1>";
+			echo "<img src='".$image."' />";
+			echo "<p>".$content."</p>";
+			echo '<iframe sandbox="allow-scripts allow-forms" src="render-frame?url='.$url.'" style="border:none"  width="100%" height="500px" ></iframe></div>';
+			//full content
 
+
+			//print_R($img_array);
+	}
+	public function actionRenderFrame($url){
+/* 		$c = curl_init($url);			
+		$options = array(
+			CURLOPT_RETURNTRANSFER => true,     // return web page
+			CURLOPT_HEADER         => false,    // don't return headers
+			CURLOPT_FOLLOWLOCATION => true,     // follow redirects
+			CURLOPT_ENCODING       => "",       // handle all encodings
+			CURLOPT_USERAGENT      => "spider", // who am i
+			CURLOPT_AUTOREFERER    => true,     // set referer on redirect
+			CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
+			CURLOPT_TIMEOUT        => 120,      // timeout on response
+			CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
+			CURLOPT_SSL_VERIFYPEER => false     // Disabled SSL Cert checks
+		);
+		curl_setopt_array( $c, $options );
+		$html = curl_exec($c);	 */	
+		$parse = parse_url($url);
+		$domain = $parse['scheme'] . '://' . $parse['host'] . '/';
+		$content = file_get_contents($url);
+		$base_url = '';
+		$content = str_replace('', $base_url . '', $content);
+		$content = str_replace('src="/', 'src="' . $domain, $content);
+		$content = str_replace('href="/', 'href="' . $domain, $content);
+
+		echo $content;
+	}
     /**
      * Finds the Qard model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -131,12 +257,10 @@ class QardController extends Controller
         }
     }     
     public function actionTest() {	
-	return $this->render('test');
-	
+		return $this->render('test');	
     }
     public function actionWyiswyg() {	
-	return $this->render('wyiswyg');
-	
+		return $this->render('wyiswyg');	
     }
      public function isMobile(){
          return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);

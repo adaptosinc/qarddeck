@@ -45,7 +45,8 @@ AppAsset::register($this);
                             <button class="btn btn-default qard" data-toggle="modal" data-target="#myModaledit">Edit</button>
                         </li>
                         <li>
-                            <?php if(\Yii::$app->user->identity->profile_photo){ ?>
+						
+                            <?php if(\Yii::$app->user->identity->profile_photo !=Yii::$app->request->baseUrl){ ?>
                                 <img id="profpic" class="profPic" src="<?=\Yii::$app->user->identity->profile_photo?>" alt="">
                             <?php }else { ?>  
 
@@ -242,18 +243,23 @@ AppAsset::register($this);
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->    
-    <?= Yii::$app->session->getFlash('success');?>         
+    <div align="center" style="color:red"><!--Showing errors -->
+		<?= Yii::$app->session->getFlash('error');?>
+	</div>
+	<div align="center" style="color:green"><!--Showing success -->
+		<?= Yii::$app->session->getFlash('success');?>
+	</div>
     <?= $content ?>     
 </div>
 <?php $this->endBody() ?>
 </body>
 <?php
-if(Yii::$app->session->getFlash('email_reg_error')){
-    echo '<script>$(document).ready(function(){$("#myModalemail").modal("show");});</script>';
-}
-if(Yii::$app->session->getFlash('profile_update_error')){
-    echo '<script>$(document).ready(function(){$("#myModaledit").modal("show");});</script>';
-}
+	if(Yii::$app->session->getFlash('email_reg_error')){
+		echo '<script>$(document).ready(function(){$("#myModalemail").modal("show");});</script>';
+	}
+	if(Yii::$app->session->getFlash('profile_update_error')){
+		echo '<script>$(document).ready(function(){$("#myModaledit").modal("show");});</script>';
+	}
 ?>
 </html>
 <?php $this->endPage() ?>
