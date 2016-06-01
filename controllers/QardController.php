@@ -206,12 +206,25 @@ class QardController extends Controller
 					}
 			}
 			/******************************/
+			$parse = parse_url($url);
+			$domain = $parse['scheme'] . '://' . $parse['host'] . '/';
+			$base_url = '';	
+			// singlebyte strings
+			$first =  substr($image, 0, 1);
+			$result = substr($image, 0, 2);
+			if($first == '/' && $result != '//')
+				$image = $domain.$image;
+			//echo $domain;echo $result;
+			/******************************/
+			//;die;
 			echo "<div><h1>".$title."</h1>";
 			echo "<img src='".$image."' />";
 			echo "<p>".$content."</p>";
-			echo '<iframe sandbox="allow-scripts allow-forms" src="render-frame?url='.$url.'" style="border:none"  width="100%" height="500px" ></iframe></div>';
+			if($this->isFrameAllowed($url))
+				echo '<iframe sandbox="allow-scripts allow-forms" src="'.$url.'" style="border:none"  width="100%" height="500px" ></iframe></div>';
+			else echo '<div style="color: red;">Framing is not allowed for this site. Please enable "Open Link in New Tab"</div>';
 			//full content
-
+			
 
 			//print_R($img_array);
 	}
@@ -240,6 +253,29 @@ class QardController extends Controller
 		$content = str_replace('href="/', 'href="' . $domain, $content);
 
 		echo $content;
+	}
+	public function isFrameAllowed($url){
+		$h = get_headers($url,1);
+/* 		print_r($h);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_FILETIME, true);
+        curl_setopt($curl, CURLOPT_NOBODY, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, true);	
+		curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,false);
+		$headers = curl_exec($curl);	
+		$info = curl_getinfo($curl);
+		print_r($headers);
+		print_r($info); */
+		if(isset($h['X-Frame-Options'])){
+			if($h['X-Frame-Options'] == "sameorigin" || $h['X-Frame-Options'] =="SAMEORIGIN" ||  $h['X-Frame-Options'] == "DENY" || $h['X-Frame-Options'] == "deny")
+				return false;
+			else
+				return true;
+		} 
+		else
+		 return true;
 	}
     /**
      * Finds the Qard model based on its primary key value.
