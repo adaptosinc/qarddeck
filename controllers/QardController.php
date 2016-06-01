@@ -75,7 +75,22 @@ class QardController extends Controller
 				return $this->redirect(['theme/select-theme']);
 			}
 		}
-        if (Yii::$app->request->post()) {
+        if ($model->load(Yii::$app->request->post())) {
+			
+			if(!\Yii::$app->user->id){
+				//save false here with out user id and status as draft
+				$model->save(false);
+				//aftersave take the qard-id as a param and send to login page
+				$q_id = $model->qard_id;
+				return $this->redirect(['user/login','qard_id'=>$q_id]);
+				//at login/sign-up,check if qard-id is there,if yes assign the user to the same qard once logged in
+			}
+				
+			
+			
+			
+
+			
 			echo "viay";
 			print_r($_POST);
 			print_r($_FILES);
