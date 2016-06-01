@@ -34,16 +34,16 @@ $this->title = 'Create Qard';
     <div class="row">
 	
 	<div class="col-sm-4 col-md-4">
-	    <div class="qard-div add-block">
+	    <div id="add-block" class="qard-div add-block">
 		<!--<div  id="cur_block" class="cur_block">-->	
-		<div id="blk_2" data-height="2" style="height: 75px;background-color: graytext">
+<!--		<div id="blk_2" data-height="2" style="height: 75px;background-color: graytext">
 		    its static now so tomorrow still has to work on remove blank spaces
 		</div>
 		<div id="blk_1" data-height="1" style="height: 37.5px;background-color: yellowgreen" >
 		    
-		</div>
-		<div  id="working_div" class="working_div active"  >
-		    <div id="blk_3" data-height="1" contenteditable="true" unselectable="off">
+		</div>-->
+		<div  id="working_div" class="working_div block active"  >
+		    <div id="blk_1" class="current_blk" data-height="1" contenteditable="true" unselectable="off">
 		    </div>
 		</div>
 		<!--</div>-->
@@ -306,7 +306,20 @@ function showtext() {
 	//increase height of the div
 	$(document).bind("blur keydown keyup","#working_div div",function(event){
 	    checkHeight(event);
+	    removeBr();
 	});
+	
+	$(document).delegate('.add-block > div',"dblclick",function(event){
+	    console.log("viay");
+	    $("#working_div div").unwrap();
+	    $('#working_div div').removeAttr("unselectable",'off');
+	    $("#working_div div").removeAttr("contenteditable",'true');
+	    $(this).wrap('<div  id="working_div" class="working_div active"></div>');
+	    $(this).attr("unselectable",'off');
+	    $(this).attr("contenteditable",'true');
+	});
+	
+	
 	// for image or file drop
 	$('.dropzone').html5imageupload();
 	
@@ -359,6 +372,23 @@ function showtext() {
 	source: citynames.ttAdapter()
       }
     });
+    
+    function getStyle(){
+    
+	var data=[];
+	var image_opacity=$("#working_div img").css("opacity") || 1; 
+	var div_opacity=$("#working_div div").css("opacity");
+	var div_bgcolor=$("#working_div div").css("background-color");
+	var height=parseInt($("#working_div div").attr("data-height"))*37.5;
+	
+	
+	data.push({name: 'image_opacity', value: image_opacity});
+	data.push({name: 'div_opacity', value: div_opacity});
+	data.push({name: 'div_bgcolor', value: div_bgcolor});
+	data.push({name: 'height', value: height});
+    }
+    
+    
     
     // for image
     $("#image_opc").on("keydown",function(){
@@ -443,7 +473,7 @@ function showtext() {
 	var total_height=0;
 	$(".qard-div div").each(function(){
 	    if($(this).attr("id")!="working_div"){ //|| $(this).attr("id")==$("working_div div").attr("id")){
-		console.log("hei"+$(this).attr("data-height"));
+//		console.log("hei"+$(this).attr("data-height"));
 		total_height +=parseInt($(this).attr("data-height"))*37.5;
 	    }
 	    
@@ -472,7 +502,7 @@ function showtext() {
     }
     function checkHeight(e){
 	var total_height=totalHeight();
-	console.log("viay"+total_height);
+//	console.log("viay"+total_height);
 //	console.log($("#working_div div")[0].scrollHeight+">"+$("#working_div div")[0].offsetHeight);
 	
 
@@ -565,6 +595,9 @@ function showtext() {
 	if(!qard_title){
 	    return false;
 	}
+//	console.log(data);
+//	
+//	return false;
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
@@ -589,16 +622,16 @@ function showtext() {
 //		}
 		var block=$("#working_div div").attr("id");
 		block_id=block.split('_');
-		var style='style="height:'+height+',position:relative,background-color:'+div_bgcolor+',opacity:'+div_opacity+'"';
+		var style='style="height:'+height+'px;position:relative;background-color:'+div_bgcolor+';opacity:'+div_opacity+';"';
 		var content=$("#working_div div").html();
-		var new_div='<div data-height="'+(height/37.5)+'" '+style+' id="'+block+'" >'+content+'</div>';
+		var new_div='<div data-height="'+(height/37.5)+'" data-block_id="'+data.block_id+'"  '+style+' id="'+block+'"  >'+content+'</div>';
 		
 		
 		
 //		$("#cur_block").css("height",(height+37.5));
 		$("#working_div div").remove();
 		$("#working_div").before(qard+theme+new_div);
-		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" data-height="1" contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
+		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" class="current_blk" data-height="1" contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
 		$("#working_div").html(new_div);
 		console.log(data);
 	   }
