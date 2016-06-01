@@ -35,14 +35,20 @@ $this->title = 'Create Qard';
 	
 	<div class="col-sm-4 col-md-4">
 	    <div class="qard-div add-block">
-	    <div  id="cur_block" class="cur_block">
-		
+		<!--<div  id="cur_block" class="cur_block">-->	
+		<div id="blk_2" data-height="2" style="height: 75px;background-color: graytext">
+		    its static now so tomorrow still has to work on remove blank spaces
+		</div>
+		<div id="blk_1" data-height="1" style="height: 37.5px;background-color: yellowgreen" >
+		    
+		</div>
 		<div  id="working_div" class="working_div active"  >
-		    <div id="blk_1" contenteditable="true" unselectable="off">
+		    <div id="blk_3" data-height="1" contenteditable="true" unselectable="off">
 		    </div>
 		</div>
-	    </div>
-		<h4 class="add-another" onclick="add_block()">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
+		<!--</div>-->
+	    
+		<h4 class="add-another" onclick="add_block(event)">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
 	    </div>
 	</div>
 	<div class="col-sm-8 col-md-8">
@@ -67,6 +73,12 @@ $this->title = 'Create Qard';
 			    <select id="text_size">
 				<option> 1</option>
 				<option> 2</option>
+				<option> 3</option>
+				<option> 4</option>
+				<option> 5</option>
+				<option> 6</option>
+				<option> 7</option>
+				<option> 8</option>
 			    </select>
 			</div>
 			<div class="form-group col-sm-3 col-md-3">                                            
@@ -289,7 +301,12 @@ function showtext() {
 <script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
 <script type="text/javascript">
 	  
-    $(function(){
+    $(function(){ 
+	
+	//increase height of the div
+	$('#working_div div').on("blur keydown keyup",function(event){
+	    checkHeight(event);
+	});
 	// for image or file drop
 	$('.dropzone').html5imageupload();
 	
@@ -345,7 +362,7 @@ function showtext() {
     
     // for image
     $("#image_opc").on("keydown",function(){
-	var per=$(this).val();
+	var per=parseInt($(this).val())/100;
 	$("#working_div img").css('opacity',per);
     });
     
@@ -356,7 +373,7 @@ function showtext() {
     });
     
     $("#overlay_opc").on("keyup",function(){
-	var per=$(this).val()/100;
+	var per=parseInt($(this).val())/100;
 	$("#working_div div").css('opacity',per);
     });
     
@@ -419,11 +436,66 @@ function showtext() {
 	});
     }
     
+    /*
+    * to find total height
+     */
+    function totalHeight(){
+	var total_height=0;
+	$(".qard-div div").each(function(){
+	    if($(this).attr("id")!="working_div"){ //|| $(this).attr("id")==$("working_div div").attr("id")){
+//		console.log("hei"+$(this).attr("data-height"));
+		total_height +=parseInt($(this).attr("data-height"))*37.5;
+	    }
+	    
+	}); 
+//	total_height +=parseInt($("#working_div div")[0].offsetHeight);
+	return total_height;
+    
+    }
+    
+    
+    function checkHeight(e){
+	var total_height=totalHeight();
+	console.log(total_height);
+	console.log($("#working_div div")[0].scrollHeight+">"+$("#working_div div")[0].offsetHeight);
+
+	if(total_height>(600)){
+	    if ((e.which < 65 || e.which > 122) && (e.which < 48 || e.which > 57) && (e.which < 37 || e.which > 40))
+	    {
+		alret("sdf");
+		e.preventDefault();
+	    }
+	}
+	
+	
+	if($("#working_div div")[0].scrollHeight>$("#working_div div")[0].offsetHeight && total_height<=(600-37.5)){
+	    height_number=parseInt($("#working_div div").attr("data-height"))+1;
+	    height=height_number*37.5;
+	    $("#working_div div").css("height",height);
+	    $("#working_div div").attr("data-height",height_number); 
+	}else if($("#working_div div")[0].scrollHeight>$("#working_div div")[0].offsetHeight){
+	    if ((e.which < 65 || e.which > 122) && (e.which < 48 || e.which > 57) && (e.which < 37 || e.which > 40) && e.keyCode!=8)
+	    {
+		
+		console.log("key"+e.keyCode);
+		e.preventDefault();
+	    }
+	}else{
+	    console.log($("#working_div div").last().find('br'));
+	}
+    }
+    
+   
+    
+    
+    
      
     /*
     * add_block with all values
     */
-    function add_block(){
+    function add_block(event){
+	checkHeight(event);
+	return false;
 //	
 //	imageonly();
 //	return false;
@@ -466,8 +538,6 @@ function showtext() {
 	if(!qard_title){
 	    return false;
 	}
-	
-
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
@@ -476,6 +546,8 @@ function showtext() {
 //	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title,'image_opacity':image_opacity,'div_opacity':div_opacity,'div_bgcolor':div_bgcolor,'height':height,'image':data},
 	   success:function(data){
 	       
+	       
+	       checkHeight();
 		var qard='';
 		var theme='';
 		if(!qard_id){
@@ -484,7 +556,10 @@ function showtext() {
 		
 //		if(!theme_id){
 //		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
-//		}		
+//		}
+//		if(!theme_id){
+//		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
+//		}
 		var block=$("#working_div div").attr("id");
 		block_id=block.split('_');
 		var style='style="height:'+height+',position:relative,background-color:'+div_bgcolor+',opacity:'+div_opacity+'"';
@@ -496,7 +571,6 @@ function showtext() {
 		$("#working_div").before(qard+theme+new_div);
 		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
 		$("#working_div").html(new_div);
-	       
 		console.log(data);
 	   }
 
@@ -591,6 +665,81 @@ $('#text_color').colorpicker().on('changeColor', function(e) {document.execComma
 $('#text_indent').click(function(){document.execCommand('indent', false, null);$('.working_div').children().focus();return false;});
 
 });
+
+
+//////////////////////////////////////////////////
+// THE FOLLOWING CODE IS USED FOR RESIZE THE DIV//
+//////////////////////////////////////////////////
+
+(function($){
+  
+  // A collection of elements to which the resize event is bound.
+  var elems = $([]),
+  
+    // An id with which the polling loop can be canceled.
+    timeout_id;
+  
+  // Special event definition.
+  $.event.special.resize = {
+    setup: function() {
+      var elem = $(this);
+      
+      // Add this element to the internal collection.
+      elems = elems.add( elem );
+      
+      // Initialize default plugin data on this element.
+      elem.data( 'resize', { w: elem.width(), h: elem.height() } );
+      
+      // If this is the first element to which the event has been bound,
+      // start the polling loop.
+      if ( elems.length === 1 ) {
+        poll();
+      }
+    },
+    teardown: function() {
+      var elem = $(this);
+      
+      // Remove this element from the internal collection.
+      elems = elems.not( elem );
+      
+      // Remove plugin data from this element.
+      elem.removeData( 'resize' );
+      
+      // If this is the last element to which the event was bound, cancel
+      // the polling loop.
+      if ( !elems.length ) {
+        clearTimeout( timeout_id );
+      }
+    }
+  };
+  
+  // As long as a "resize" event is bound, this function will execute
+  // repeatedly.
+  function poll() {
+    
+    // Iterate over all elements in the internal collection.
+    elems.each(function(){
+      var elem = $(this),
+        width = elem.width(),
+        height = elem.height(),
+        data = elem.data( 'resize' );
+      
+      // If element size has changed since the last time, update the element
+      // data store and trigger the "resize" event.
+      if ( width !== data.w || height !== data.h ) {
+        data.w = width;
+        data.h = height;
+        elem.triggerHandler( 'resize' );
+      }
+    });
+    
+    // Poll, setting timeout_id so the polling loop can be canceled.
+    timeout_id = setTimeout( poll, 250 );
+  };
+  
+})(jQuery);
+
+
 </script>
 
 

@@ -51,7 +51,7 @@ class ThemeController extends Controller
      */	
 	 public function actionSelectTheme()
 	 {
-		$models = Theme::find(['theme_type'=>1])->all();
+		$models = Theme::find()->where(['theme_type'=>1])->all();
 		return $this->render('index_theme',[
 			'models' => $models
 		]);

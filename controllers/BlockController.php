@@ -100,7 +100,7 @@ class BlockController extends Controller
 	    
 	}else{
 	    echo "unable to create theme";
-	    print_r($theme->errors);
+	    print_r($theme);
 	}
 	
 //	$model->=\Yii::$app->request->post('tags');
@@ -245,12 +245,10 @@ class BlockController extends Controller
 	$theme->theme_properties=  serialize($serilized_arr);	
 	
 	//checking whether id present then update or else insert 
-	if(empty($post['theme_id'])){
-	    $theme->validate();
+	if(empty($post['theme_id']) && $theme->validate()){
 	    $theme->save();
 	    return $theme;
 	}else{
-	    $theme->validate();
 	    $theme->update();
 	    return $theme;
 	}
