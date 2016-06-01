@@ -150,6 +150,10 @@ class QardController extends Controller
 			);
 			curl_setopt_array( $c, $options );
 			$html = curl_exec($c);
+			$mimeType = curl_getinfo($c, CURLINFO_CONTENT_TYPE);
+			if($mimeType == 'application/pdf') {
+				echo "PDF";die;
+			}
 			//echo $html;
 			/******************************/
 			if (curl_error($c))
@@ -232,6 +236,23 @@ class QardController extends Controller
 				</div>
 			</div> 
 			';
+			/**
+			echo '
+			<div class="review-qard row">
+				<!--<div class="img-preview col-sm-3 col-md-3">
+					<img src="'.$image.'" alt="">
+				</div>-->
+				<div class="col-sm-12 col-md-12">
+					<div class="url-content">
+						<h4><input name="url_title" type="text" value="'.$title.'" /></h4>
+						<div class="url-text">
+							<p><input name="url_content" type="text" value="'.$content.'" /></p>
+						</div>
+					</div>                                            
+				</div>
+			</div> 
+			';
+			**/
 			echo '<div> <h3>Consume Preview</h3>';
 			//echo "<div><h1>".$title."</h1>";
 			//echo "<img src='".$image."' />";
@@ -293,6 +314,7 @@ class QardController extends Controller
 		else
 		 return true;
 	}
+
     /**
      * Finds the Qard model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

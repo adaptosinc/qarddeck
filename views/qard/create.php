@@ -613,6 +613,7 @@ function showtext() {
 			success : function(data){
 				console.log(data);
 				$('#link_div').html(data);
+				//$('.working_div div').html(data);
 				//$('#link_div').load(preview_url);
 			}
 		});
