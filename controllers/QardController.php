@@ -217,14 +217,30 @@ class QardController extends Controller
 			//echo $domain;echo $result;
 			/******************************/
 			//;die;
-			echo "<div><h1>".$title."</h1>";
-			echo "<img src='".$image."' />";
-			echo "<p>".$content."</p>";
+			echo '
+			<div class="review-qard row">
+				<div class="img-preview col-sm-3 col-md-3">
+					<img src="'.$image.'" alt="">
+				</div>
+				<div class="col-sm-9 col-md-9">
+					<div class="url-content">
+						<h4>'.$title.'</h4>
+						<div class="url-text">
+							<p>'.$content.'</p>
+						</div>
+					</div>                                            
+				</div>
+			</div> 
+			';
+			echo '<div> <h3>Consume Preview</h3>';
+			//echo "<div><h1>".$title."</h1>";
+			//echo "<img src='".$image."' />";
+			//echo "<p>".$content."</p>";
 			if($this->isFrameAllowed($url))
 				echo '<iframe sandbox="allow-scripts allow-forms" src="'.$url.'" style="border:none"  width="100%" height="500px" ></iframe></div>';
 			else echo '<div style="color: red;">Framing is not allowed for this site. Please enable "Open Link in New Tab"</div>';
 			//full content
-			
+			echo '</div>';
 
 			//print_R($img_array);
 	}
