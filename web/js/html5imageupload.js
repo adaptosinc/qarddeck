@@ -11,7 +11,7 @@
 	"use strict";
 	
 	$.html5imageupload = function html5imageupload(options, element) {
-
+            
 		this.element		= element; 
 		this.options		= $.extend(true, {}, $.html5imageupload.defaults, options, $(this.element).data());
 		this.input			= $(this.element).find('input[type=file]');

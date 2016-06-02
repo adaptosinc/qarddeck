@@ -409,6 +409,13 @@ ul.align-elements li {
 #linkblock .dropzone {
     border: 0;
 }
+.drop-file {
+    text-align: center;
+    line-height: 50px;
+}
+.drop-file h3 {
+    line-height: 70px;
+}
 
 /* toggle switch */
 .switch {

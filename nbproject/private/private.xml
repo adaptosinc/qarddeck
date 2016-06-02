@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-<<<<<<< HEAD
-=======
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="wordpress">
-            <file>file:/var/www/html/qarddeck/controllers/BlockController.php</file>
-            <file>file:/var/www/html/qarddeck/views/qard/create.php</file>
-            <file>file:/var/www/html/qarddeck/web/css/custom.css</file>
+        <group>
+            <file>file:/C:/xampp/htdocs/qarddeck/controllers/QardController.php</file>
+            <file>file:/C:/xampp/htdocs/qarddeck/views/qard/create.php</file>
         </group>
     </open-files>
->>>>>>> 059c353d20f71a0d7ea2bf7b60d20abecea55cb9
 </project-private>

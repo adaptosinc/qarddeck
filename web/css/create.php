@@ -176,24 +176,22 @@ $this->title = 'Create Qard';
 			    </li>                                      
 			</ul>                                    
 		</div>
-<!--		<div role="tabpanel" class="tab-pane" id="linkblock">
+		<div role="tabpanel" class="tab-pane" id="linkblock">
 		    <fieldset>
-			<div class="drop-image qarddrop" id="link_div">
-			    <form action="/file-upload" >
+			<div class="drop-image1 qarddrop" id="link_div">
+<!--			    <form action="/file-upload" >-->
                                 <input id="qard-upload" name="image" class="hidden" type="file">
 			      <div class="fallback" >
-				<input name="file" type="file"  />
+<!--				<input name="file" type="file"  />-->
 			      </div>
-			    </form> 			    
+<!--			    </form> 			    -->
 			</div>
 			<div class="form-group">
 			    <input type="text" id="link_url" name="link_url" class="form-control" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
 			    <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
 			</div>
 			<div class="form-group">
-			    <img src="
-        //< ?=Yii:
-    //:$app->request->baseUrl?>/images/icon-left.png" alt="" class="col-sm-1 col-md-1" height="25px"><select id="text_align">
+			    <img src="<?=Yii::$app->request->baseUrl?>/images/icon-left.png" alt="" class="col-sm-1 col-md-1" height="25px"><select id="text_align">
 					    <option value="justifyLeft">left</option>
 					    <option value="justifyRight">right</option>
 					    <option value="justifyCenter">center</option>
@@ -216,62 +214,10 @@ $this->title = 'Create Qard';
 				    <label for="cmn-toggle-2"></label>
 				</div>  <span>Open Link in New Tab</span>                                    
 			    </li>
-			    <li><a href="#"><img src="< ?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>                                            
+			    <li><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>                                            
 			</ul>                                       
 
-		</div>-->
-      <div role="tabpanel" class="tab-pane" id="linkblock">
-                                    <fieldset>
-                                        <div class="drop-file form-group" style="background-color: red">                                           
-                                            <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
-                                            <h2 id="extErr">Only PDF,DOC,DOCX TYPES ARE ALLOWED</h2>
-                                         
-                                            <h3>Drop files/click to Browse</h3></div>
-                                        
-                                            <div class="drop-image form-group" >                                           
-                                                <img src="<?=Yii::$app->request->baseUrl?>/images/ps.png" alt="">
-                                                <input type="text" name="filename" class="form-control fileName" placeholder="File Name">
-                                                <textarea name="desc" class="form-control" placeholder="Description"></textarea>
-                                            </div>  
-                                        <div class="fileSwitch">
-                                             <input id="qard-url-upload" name="image" class="hidden" type="file">                                        
-                                            <h3>or...</h3>
-                                        <!--</div>-->
-                                            <div class="form-group">                                            
-                                                <input type="text" name="url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
-                                                <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
-                                            </div>
-                                            <div class="form-group ">
-                                                <img src="images/icon-left.png" alt="" class="col-sm-1 col-md-1" height="25px">
-                                                <div class="col-sm-3 col-md-3"><input type="text" name="name" class="form-control" placeholder="Link Color (#ffffff)"></div>
-                                                <div class="col-sm-4 col-md-4"><input type="text" name="name" class="form-control col-sm-5 col-md-5" placeholder="Link hover Color (#ffffff)"></div>
-                                                <div class="col-sm-4 col-md-4 on-off">
-                                                    <div class="switch">
-                                                        <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                                        <label for="cmn-toggle-1"></label>
-                                                    </div>  <span>Display Link</span>                                                  
-                                                </div>
-                                            </div>  
-                                        </div>
-                                            <ul class="on-off pull-right ">
-                                                 <li>
-                                                  <div class="switch">
-                                                      <input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                                      <label for="cmn-toggle-2"></label>
-                                                  </div>  <span>Display File Name</span>                                    
-                                              </li>
-                                              <li>
-                                                  <div class="switch linkSwitch">
-                                                      <input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                                      <label for="cmn-toggle-2"></label>
-                                                  </div>  <span>Open Link in New Tab</span>                                    
-                                              </li>
-                                              <li><a href="#"><img id="reflink" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>                                            
-                                          </ul>  
-                                    </fieldset>
-                                                                           
-
-                                </div>
+		</div>
 		<div role="tabpanel" class="tab-pane" id="paintblock">
 		    <fieldset>
 			<div class="form-group col-sm-6 col-md-6">
@@ -349,7 +295,12 @@ function showtext() {
 <script type="text/javascript">
 	  
     $(function(){ 
-	$("#extErr").hide();
+	
+        $('.qarddrop').on('click', function() {
+          $('#qard-upload').click();             
+        });
+        
+        
 	//increase height of the div
 	$('#working_div div').on("blur keydown keyup",function(event){
 	    checkHeight(event);
@@ -586,6 +537,8 @@ function showtext() {
 	   data:data,
 //	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title,'image_opacity':image_opacity,'div_opacity':div_opacity,'div_bgcolor':div_bgcolor,'height':height,'image':data},
 	   success:function(data){
+	       
+	       
 	       checkHeight();
 		var qard='';
 		var theme='';
@@ -655,61 +608,8 @@ function showtext() {
 			}
 		});
 	});
-        ////////////////////////////////////
-        
-        //ADDED BY NANDHINI
-        $('.drop-file').on('click', function(e) {
-          $('#qard-url-upload').trigger('click');
-          return false;
-        //  $('#qard-url-upload').click();             
-        });    
-        
-           $('input[id=qard-url-upload]').change(function(e){
-           // $('#profile-image-upload').click();
-               var file_data = $('#qard-url-upload').prop('files')[0];   
-               var form_data = new FormData();                  
-               form_data.append('file', file_data);
-           //    console.log('<? = $profile->user_id?>');
-               var myfile= $( this ).val();
-               var ext = myfile.split('.').pop();
-                    if(ext=="pdf" || ext=="docx" || ext=="doc"){
-                        $("#extErr").hide();
-                           $.ajax({
-                                  url: "<?=Url::to(['qard/url'], true)?>",
-                                  cache: false,
-                                  contentType: false,
-                                  processData: false,
-                                  data: form_data,                        
-                                  type: 'post',
-                                  success: function(response){
-                                       $(".drop-file").hide();
-                                       $(".drop-image").show();
-                                       $(".fileName").val(response.code);
-                                       $(".fileSwitch").hide();                                
-                                     // console.log(response);
-                                    //  $('#profImg').attr('src', '<? = Yii::$app->request->baseUrl?>/uploads/'+response.code);
-                                      //count++;
-                                  }
-                           });
-                     }else{
-                       $(".drop-file").show();
-                       $("#extErr").show();
-                       $(".fileName").val('');
-                       $(".fileSwitch").show();   
-                     }
-             }); 
-       $('#reflink').click(function(e) {          
-           console.log("fgffd");
-           $(".drop-file").show();
-           $(".drop-image").hide();
-           $(".fileSwitch").show();   
-//            $(".fileSwitch").show();
-        }); 
-        $('.pasteUrl').change(function(e){
-            var file_data = $('.pasteUrl').val();       
-            console.log(file_data);
-        });   
 </script>
+
 <script type="text/javascript">
 $(function(){
  $('.working_div').children('div').focus();
@@ -832,3 +732,8 @@ $('#text_indent').click(function(){document.execCommand('indent', false, null);$
 
 
 </script>
+
+
+
+
+
