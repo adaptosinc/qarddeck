@@ -533,6 +533,7 @@ function showtext() {
     * add_block with all values
     */
     function add_block(event){
+		console.log('Clicked');
 	checkHeight(event);
 //	return false;
 //	
@@ -574,21 +575,21 @@ function showtext() {
 	var is_title=$("[name='is_title']:checked").val() || 0;
 	data.push({name: 'is_title', value: is_title});
 	
-	if(!qard_title){
+/* 	if(!qard_title){
 	    return false;
-	}
-//	console.log(data);
+	} */
+	//console.log(data);
 //	
 //	return false;
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
-	   dataType:"json",
+	 //  dataType:"json",
 	   data:data,
 //	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title,'image_opacity':image_opacity,'div_opacity':div_opacity,'div_bgcolor':div_bgcolor,'height':height,'image':data},
 	   success:function(data){
 	       
-	       
+	       console.log(data);
 	       checkHeight();
 		var qard='';
 		var theme='';
