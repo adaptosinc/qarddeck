@@ -160,10 +160,10 @@ $this->params['breadcrumbs'][] = 'Edit';
         $('#ispswdvalid').hide();
         $('#islinkvalid').hide();
 	$('#profImg').on('click', function() {
-        $('#profile-image-upload').click(); 
-            
+          $('#profile-image-upload').click();             
         });
-        $('input[type=file]').change(function(e){
+        //$('input[type=file]').change(function(e){
+        $('input[id=profile-image-upload]').change(function(e){
            // $('#profile-image-upload').click();
                var file_data = $('#profile-image-upload').prop('files')[0];   
                var form_data = new FormData();                  
@@ -264,23 +264,20 @@ $this->params['breadcrumbs'][] = 'Edit';
           location.reload();
         //$( ".close" ).trigger( "click" );
     }); 
-        $("#cmn-toggle-4").click(function(e){        
-         if($(this).prop("checked") == true){
+    $("#cmn-toggle-4").click(function(e){        
+        if($(this).prop("checked") == true){
              file_data = 1;
         }else{
              file_data = 0;
         }
         $.ajax({
-                               url: "<?=Url::to(['user/display'], true)?>",                           
-                               data: {data: file_data },                        
-                               type: 'post',
-                               success: function(){   
-                                 
-                               }
-             
-           });
-    });
-	
+                url: "<?=Url::to(['user/display'], true)?>",                           
+                data: {data: file_data },                        
+                type: 'post',
+                success: function(){  
+                }
+        });
+    });	
 	 $(".remImg").click(function(e){   	
 	 
 	  $.ajax({
@@ -298,5 +295,4 @@ $this->params['breadcrumbs'][] = 'Edit';
                     });
 	 });
    });    
-</script>
-                                                               
+</script>               

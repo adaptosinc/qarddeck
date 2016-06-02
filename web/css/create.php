@@ -8,14 +8,7 @@ use yii\widgets\ActiveForm;
 $this->title = 'Create Qard';
 ?>
 <!-- requiered for tag -->
-<style>
-    .imgCenter {
-       display: block;
-       margin: 0 auto;
-       height: 120px;
-    }   
-    
- </style>   
+
 <link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
 <script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-tagsinput.min.js" type="text/javascript"></script>
 <script src="<?= Yii::$app->request->baseUrl?>/js/typeahead.js" type="text/javascript"></script>
@@ -39,16 +32,16 @@ $this->title = 'Create Qard';
     <div class="row">
 	
 	<div class="col-sm-4 col-md-4">
-	    <div id="add-block" class="qard-div add-block">
+	    <div class="qard-div add-block">
 		<!--<div  id="cur_block" class="cur_block">-->	
-<!--		<div id="blk_2" data-height="2" style="height: 75px;background-color: graytext">
+		<div id="blk_2" data-height="2" style="height: 75px;background-color: graytext">
 		    its static now so tomorrow still has to work on remove blank spaces
 		</div>
 		<div id="blk_1" data-height="1" style="height: 37.5px;background-color: yellowgreen" >
 		    
-		</div>-->
-		<div  id="working_div" class="working_div block active"  >
-		    <div id="blk_1" class="current_blk" data-height="1" contenteditable="true" unselectable="off">
+		</div>
+		<div  id="working_div" class="working_div active"  >
+		    <div id="blk_3" data-height="1" contenteditable="true" unselectable="off">
 		    </div>
 		</div>
 		<!--</div>-->
@@ -130,7 +123,21 @@ $this->title = 'Create Qard';
 			<div name="desc" id="extra_text" class="cur_blk " placeholder="Enter The Text" contenteditable="true" ></div>
 		    </div>
 		</div>
-		
+		<!--<div role="tabpanel" class="tab-pane" id="fileblock">
+		    <form action="/file-upload" class="dropzone">
+		      <div class="fallback">
+			<input name="file" type="file" multiple />
+		      </div>
+		    </form>
+			<ul class="on-off pull-right">
+			    <li>
+				<div class="switch">
+				    <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+				     <label for="cmn-toggle-4"></label>
+				</div>  <span>Open file in new tab</span>                                          
+			    </li>                                      
+			</ul>                                     
+		</div>-->
 		<div role="tabpanel" class="tab-pane" id="imgblock">		    
 		    <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->     
 			  
@@ -169,60 +176,48 @@ $this->title = 'Create Qard';
 			    </li>                                      
 			</ul>                                    
 		</div>
-      <div role="tabpanel" class="tab-pane" id="linkblock">
-                                    <fieldset>
-                                        <div class="drop-file form-group">                                           
-                                            <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
-                                            <h2 id="extErr">Only PDF,DOC,DOCX TYPES ARE ALLOWED</h2>
-                                         
-                                            <h3>Drop files/click to Browse</h3></div>
-                                        
-                                            <div class="drop-image form-group" >                                           
-<!--                                                <img id="docimg" src="<?=Yii::$app->request->baseUrl?>/images/doc.png" alt="">-->
+		<div role="tabpanel" class="tab-pane" id="linkblock">
+		    <fieldset>
+			<div class="drop-image1 qarddrop" id="link_div">
+<!--			    <form action="/file-upload" >-->
+                                <input id="qard-upload" name="image" class="hidden" type="file">
+			      <div class="fallback" >
+<!--				<input name="file" type="file"  />-->
+			      </div>
+<!--			    </form> 			    -->
+			</div>
+			<div class="form-group">
+			    <input type="text" id="link_url" name="link_url" class="form-control" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
+			    <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
+			</div>
+			<div class="form-group">
+			    <img src="<?=Yii::$app->request->baseUrl?>/images/icon-left.png" alt="" class="col-sm-1 col-md-1" height="25px"><select id="text_align">
+					    <option value="justifyLeft">left</option>
+					    <option value="justifyRight">right</option>
+					    <option value="justifyCenter">center</option>
+					    <option  value="justifyFull">justify</option>
+					</select>
+			    <div class="col-sm-3 col-md-3"><input type="text" id="link_color" class="form-control" placeholder="Link Color (#ffffff)"></div>
+			    <div class="col-sm-4 col-md-4"><input type="text" id="link_hcolor" class="form-control col-sm-5 col-md-5" placeholder="Link hover Color (#ffffff)"></div>
+			    <div class="col-sm-4 col-md-4 on-off">
+				<div class="switch">
+				    <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
+				    <label for="cmn-toggle-1"></label>
+				</div>  <span>Display Link</span>                                                  
+			    </div>
+			</div>                                                                                                                     
+		    </fieldset>
+			<ul class="on-off pull-right">
+			    <li>
+				<div class="switch">
+				    <input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round" type="checkbox">
+				    <label for="cmn-toggle-2"></label>
+				</div>  <span>Open Link in New Tab</span>                                    
+			    </li>
+			    <li><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>                                            
+			</ul>                                       
 
-                                                <img id="dispIcon" class="imgCenter">
-                                                <input type="text" name="filename" class="form-control fileName" placeholder="File Name">
-                                                <textarea name="desc" class="form-control" placeholder="Description"></textarea>
-                                            </div>  
-                                        <div class="fileSwitch">
-                                             <input id="qard-url-upload" name="image" class="hidden" type="file">                                        
-                                            <h3>or...</h3>
-                                        <!--</div>-->
-                                            <div class="form-group">                                            
-                                                <input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
-                                                <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
-                                            </div>
-                                            <div class="form-group ">
-                                                <img src="images/icon-left.png" alt="" class="col-sm-1 col-md-1" height="25px">
-                                                <div class="col-sm-3 col-md-3"><input type="text" name="name" class="form-control" placeholder="Link Color (#ffffff)"></div>
-                                                <div class="col-sm-4 col-md-4"><input type="text" name="name" class="form-control col-sm-5 col-md-5" placeholder="Link hover Color (#ffffff)"></div>
-                                                <div class="col-sm-4 col-md-4 on-off">
-                                                    <div class="switch">
-                                                        <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                                        <label for="cmn-toggle-1"></label>
-                                                    </div>  <span>Display Link</span>                                                  
-                                                </div>
-                                            </div>  
-                                        </div>
-                                            <ul class="on-off pull-right ">
-                                                 <li>
-                                                  <div class="switch">
-                                                      <input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                                      <label for="cmn-toggle-2"></label>
-                                                  </div>  <span>Display File Name</span>                                    
-                                              </li>
-                                              <li>
-                                                  <div class="switch linkSwitch">
-                                                      <input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                                      <label for="cmn-toggle-2"></label>
-                                                  </div>  <span>Open Link in New Tab</span>                                    
-                                              </li>
-                                              <li><a href="#"><img id="reflink" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>                                            
-                                          </ul>  
-                                    </fieldset>
-                                                                           
-
-                                </div>
+		</div>
 		<div role="tabpanel" class="tab-pane" id="paintblock">
 		    <fieldset>
 			<div class="form-group col-sm-6 col-md-6">
@@ -300,25 +295,16 @@ function showtext() {
 <script type="text/javascript">
 	  
     $(function(){ 
-	$("#extErr").hide();
-        $(".drop-image").hide();
+	
+        $('.qarddrop').on('click', function() {
+          $('#qard-upload').click();             
+        });
+        
+        
 	//increase height of the div
-	$(document).bind("blur keydown keyup","#working_div div",function(event){
+	$('#working_div div').on("blur keydown keyup",function(event){
 	    checkHeight(event);
-//	    removeBr();
 	});
-	
-	$(document).delegate('.add-block > div',"dblclick",function(event){
-	    console.log("viay");
-	    $("#working_div div").unwrap();
-	    $('#working_div div').removeAttr("unselectable",'off');
-	    $("#working_div div").removeAttr("contenteditable",'true');
-	    $(this).wrap('<div  id="working_div" class="working_div active"></div>');
-	    $(this).attr("unselectable",'off');
-	    $(this).attr("contenteditable",'true');
-	});
-	
-	
 	// for image or file drop
 	$('.dropzone').html5imageupload();
 	
@@ -372,23 +358,6 @@ function showtext() {
       }
     });
     
-    function getStyle(){
-    
-	var data=[];
-	var image_opacity=$("#working_div img").css("opacity") || 1; 
-	var div_opacity=$("#working_div div").css("opacity");
-	var div_bgcolor=$("#working_div div").css("background-color");
-	var height=parseInt($("#working_div div").attr("data-height"))*37.5;
-	
-	
-	data.push({name: 'image_opacity', value: image_opacity});
-	data.push({name: 'div_opacity', value: div_opacity});
-	data.push({name: 'div_bgcolor', value: div_bgcolor});
-	data.push({name: 'height', value: height});
-    }
-    
-    
-    
     // for image
     $("#image_opc").on("keydown",function(){
 	var per=parseInt($(this).val())/100;
@@ -420,10 +389,7 @@ function showtext() {
 	if(size<600){
 	    $("#working_div").parent().css("height",size);
 	    $("#working_div div").css("min-height",size);
-	    $("#working_div div").attr("data-height",blk_size);
-	    
-	}
-	
+	}	
     });
     
     
@@ -485,65 +451,34 @@ function showtext() {
     }
     
     
-    
-    function removeBr(){
-	$($("#working_div div >").get().reverse()).each(function(index){
-	    console.log(index+"----"+(index)%2);
-	    if(($(this).is("br")) && (((index)%2)==0))
-	    {
-		if($(this).prev().is('br')){
-		    console.log("vijay");
-//		   $(this).prev().remove();
-//		   
-//		   $(this).remove();
-		}
-	     }
-
-	});
-    }
     function checkHeight(e){
 	var total_height=totalHeight();
-	if(total_height>(600-37.5)){
-	    $(".add-block h4").hide();
-	}
-	var offsetHeight=parseInt($("#working_div div")[0].offsetHeight || 1);
-	var scrollHeight=parseInt($("#working_div div")[0].scrollHeight || 1);
-	maxHeight=Math.ceil((scrollHeight-offsetHeight)/37.5);
-	height_number=parseInt($("#working_div div").attr("data-height"))+maxHeight;
-	height=height_number*37.5;
-	
-	if(total_height>=(600)){
-	    console.log("vijay");
-	    if(scrollHeight > offsetHeight){
-		if(e.keyCode!=8){
-		$('#working_div div').html(function (_,txt) {
-		    
-			return txt.slice(0, -1);
-		    });
-		e.preventDefault();}
-		
-		
-		
-	    }else{
-		console.log("onlye enter");
-		if(e.keyCode==1)
-		    e.preventDefault();
+	console.log(total_height);
+	console.log($("#working_div div")[0].scrollHeight+">"+$("#working_div div")[0].offsetHeight);
+
+	if(total_height>(600)){
+	    if ((e.which < 65 || e.which > 122) && (e.which < 48 || e.which > 57) && (e.which < 37 || e.which > 40))
+	    {
+		alret("sdf");
+		e.preventDefault();
 	    }
 	}
-	if(scrollHeight > offsetHeight && total_height<=(600-37.5)){
-	    console.log("ma"+maxHeight);
+	
+	
+	if($("#working_div div")[0].scrollHeight>$("#working_div div")[0].offsetHeight && total_height<=(600-37.5)){
+	    height_number=parseInt($("#working_div div").attr("data-height"))+1;
+	    height=height_number*37.5;
 	    $("#working_div div").css("height",height);
 	    $("#working_div div").attr("data-height",height_number); 
-	}else if(scrollHeight>offsetHeight){
-	    if(e.keyCode!=8){
-		$('#working_div div').html(function (_,txt) {
-		    
-			return txt.slice(0, -1);
-		    });
-		e.preventDefault();}
-	    $(".add-block h4").hide();
+	}else if($("#working_div div")[0].scrollHeight>$("#working_div div")[0].offsetHeight){
+	    if ((e.which < 65 || e.which > 122) && (e.which < 48 || e.which > 57) && (e.which < 37 || e.which > 40) && e.keyCode!=8)
+	    {
+		
+		console.log("key"+e.keyCode);
+		e.preventDefault();
+	    }
 	}else{
-//	    console.log($("#working_div div").last().find('br'));
+	    console.log($("#working_div div").last().find('br'));
 	}
     }
     
@@ -551,29 +486,24 @@ function showtext() {
     * add_block with all values
     */
     function add_block(event){
-	
-	// to check height
 	checkHeight(event);
-	
+	return false;
+//	
+//	imageonly();
 //	return false;
-	
 	//for image
-	
 	var data=$("#image_upload").serializeArray();
 	
-	var image_opacity=parseInt($("#working_div img").css("opacity") || 1); 
+	var image_opacity=$("#working_div img").css("opacity") || 1; 
 	data.push({name: 'image_opacity', value: image_opacity});
 	
-	var div_opacity=parseInt($("#working_div div").css("opacity") || 1);	
+	var div_opacity=$("#working_div div").css("opacity");	
 	data.push({name: 'div_opacity', value: div_opacity});
 	
 	var div_bgcolor=$("#working_div div").css("background-color");
 	data.push({name: 'div_bgcolor', value: div_bgcolor});
 	
-	var div_bgimage=$("#working_div div").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-	data.push({name: 'div_bgimage', value: div_bgimage});
-	
-	var height=parseInt($("#working_div div").attr("data-height"))*37.5;
+	var height=parseInt($("#working_div div").css("height"));
 	data.push({name: 'height', value: height});
 	
 	var text=$("#working_div div").html() || 0; 
@@ -582,11 +512,8 @@ function showtext() {
 	var extra_text=$("#extra_text").html() || 0;
 	data.push({name: 'extra_text', value: extra_text});
 	
-	var block_id=$("#working_div div").attr("data-block_id") || 0;
+	var block_id=$("#block_id").val() || 0;	
 	data.push({name: 'block_id', value: block_id});
-	
-	var theme_id=$("#working_div div").attr("data-theme_id") || 0;
-	data.push({name: 'theme_id', value: theme_id});
 	
 	var qard_id=$("#qard_id").val() || 0;
 	data.push({name: 'qard_id', value: qard_id});
@@ -600,52 +527,53 @@ function showtext() {
 	var is_title=$("[name='is_title']:checked").val() || 0;
 	data.push({name: 'is_title', value: is_title});
 	
-//	console.log(data);
-//	return false;
+	if(!qard_title){
+	    return false;
+	}
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
-	   data:data,
 	   dataType:"json",
+	   data:data,
+//	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title,'image_opacity':image_opacity,'div_opacity':div_opacity,'div_bgcolor':div_bgcolor,'height':height,'image':data},
 	   success:function(data){
+	       
+	       
 	       checkHeight();
 		var qard='';
 		var theme='';
-		if(qard_id==0){
+		if(!qard_id){
 		    qard='<input id="qard_id" type="hidden" value="'+data.qard_id+'">';
 		}
-		var img='';
-		if(data.link_image){
-		    img='background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+')';
-		}
+		
+//		if(!theme_id){
+//		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
+//		}
 //		if(!theme_id){
 //		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
 //		}
 		var block=$("#working_div div").attr("id");
 		block_id=block.split('_');
-		var style='style="height:'+height+'px;position:relative;background-color:'+div_bgcolor+';opacity:'+div_opacity+';'+img+';"';
+		var style='style="height:'+height+',position:relative,background-color:'+div_bgcolor+',opacity:'+div_opacity+'"';
 		var content=$("#working_div div").html();
-		var new_div='<div data-height="'+(height/37.5)+'" data-block_id="'+data.block_id+'"  '+style+' id="'+block+'" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" >'+content+'</div>';
+		var new_div='<div '+style+' id="'+block+'" >'+content+'</div>';
 		
+		$("#cur_block").css("height",(height+37.5));
 		$("#working_div div").remove();
 		$("#working_div").before(qard+theme+new_div);
-		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" class="current_blk" data-height="1"  contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
-		var count=0;
-		$(".add-block div").each(function(){if($(this).attr("data-block_id")){count++;}});
-		
-//		if((count>=2)){
-//		    $(".add-block div").last().wrap('<div  id="working_div" class="working_div active"></div>');
-//		}else{
-		    $("#working_div").html(new_div);
-//		}
-		$(".dropzone .btn-del").trigger("click");
+		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
+		$("#working_div").html(new_div);
 		console.log(data);
-	   },
-	    error:function(data){
-		console.log(data);
-		alert("error");
-	    }
+	   }
+
 	});
+	 
+	// $("#add_text").submit();
+	// $("#add_link").submit();
+//	 var another_p='<p>'+$("#cur_block").text()+'</p>';
+//	 var another_div='<div class="cur_block">'+another_p+'</div>';
+//	 $("#cur_block").clone().appendTo("#cur_block");
+	
     }
     
     $("#cur_block div").on("click",function(){
@@ -675,84 +603,13 @@ function showtext() {
 			data : {'url': preview_url},
 			success : function(data){
 				console.log(data);
-                                if(data=='PDF'){
-                                       $(".drop-file").hide();
-                                       $(".drop-image").show();
-                                      // $(".fileName").val(response.code);
-                                       $(".fileSwitch").hide();                
-                                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');                
-                                }
-                                  if(data=='DOC'||data=='DOCX'){
-                                       $(".drop-file").hide();
-                                       $(".drop-image").show();
-                                      // $(".fileName").val(response.code);
-                                       $(".fileSwitch").hide();                
-                                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');                
-                                }
-				//$('.working_div div').html(data);
+				$('#link_div').html(data);
 				//$('#link_div').load(preview_url);
 			}
 		});
 	});
-        ////////////////////////////////////
-        
-        //ADDED BY NANDHINI
-        $('.drop-file').on('click', function(e) {
-          $('#qard-url-upload').trigger('click');
-          return false;
-        //  $('#qard-url-upload').click();             
-        });    
-        
-           $('input[id=qard-url-upload]').change(function(e){
-           // $('#profile-image-upload').click();
-               var file_data = $('#qard-url-upload').prop('files')[0];   
-               var form_data = new FormData();                  
-               form_data.append('file', file_data);
-           //    console.log('<? = $profile->user_id?>');
-               var myfile= $( this ).val();
-               var ext = myfile.split('.').pop();
-                    if(ext=="pdf" || ext=="docx" || ext=="doc"){
-                        $("#extErr").hide();
-                        if(ext=="pdf"){
-                            $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');                
-                        }
-                        if(ext=="docx" || ext=="doc"){
-                            $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
-             
-                        }
-                           $.ajax({
-                                  url: "<?=Url::to(['qard/url'], true)?>",
-                                  cache: false,
-                                  contentType: false,
-                                  processData: false,
-                                  data: form_data,                        
-                                  type: 'post',
-                                  success: function(response){
-                                       $(".drop-file").hide();
-                                       $(".drop-image").show();
-                                       $(".fileName").val(response.code);
-                                       $(".fileSwitch").hide();                                
-                                     // console.log(response);
-                                    //  $('#profImg').attr('src', '<? = Yii::$app->request->baseUrl?>/uploads/'+response.code);
-                                      //count++;
-                                  }
-                           });
-                     }else{
-                       $(".drop-file").show();
-                       $("#extErr").show();
-                       $(".fileName").val('');
-                       $(".fileSwitch").show();   
-                     }
-             }); 
-       $('#reflink').click(function(e) { 
-         location.reload();
-          // $(".drop-file").show();
-        //   $(".drop-image").hide();
-         //  $(".fileSwitch").show();   
-//         $(".fileSwitch").show();
-        }); 
-        
 </script>
+
 <script type="text/javascript">
 $(function(){
  $('.working_div').children('div').focus();
@@ -873,4 +730,10 @@ $('#text_indent').click(function(){document.execCommand('indent', false, null);$
   
 })(jQuery);
 
+
 </script>
+
+
+
+
+
