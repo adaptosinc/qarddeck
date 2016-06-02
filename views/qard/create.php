@@ -306,7 +306,7 @@ function showtext() {
 	//increase height of the div
 	$(document).bind("blur keydown keyup","#working_div div",function(event){
 	    checkHeight(event);
-	    removeBr();
+//	    removeBr();
 	});
 	
 	$(document).delegate('.add-block > div',"dblclick",function(event){
@@ -502,20 +502,8 @@ function showtext() {
     }
     function checkHeight(e){
 	var total_height=totalHeight();
-//	console.log("viay"+total_height);
-//	console.log($("#working_div div")[0].scrollHeight+">"+$("#working_div div")[0].offsetHeight);
-	
-
-//	console.log($("#working_div div:nth-last-child(2)").find('br').remove());
 	if(total_height>(600-37.5)){
-	    if ((e.which < 65 || e.which > 122) && (e.which < 48 || e.which > 57) && (e.which < 37 || e.which > 40) && e.keyCode!=8)
-	    {
-		console.log("key==="+e.keyCode);
-		$("#working_div div").css("display","hidden");
-		$(".add-block h4").hide();
-//		e.preventDefault();
-		return false;
-	    }
+	    e.preventDefault();
 	}
 	var offsetHeight=parseInt($("#working_div div")[0].offsetHeight);
 	var scrollHeight=parseInt($("#working_div div")[0].scrollHeight);
@@ -531,12 +519,6 @@ function showtext() {
 	    
 	    $("#working_div div").css("display","hidden");
 	    $(".add-block h4").hide();
-	    if ((e.which < 65 || e.which > 122) && (e.which < 48 || e.which > 57) && (e.which < 37 || e.which > 40) && e.keyCode!=8)
-	    {
-		
-		console.log("key"+e.keyCode);
-		//e.preventDefault();
-	    }
 	}else{
 //	    console.log($("#working_div div").last().find('br'));
 	}
@@ -614,10 +596,10 @@ function showtext() {
 		if(!qard_id){
 		    qard='<input id="qard_id" type="hidden" value="'+data.qard_id+'">';
 		}
-		
-//		if(!theme_id){
-//		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
-//		}
+		var img;
+		if(data.link_image){
+		    img='<img src="<?=  Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+'" width="385px" height="'+height+'">';
+		}
 //		if(!theme_id){
 //		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
 //		}
@@ -625,7 +607,7 @@ function showtext() {
 		block_id=block.split('_');
 		var style='style="height:'+height+'px;position:relative;background-color:'+div_bgcolor+';opacity:'+div_opacity+';"';
 		var content=$("#working_div div").html();
-		var new_div='<div data-height="'+(height/37.5)+'" data-block_id="'+data.block_id+'"  '+style+' id="'+block+'"  >'+content+'</div>';
+		var new_div='<div data-height="'+(height/37.5)+'" data-block_id="'+data.block_id+'"  '+style+' id="'+block+'"  >'+content+img+'</div>';
 		
 		
 		
