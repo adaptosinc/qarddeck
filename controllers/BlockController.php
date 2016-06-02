@@ -73,16 +73,18 @@ class BlockController extends Controller
 		
 	//to create theme for qard
 	$theme=$this->createTheme($post);
-
+ 
 	if(empty($theme->errors) && !is_array($theme)){
 	    
 	    $qard = $this->createQard($post, $theme->theme_id);
+	   
 	    
 	    if(empty($qard->errors) && !is_array($qard)){
 		$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
 		$tags=$this->createTagsQard($post,$qard->qard_id);
 		
 		if(empty($block->errors) && !is_array($block)){
+		    
 		    echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image));
 		    exit;
 		    
@@ -202,29 +204,26 @@ class BlockController extends Controller
      */
     public function createQard($post,$theme_id){
 	
+	
 	$qard = false;
-		if(!empty($post['qard_id'])){
-			$qard = $this->findModel($post['qard_id']);
-		}
-		if(!$qard)	
-			$qard=new Qard();
-		/************************/
-		if( !empty($theme_id)){
-			if(isset($post['qard_title']))
-				$qard->title=$post['qard_title'];
-	    //$qard->url='test url';
-			if(\Yii::$app->user->id)
-				$qard->user_id=Yii::$app->user->id;
-			$qard->status=0;
-			$qard->qard_privacy=1;
-			$qard->qard_theme=$theme_id;
-			$qard->save(false);		
-			return $qard;
-	    }
-		else{
-			echo "qard_title".$post['qard_title'].'--user--'.Yii::$app->user->id."--theme--".$theme_id;
-			return array('error'=>"empty fields!...");
-		}	
+	if(!empty($post['qard_id'])){
+	    $qard = Qard::findOne($post['qard_id']);
+	}else {
+	    $qard=new Qard();
+	}
+	
+//	print_r($qard);die;
+	if(!empty($post['qard_title'])){
+	    $qard->title=$post['qard_title'];
+	}
+	
+	//$qard->url='test url';
+	if(\Yii::$app->user->id){
+	    $qard->user_id=Yii::$app->user->id;}
+	$qard->qard_privacy=1;
+	$qard->qard_theme=$theme_id;
+	$qard->save(false);
+	return $qard;	
     }
     
     /*
@@ -232,24 +231,31 @@ class BlockController extends Controller
      */
     public function createTheme($post){
 	
-	$theme=new Theme();
+	$theme = false;
+	if(!empty($post['theme_id'])){
+	    $theme = Theme::findOne($post['theme_id']);
+	}else {
+	    $theme=new Theme();
+	}
+	
 	$theme->theme_type=0; //theme type 1 define theme for qard o theme for block
 	$theme->theme_properties='test'; // serialized data all theme details
-	
-	$serilized_arr['image_opacity']=$post['image_opacity'];
-	$serilized_arr['div_opacity']=$post['div_opacity'];
+	$serilized_arr['image_opacity']=  $post['image_opacity'];
+	$serilized_arr['div_opacity']=  $post['div_opacity'];
 	$serilized_arr['div_bgcolor']=$post['div_bgcolor'];
+	
+	if(strpos('/',$post['div_bgimage'])){
+	    $url_split=  explode('/',$post['div_bgimage']);
+	    $serilized_arr['div_bgimage']=end($url_split);
+	}else{
+	    $serilized_arr['div_bgimage']="";
+	}
+	    
 	$serilized_arr['height']=$post['height'];
 	$theme->theme_properties=  serialize($serilized_arr);	
 	
-	//checking whether id present then update or else insert 
-	if(empty($post['theme_id']) && $theme->validate()){
-	    $theme->save();
-	    return $theme;
-	}else{
-	    $theme->update();
-	    return $theme;
-	}
+	$theme->save(false);
+	return $theme;
     }
     /*
      * 
@@ -289,7 +295,12 @@ class BlockController extends Controller
     
     public function createBlock($post,$qard_id,$theme_id){
 	
-	$block=new Block();
+	$block = false;
+	if(!empty($post['block_id'])){
+	    $block = Block::findOne($post['block_id']);
+	}else {
+	    $block=new Block();
+	}
 	
 	$block->qard_id=$qard_id;
 	$block->theme_id=$theme_id;
@@ -334,10 +345,12 @@ class BlockController extends Controller
 	    $block->link_image=$post['link_image'];
 	    $is_true=true;
 	}
+	
+	
 	if($is_true){
 	    
 	    //if($post['block_id']){
-	    $block->save();
+	    $block->save(false);
 	    return $block;
 	//	
 	//	}else{
