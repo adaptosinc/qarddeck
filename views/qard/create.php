@@ -170,7 +170,9 @@ $this->title = 'Create Qard';
 			</ul>                                    
 		</div>
       <div role="tabpanel" class="tab-pane" id="linkblock">
+									
                                     <fieldset>
+									<div id="link_div"></div>
                                         <div class="drop-file form-group">                                           
                                             <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
                                             <h2 id="extErr">Only PDF,DOC,DOCX TYPES ARE ALLOWED</h2>
@@ -301,7 +303,7 @@ function showtext() {
 	  
     $(function(){ 
 	$("#extErr").hide();
-        $(".drop-image").hide();
+        //$(".drop-image").hide();
 	//increase height of the div
 	$(document).bind("blur keydown keyup","#working_div div",function(event){
 	    checkHeight(event);
@@ -682,7 +684,7 @@ function showtext() {
                                        $(".fileSwitch").hide();                
                                          $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');                
                                 }
-                                  if(data=='DOC'||data=='DOCX'){
+                                if(data=='DOC'||data=='DOCX'){
                                        $(".drop-file").hide();
                                        $(".drop-image").show();
                                       // $(".fileName").val(response.code);
@@ -690,7 +692,12 @@ function showtext() {
                                          $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');                
                                 }
 				//$('.working_div div').html(data);
-				//$('#link_div').load(preview_url);
+								else
+								{
+									$(".drop-file").hide();
+									$(".drop-image").hide();
+									$('#link_div').html(data);
+								}
 			}
 		});
 	});
