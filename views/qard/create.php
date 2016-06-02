@@ -663,6 +663,15 @@ function showtext() {
 			}
 		});
 	});
+	$('#url_img_remove').on('click',function(){
+		console.log('clicked');
+		$('.img-preview').remove();
+	});
+	function changePic(v){
+		$(v).parent().remove();
+		$('#title_desc_url').removeClass("col-sm-9 col-md-9");
+		$('#title_desc_url').addClass("col-sm-12 col-md-12");
+	}
 </script>
 
 <script type="text/javascript">
