@@ -16,8 +16,13 @@ and open the template in the editor.
     margin:  0 0 0 0;
     width: 387px;
     height: 600px;
+    border: 1px solid #060;
+    
 }
 
+.qard-div div{
+    font-size: 13px;
+}
 
 /* for extra text */
 
@@ -53,9 +58,18 @@ and open the template in the editor.
     display: inline-block;
 /*    float: left/right;
     position: absolute;*/
-    font-size: 13px;
+    
 /*    overflow: auto;
     resize: both;*/
+}
+
+.current_blk{
+    
+    /*min-height: 37.5px;*/
+    min-height: 37.5px;
+    background-color:#ede4e4;
+    
+    
 }
 /*#working_div div[contenteditable="true"]:focus {
     outline: 0;

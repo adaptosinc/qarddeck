@@ -32,16 +32,16 @@ $this->title = 'Create Qard';
     <div class="row">
 	
 	<div class="col-sm-4 col-md-4">
-	    <div class="qard-div add-block">
+	    <div id="add-block" class="qard-div add-block">
 		<!--<div  id="cur_block" class="cur_block">-->	
-		<div id="blk_2" data-height="2" style="height: 75px;background-color: graytext">
+<!--		<div id="blk_2" data-height="2" style="height: 75px;background-color: graytext">
 		    its static now so tomorrow still has to work on remove blank spaces
 		</div>
 		<div id="blk_1" data-height="1" style="height: 37.5px;background-color: yellowgreen" >
 		    
-		</div>
-		<div  id="working_div" class="working_div active"  >
-		    <div id="blk_3" data-height="1" contenteditable="true" unselectable="off">
+		</div>-->
+		<div  id="working_div" class="working_div block active"  >
+		    <div id="blk_1" class="current_blk" data-height="1" contenteditable="true" unselectable="off">
 		    </div>
 		</div>
 		<!--</div>-->
@@ -351,9 +351,22 @@ function showtext() {
     $(function(){ 
 	$("#extErr").hide();
 	//increase height of the div
-	$('#working_div div').on("blur keydown keyup",function(event){
+	$(document).bind("blur keydown keyup","#working_div div",function(event){
 	    checkHeight(event);
+//	    removeBr();
 	});
+	
+	$(document).delegate('.add-block > div',"dblclick",function(event){
+	    console.log("viay");
+	    $("#working_div div").unwrap();
+	    $('#working_div div').removeAttr("unselectable",'off');
+	    $("#working_div div").removeAttr("contenteditable",'true');
+	    $(this).wrap('<div  id="working_div" class="working_div active"></div>');
+	    $(this).attr("unselectable",'off');
+	    $(this).attr("contenteditable",'true');
+	});
+	
+	
 	// for image or file drop
 	$('.dropzone').html5imageupload();
 	
@@ -406,6 +419,23 @@ function showtext() {
 	source: citynames.ttAdapter()
       }
     });
+    
+    function getStyle(){
+    
+	var data=[];
+	var image_opacity=$("#working_div img").css("opacity") || 1; 
+	var div_opacity=$("#working_div div").css("opacity");
+	var div_bgcolor=$("#working_div div").css("background-color");
+	var height=parseInt($("#working_div div").attr("data-height"))*37.5;
+	
+	
+	data.push({name: 'image_opacity', value: image_opacity});
+	data.push({name: 'div_opacity', value: div_opacity});
+	data.push({name: 'div_bgcolor', value: div_bgcolor});
+	data.push({name: 'height', value: height});
+    }
+    
+    
     
     // for image
     $("#image_opc").on("keydown",function(){
@@ -500,34 +530,43 @@ function showtext() {
     }
     
     
+    
+    function removeBr(){
+	$($("#working_div div >").get().reverse()).each(function(index){
+	    console.log(index+"----"+(index)%2);
+	    if(($(this).is("br")) && (((index)%2)==0))
+	    {
+		if($(this).prev().is('br')){
+		    console.log("vijay");
+//		   $(this).prev().remove();
+//		   
+//		   $(this).remove();
+		}
+	     }
+
+	});
+    }
     function checkHeight(e){
 	var total_height=totalHeight();
-	console.log(total_height);
-	console.log($("#working_div div")[0].scrollHeight+">"+$("#working_div div")[0].offsetHeight);
-
-	if(total_height>(600)){
-	    if ((e.which < 65 || e.which > 122) && (e.which < 48 || e.which > 57) && (e.which < 37 || e.which > 40))
-	    {
-		alret("sdf");
-		e.preventDefault();
-	    }
+	if(total_height>(600-37.5)){
+	    e.preventDefault();
 	}
+	var offsetHeight=parseInt($("#working_div div")[0].offsetHeight);
+	var scrollHeight=parseInt($("#working_div div")[0].scrollHeight);
+	maxHeight=Math.ceil((scrollHeight-offsetHeight)/37.5);
+	height_number=parseInt($("#working_div div").attr("data-height"))+maxHeight;
+	height=height_number*37.5;
 	
-	
-	if($("#working_div div")[0].scrollHeight>$("#working_div div")[0].offsetHeight && total_height<=(600-37.5)){
-	    height_number=parseInt($("#working_div div").attr("data-height"))+1;
-	    height=height_number*37.5;
+	if(scrollHeight > offsetHeight && total_height<=(600-37.5)){
+	    console.log("ma"+maxHeight);
 	    $("#working_div div").css("height",height);
 	    $("#working_div div").attr("data-height",height_number); 
-	}else if($("#working_div div")[0].scrollHeight>$("#working_div div")[0].offsetHeight){
-	    if ((e.which < 65 || e.which > 122) && (e.which < 48 || e.which > 57) && (e.which < 37 || e.which > 40) && e.keyCode!=8)
-	    {
-		
-		console.log("key"+e.keyCode);
-		e.preventDefault();
-	    }
+	}else if(scrollHeight>offsetHeight){
+	    
+	    $("#working_div div").css("display","hidden");
+	    $(".add-block h4").hide();
 	}else{
-	    console.log($("#working_div div").last().find('br'));
+//	    console.log($("#working_div div").last().find('br'));
 	}
     }
     
@@ -535,8 +574,9 @@ function showtext() {
     * add_block with all values
     */
     function add_block(event){
+		console.log('Clicked');
 	checkHeight(event);
-	return false;
+//	return false;
 //	
 //	imageonly();
 //	return false;
@@ -552,7 +592,7 @@ function showtext() {
 	var div_bgcolor=$("#working_div div").css("background-color");
 	data.push({name: 'div_bgcolor', value: div_bgcolor});
 	
-	var height=parseInt($("#working_div div").css("height"));
+	var height=parseInt($("#working_div div").attr("data-height"))*37.5;
 	data.push({name: 'height', value: height});
 	
 	var text=$("#working_div div").html() || 0; 
@@ -576,13 +616,16 @@ function showtext() {
 	var is_title=$("[name='is_title']:checked").val() || 0;
 	data.push({name: 'is_title', value: is_title});
 	
-	if(!qard_title){
+/* 	if(!qard_title){
 	    return false;
-	}
+	} */
+	//console.log(data);
+//	
+//	return false;
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
-	   dataType:"json",
+	 //  dataType:"json",
 	   data:data,
 //	   data:{'text':text,'extra_text':extra_text,'block_id':block_id,'qard_id':qard_id,'qard_title':qard_title,'tags':tags,'is_title':is_title,'image_opacity':image_opacity,'div_opacity':div_opacity,'div_bgcolor':div_bgcolor,'height':height,'image':data},
 	   success:function(data){
@@ -592,23 +635,25 @@ function showtext() {
 		if(!qard_id){
 		    qard='<input id="qard_id" type="hidden" value="'+data.qard_id+'">';
 		}
-		
-//		if(!theme_id){
-//		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
-//		}
+		var img;
+		if(data.link_image){
+		    img='<img src="<?=  Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+'" width="385px" height="'+height+'">';
+		}
 //		if(!theme_id){
 //		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
 //		}
 		var block=$("#working_div div").attr("id");
 		block_id=block.split('_');
-		var style='style="height:'+height+',position:relative,background-color:'+div_bgcolor+',opacity:'+div_opacity+'"';
+		var style='style="height:'+height+'px;position:relative;background-color:'+div_bgcolor+';opacity:'+div_opacity+';"';
 		var content=$("#working_div div").html();
-		var new_div='<div '+style+' id="'+block+'" >'+content+'</div>';
+		var new_div='<div data-height="'+(height/37.5)+'" data-block_id="'+data.block_id+'"  '+style+' id="'+block+'"  >'+content+img+'</div>';
 		
-		$("#cur_block").css("height",(height+37.5));
+		
+		
+//		$("#cur_block").css("height",(height+37.5));
 		$("#working_div div").remove();
 		$("#working_div").before(qard+theme+new_div);
-		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
+		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" class="current_blk" data-height="1" contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
 		$("#working_div").html(new_div);
 		console.log(data);
 	   }
@@ -651,6 +696,7 @@ function showtext() {
 			success : function(data){
 				console.log(data);
 				$('#link_div').html(data);
+				//$('.working_div div').html(data);
 				//$('#link_div').load(preview_url);
 			}
 		});

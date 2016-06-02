@@ -75,7 +75,22 @@ class QardController extends Controller
 				return $this->redirect(['theme/select-theme']);
 			}
 		}
-        if (Yii::$app->request->post()) {
+        if ($model->load(Yii::$app->request->post())) {
+			
+			if(!\Yii::$app->user->id){
+				//save false here with out user id and status as draft
+				$model->save(false);
+				//aftersave take the qard-id as a param and send to login page
+				$q_id = $model->qard_id;
+				return $this->redirect(['user/login','qard_id'=>$q_id]);
+				//at login/sign-up,check if qard-id is there,if yes assign the user to the same qard once logged in
+			}
+				
+			
+			
+			
+
+			
 			echo "viay";
 			print_r($_POST);
 			print_r($_FILES);
@@ -150,6 +165,10 @@ class QardController extends Controller
 			);
 			curl_setopt_array( $c, $options );
 			$html = curl_exec($c);
+			$mimeType = curl_getinfo($c, CURLINFO_CONTENT_TYPE);
+			if($mimeType == 'application/pdf') {
+				echo "PDF";die;
+			}
 			//echo $html;
 			/******************************/
 			if (curl_error($c))
@@ -232,6 +251,23 @@ class QardController extends Controller
 				</div>
 			</div> 
 			';
+			/**
+			echo '
+			<div class="review-qard row">
+				<!--<div class="img-preview col-sm-3 col-md-3">
+					<img src="'.$image.'" alt="">
+				</div>-->
+				<div class="col-sm-12 col-md-12">
+					<div class="url-content">
+						<h4><input name="url_title" type="text" value="'.$title.'" /></h4>
+						<div class="url-text">
+							<p><input name="url_content" type="text" value="'.$content.'" /></p>
+						</div>
+					</div>                                            
+				</div>
+			</div> 
+			';
+			**/
 			echo '<div> <h3>Consume Preview</h3>';
 			//echo "<div><h1>".$title."</h1>";
 			//echo "<img src='".$image."' />";
@@ -293,6 +329,7 @@ class QardController extends Controller
 		else
 		 return true;
 	}
+
     /**
      * Finds the Qard model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
