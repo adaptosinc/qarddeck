@@ -715,7 +715,6 @@ function showtext() {
                var file_data = $('#qard-url-upload').prop('files')[0];   
                var form_data = new FormData();                  
                form_data.append('file', file_data);
-           //    console.log('<? = $profile->user_id?>');
                var myfile= $( this ).val();
                var ext = myfile.split('.').pop();
                     if(ext=="pdf" || ext=="docx" || ext=="doc"){
