@@ -169,6 +169,13 @@ class QardController extends Controller
 			if($mimeType == 'application/pdf') {
 				echo "PDF";die;
 			}
+                        if($mimeType == 'application/msword') {
+				echo "DOC";die;
+			}
+                        if($mimeType == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+				echo "DOCX";die;
+			}
+                        
 			//echo $html;
 			/******************************/
 			if (curl_error($c))
@@ -359,7 +366,6 @@ class QardController extends Controller
      * @return uploaded file name
      */    
         public function actionUrl(){
-            
             
                 if (Yii::$app->request->isAjax) {                
                    $move = Yii::$app->basePath.'\web\uploads\docs\\';              

@@ -8,7 +8,14 @@ use yii\widgets\ActiveForm;
 $this->title = 'Create Qard';
 ?>
 <!-- requiered for tag -->
-
+<style>
+    .imgCenter {
+       display: block;
+       margin: 0 auto;
+       height: 120px;
+    }   
+    
+ </style>   
 <link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
 <script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-tagsinput.min.js" type="text/javascript"></script>
 <script src="<?= Yii::$app->request->baseUrl?>/js/typeahead.js" type="text/javascript"></script>
@@ -222,14 +229,16 @@ $this->title = 'Create Qard';
 		</div>-->
       <div role="tabpanel" class="tab-pane" id="linkblock">
                                     <fieldset>
-                                        <div class="drop-file form-group" style="background-color: red">                                           
+                                        <div class="drop-file form-group">                                           
                                             <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
                                             <h2 id="extErr">Only PDF,DOC,DOCX TYPES ARE ALLOWED</h2>
                                          
                                             <h3>Drop files/click to Browse</h3></div>
                                         
                                             <div class="drop-image form-group" >                                           
-                                                <img src="<?=Yii::$app->request->baseUrl?>/images/ps.png" alt="">
+<!--                                                <img id="docimg" src="<?=Yii::$app->request->baseUrl?>/images/doc.png" alt="">-->
+
+                                                <img id="dispIcon" class="imgCenter">
                                                 <input type="text" name="filename" class="form-control fileName" placeholder="File Name">
                                                 <textarea name="desc" class="form-control" placeholder="Description"></textarea>
                                             </div>  
@@ -238,7 +247,7 @@ $this->title = 'Create Qard';
                                             <h3>or...</h3>
                                         <!--</div>-->
                                             <div class="form-group">                                            
-                                                <input type="text" name="url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
+                                                <input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
                                                 <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
                                             </div>
                                             <div class="form-group ">
@@ -350,6 +359,7 @@ function showtext() {
 	  
     $(function(){ 
 	$("#extErr").hide();
+        $(".drop-image").hide();
 	//increase height of the div
 	$(document).bind("blur keydown keyup","#working_div div",function(event){
 	    checkHeight(event);
@@ -647,9 +657,7 @@ function showtext() {
 		var style='style="height:'+height+'px;position:relative;background-color:'+div_bgcolor+';opacity:'+div_opacity+';"';
 		var content=$("#working_div div").html();
 		var new_div='<div data-height="'+(height/37.5)+'" data-block_id="'+data.block_id+'"  '+style+' id="'+block+'"  >'+content+img+'</div>';
-		
-		
-		
+				
 //		$("#cur_block").css("height",(height+37.5));
 		$("#working_div div").remove();
 		$("#working_div").before(qard+theme+new_div);
@@ -695,7 +703,20 @@ function showtext() {
 			data : {'url': preview_url},
 			success : function(data){
 				console.log(data);
-				$('#link_div').html(data);
+                                if(data=='PDF'){
+                                       $(".drop-file").hide();
+                                       $(".drop-image").show();
+                                      // $(".fileName").val(response.code);
+                                       $(".fileSwitch").hide();                
+                                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');                
+                                }
+                                  if(data=='DOC'||data=='DOCX'){
+                                       $(".drop-file").hide();
+                                       $(".drop-image").show();
+                                      // $(".fileName").val(response.code);
+                                       $(".fileSwitch").hide();                
+                                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');                
+                                }
 				//$('.working_div div').html(data);
 				//$('#link_div').load(preview_url);
 			}
@@ -720,6 +741,13 @@ function showtext() {
                var ext = myfile.split('.').pop();
                     if(ext=="pdf" || ext=="docx" || ext=="doc"){
                         $("#extErr").hide();
+                        if(ext=="pdf"){
+                            $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');                
+                        }
+                        if(ext=="docx" || ext=="doc"){
+                            $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
+             
+                        }
                            $.ajax({
                                   url: "<?=Url::to(['qard/url'], true)?>",
                                   cache: false,
@@ -744,17 +772,14 @@ function showtext() {
                        $(".fileSwitch").show();   
                      }
              }); 
-       $('#reflink').click(function(e) {          
-           console.log("fgffd");
-           $(".drop-file").show();
-           $(".drop-image").hide();
-           $(".fileSwitch").show();   
-//            $(".fileSwitch").show();
+       $('#reflink').click(function(e) { 
+         location.reload();
+          // $(".drop-file").show();
+        //   $(".drop-image").hide();
+         //  $(".fileSwitch").show();   
+//         $(".fileSwitch").show();
         }); 
-        $('.pasteUrl').change(function(e){
-            var file_data = $('.pasteUrl').val();       
-            console.log(file_data);
-        });   
+        
 </script>
 <script type="text/javascript">
 $(function(){
@@ -875,6 +900,5 @@ $('#text_indent').click(function(){document.execCommand('indent', false, null);$
   };
   
 })(jQuery);
-
 
 </script>
