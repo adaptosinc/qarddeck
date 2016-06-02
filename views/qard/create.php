@@ -739,7 +739,6 @@ function showtext() {
                                        $(".fileName").val(response.code);
                                        $(".fileSwitch").hide();                                
                                      // console.log(response);
-                                    //  $('#profImg').attr('src', '<? = Yii::$app->request->baseUrl?>/uploads/'+response.code);
                                       //count++;
                                   }
                            });
