@@ -73,10 +73,10 @@ class BlockController extends Controller
 		
 	//to create theme for qard
 	$theme=$this->createTheme($post);
-	
+
 	if(empty($theme->errors) && !is_array($theme)){
 	    
-	    $qard=$this->createQard($post, $theme->theme_id);
+	    $qard = $this->createQard($post, $theme->theme_id);
 	    
 	    if(empty($qard->errors) && !is_array($qard)){
 		$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
@@ -201,32 +201,30 @@ class BlockController extends Controller
      * to create Qard if created then update the qard
      */
     public function createQard($post,$theme_id){
-	$qard=new Qard();
-	if(!empty($post['qard_title']) && !empty(Yii::$app->user->id) && !empty($theme_id)){
-	    $qard->title=$post['qard_title'];
-	    $qard->url='test url';
-	    $qard->user_id=Yii::$app->user->id;
-	    $qard->status=0;
-	    $qard->qard_privacy=1;
-	    $qard->qard_theme=$theme_id;
-	    if(empty($post['qard_id'])){
-		$qard->validate();
-		$qard->save();
-		return $qard;
-	    }else{
-		$qard->qard_id=$post['qard_id'];
-		$qard->validate();
-		$qard->update();
-		return $qard;
-		
+	
+	$qard = false;
+		if(!empty($post['qard_id'])){
+			$qard = $this->findModel($post['qard_id']);
+		}
+		if(!$qard)	
+			$qard=new Qard();
+		/************************/
+		if( !empty($theme_id)){
+			if(isset($post['qard_title']))
+				$qard->title=$post['qard_title'];
+	    //$qard->url='test url';
+			if(\Yii::$app->user->id)
+				$qard->user_id=Yii::$app->user->id;
+			$qard->status=0;
+			$qard->qard_privacy=1;
+			$qard->qard_theme=$theme_id;
+			$qard->save(false);		
+			return $qard;
 	    }
-	    
-	}else{
-	    echo "qard_title".$post['qard_title'].'--user--'.Yii::$app->user->id."--theme--".$theme_id;
-	    return array('error'=>"empty fields!...");
-	}
-	
-	
+		else{
+			echo "qard_title".$post['qard_title'].'--user--'.Yii::$app->user->id."--theme--".$theme_id;
+			return array('error'=>"empty fields!...");
+		}	
     }
     
     /*
