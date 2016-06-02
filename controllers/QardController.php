@@ -169,6 +169,13 @@ class QardController extends Controller
 			if($mimeType == 'application/pdf') {
 				echo "PDF";die;
 			}
+                        if($mimeType == 'application/msword') {
+				echo "DOC";die;
+			}
+                        if($mimeType == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+				echo "DOCX";die;
+			}
+                        
 			//echo $html;
 			/******************************/
 			if (curl_error($c))
@@ -356,4 +363,30 @@ class QardController extends Controller
      public function isMobile(){
          return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
     }
+    /**
+     * Uploads the document
+     * @return uploaded file name
+     */    
+        public function actionUrl(){
+            
+                if (Yii::$app->request->isAjax) {                
+                   $move = Yii::$app->basePath.'\web\uploads\docs\\';              
+                   $moveto = $move.$_FILES["file"]['name'];
+                   $_FILES["file"]['tmp_name'];
+                   $_FILES["file"]['size'];
+                   $_FILES['file']['error'];
+                        if(file_exists($move.$_FILES["file"]['name'])) {
+                             //chmod($move.$_FILES["file"]['name'],0755); //Change the file permissions if allowed
+                             unlink($move.$_FILES["file"]['name']); //remove the file
+                         }
+                   move_uploaded_file($_FILES['file']['tmp_name'], $move.$_FILES["file"]['name']);
+                   $prof_img_path =  $_FILES["file"]['name'];
+//                   $profile->temp_image = "uploads/".$prof_img_path; 
+//                   $profile->save(false);
+                   \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    return [
+                        'code' => $_FILES["file"]['name'],
+                    ];
+               }  
+        }
 }

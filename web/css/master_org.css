@@ -33,9 +33,6 @@ input:focus, select:focus, textarea:focus   {
     background: #ff741b;
     color: #fff;
 }
-.form-control {
-	height:auto;
-}
 
 
 
@@ -82,7 +79,7 @@ ul.pull-right li {
 
 .navbar-toggle {
     margin: 0;
-    z-index: 8;
+    z-index: 18;
 }
 .navbar-toggle .icon-bar {
     background: #333;
@@ -94,7 +91,7 @@ ul.pull-right li {
     background: rgba(255, 138, 61, 0.8);
     height: 100% !important;
     top: 0;
-    z-index: 1;
+    z-index: 15;
 }
 .close_menu {
     float: right;
@@ -502,6 +499,9 @@ button[name="preview"] {
     width: 100%;
     padding: 20px;
 }
+.dropzone .tools {
+    z-index: 14 !important;
+}
 
 /* ===========================
  * Profile
@@ -526,6 +526,26 @@ header ul.pull-right button.btn {
 .profile-img img {
     position: relative !Important;
     float: left;
+}
+.profile-img:hover .editpimg {
+    opacity: 1;
+    position: absolute;
+    top: 0;
+    background: rgba(208, 208, 208, 0.85);
+    width: 100%;
+    height: 100%;
+    color: #000;
+    left: 0;
+    overflow: hidden;
+    padding: 10px;
+    font-size: 15px;
+    text-decoration: none;
+}
+.editpimg {
+    opacity: 0;
+}
+.profile-img.col-sm-2.col-md-2 {
+    position: relative;
 }
 #myModaledit .profile-content img {
     position: absolute;
@@ -571,7 +591,7 @@ section.main-profile .main-content {
 }
 .qard-content {
     min-height: 350px;
-    border: 2px solid #8d8d8d;
+    /**border: 2px solid #8d8d8d;**/
     box-shadow: 1px 3px 10px #E6E6E6;
     border-radius: 2px;
 }
@@ -1001,9 +1021,17 @@ ul.font-elements li input {
     clear: both;
     display: block;
     border: 1px solid #eaeaea;
-    max-width: 40px;
+    max-width: 60px;
     min-height: 40px;
     margin: 0 auto;
+}
+ul.font-elements li div input {
+    border: 0;
+    border-bottom: 1px solid #eaeaea;
+}
+.font-elements div input {
+    border: 0;
+    border-bottom: 1px solid #eaeaea;
 }
 ul.font-elements li {
     float: left;
@@ -1022,7 +1050,7 @@ ul.font-elements li {
     clear: both;
     display: block;
     border: 1px solid #eaeaea;
-    max-width: 40px;
+    max-width: 60px;
     min-height: 40px;
     margin: 0 auto;
 }
@@ -1038,15 +1066,15 @@ ul.font-elements li {
     min-height: 70px;
     
 }
+
 input[type="color"] {
 	background:transparent;
 	padding:0;
-	border:0;
-}
-a.on {
-    color: #F57D35 !important;
+	border:0 !important;
 }
 /*.themebg1 .bgcolor {
+
+.themebg1 .bgcolor {
     background: #0b1120;
 }
 .themebg2 .bgcolor {
@@ -1060,25 +1088,68 @@ a.on {
 }
 .themebg5 .bgcolor {
     background: #8bfae0;
-}*/
+}
 
+}*/
+.bglist1, .bglist2, .bglist3, .bglist4 {
+    min-width: 60px;
+    min-height: 110px;
+}
+.bglist1 {
+    background: #0b1120;
+}
+.bglist2 {
+    background: #161d31;
+}
+.bglist3 {
+    background: #2e3f56;
+}
+.bglist4 {
+    background: #65afae;
+}
+
+button.edit_theme {
+    border-radius: 10px;
+    border: 2px solid #8d8d8d;
+    margin-top: 8px;
+}
 button#align_list {
     padding: 0;
     background: transparent;
     border: 0;
     margin-right: 5px;
+    color: grey !important;
+    font-size: 28px;
 }
 #align_list .caret {
-    margin-left: -10px;
+    margin-left: -5px;
 }
 #align_list ul li a {
     color: grey;
     
 }
+.align_icon{
+    color: grey !important;
+    font-size: 28px;
+	padding: 6px !important;
+}
  ul.dropdown-menu>li>a {
     color: grey !important;
     font-size: 28px;
 }
+
+a.on {
+    color: #F5813B !important;
+}
+.text-block img {
+    max-width: 100%;
+}
+.img-preview img {
+    max-width: 100%;
+}
+=======
+>>>>>>> 29b0de0d0f12da591c2848687e7fa40f412c1048
+
 /* =====================
  *   Theme Selection
  *   ================ */
@@ -1150,6 +1221,9 @@ button#align_list {
 .gap .block-style {
     margin-bottom: 10px;
 }
+.line .block-style {
+    border-bottom: 1px solid #ccc;
+}
 .shadow .block-style {
     box-shadow: 0px 0px 40px #676666;
 }
@@ -1164,12 +1238,19 @@ button#align_list {
     margin: 0;
     color: #fff;
 }
+.url-content h4 {
+    color: #ff741b;
+}
 .accom-text {
     padding: 10px;
     background: #ccc;
 }
 .image-content i.fa.fa-times-thin:before {
     font-size: 28px;
+}
+.review-qard {
+    border: 1px solid #eaeaea;
+    padding: 10px 0;
 }
 
 /* ======================================
@@ -1223,5 +1304,5 @@ button#align_list {
     max-height: 300px !important;
 }
 .dropzone img.ghost {
-    opacity: 0 !important;
+    opacity: 0;
 }

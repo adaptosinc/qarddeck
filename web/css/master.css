@@ -409,6 +409,7 @@ ul.align-elements li {
 #linkblock .dropzone {
     border: 0;
 }
+
 textarea.form-control[name="url_content"] {
     border: 1px solid #eaeaea !Important;
     min-height: 120px;
@@ -419,6 +420,15 @@ input.form-control[name="url_title"] {
 .btn-remove {
 	margin:10px 0;
 }
+
+.drop-file {
+    text-align: center;
+    line-height: 50px;
+}
+.drop-file h3 {
+    line-height: 70px;
+}
+
 /* toggle switch */
 .switch {
     display: inline-block;
