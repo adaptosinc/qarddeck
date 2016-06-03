@@ -205,7 +205,7 @@ $this->title = 'Create Qard';
                                                 </div>
                                                 <div class="col-sm-4 col-md-4 on-off">
                                                     <div class="switch">
-                                                        <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox" onClick="showUrlPreview()">
                                                         <label for="cmn-toggle-5"></label>
                                                     </div>  <span>Display Preview</span>                                                  
                                                 </div>
@@ -439,7 +439,17 @@ function showtext() {
 	
     });
     
-    
+    function setHeightBlock(unit){
+		var blk_size = unit;
+		size=blk_size*37.5;
+		console.log(size);
+		if(size<600){
+			$("#working_div").parent().css("height",size);
+			$("#working_div div").css("min-height",size);
+			$("#working_div div").attr("data-height",blk_size);
+			
+		}		
+	}
     function imageonly(){
 	var data=$("#image_upload").serializeArray();
 	//$("#working_div").children().css('background-image','url(<?=Yii::$app->request->baseUrl."/uploads/block/vijay.JPG)"?>');
@@ -727,8 +737,38 @@ function showtext() {
 
 	function changePic(v){
 		$(v).parent().remove();
+		$('.img-preview').remove();
 		$('#title_desc_url').removeClass("col-sm-9 col-md-9");
 		$('#title_desc_url').addClass("col-sm-12 col-md-12");
+	}
+	function showUrlPreview(){
+		var title = $('input[name=url_title]').val();
+		var content = $('textarea[name=url_content]').val();
+		var image = $('.img-preview > img').attr('src');
+		console.log(image+content+title);
+		if(image== 'undefined'){
+			var str = '<span class="review-qard row"><span class="img-preview col-sm-3 col-md-3"><i class="fa fa-file-image-o" style="font-size: 12em;" aria-hidden="true"></i></span>'+
+			'<span class="col-sm-9 col-md-9" id="title_desc_url">'+
+			'<span class="url-content"><h4>'+title+'</h4>'
+			+'<span class="url-text"><p>'+content+'</p>'
+			+
+			'</span></span></span></span>';			
+		}else{
+		var str = '<span class="review-qard row"><span class="img-preview col-sm-3 col-md-3"><img src="'+image+'" alt=""></span>'+
+		'<span class="col-sm-9 col-md-9" id="title_desc_url">'+
+		'<span class="url-content"><h4>'+title+'</h4>'
+		+'<span class="url-text"><p>'+content+'</p>'
+		+
+		'</span></span></span></span>';			
+		}
+
+		//setInterval(function(){ checkHeight(); }, 1000);
+		//setiInterval(function(){checkHeight();},1000);
+		//setHeightBlock(5);
+		$("#working_div div").html(str);
+		checkHeight();
+		//$('#link_div').hide();
+		
 	}
 
         ////////////////////////////////////
