@@ -231,8 +231,7 @@ $this->title = 'Create Qard';
                                     <fieldset>
                                         <div class="drop-file form-group">                                           
                                             <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
-                                            <h2 id="extErr">Only PDF,DOC,DOCX TYPES ARE ALLOWED</h2>
-                                         
+                                            <h2 id="extErr">Only PDF,DOC,DOCX TYPES ARE ALLOWED</h2>                                         
                                             <h3>Drop files/click to Browse</h3></div>
                                         
                                             <div class="drop-image form-group" >                                           
