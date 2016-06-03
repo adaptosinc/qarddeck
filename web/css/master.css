@@ -409,6 +409,18 @@ ul.align-elements li {
 #linkblock .dropzone {
     border: 0;
 }
+
+textarea.form-control[name="url_content"] {
+    border: 1px solid #eaeaea !Important;
+    min-height: 120px;
+}
+input.form-control[name="url_title"] {
+    border: 1px solid #eaeaea !Important;
+}
+.btn-remove {
+	margin:10px 0;
+}
+
 .drop-file {
     text-align: center;
     line-height: 50px;
@@ -1151,11 +1163,12 @@ a.on {
 .text-block img {
     max-width: 100%;
 }
+.img-preview {
+	text-align:center;
+}
 .img-preview img {
     max-width: 100%;
 }
-=======
->>>>>>> 29b0de0d0f12da591c2848687e7fa40f412c1048
 
 /* =====================
  *   Theme Selection
