@@ -243,6 +243,7 @@ class QardController extends Controller
 			//echo $domain;echo $result;
 			/******************************/
 			//;die;
+			/**
 			echo '
 			<div class="review-qard row">
 				<div class="img-preview col-sm-3 col-md-3">
@@ -258,23 +259,27 @@ class QardController extends Controller
 				</div>
 			</div> 
 			';
-			/**
+			**/
 			echo '
 			<div class="review-qard row">
-				<!--<div class="img-preview col-sm-3 col-md-3">
-					<img src="'.$image.'" alt="">
-				</div>-->
-				<div class="col-sm-12 col-md-12">
+				<div class="img-preview col-sm-3 col-md-3">';
+			if($image)
+				echo '<img src="'.$image.'" alt="">';
+			else
+				echo '<i class="fa fa-file-image-o" style="font-size: 12em;" aria-hidden="true"></i>';
+			echo '<button id="url_img_remove" onClick="changePic(this)" class="btn btn-default btn-remove">Remove</button>
+				</div>
+				<div class="col-sm-9 col-md-9" id="title_desc_url">
 					<div class="url-content">
-						<h4><input name="url_title" type="text" value="'.$title.'" /></h4>
+						<h4><input name="url_title" type="text" class="form-control" value="'.$title.'" /></h4>
 						<div class="url-text">
-							<p><input name="url_content" type="text" value="'.$content.'" /></p>
+							<p><textarea name="url_content" class="form-control">'.$content.'</textarea></p>
 						</div>
-					</div>                                            
+					</div>                                
 				</div>
 			</div> 
 			';
-			**/
+			/**/
 			echo '<div> <h3>Consume Preview</h3>';
 			//echo "<div><h1>".$title."</h1>";
 			//echo "<img src='".$image."' />";
