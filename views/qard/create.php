@@ -64,7 +64,7 @@ $this->title = 'Create Qard';
 		<li role="presentation" class="active"><a href="#cardblock" aria-controls="cardblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/txt.png" alt=""></a></li>
 		<!--<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/file.png" alt=""></a></li>-->
 		<li role="presentation"><a href="#linkblock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/link.png" alt=""></a></li>                                
-		<li role="presentation"><a href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/img.png" alt=""></a></li>                                
+		<li role="presentation"><a id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/img.png" alt=""></a></li>                                
 		<li role="presentation"><a href="#paintblock" aria-controls="paintblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/paint.png" alt=""></a></li>
 		<li role="presentation"><a href="#copyblock" aria-controls="copyblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/copy.png" alt=""></a></li>
 		<li role="presentation"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/delete.png" alt=""></a></li>
@@ -301,7 +301,17 @@ function showtext() {
 	  
     $(function(){ 
 	$("#extErr").hide();
-        $(".drop-image").hide();
+	
+	
+	// on click image tab should increase block height
+	$(document).delegate("#cmn-toggle-3","click",function(){
+	    
+	   if(parseInt($("#working_div div").attr("data-height"))<4){
+	       $("#working_div div").attr("data-height",4);
+	       $("#working_div div").css("height",(4*37.5));
+	   };
+	});
+	
 	//increase height of the div
 	$(document).bind("blur keydown keyup","#working_div div",function(event){
 	    checkHeight(event);
@@ -413,15 +423,14 @@ function showtext() {
     
     
     //for block
-    $("#blk_size").on("keyup keydown",function(){
+    $(document).delegate("#blk_size","keyup keydown",function(){
 	var blk_size=parseInt($(this).val()) || 1;
 	size=blk_size*37.5;
 	console.log(size);
 	if(size<600){
-	    $("#working_div").parent().css("height",size);
+	    $("#working_div div").css("height",size);
 	    $("#working_div div").css("min-height",size);
 	    $("#working_div div").attr("data-height",blk_size);
-	    
 	}
 	
     });
@@ -616,7 +625,7 @@ function showtext() {
 		}
 		var img='';
 		if(data.link_image){
-		    img='background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+')';
+		    img='background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+')';
 		}
 //		if(!theme_id){
 //		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
