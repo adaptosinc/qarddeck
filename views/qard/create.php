@@ -633,8 +633,8 @@ function showtext() {
 	var is_title=$("[name='is_title']:checked").val() || 0;
 	data.push({name: 'is_title', value: is_title});
 	
-	console.log(data);
-	return false;
+	//console.log(data);
+	///return false;
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
