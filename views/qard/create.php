@@ -114,14 +114,14 @@ $this->title = 'Create Qard';
 			<ul class="on-off pull-left">
 			    <li>
 				<div class="switch">
-				    <input id="cmn-toggle-5" name="is_extra_text" class="cmn-toggle cmn-toggle-round" type="checkbox">
-				    <label for="cmn-toggle-5" onclick="showtext()"></label>
+				    <input id="cmn-toggle-1" name="is_extra_text" class="cmn-toggle cmn-toggle-round" type="checkbox">
+				    <label for="cmn-toggle-1" onclick="showtext()"></label>
 				</div>  <span>Extra Text</span>                                          
 			    </li>
 			    <li>
 				<div class="switch">
-				    <input id="cmn-toggle-6" name="is_title" value="1"  class="cmn-toggle cmn-toggle-round" type="checkbox">
-				    <label for="cmn-toggle-6"></label>
+				    <input id="cmn-toggle-2" name="is_title" value="1"  class="cmn-toggle cmn-toggle-round" type="checkbox">
+				    <label for="cmn-toggle-2"></label>
 				</div>  <span>Make Qard Title</span>                                          
 			    </li>                                              
 			</ul>                                          
@@ -194,29 +194,41 @@ $this->title = 'Create Qard';
                                                 <input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
                                                 <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
                                             </div>
-                                            <div class="form-group ">
-                                                <img src="images/icon-left.png" alt="" class="col-sm-1 col-md-1" height="25px">
+                                            <div class="form-group link_options" style="display:none">
+                                                <!--<img src="images/icon-left.png" alt="" class="col-sm-1 col-md-1" height="25px">
                                                 <div class="col-sm-3 col-md-3"><input type="text" name="name" class="form-control" placeholder="Link Color (#ffffff)"></div>
-                                                <div class="col-sm-4 col-md-4"><input type="text" name="name" class="form-control col-sm-5 col-md-5" placeholder="Link hover Color (#ffffff)"></div>
+                                                <div class="col-sm-4 col-md-4"><input type="text" name="name" class="form-control col-sm-5 col-md-5" placeholder="Link hover Color (#ffffff)"></div>-->
                                                 <div class="col-sm-4 col-md-4 on-off">
                                                     <div class="switch">
-                                                        <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                                        <label for="cmn-toggle-1"></label>
+                                                        <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <label for="cmn-toggle-4"></label>
                                                     </div>  <span>Display Link</span>                                                  
+                                                </div>
+                                                <div class="col-sm-4 col-md-4 on-off">
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <label for="cmn-toggle-5"></label>
+                                                    </div>  <span>Display Preview</span>                                                  
+                                                </div>
+                                                <div class="col-sm-4 col-md-4 on-off">
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <label for="cmn-toggle-6"></label>
+                                                    </div>  <span>Open in New Tab</span>                                                  
                                                 </div>
                                             </div>  
                                         </div>
-                                            <ul class="on-off pull-right ">
+                                            <ul class="on-off pull-right file_options">
                                                  <li>
                                                   <div class="switch">
-                                                      <input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                                      <label for="cmn-toggle-2"></label>
+                                                      <input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                      <label for="cmn-toggle-7"></label>
                                                   </div>  <span>Display File Name</span>                                    
                                               </li>
                                               <li>
                                                   <div class="switch linkSwitch">
-                                                      <input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                                      <label for="cmn-toggle-2"></label>
+                                                      <input id="cmn-toggle-8" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                      <label for="cmn-toggle-8"></label>
                                                   </div>  <span>Open Link in New Tab</span>                                    
                                               </li>
                                               <li><a href="#"><img id="reflink" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>                                            
@@ -677,25 +689,37 @@ function showtext() {
 			data : {'url': preview_url},
 			success : function(data){
 				console.log(data);
-                                if(data=='PDF'){
+                                if(data=='PDF' || data=='pdf'){
+									<!--ADDED BY DENCY -->
+									$(".file_options").show();
+									$(".link_options").hide();
+									<!------------------->
                                        $(".drop-file").hide();
                                        $(".drop-image").show();
                                       // $(".fileName").val(response.code);
                                        $(".fileSwitch").hide();                
-                                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');                
+                                       $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');                
                                 }
                                 if(data=='DOC'||data=='DOCX'){
+									<!--ADDED BY DENCY -->
+									$(".file_options").show();
+									$(".link_options").hide();
+									<!------------------->
                                        $(".drop-file").hide();
                                        $(".drop-image").show();
                                       // $(".fileName").val(response.code);
                                        $(".fileSwitch").hide();                
-                                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');                
+                                       $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');                
                                 }
 				//$('.working_div div').html(data);
 								else
 								{
+									//hide file options
 									$(".drop-file").hide();
 									$(".drop-image").hide();
+									$(".file_options").hide();
+									//show link options
+									$(".link_options").show();
 									$('#link_div').html(data);
 								}
 			}

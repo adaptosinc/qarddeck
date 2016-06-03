@@ -262,9 +262,12 @@ class QardController extends Controller
 			**/
 			echo '
 			<div class="review-qard row">
-				<div class="img-preview col-sm-3 col-md-3">
-					<img src="'.$image.'" alt="">
-					<button id="url_img_remove" onClick="changePic(this)" class="btn btn-default btn-remove">Remove</button>
+				<div class="img-preview col-sm-3 col-md-3">';
+			if($image)
+				echo '<img src="'.$image.'" alt="">';
+			else
+				echo '<i class="fa fa-file-image-o" style="font-size: 12em;" aria-hidden="true"></i>';
+			echo '<button id="url_img_remove" onClick="changePic(this)" class="btn btn-default btn-remove">Remove</button>
 				</div>
 				<div class="col-sm-9 col-md-9" id="title_desc_url">
 					<div class="url-content">
