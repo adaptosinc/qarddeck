@@ -562,7 +562,7 @@ function showtext() {
 	var total_height=0;
 	
 	
-	$(".qard-div div").each(function(){
+	$(".qard-div .current").each(function(){
 	    
 	    
 	    var attr = $(this).attr('data-height');
@@ -657,22 +657,94 @@ function showtext() {
 	}
     }
     
-    function getBlockId(){var blk_id=0;$(".add-block div").each(function(){var attr = $(this).attr('id');if (typeof attr !== typeof undefined && attr !== false && attr.search("_")) {new_blk_id=attr.split('_');if(blk_id<parseInt(new_blk_id[1])){blk_id=parseInt(new_blk_id[1]);}}});return blk_id;}
+    function getNextBlockId(){var blk_id=0;$(".add-block div").each(function(){var attr = $(this).attr('id');if (typeof attr !== typeof undefined && attr !== false && attr.search("_")) {new_blk_id=attr.split('_');if(blk_id<parseInt(new_blk_id[1])){blk_id=parseInt(new_blk_id[1]);}}});return ++blk_id;}
     
+    function commanAjaxFun(postData,callFrom){
+	
+//	console.log(postData);return false;
+	
+	$.ajax({url:"<?=Url::to(['block/create'], true)?>",type:"POST",data:postData,dataType:"json",
+	   success:function(data){
+	       
+//	       checkHeight();
+		var qard='';
+		var theme='';
+		//if qard is editing
+		if(!$("#qard_id").attr("value")){qard='<input id="qard_id" type="hidden" value="'+data.qard_id+'">';}
+		// if stored data contain image then true
+		var img='';
+		if(data.link_image){img='background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+');';
+		}
+		//creating parent block or img-block
+		var new_div ='<div id="'+data.blk_id+'" class="bgimg-block parent_current_blk" style="height:'+height+'px;'+img+'">';
+		//creating overlay-block or middel block
+		    new_div+='<div class="bgoverlay-block" style="background-color:'+data.div_bgcolor+';opacity:'+data.div_opacity+';height:'+height+'px;">';
+		//creating main block or text block
+		    new_div+='<div data-height="'+(data.height/37.5)+'" style="height:'+height+'px;" data-block_id="'+data.block_id+'" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" class="text-block current_blk">'+data.text+'</div></div></div>';
+		
+		//adding before working block
+		$("#working_div").before(qard+theme+new_div);
+		
+		checkForNew=true;
+		//checking whether block is editing or adding new block
+		if(data.edit_block){
+		    //for edit block
+		    $("#add-block .parent_current_blk").each(function(){
+			if(typeof $(this).find(".current_blk").attr("data-block_id") == 'undefined' && data.blk_id!=$(this).attr("id"))
+			{
+			    $("#working_div").remove();
+			    $(this).wrap('<div  id="working_div" class="working_div active"></div>');
+			    $(this).find(".current_blk").addClass("working_div");
+			    $(this).find(".current_blk").attr("unselectable",'off');
+			    $(this).find(".current_blk").attr("contenteditable",'true');
+			    console.log("wrap old block");
+			    checkForNew=false;
+			    return;
+			}
+		    });
+		}
+		
+		if(checkForNew){
+		    
+//		    if(data.new_block){
+			//for new block
+//			$("#working_div").remove();
+			var new_div='<div id="blk_'+getNextBlockId()+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div>';
+			$("#working_div").html(new_div);
+			console.log("added new block");
+//		    }
+		}
+		
+		//removing uneccessary created working block
+		$("#add-block div").each(function(){
+		    if( $(this).attr('id')=="working_div" && $(this).html()==""){
+		    $("#working_div").remove();}
+		});
+		
+		//remove image after stored in db
+		$(".dropzone .btn-del").trigger("click");
+		
+		return true;
+	   },
+	    error:function(data){
+		alert(data);
+		return false;
+	    }
+	});
+	
+	
+	
+    }
     
     /*
     * add_block with all values
     */
     function add_block(event){
 	// to check height
-	checkHeight(event);
-	
-//	return false;
-	
-	//for image
-	
+//	checkHeight(event);
+	// if storing image
 	var data=$("#image_upload").serializeArray();
-	
+	// getting opacity for image-block div
 	var image_opacity=parseFloat($("#working_div .bgimg-block").css("opacity")) || 0; 
 	data.push({name: 'image_opacity', value: image_opacity});
 	
@@ -714,8 +786,8 @@ function showtext() {
 	var is_title=$("[name='is_title']:checked").val() || 0;
 	data.push({name: 'is_title', value: is_title});
 	
-	var id=$("#working_div .parent_current_blk").attr("id");
-	data.push({name: 'is_title', value: id});
+	var blk_id=$("#working_div .parent_current_blk").attr("id");
+	data.push({name: 'blk_id', value: blk_id});
 
 ////	console.log("df"+$("#working_div .current_blk").text());
 //	if($("#working_div .current_blk").text().trim() == '' && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
@@ -726,100 +798,10 @@ function showtext() {
 ////
 //	console.log(data);
 //	return false;
-
-	$.ajax({
-	   url:"<?=Url::to(['block/create'], true)?>",
-	   type:"POST",
-	   data:data,
-	   dataType:"json",
-	   success:function(data){
-	       checkHeight();
-		var qard='';
-		var theme='';
-		if(qard_id==0){
-		    qard='<input id="qard_id" type="hidden" value="'+data.qard_id+'">';
-		}
-		var img='';
-		if(data.link_image){
-		    img='background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+');';
-		}
-//		if(!theme_id){
-//		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
-//		}
-		var block=$("#working_div .parent_current_blk").attr("id");
-		block_id=getBlockId();
-		
-		var style='style="height:'+height+'px;"';
-		
-		var content=data.text;
-		
-		
-		var new_div='<div id="'+block+'" class="bgimg-block parent_current_blk" style="height:'+height+'px !important;'+img+'">';
-		    new_div+='<div class="bgoverlay-block" style="background-color:'+div_bgcolor+';opacity:'+div_opacity+';">';
-		    new_div+='<div data-height="'+(height/37.5)+'" '+style+' data-block_id="'+data.block_id+'" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" class="text-block current_blk">'+content+'</div></div></div>';
-		
-		
-		$("#working_div").before(qard+theme+new_div);
-		var new_div='<div id="blk_'+(parseInt(++block_id))+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div>';
-		
-		//document.execCommand("enableObjectResizing", false, "false");
-		checkBlock=false;
-		
-		
-		if(block_id){
-	    
-		    $("#add-block .parent_current_blk").each(function(){
-			if(typeof $(this).find(".current_blk").attr("data-block_id") == typeof undefined && block!=$(this).attr("id"))
-			{
-			    $("#working_div").remove();
-			    $(this).wrap('<div  id="working_div" class="working_div active"></div>');
-			    $(this).find(".current_blk").addClass("working_div");
-			    $(this).find(".current_blk").attr("unselectable",'off');
-			    $(this).find(".current_blk").attr("contenteditable",'true');
-			    checkBlock=true;
-			    return false;
-
-			}
-		    });
-
-		}
-		
-		
-		$("#add-block div").each(function(){
-		    if( $(this).attr('id')=="working_div" && $(this).html()==""){
-		    $("#working_div").remove();}
-		});
-		if(checkBlock==false){
-		    $("#working_div").html(new_div);
-		    console.log("vijay new block");
-		}else{
-		    console.log("old block");
-		}
-		
-//		$("#working_div").append($(".add-block :last_child"));
-		$(".dropzone .btn-del").trigger("click");
-//		console.log(data);
-	   },
-	    error:function(data){
-		console.log(data);
-		alert("error");
-	    }
-	});
+	return commanAjaxFun(data,'add_block');
     }
     
-    $("#cur_block div").on("click",function(){
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	
-    });
     
 //    //height overflow
 //    $("#working_div div").on("blur keydown",function(){
@@ -836,125 +818,81 @@ function showtext() {
     
     function addSaveCard(){
 	
+	// if storing image
 	var data=$("#image_upload").serializeArray();
 	var qard_title=$("#qard_title").val() || 0;
 	data.push({name: 'qard_title', value: qard_title});
 
-	
-	if(qard_title==''){
-	    alert("please enter qard title");
-	    return false;
-	    
-	}
-	
-	
+	//if qard title is empty
+	if(qard_title==''){alert("please enter qard title");return false;}
 	
 	$("#add-block .parent_current_blk").each(function(){
-	   
-	   
-	       
-		var image_opacity=parseFloat($(this).css("opacity") || 0); 
-		data.push({name: 'image_opacity', value: image_opacity});
+	    
+	    // getting opacity for image-block div
+	    var image_opacity=parseFloat($(this).css("opacity") || 0); 
+	    data.push({name: 'image_opacity', value: image_opacity});
 
-		var div_opacity=parseFloat($(this).find(".bgoverlay-block").css("opacity") || 0);
-		data.push({name: 'div_opacity', value: div_opacity});
+	    //opacity for overlay-block
+	    var div_opacity=parseFloat($(this).find(".bgoverlay-block").css("opacity") || 0);
+	    data.push({name: 'div_opacity', value: div_opacity});
 
+	    //OVERLAY color for overlay block
+	    var div_bgcolor=$(this).find(".bgoverlay-block").css("background-color");
+	    data.push({name: 'div_bgcolor', value: div_bgcolor});
+	    
+	    //if it contains background as image then true
+	    var div_bgimage=$(this).css("background-image");
+	    if(typeof div_bgimage  == 'undefined' ){
+	    var div_bgimage=$(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+	    }
+	    data.push({name: 'div_bgimage', value: div_bgimage});
 
-		var div_bgcolor=$(this).find(".bgoverlay-block").css("background-color");
-		data.push({name: 'div_bgcolor', value: div_bgcolor});
+	    //getting height of div
+	    var height=parseInt($(this).find(".current_blk").attr('data-height'))*37.5;
+	    data.push({name: 'height', value: height});
+
+	    //getting text for the block
+	    var text=$(this).find(".current_blk").html() || 0; 
+	    data.push({name: 'text', value: text});
+
+	    //if extra text is present
+	    var extra_text=$("#extra_text").html() || 0;
+	    data.push({name: 'extra_text', value: extra_text});
+
+	    //to check operation for edit a block or for add new block
+	    var block_id=$(this).find(".current_blk").attr("data-block_id") || 0;
+	    data.push({name: 'block_id', value: block_id});
+
+	    // check whether theme is already preasent for qard or not
+	    var theme_id=$(this).find(".current_blk").attr("data-theme_id") || 0;
+	    data.push({name: 'theme_id', value: theme_id});
+
+	    //check qard id is present to edit or add new qard
+	    var qard_id=$("#qard_id").val() || 0;
+	    data.push({name: 'qard_id', value: qard_id});
+
+	    // getting tags fot qard
+	    var tags=$("#tags").val() || 0;
+	    data.push({name: 'tags', value: tags});
+	    
+	    //if block contains title for block then true
+	    var is_title=$("[name='is_title']:checked").val() || 0;
+	    data.push({name: 'is_title', value: is_title});
+
+	    //to get current block id
+	    var blk_id=$(this).attr("id");
+	    data.push({name: 'blk_id', value: blk_id});
 		
-		var div_bgimage=$(this).css("background-image");
-		if(typeof div_bgimage  == 'undefined' ){
-		var div_bgimage=$(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-		}
-		data.push({name: 'div_bgimage', value: div_bgimage});
-
-
-		var height=parseInt($(this).find(".current_blk").attr('data-height'))*37.5;
-		
-		 console.log($(this).find(".current_blk").attr('data-height'));
-		data.push({name: 'height', value: height});
-
-		var text=$(this).find(".current_blk").html() || 0; 
-		data.push({name: 'text', value: text});
-
-		var extra_text=$("#extra_text").html() || 0;
-		data.push({name: 'extra_text', value: extra_text});
-
-		var block_id=$(this).find(".current_blk").attr("data-block_id") || 0;
-		data.push({name: 'block_id', value: block_id});
-	
-		var theme_id=$(this).find(".current_blk").attr("data-theme_id") || 0;
-		data.push({name: 'theme_id', value: theme_id});
-
-
-		var qard_id=$("#qard_id").val() || 0;
-		data.push({name: 'qard_id', value: qard_id});
-
-		var tags=$("#tags").val() || 0;
-		data.push({name: 'tags', value: tags});
-		
-		var is_title=$("[name='is_title']:checked").val() || 0;
-		data.push({name: 'is_title', value: is_title});
-//		
-//		if(typeof $(this).find(".current_blk").html() == typeof undefined && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
-//		    alert("please enter block or image to save");
-//		    return false;
-//		}
-//		
-//		console.log(data);
+//	    if(typeof $(this).find(".current_blk").html() == typeof undefined && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
+//		alert("please enter block or image to save");
 //		return false;
-		
-		$.ajax({
-			url:"<?=Url::to(['block/create'], true)?>",
-			type:"POST",
-			data:data,
-			dataType:"json",
-			success:function(data){
-			    checkHeight();
-			     var qard='';
-			     var theme='';
-			     if(qard_id==0){
-				 qard='<input id="qard_id" type="hidden" value="'+data.qard_id+'">';
-			     }
-			     var img='';
-			     if(data.link_image){
-				 img='background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+');';
-			     }
-	     //		if(!theme_id){
-	     //		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
-	     //		}
-			     var block=$("#working_div .parent_current_blk").attr("id");
-			     block_id=getBlockId();
+//	    }
+//
+//	    console.log(data);
+//	    return false;
 
-			     var style='style="height:'+height+'px;"';
-
-			     var content=$("#working_div .current_blk").html();
-
-
-			     var new_div='<div id="'+block+'" class="bgimg-block parent_current_blk" style="height:'+height+'px !important;'+img+'">';
-				 new_div+='<div class="bgoverlay-block" style="background-color:'+div_bgcolor+';opacity:'+div_opacity+';">';
-				 new_div+='<div data-height="'+(height/37.5)+'" '+style+' data-block_id="'+data.block_id+'" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" class="text-block current_blk">'+content+'</div></div></div>';
-
-			     
-			     $("#working_div").before(qard+theme+new_div);
-			     var new_div='<div  id="working_div" class="working_div active"><div id="blk_'+(parseInt(++block_id))+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div></div>';
-			     $("#working_div div").remove();
-			     
-			     
-
-//			     console.log(data);
-			},
-			 error:function(data){
-			     console.log(data);
-			     alert("error");
-			 }
-		     });
+	    commanAjaxFun(data,'save_block');
 		 
-		
-		
-	   
-	   
 	});
 	
 	
