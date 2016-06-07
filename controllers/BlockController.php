@@ -85,12 +85,12 @@ class BlockController extends Controller
 		
 		if(empty($block->errors) && !is_array($block)){
 		    
-		    echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image));
+		    echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$block->text));
 		    exit;
 		    
 		}  else {
 		    echo "unable to create block";
-		    print_r($block->errors);
+		    //print_r($block->errors);
 		}
 		
 	    }else{

@@ -40,11 +40,11 @@ $this->title = 'Create Qard';
 	
 	<div class="col-sm-4 col-md-4">
 	    <div id="add-block" class="qard-div add-block">
-		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen">
+<!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen">
 		    <div class="bgoverlay-block">
-			<div class="text-block current_blk" data-height="1" style="height:75px;"></div>                                    
+			<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
 		    </div>                                
-		</div>
+		</div>-->
 		
 		<div  id="working_div" class="working_div block active"  >
                             <div id="blk_1" class="bgimg-block parent_current_blk">
@@ -294,7 +294,7 @@ $this->title = 'Create Qard';
 			<li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/comment.png" alt=""></a></li>
 			<li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/icon-paint.png" alt=""></a></li>
 			<li><button class="btn btn-sm btn-default" name="preview">Preview</button></li>
-			<li><button class="btn btn-sm btn-default" name="preview">Save</button></li>
+			<li onclick="addSaveCard(event)"><button class="btn btn-sm btn-default" name="preview">Save</button></li>
 		    </ul>
 		</div>
 	    </div>   
@@ -361,7 +361,14 @@ function showtext() {
 	
 	
 	//increase height of the div
-	$(document).bind("blur keydown keyup","#working_div div",function(event){
+	$(document).delegate("#working_div .current_blk","blur keydown keyup click",function(event){
+	    
+	    if(event.keyCode==8){
+		
+//		$(this).css("height","auto");
+		console.log("scroll"+$(this).innerHeight());
+		console.log($(this).html());
+	    }
 	    checkHeight(event);
 //	    removeBr();
 	});
@@ -452,10 +459,6 @@ function showtext() {
 	    }
 
 	});
-
-	
-	
-	
     });
 
     
@@ -604,7 +607,7 @@ function showtext() {
     function checkHeight(e){
 	var total_height=totalHeight();
 	if(total_height>(600-37.5)){
-	    $(".add-block h4").hide();
+	    $(".add-block .add-another").hide();
 	}
 	
 	var offsetHeight=parseInt($("#working_div .current_blk")[0].offsetHeight);
@@ -648,7 +651,7 @@ function showtext() {
 			return txt.slice(0, -1);
 		    });
 		e.preventDefault();}
-	    $(".add-block h4").hide();
+	    $(".add-block .add-another").hide();
 	}else{
 //	    console.log($("#working_div div").last().find('br'));
 	}
@@ -684,17 +687,10 @@ function showtext() {
 	data.push({name: 'div_bgimage', value: div_bgimage});
 	
 	
-	var height=0;
-	$("#working_div div").each(function(index){
-	    var attr = $(this).attr('data-height');
-	    if (typeof attr !== typeof undefined && attr !== false) {
-	      // Element has this attribute
-	      height=parseInt(attr)*37.5;
-	    } 
-	});
+	var height=parseInt($("#working_div .current_blk").attr("data-height"))*37.5;
 	data.push({name: 'height', value: height});
 	
-	var text=$("#working_div div").html() || 0; 
+	var text=$("#working_div .current_blk").html() || 0; 
 	data.push({name: 'text', value: text});
 	
 	var extra_text=$("#extra_text").html() || 0;
@@ -718,7 +714,16 @@ function showtext() {
 	var is_title=$("[name='is_title']:checked").val() || 0;
 	data.push({name: 'is_title', value: is_title});
 	
+	var id=$("#working_div .parent_current_blk").attr("id");
+	data.push({name: 'is_title', value: id});
 
+////	console.log("df"+$("#working_div .current_blk").text());
+//	if($("#working_div .current_blk").text().trim() == '' && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
+//		    console.log("please enter block or image to save");
+////		    return false;
+//		}
+//
+////
 //	console.log(data);
 //	return false;
 
@@ -746,27 +751,54 @@ function showtext() {
 		
 		var style='style="height:'+height+'px;"';
 		
-		var content=$("#working_div .current_blk").html();
+		var content=data.text;
 		
 		
 		var new_div='<div id="'+block+'" class="bgimg-block parent_current_blk" style="height:'+height+'px !important;'+img+'">';
 		    new_div+='<div class="bgoverlay-block" style="background-color:'+div_bgcolor+';opacity:'+div_opacity+';">';
 		    new_div+='<div data-height="'+(height/37.5)+'" '+style+' data-block_id="'+data.block_id+'" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" class="text-block current_blk">'+content+'</div></div></div>';
 		
-		$("#working_div div").remove();
+		
 		$("#working_div").before(qard+theme+new_div);
 		var new_div='<div id="blk_'+(parseInt(++block_id))+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div>';
 		
 		//document.execCommand("enableObjectResizing", false, "false");
+		checkBlock=false;
 		
 		
+		if(block_id){
+	    
+		    $("#add-block .parent_current_blk").each(function(){
+			if(typeof $(this).find(".current_blk").attr("data-block_id") == typeof undefined && block!=$(this).attr("id"))
+			{
+			    $("#working_div").remove();
+			    $(this).wrap('<div  id="working_div" class="working_div active"></div>');
+			    $(this).find(".current_blk").addClass("working_div");
+			    $(this).find(".current_blk").attr("unselectable",'off');
+			    $(this).find(".current_blk").attr("contenteditable",'true');
+			    checkBlock=true;
+			    return false;
+
+			}
+		    });
+
+		}
 		
 		
-		$("#working_div").html(new_div);
+		$("#add-block div").each(function(){
+		    if( $(this).attr('id')=="working_div" && $(this).html()==""){
+		    $("#working_div").remove();}
+		});
+		if(checkBlock==false){
+		    $("#working_div").html(new_div);
+		    console.log("vijay new block");
+		}else{
+		    console.log("old block");
+		}
 		
 //		$("#working_div").append($(".add-block :last_child"));
 		$(".dropzone .btn-del").trigger("click");
-		console.log(data);
+//		console.log(data);
 	   },
 	    error:function(data){
 		console.log(data);
@@ -776,6 +808,16 @@ function showtext() {
     }
     
     $("#cur_block div").on("click",function(){
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	
     });
     
@@ -792,6 +834,131 @@ function showtext() {
 //	}
 //    });
     
+    function addSaveCard(){
+	
+	var data=$("#image_upload").serializeArray();
+	var qard_title=$("#qard_title").val() || 0;
+	data.push({name: 'qard_title', value: qard_title});
+
+	
+	if(qard_title==''){
+	    alert("please enter qard title");
+	    return false;
+	    
+	}
+	
+	
+	
+	$("#add-block .parent_current_blk").each(function(){
+	   
+	   
+	       
+		var image_opacity=parseFloat($(this).css("opacity") || 0); 
+		data.push({name: 'image_opacity', value: image_opacity});
+
+		var div_opacity=parseFloat($(this).find(".bgoverlay-block").css("opacity") || 0);
+		data.push({name: 'div_opacity', value: div_opacity});
+
+
+		var div_bgcolor=$(this).find(".bgoverlay-block").css("background-color");
+		data.push({name: 'div_bgcolor', value: div_bgcolor});
+		
+		var div_bgimage=$(this).css("background-image");
+		if(typeof div_bgimage  == 'undefined' ){
+		var div_bgimage=$(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+		}
+		data.push({name: 'div_bgimage', value: div_bgimage});
+
+
+		var height=parseInt($(this).find(".current_blk").attr('data-height'))*37.5;
+		
+		 console.log($(this).find(".current_blk").attr('data-height'));
+		data.push({name: 'height', value: height});
+
+		var text=$(this).find(".current_blk").html() || 0; 
+		data.push({name: 'text', value: text});
+
+		var extra_text=$("#extra_text").html() || 0;
+		data.push({name: 'extra_text', value: extra_text});
+
+		var block_id=$(this).find(".current_blk").attr("data-block_id") || 0;
+		data.push({name: 'block_id', value: block_id});
+	
+		var theme_id=$(this).find(".current_blk").attr("data-theme_id") || 0;
+		data.push({name: 'theme_id', value: theme_id});
+
+
+		var qard_id=$("#qard_id").val() || 0;
+		data.push({name: 'qard_id', value: qard_id});
+
+		var tags=$("#tags").val() || 0;
+		data.push({name: 'tags', value: tags});
+		
+		var is_title=$("[name='is_title']:checked").val() || 0;
+		data.push({name: 'is_title', value: is_title});
+//		
+//		if(typeof $(this).find(".current_blk").html() == typeof undefined && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
+//		    alert("please enter block or image to save");
+//		    return false;
+//		}
+//		
+//		console.log(data);
+//		return false;
+		
+		$.ajax({
+			url:"<?=Url::to(['block/create'], true)?>",
+			type:"POST",
+			data:data,
+			dataType:"json",
+			success:function(data){
+			    checkHeight();
+			     var qard='';
+			     var theme='';
+			     if(qard_id==0){
+				 qard='<input id="qard_id" type="hidden" value="'+data.qard_id+'">';
+			     }
+			     var img='';
+			     if(data.link_image){
+				 img='background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+');';
+			     }
+	     //		if(!theme_id){
+	     //		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
+	     //		}
+			     var block=$("#working_div .parent_current_blk").attr("id");
+			     block_id=getBlockId();
+
+			     var style='style="height:'+height+'px;"';
+
+			     var content=$("#working_div .current_blk").html();
+
+
+			     var new_div='<div id="'+block+'" class="bgimg-block parent_current_blk" style="height:'+height+'px !important;'+img+'">';
+				 new_div+='<div class="bgoverlay-block" style="background-color:'+div_bgcolor+';opacity:'+div_opacity+';">';
+				 new_div+='<div data-height="'+(height/37.5)+'" '+style+' data-block_id="'+data.block_id+'" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" class="text-block current_blk">'+content+'</div></div></div>';
+
+			     
+			     $("#working_div").before(qard+theme+new_div);
+			     var new_div='<div  id="working_div" class="working_div active"><div id="blk_'+(parseInt(++block_id))+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div></div>';
+			     $("#working_div div").remove();
+			     
+			     
+
+//			     console.log(data);
+			},
+			 error:function(data){
+			     console.log(data);
+			     alert("error");
+			 }
+		     });
+		 
+		
+		
+	   
+	   
+	});
+	
+	
+    }
     
     
     
@@ -1016,38 +1183,38 @@ $(function(){
  /*
   * to make text as bold
   */
- $('#text_bold').click(function(){document.execCommand('bold', false, null);$('.working_div').children().focus();return false;});
+ $('#text_bold').click(function(){document.execCommand('bold', false, null);$('.working_div').focus();return false;});
  
  /*
   * to make text as italic
   */
- $('#text_italic').click(function(){document.execCommand('italic', false, null);$('.working_div').children().focus();return false;});
+ $('#text_italic').click(function(){document.execCommand('italic', false, null);$('.working_div').focus();return false;});
  
  /*
   * to make undeline on text
   */
-$('#text_underline').click(function(){document.execCommand('underline', false, null);$('.working_div').children().focus();return false;});
+$('#text_underline').click(function(){document.execCommand('underline', false, null);$('.working_div').focus();return false;});
 
 /*
  * to justify text
  */
 
 $('#text_align').change(function(){
-    document.execCommand($(this).val(), false, null);$('.working_div').children().focus();return false;});
+    document.execCommand($(this).val(), false, null);$('.working_div').focus();return false;});
 /*
  * to change the size of the text
  */
-$('#text_size').change(function(){document.execCommand("fontSize", false, $(this).val());$('.working_div').children().focus();return false;});
+$('#text_size').change(function(){document.execCommand("fontSize", false, $(this).val());$('.working_div').focus();return false;});
 
 /*
  * to change the font-family of text
  */
-$('#text_family').change(function(){document.execCommand("fontName", false, $(this).val());$('.working_div').children().focus();return false;});
+$('#text_family').change(function(){document.execCommand("fontName", false, $(this).val());$('.working_div').focus();return false;});
 
 /*
  * to change to fore color of the text
  */
-$('#text_color').colorpicker().on('changeColor', function(e) {document.execCommand("foreColor", false, e.color.toHex());$('.working_div').children().focus();return false;});
+$('#text_color').colorpicker().on('changeColor', function(e) {document.execCommand("foreColor", false, e.color.toHex());$('.working_div').focus();return false;});
 
 /*
  * to make text in indent
