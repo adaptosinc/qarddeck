@@ -33,7 +33,7 @@ class QardController extends Controller
      * Lists all Qard models.
      * @return mixed
      */
-    public function actionIndex(){
+/*     public function actionIndex(){
         
         $searchModel = new SearchQard();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -42,8 +42,19 @@ class QardController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-    }
-
+    } */
+    /**
+     * Lists all Qard models.
+     * @return mixed
+     */
+      public function actionIndex(){ 
+	  
+		$qards = Qard::find()->all();
+		
+		return $this->render('qard_stream',[
+			'qards' => $qards,
+		]);
+	  }
     /**
      * Displays a single Qard model.
      * @param integer $id

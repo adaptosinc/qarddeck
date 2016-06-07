@@ -1004,6 +1004,7 @@ function showtext() {
 		$('#link_div').empty();
 
 		$('#link_div').html(html);	
+		$('.link_options').show();
 		$(".drop-file , .drop-image , .file_options").hide();
 		
 	}); 
@@ -1099,7 +1100,8 @@ function showtext() {
 		//setInterval(function(){ checkHeight(); }, 1000);
 		//setiInterval(function(){checkHeight();},1000);
 		//setHeightBlock(5);
-		$("#working_div div").html(str);
+	//	$("#working_div div").html(str);
+		$("#working_div .current_blk").html(str);
 		checkHeight();
 		//$('#link_div').hide();
 		
