@@ -344,6 +344,8 @@ class BlockController extends Controller
 	    $post['link_image']=$image_name;
 	    $block->link_image=$post['link_image'];
 	    $is_true=true;
+//	    echo "vijay";
+//	    die;
 	}
 	
 	

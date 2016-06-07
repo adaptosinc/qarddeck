@@ -40,19 +40,21 @@ $this->title = 'Create Qard';
 	
 	<div class="col-sm-4 col-md-4">
 	    <div id="add-block" class="qard-div add-block">
-		<!--<div  id="cur_block" class="cur_block">-->	
-<!--		<div id="blk_2" data-height="2" style="height: 75px;background-color: graytext">
-		    its static now so tomorrow still has to work on remove blank spaces
+		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen">
+		    <div class="bgoverlay-block">
+			<div class="text-block current_blk" data-height="1" style="height:75px;"></div>                                    
+		    </div>                                
 		</div>
-		<div id="blk_1" data-height="1" style="height: 37.5px;background-color: yellowgreen" >
-		    
-		</div>-->
+		
 		<div  id="working_div" class="working_div block active"  >
-		    <div id="blk_1" class="current_blk" data-height="1" contenteditable="true" unselectable="off">
-		    </div>
-		</div>
-		<!--</div>-->
-	    
+                            <div id="blk_1" class="bgimg-block parent_current_blk">
+                                <div class="bgoverlay-block">
+                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off">
+                                        
+                                    </div>                                    
+                                </div>                                
+                            </div>
+		</div>    
 		<h4 class="add-another" onclick="add_block(event)">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
 	    </div>
 	</div>
@@ -311,16 +313,30 @@ function showtext() {
 	  
     $(function(){ 
 	$("#extErr").hide();
-	
-	
+	removeBr();
 	// on click image tab should increase block height
 	$(document).delegate("#cmn-toggle-3","click",function(){
-	    
-	   if(parseInt($("#working_div div").attr("data-height"))<4){
-	       $("#working_div div").attr("data-height",4);
-	       $("#working_div div").css("height",(4*37.5));
-	   };
+	    if($(this).is(":checked")){
+		if(parseInt($("#working_div .current_blk").attr("data-height"))<4){
+		    $("#working_div div").each(function(){
+			if(typeof $(this).attr("data-height") !== typeof undefined){
+			    $(this).attr("data-height",4);
+			}
+			
+			$(this).css("height",(4*37.5));
+		    })
+		}
+	    }else{
+		console.log('vijay');
+		removeBr();
+	    }
 	});
+	
+	
+	$(document).delegate("#reset_image","click",function(){$(".dropzone .btn-cancel").trigger("click");});
+	
+	
+	
 	
 	//increase height of the div
 	$(document).bind("blur keydown keyup","#working_div div",function(event){
@@ -333,13 +349,18 @@ function showtext() {
 	    alert("vliayt");
 	});
 	$(document).delegate('.add-block > div',"dblclick",function(event){
-	    console.log("viay");
-	    $("#working_div div").unwrap();
-	    $('#working_div div').removeAttr("unselectable",'off');
-	    $("#working_div div").removeAttr("contenteditable",'true');
-	    $(this).wrap('<div  id="working_div" class="working_div active"></div>');
-	    $(this).attr("unselectable",'off');
-	    $(this).attr("contenteditable",'true');
+	    
+	    if($(this).attr("id")!='working_div'){
+		
+		$('#working_div .current_blk').removeAttr("unselectable");
+		$("#working_div .current_blk").removeAttr("contenteditable");
+		$("#working_div .current_blk").removeClass("working_div");
+		$("#working_div .parent_current_blk").unwrap();
+		$(this).wrap('<div  id="working_div" class="working_div active"></div>');
+		$(this).find(".current_blk").addClass("working_div");
+		$(this).find(".current_blk").attr("unselectable",'off');
+		$(this).find(".current_blk").attr("contenteditable",'true');
+	    }
 	});
 	
 	
@@ -368,6 +389,50 @@ function showtext() {
 	  e.preventDefault();
 	  $(this).tab('show');
 	});
+	
+	
+	
+	// for image
+	$(document).delegate("#image_opc","blur keydown keyup",function(){
+	    var per=parseInt($(this).val() || 1)/100;
+	    console.log("image opc"+per);
+	    $("#working_div .bgimg-block").css('opacity',per);
+	});
+
+	$(document).delegate("#overlay_color","blur",function(){
+	    var color=$(this).val();
+	    console.log(color);
+	    $("#working_div .bgoverlay-block").css('background-color',color);
+	});
+
+	$(document).delegate("#overlay_opc","blur keydown  keyup",function(){
+	    var per=parseInt($(this).val())/100;
+	    console.log("image opc"+per);
+	    $("#working_div .bgoverlay-block").css('opacity',per);
+	});
+
+	$(document).delegate("#bg_color","blur",function(){
+	    var color=$(this).val();
+	    $("#working_div .bgimg-block").css('background-color',color);
+	});
+
+
+	//for block
+	$(document).delegate("#blk_size","keyup keydown",function(){
+	    var blk_size=parseInt($(this).val()) || 1;
+	    size=blk_size*37.5;
+	    console.log(size);
+	    if(size<600){
+		$("#working_div div").css("height",size);
+		$("#working_div div").css("min-height",size);
+		$("#working_div div").attr("data-height",blk_size);
+	    }
+
+	});
+
+	
+	
+	
     });
 
     
@@ -412,42 +477,6 @@ function showtext() {
     }
     
     
-    
-    // for image
-    $("#image_opc").on("keydown",function(){
-	var per=parseInt($(this).val())/100;
-	$("#working_div img").css('opacity',per);
-    });
-    
-    $("#overlay_color").on("blur",function(){
-	var color=$(this).val();
-	console.log(color);
-	$("#working_div div").css('background-color',color);
-    });
-    
-    $("#overlay_opc").on("keyup",function(){
-	var per=parseInt($(this).val())/100;
-	$("#working_div div").css('opacity',per);
-    });
-    
-    $("#bg_color").on("blur",function(){
-	var color=$(this).val();
-	$("#working_div div").css('background-color',color);
-    });
-    
-    
-    //for block
-    $(document).delegate("#blk_size","keyup keydown",function(){
-	var blk_size=parseInt($(this).val()) || 1;
-	size=blk_size*37.5;
-	console.log(size);
-	if(size<600){
-	    $("#working_div div").css("height",size);
-	    $("#working_div div").css("min-height",size);
-	    $("#working_div div").attr("data-height",blk_size);
-	}
-	
-    });
     
     function setHeightBlock(unit){
 		var blk_size = unit;
@@ -505,71 +534,93 @@ function showtext() {
      */
     function totalHeight(){
 	var total_height=0;
+	
+	
 	$(".qard-div div").each(function(){
-	    if($(this).attr("id")!="working_div"){ //|| $(this).attr("id")==$("working_div div").attr("id")){
-//		console.log("hei"+$(this).attr("data-height"));
-		total_height +=parseInt($(this).attr("data-height"))*37.5;
+	    
+	    
+	    var attr = $(this).attr('data-height');
+
+	    // For some browsers, `attr` is undefined; for others, `attr` is false. Check for both.
+	    if (typeof attr !== typeof undefined && attr !== false) {
+	      // Element has this attribute
+	      total_height +=parseInt($(this).attr("data-height"))*37.5;
 	    }
 	    
+//	    if($(this)[0].hasAttribute("data-height")){ 
+//		
+//		total_height +=parseInt($(this).attr("data-height"))*37.5;
+//	    }
 	}); 
-//	total_height +=parseInt($("#working_div div")[0].offsetHeight);
-	return total_height;
-    
-    }
+	    return total_height;
+	}
     
     
     
     function removeBr(){
-	$($("#working_div div >").get().reverse()).each(function(index){
-	    console.log(index+"----"+(index)%2);
-	    if(($(this).is("br")) && (((index)%2)==0))
-	    {
-		if($(this).prev().is('br')){
-		    console.log("vijay");
-//		   $(this).prev().remove();
-//		   
-//		   $(this).remove();
-		}
-	     }
+	
+	if($("#working_div .current_blk").text()==""){
+	    $("#working_div div").each(function(){if(typeof $(this).attr("data-height") !== typeof undefined){$(this).attr("data-height",1);}$(this).css("height",(1*37.5));});
+	    
+	}else{
+	    $($("#working_div .current_blk").get().reverse()).each(function(index){
+		console.log(index+"----"+(index)%2);
+		if(($(this).is("br")) && (((index)%2)==0))
+		{
+		    if($(this).prev().is('br')){
+			console.log("vijay");
+    //		   $(this).prev().remove();
+    //		   
+    //		   $(this).remove();
+		    }
+		 }
 
-	});
+	    });
+	}
     }
     function checkHeight(e){
 	var total_height=totalHeight();
 	if(total_height>(600-37.5)){
 	    $(".add-block h4").hide();
 	}
-	var offsetHeight=parseInt($("#working_div div")[0].offsetHeight || 1);
-	var scrollHeight=parseInt($("#working_div div")[0].scrollHeight || 1);
+	
+	var offsetHeight=parseInt($("#working_div .current_blk")[0].offsetHeight);
+	var scrollHeight=parseInt($("#working_div .current_blk")[0].scrollHeight);
 	maxHeight=Math.ceil((scrollHeight-offsetHeight)/37.5);
-	height_number=parseInt($("#working_div div").attr("data-height"))+maxHeight;
+	height_number=parseInt($("#working_div .current_blk").attr("data-height"))+maxHeight;
 	height=height_number*37.5;
 	
+	
+//	console.log("offsetHeight"+offsetHeight+"scrollHeight=="+scrollHeight);
+	
 	if(total_height>=(600)){
-	    console.log("vijay");
+//	    console.log("vijay");
 	    if(scrollHeight > offsetHeight){
 		if(e.keyCode!=8){
-		$('#working_div div').html(function (_,txt) {
+		$('#working_div .current_blk').html(function (_,txt) {
 		    
 			return txt.slice(0, -1);
 		    });
 		e.preventDefault();}
-		
-		
-		
+	    
 	    }else{
 		console.log("onlye enter");
 		if(e.keyCode==1)
 		    e.preventDefault();
 	    }
 	}
+	
+	
 	if(scrollHeight > offsetHeight && total_height<=(600-37.5)){
-	    console.log("ma"+maxHeight);
-	    $("#working_div div").css("height",height);
-	    $("#working_div div").attr("data-height",height_number); 
+	    
+	    $("#working_div div").each(function(){if(typeof $(this).attr("data-height") !== typeof undefined){$(this).attr("data-height",height_number);}$(this).css("height",(height_number*37.5));});
+//	    $("#working_div .parent_current_blk").css("height",height);
+//	    $("#working_div .current_blk").css("height",height);
+	    
+//	    $("#working_div .current_blk").attr("data-height",height_number); 
 	}else if(scrollHeight>offsetHeight){
 	    if(e.keyCode!=8){
-		$('#working_div div').html(function (_,txt) {
+		$('#working_div .current_blk').html(function (_,txt) {
 		    
 			return txt.slice(0, -1);
 		    });
@@ -580,11 +631,13 @@ function showtext() {
 	}
     }
     
+    function getBlockId(){var blk_id=0;$(".add-block div").each(function(){var attr = $(this).attr('id');if (typeof attr !== typeof undefined && attr !== false && attr.search("_")) {new_blk_id=attr.split('_');if(blk_id<parseInt(new_blk_id[1])){blk_id=parseInt(new_blk_id[1]);}}});return blk_id;}
+    
+    
     /*
     * add_block with all values
     */
     function add_block(event){
-	
 	// to check height
 	checkHeight(event);
 	
@@ -594,19 +647,28 @@ function showtext() {
 	
 	var data=$("#image_upload").serializeArray();
 	
-	var image_opacity=parseInt($("#working_div img").css("opacity") || 1); 
+	var image_opacity=parseFloat($("#working_div .bgimg-block").css("opacity")) || 0; 
 	data.push({name: 'image_opacity', value: image_opacity});
 	
-	var div_opacity=parseInt($("#working_div div").css("opacity") || 1);	
+	var div_opacity=parseFloat($("#working_div .bgoverlay-block").css("opacity"));
 	data.push({name: 'div_opacity', value: div_opacity});
 	
-	var div_bgcolor=$("#working_div div").css("background-color");
+	
+	var div_bgcolor=$("#working_div .bgoverlay-block").css("background-color");
 	data.push({name: 'div_bgcolor', value: div_bgcolor});
 	
-	var div_bgimage=$("#working_div div").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+	var div_bgimage=$("#working_div .bgimg-block").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 	data.push({name: 'div_bgimage', value: div_bgimage});
 	
-	var height=parseInt($("#working_div div").attr("data-height"))*37.5;
+	
+	var height=0;
+	$("#working_div div").each(function(index){
+	    var attr = $(this).attr('data-height');
+	    if (typeof attr !== typeof undefined && attr !== false) {
+	      // Element has this attribute
+	      height=parseInt(attr)*37.5;
+	    } 
+	});
 	data.push({name: 'height', value: height});
 	
 	var text=$("#working_div div").html() || 0; 
@@ -615,10 +677,10 @@ function showtext() {
 	var extra_text=$("#extra_text").html() || 0;
 	data.push({name: 'extra_text', value: extra_text});
 	
-	var block_id=$("#working_div div").attr("data-block_id") || 0;
+	var block_id=$("#working_div .current_blk").attr("data-block_id") || 0;
 	data.push({name: 'block_id', value: block_id});
 	
-	var theme_id=$("#working_div div").attr("data-theme_id") || 0;
+	var theme_id=$("#working_div .current_blk").attr("data-theme_id") || 0;
 	data.push({name: 'theme_id', value: theme_id});
 	
 	var qard_id=$("#qard_id").val() || 0;
@@ -633,8 +695,8 @@ function showtext() {
 	var is_title=$("[name='is_title']:checked").val() || 0;
 	data.push({name: 'is_title', value: is_title});
 	
-	console.log(data);
-	return false;
+//	console.log(data);
+//	return false;
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
@@ -649,28 +711,35 @@ function showtext() {
 		}
 		var img='';
 		if(data.link_image){
-		    img='background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+')';
+		    img='background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.link_image+');';
 		}
 //		if(!theme_id){
 //		    theme='<input type="hidden" id="theme_id" value="'+data.theme_id+'">';
 //		}
-		var block=$("#working_div div").attr("id");
-		block_id=block.split('_');
-		var style='style="height:'+height+'px;position:relative;background-color:'+div_bgcolor+';opacity:'+div_opacity+';'+img+';"';
-		var content=$("#working_div div").html();
-		var new_div='<div data-height="'+(height/37.5)+'" data-block_id="'+data.block_id+'"  '+style+' id="'+block+'" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" >'+content+'</div>';
+		var block=$("#working_div .parent_current_blk").attr("id");
+		block_id=getBlockId();
+		
+		var style='style="height:'+height+'px;"';
+		
+		var content=$("#working_div .current_blk").html();
+		
+		
+		var new_div='<div id="'+block+'" class="bgimg-block parent_current_blk" style="height:'+height+'px !important;'+img+'">';
+		    new_div+='<div class="bgoverlay-block" style="background-color:'+div_bgcolor+';opacity:'+div_opacity+';">';
+		    new_div+='<div data-height="'+(height/37.5)+'" '+style+' data-block_id="'+data.block_id+'" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" class="text-block current_blk">'+content+'</div></div></div>';
 		
 		$("#working_div div").remove();
 		$("#working_div").before(qard+theme+new_div);
-		var new_div='<div id="blk_'+(parseInt(block_id[1])+1)+'" class="current_blk" data-height="1"  contenteditable="true" unselectable="off" style="background-color:#ede4e4"></div>';
-		var count=0;
-		$(".add-block div").each(function(){if($(this).attr("data-block_id")){count++;}});
+		var new_div='<div id="blk_'+(parseInt(++block_id))+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div>';
 		
-//		if((count>=2)){
-//		    $(".add-block div").last().wrap('<div  id="working_div" class="working_div active"></div>');
-//		}else{
-		    $("#working_div").html(new_div);
-//		}
+		//document.execCommand("enableObjectResizing", false, "false");
+		
+		
+		
+		
+		$("#working_div").html(new_div);
+		
+//		$("#working_div").append($(".add-block :last_child"));
 		$(".dropzone .btn-del").trigger("click");
 		console.log(data);
 	   },
@@ -685,18 +754,29 @@ function showtext() {
 	
     });
     
-    //height overflow
-    $("#working_div div").on("blur keydown",function(){
-	
-	if($(this).scrollHeight>600){
-	   $("#Block_error").modal('show');
-	   $("#disp_error").text('can not write on card user extra text to continue!...');
-	   showtext();
-	}else if($(this).height()>$('#cur_block').height()){
-	    var height=parseInt($("#cur_block").height())+37.5;
-	    $("#cur_block").css('height',height);
-	}
-    });
+//    //height overflow
+//    $("#working_div div").on("blur keydown",function(){
+//	
+//	if($(this).scrollHeight>600){
+//	   $("#Block_error").modal('show');
+//	   $("#disp_error").text('can not write on card user extra text to continue!...');
+//	   showtext();
+//	}else if($(this).height()>$('#cur_block').height()){
+//	    var height=parseInt($("#cur_block").height())+37.5;
+//	    $("#cur_block").css('height',height);
+//	}
+//    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	//ADDED BY DENCY
 	$('input[id=link_url]').on('change',function(){
 		console.log($(this).val());
@@ -780,6 +860,14 @@ function showtext() {
 		//$('#link_div').hide();
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 
         ////////////////////////////////////
         
@@ -838,6 +926,13 @@ function showtext() {
         }); 
 
 </script>
+
+
+
+<!--dont touch-->
+
+
+
 <script type="text/javascript">
 $(function(){
  $('.working_div').children('div').focus();

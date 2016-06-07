@@ -346,6 +346,7 @@ button.qard {
     min-height: 400px;
     position: relative;
     border: 1px solid #eaeaea;
+    padding: 0;
 }
 h4.add-another {
     position: absolute;
@@ -409,18 +410,6 @@ ul.align-elements li {
 #linkblock .dropzone {
     border: 0;
 }
-
-textarea.form-control[name="url_content"] {
-    border: 1px solid #eaeaea !Important;
-    min-height: 120px;
-}
-input.form-control[name="url_title"] {
-    border: 1px solid #eaeaea !Important;
-}
-.btn-remove {
-	margin:10px 0;
-}
-
 .drop-file {
     text-align: center;
     line-height: 50px;
@@ -520,6 +509,26 @@ button[name="preview"] {
 }
 .dropzone .tools {
     z-index: 14 !important;
+}
+#working_div .bgimg-block {
+    /*background: url(../images/deck-thumb.png) no-repeat;*/
+    background-color: background;
+    min-height: 37.5px;
+    background-size: cover;
+    overflow: hidden;
+}
+#working_div .bgoverlay-block {
+    width: 100%;
+    background: red;
+    opacity: 0.6;
+    min-height: 37.5px;
+}
+#working_div .text-block {
+    min-height: 37.5px;
+    /*text-align: center;*/
+  //  color: #fff;
+    /*font-weight: bold;*/
+    overflow: hidden;
 }
 
 /* ===========================
@@ -1162,9 +1171,6 @@ a.on {
 }
 .text-block img {
     max-width: 100%;
-}
-.img-preview {
-	text-align:center;
 }
 .img-preview img {
     max-width: 100%;
