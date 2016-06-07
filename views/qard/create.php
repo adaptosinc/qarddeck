@@ -195,7 +195,7 @@ $this->title = 'Create Qard';
                                                 <input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
                                                 <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
                                             </div>
-                                            <div class="form-group link_options" style="display:none">
+                                            <!--<div class="form-group link_options" style="display:none">
                                                 <div class="col-sm-4 col-md-4 on-off">
                                                     <div class="switch">
                                                         <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
@@ -214,7 +214,29 @@ $this->title = 'Create Qard';
                                                         <label for="cmn-toggle-6"></label>
                                                     </div>  <span>Open in New Tab</span>                                                  
                                                 </div>
-                                            </div>  
+												<li><a href="#"><img id="reflink" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
+                                            </div>-->  
+											<ul class="on-off pull-right link_options" style="display:none">
+                                                <li>
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <label for="cmn-toggle-4"></label>
+                                                    </div>  <span>Display Link</span>                                                  
+                                                </li>
+                                                <li>
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <label for="cmn-toggle-5"></label>
+                                                    </div>  <span>Display Preview</span>                                                  
+                                                </li>
+                                                <li>
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <label for="cmn-toggle-6"></label>
+                                                    </div>  <span>Open in New Tab</span>                                                  
+                                                </li>
+												<li><a href="#"><img id="url_reset_link" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
+                                            </ul>
                                         </div>
                                             <ul class="on-off pull-right file_options">
                                                  <li>
@@ -348,6 +370,7 @@ function showtext() {
 	$(document).delegate('#canvas_thumb',"change",function(event){
 	    alert("vliayt");
 	});
+
 	$(document).delegate('.add-block > div',"dblclick",function(event){
 	    
 	    if($(this).attr("id")!='working_div'){
@@ -695,8 +718,10 @@ function showtext() {
 	var is_title=$("[name='is_title']:checked").val() || 0;
 	data.push({name: 'is_title', value: is_title});
 	
+
 //	console.log(data);
 //	return false;
+
 	$.ajax({
 	   url:"<?=Url::to(['block/create'], true)?>",
 	   type:"POST",
@@ -779,8 +804,48 @@ function showtext() {
     
 	//ADDED BY DENCY
 	$('input[id=link_url]').on('change',function(){
+		callUrl(this);
+	});
+ 	$('body').on('change', $('input[name=url_title]','textarea[name=url_content]'),function(){
+		showUrlPreview();
+	}); 
+ 	$('body').on('dblclick', 'span.review-qard',function(){
+	//	e.preventDefault();
+		console.log('Double clicked');
+		$('.nav-tabs a[href="#linkblock"]').tab('show');
+		//$('#linkblock').tab('show')
+		//fill the area with this content
+		var title = $(this).find( 'span.url-content >h4' ).html();
+		var content = $(this).find( 'span.url-text >p' ).html();
+		var image = $(this).find( 'span.img-preview' ).html();
+		console.log(title);
+		if(typeof image == 'undefined'){
+			var html = "<div id='review-qard-id' class='review-qard row'>"
+				+"<div class='col-sm-12 col-md-12' id='title_desc_url'><div class='url-content'><h4><input name='url_title' type='text' class='form-control' value='"+title+"'></h4>"
+				+"<div class='url-text'><p><textarea name='url_content' class='form-control'>"+content+"</textarea></p>"
+				+"</div></div></div></div>";			
+		}
+		else{
+			var html = "<div id='review-qard-id' class='review-qard row'><div class='img-preview col-sm-3 col-md-3'>"+image+"<button id='url_img_remove' onclick='changePic(this)' class='btn btn-default btn-remove'>Remove</button></div>"
+				+"<div class='col-sm-9 col-md-9' id='title_desc_url'><div class='url-content'><h4><input name='url_title' type='text' class='form-control' value='"+title+"'></h4>"
+				+"<div class='url-text'><p><textarea name='url_content' class='form-control'>"+content+"</textarea></p>"
+				+"</div></div></div></div>";			
+			
+		}
+		//	return false;
+		//return false;
+		$('#link_div').empty();
+
+		$('#link_div').html(html);	
+		$(".drop-file , .drop-image , .file_options").hide();
+		
+	}); 
+	$('#cmn-toggle-5').on('change',function(){
 		console.log($(this).val());
-		var preview_url = $(this).val();
+	});
+	function callUrl(urlField){
+		console.log($(urlField).val());
+		var preview_url = $(urlField).val();
 		var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
 		$.ajax({
 			url : get_preview_url,
@@ -814,38 +879,50 @@ function showtext() {
 								else
 								{
 									//hide file options
-									$(".drop-file").hide();
-									$(".drop-image").hide();
-									$(".file_options").hide();
+									$(".drop-file , .drop-image , .file_options").hide();
 									//show link options
 									$(".link_options").show();
 									$('#link_div').html(data);
 								}
+				//var title = $('input[name=url_title]').val();
+				//var link = '<h4 class="url-content"><a href="'+preview_url+'">'+title+'</a></h4>'
+				//$('.working_div div').html(link);
+				showUrlPreview();
+				checkHeight();
 			}
-		});
-	});
-
+		});		
+	}
 	function changePic(v){
 		$(v).parent().remove();
-		$('.img-preview').remove();
+		$('#working_div').find('span.img-preview').remove();
+		$('#working_div').find('span.col-sm-9').addClass("col-sm-12 col-md-12");
+		$('#working_div').find('span.col-sm-9').removeClass("col-sm-9 col-md-9");
 		$('#title_desc_url').removeClass("col-sm-9 col-md-9");
 		$('#title_desc_url').addClass("col-sm-12 col-md-12");
 	}
+	/**
+	Whether is it required to clear the preview once it is toggled?
+	or we need a mirror approach here?
+	**/
 	function showUrlPreview(){
 		var title = $('input[name=url_title]').val();
 		var content = $('textarea[name=url_content]').val();
-		var image = $('.img-preview > img').attr('src');
-		console.log(image+content+title);
-		if(image== 'undefined'){
-			var str = '<span class="review-qard row"><span class="img-preview col-sm-3 col-md-3"><i class="fa fa-file-image-o" style="font-size: 12em;" aria-hidden="true"></i></span>'+
-			'<span class="col-sm-9 col-md-9" id="title_desc_url">'+
+		var image = $('#review-qard-id .img-preview > img').attr('src');
+		if(typeof title == 'undefined')
+			return false;
+		//console.log(title);
+		if(typeof image == 'undefined'){
+			var str = '<span class="url-qard-block" id="url_parent'+$("#working_div div").attr("id")+'">'+
+			'<span class="col-sm-12 col-md-12" id="title_desc_url'+$("#working_div div").attr("id")+'">'+
 			'<span class="url-content"><h4>'+title+'</h4>'
 			+'<span class="url-text"><p>'+content+'</p>'
 			+
 			'</span></span></span></span>';			
-		}else{
-		var str = '<span class="review-qard row"><span class="img-preview col-sm-3 col-md-3"><img src="'+image+'" alt=""></span>'+
-		'<span class="col-sm-9 col-md-9" id="title_desc_url">'+
+		}
+		else
+		{
+		var str = '<span class="review-qard" id="url_parent'+$("#working_div div").attr("id")+'"><span class="img-preview col-sm-3 col-md-3"><img src="'+image+'" alt=""></span>'+
+		'<span class="col-sm-9 col-md-9" id="title_desc_url'+$("#working_div div").attr("id")+'">'+
 		'<span class="url-content"><h4>'+title+'</h4>'
 		+'<span class="url-text"><p>'+content+'</p>'
 		+
@@ -860,14 +937,13 @@ function showtext() {
 		//$('#link_div').hide();
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+	$('#url_reset_link').on('click',function(){
+		$('#link_div').empty();
+		$(".drop-file , .drop-image , .file_options").show();
+		$("input[id=link_url]").val('');
+		$(".link_options").hide();
+	});
 
         ////////////////////////////////////
         
