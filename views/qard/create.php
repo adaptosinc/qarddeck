@@ -976,7 +976,7 @@ function showtext() {
  	$('body').on('change', $('input[name=url_title]','textarea[name=url_content]'),function(){
 		showUrlPreview();
 	}); 
- 	$('body').on('dblclick', 'span.review-qard',function(){
+ 	$(document).delegate('span.review-qard', 'dblclick',function(){
 	//	e.preventDefault();
 		console.log('Double clicked');
 		$('.nav-tabs a[href="#linkblock"]').tab('show');
