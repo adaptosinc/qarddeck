@@ -604,7 +604,7 @@ function showtext() {
     function checkHeight(e){
 	var total_height=totalHeight();
 	if(total_height>(600-37.5)){
-	    $(".add-block h4").hide();
+	    $(".add-block .add-another").hide();
 	}
 	
 	var offsetHeight=parseInt($("#working_div .current_blk")[0].offsetHeight);
@@ -648,7 +648,7 @@ function showtext() {
 			return txt.slice(0, -1);
 		    });
 		e.preventDefault();}
-	    $(".add-block h4").hide();
+	    $(".add-block .add-another").hide();
 	}else{
 //	    console.log($("#working_div div").last().find('br'));
 	}
@@ -932,7 +932,8 @@ function showtext() {
 		//setInterval(function(){ checkHeight(); }, 1000);
 		//setiInterval(function(){checkHeight();},1000);
 		//setHeightBlock(5);
-		$("#working_div div").html(str);
+	//	$("#working_div div").html(str);
+		$("#working_div .current_blk").html(str);
 		checkHeight();
 		//$('#link_div').hide();
 		
