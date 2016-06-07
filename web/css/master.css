@@ -486,7 +486,7 @@ ul.on-off  {
 }
 ul.on-off li {
     float: left;
-    padding: 0px 15px;
+    padding: 0px 10px;
 }
 .on-off span {
     position: relative;
@@ -1271,6 +1271,8 @@ a.on {
 .review-qard {
     border: 1px solid #eaeaea;
     padding: 10px 0;
+	height: 100%;
+	display: block;
 }
 
 /* ======================================

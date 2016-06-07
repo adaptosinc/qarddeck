@@ -261,7 +261,7 @@ class QardController extends Controller
 			';
 			**/
 			echo '
-			<div class="review-qard row">
+			<div id="review-qard-id" class="review-qard row" id="">
 				<div class="img-preview col-sm-3 col-md-3">';
 			if($image)
 				echo '<img src="'.$image.'" alt="">';
