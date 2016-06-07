@@ -837,6 +837,7 @@ function showtext() {
 		$('#link_div').empty();
 
 		$('#link_div').html(html);	
+		$('#link_options').show();
 		$(".drop-file , .drop-image , .file_options").hide();
 		
 	}); 
