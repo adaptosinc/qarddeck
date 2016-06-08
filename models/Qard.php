@@ -99,7 +99,15 @@ class Qard extends \yii\db\ActiveRecord
     {
         return $this->hasMany(QardComments::className(), ['qard_id' => 'qard_id']);
     }
-
+	
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBlocks()
+    {
+        return $this->hasMany(QardBlock::className(), ['qard_id' => 'qard_id']);
+    }
+	
     /**
      * @return \yii\db\ActiveQuery
      */

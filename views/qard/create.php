@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -27,7 +26,7 @@ $this->title = 'Create Qard';
 
 <!--for image crop-->
 <link href="<?= Yii::$app->request->baseUrl?>/css/html5imageupload.css" rel="stylesheet">
-
+<link href="<?= Yii::$app->request->baseUrl?>/css/custom.css" rel="stylesheet">
 
 <script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-colorpicker.js" type="text/javascript"></script>	
 
@@ -177,12 +176,12 @@ $this->title = 'Create Qard';
 									
                                     <fieldset>
 									<div id="link_div"></div>
-                                        <div class="drop-file form-group">                                           
+                                        <div class="drop-file form-group" id="drop-file">                                           
                                             <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
                                             <h2 id="extErr">Only PDF,DOC,DOCX TYPES ARE ALLOWED</h2>                                         
                                             <h3>Drop files/click to Browse</h3></div>
                                         
-                                            <div class="drop-image form-group" >                                           
+                                            <div class="drop-image form-group" id="drop-image">                                           
 <!--                                                <img id="docimg" src="<?=Yii::$app->request->baseUrl?>/images/doc.png" alt="">-->
 
                                                 <img id="dispIcon" class="imgCenter">
@@ -295,7 +294,7 @@ $this->title = 'Create Qard';
 			<li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/eye.png" alt=""></a></li>
 			<li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/comment.png" alt=""></a></li>
 			<li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/icon-paint.png" alt=""></a></li>
-			<li><button class="btn btn-sm btn-default" name="preview">Preview</button></li>
+			<li><button class="btn btn-sm btn-default" name="preview" id="qard_preview">Preview</button></li>
 			<li onclick="addSaveCard(event)"><button class="btn btn-sm btn-default" name="preview">Save</button></li>
 		    </ul>
 		</div>
@@ -330,7 +329,6 @@ function showtext() {
 	s.style.display = "none";
     }
 }
-
 </script>        
 <script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
 <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.caret.js" type="text/javascript"></script>
@@ -382,8 +380,8 @@ function showtext() {
 		    }
 		    $(this).css("height",(height_number*37.5));
 		});
-		console.log($(this).caret('offset'));
-		$(this).caret('pos', 3);
+//		console.log($(this).caret('offset'));
+//		$(this).caret('pos', 3);
 	    }else{
 		checkHeight(event);
 	    //	    removeBr();
@@ -401,7 +399,6 @@ function showtext() {
 	$(document).delegate('#canvas_thumb',"change",function(event){
 	    alert("vliayt");
 	});
-
 	$(document).delegate('.add-block > div',"dblclick",function(event){
 	    
 	    if($(this).attr("id")!='working_div'){
@@ -452,25 +449,20 @@ function showtext() {
 	    console.log("image opc"+per);
 	    $("#working_div .bgimg-block").css('opacity',per);
 	});
-
 	$(document).delegate("#overlay_color","blur",function(){
 	    var color=$(this).val();
 	    console.log(color);
 	    $("#working_div .bgoverlay-block").css('background-color',color);
 	});
-
 	$(document).delegate("#overlay_opc","blur keydown  keyup",function(){
 	    var per=parseInt($(this).val())/100;
 	    console.log("image opc"+per);
 	    $("#working_div .bgoverlay-block").css('opacity',per);
 	});
-
 	$(document).delegate("#bg_color","blur",function(){
 	    var color=$(this).val();
 	    $("#working_div .bgimg-block").css('background-color',color);
 	});
-
-
 	//for block
 	$(document).delegate("#blk_size","keyup keydown",function(){
 	    var blk_size=parseInt($(this).val()) || 1;
@@ -481,10 +473,8 @@ function showtext() {
 		$("#working_div div").css("min-height",size);
 		$("#working_div div").attr("data-height",blk_size);
 	    }
-
 	});
     });
-
     
     /*
      *  this to create tag on tags
@@ -501,7 +491,6 @@ function showtext() {
       }
     });
     citynames.initialize();
-
     $('#tags').tagsinput({
       typeaheadjs: {
 	name: 'citynames',
@@ -575,7 +564,6 @@ function showtext() {
 	       //$("#working_div").html(image);
 	       $("#working_div").css("background-image","url(<?=Yii::$app->request->baseUrl?>/uploads/block/"+data.response+")");
 	   }
-
 	});
     }
     
@@ -611,7 +599,6 @@ function showtext() {
     //		   $(this).remove();
 		    }
 		 }
-
 	    });
 	}
     }
@@ -810,7 +797,6 @@ function showtext() {
 	
 	var blk_id=$("#working_div .parent_current_blk").attr("id");
 	data.push({name: 'blk_id', value: blk_id});
-
 ////	console.log("df"+$("#working_div .current_blk").text());
 //	if($("#working_div .current_blk").text().trim() == '' && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
 //		    console.log("please enter block or image to save");
@@ -844,7 +830,6 @@ function showtext() {
 	var data=$("#image_upload").serializeArray();
 	var qard_title=$("#qard_title").val() || 0;
 	data.push({name: 'qard_title', value: qard_title});
-
 	//if qard title is empty
 	if(qard_title==''){alert("please enter qard title");return false;}
 	
@@ -853,11 +838,9 @@ function showtext() {
 	    // getting opacity for image-block div
 	    var image_opacity=parseFloat($(this).css("opacity") || 0); 
 	    data.push({name: 'image_opacity', value: image_opacity});
-
 	    //opacity for overlay-block
 	    var div_opacity=parseFloat($(this).find(".bgoverlay-block").css("opacity") || 0);
 	    data.push({name: 'div_opacity', value: div_opacity});
-
 	    //OVERLAY color for overlay block
 	    var div_bgcolor=$(this).find(".bgoverlay-block").css("background-color");
 	    data.push({name: 'div_bgcolor', value: div_bgcolor});
@@ -868,31 +851,24 @@ function showtext() {
 	    var div_bgimage=$(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 	    }
 	    data.push({name: 'div_bgimage', value: div_bgimage});
-
 	    //getting height of div
 	    var height=parseInt($(this).find(".current_blk").attr('data-height'))*37.5;
 	    data.push({name: 'height', value: height});
-
 	    //getting text for the block
 	    var text=$(this).find(".current_blk").html() || 0; 
 	    data.push({name: 'text', value: text});
-
 	    //if extra text is present
 	    var extra_text=$("#extra_text").html() || 0;
 	    data.push({name: 'extra_text', value: extra_text});
-
 	    //to check operation for edit a block or for add new block
 	    var block_id=$(this).find(".current_blk").attr("data-block_id") || 0;
 	    data.push({name: 'block_id', value: block_id});
-
 	    // check whether theme is already preasent for qard or not
 	    var theme_id=$(this).find(".current_blk").attr("data-theme_id") || 0;
 	    data.push({name: 'theme_id', value: theme_id});
-
 	    //check qard id is present to edit or add new qard
 	    var qard_id=$("#qard_id").val() || 0;
 	    data.push({name: 'qard_id', value: qard_id});
-
 	    // getting tags fot qard
 	    var tags=$("#tags").val() || 0;
 	    data.push({name: 'tags', value: tags});
@@ -900,7 +876,6 @@ function showtext() {
 	    //if block contains title for block then true
 	    var is_title=$("[name='is_title']:checked").val() || 0;
 	    data.push({name: 'is_title', value: is_title});
-
 	    //to get current block id
 	    var blk_id=$(this).attr("id");
 	    data.push({name: 'blk_id', value: blk_id});
@@ -912,7 +887,6 @@ function showtext() {
 //
 //	    console.log(data);
 //	    return false;
-
 	    commanAjaxFun(data,'save_block');
 		 
 	});
@@ -959,10 +933,7 @@ function showtext() {
 				+"</div></div></div></div>";			
 			
 		}
-		//	return false;
-		//return false;
 		$('#link_div').empty();
-
 		$('#link_div').html(html);	
 		$('.link_options').show();
 		$(".drop-file , .drop-image , .file_options").hide();
@@ -986,8 +957,8 @@ function showtext() {
 									$(".file_options").show();
 									$(".link_options").hide();
 									<!------------------->
-                                       $(".drop-file").hide();
-                                       $(".drop-image").show();
+                                       $("#drop-file").hide();
+                                       $("#drop-image").show();
                                       // $(".fileName").val(response.code);
                                        $(".fileSwitch").hide();                
                                        $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');                
@@ -997,8 +968,8 @@ function showtext() {
 									$(".file_options").show();
 									$(".link_options").hide();
 									<!------------------->
-                                       $(".drop-file").hide();
-                                       $(".drop-image").show();
+                                       $("#drop-file").hide();
+                                       $("#drop-image").show();
                                       // $(".fileName").val(response.code);
                                        $(".fileSwitch").hide();                
                                        $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');                
@@ -1007,7 +978,7 @@ function showtext() {
 								else
 								{
 									//hide file options
-									$(".drop-file , .drop-image , .file_options").hide();
+									$("#drop-file , #drop-image , .file_options").hide();
 									//show link options
 									$(".link_options").show();
 									$('#link_div').html(data);
@@ -1056,7 +1027,6 @@ function showtext() {
 		+
 		'</span></span></span></span>';			
 		}
-
 		//setInterval(function(){ checkHeight(); }, 1000);
 		//setiInterval(function(){checkHeight();},1000);
 		//setHeightBlock(5);
@@ -1066,12 +1036,35 @@ function showtext() {
 		//$('#link_div').hide();
 		
 	}
-
 	$('#url_reset_link').on('click',function(){
 		$('#link_div').empty();
 		$(".drop-file , .drop-image , .file_options").show();
 		$("input[id=link_url]").val('');
 		$(".link_options").hide();
+	});
+
+	$('#qard_preview').on('click',function(){
+		var dataUrl = renderer.domElement.toDataURL("image/png");
+		console.log(dataUrl);
+		html2canvas([document.getElementById('add-block')], {
+			onrendered: function (canvas) {
+			//document.getElementById('canvas').appendChild(canvas);
+			var data = canvas.toDataURL('image/png');
+			$.ajax({
+			   url: "<?=Url::to(['qard/save-blob'], true);?>",
+			   type: "POST",
+			   data: { 
+				 'img': data
+			   },
+			//   processData: false,
+			 //  contentType: false,
+			}).done(function(respond){
+					console.log(respond);
+				//$("#save").html("Uploaded Canvas image link: <a href="+respond+">"+respond+"</a>").hide().fadeIn("fast");
+			});
+
+		  }
+		});	
 	});
 
         ////////////////////////////////////
@@ -1129,7 +1122,6 @@ function showtext() {
          //  $(".fileSwitch").show();   
 //         $(".fileSwitch").show();
         }); 
-
 </script>
 
 
@@ -1156,40 +1148,31 @@ $(function(){
   * to make undeline on text
   */
 $('#text_underline').click(function(){document.execCommand('underline', false, null);$('.working_div').focus();return false;});
-
 /*
  * to justify text
  */
-
 $('#text_align').change(function(){
     document.execCommand($(this).val(), false, null);$('.working_div').focus();return false;});
 /*
  * to change the size of the text
  */
 $('#text_size').change(function(){document.execCommand("fontSize", false, $(this).val());$('.working_div').focus();return false;});
-
 /*
  * to change the font-family of text
  */
 $('#text_family').change(function(){document.execCommand("fontName", false, $(this).val());$('.working_div').focus();return false;});
-
 /*
  * to change to fore color of the text
  */
 $('#text_color').colorpicker().on('changeColor', function(e) {document.execCommand("foreColor", false, e.color.toHex());$('.working_div').focus();return false;});
-
 /*
  * to make text in indent
  */
 $('#text_indent').click(function(){document.execCommand('indent', false, null);$('.working_div').children().focus();return false;});
-
 });
-
-
 //////////////////////////////////////////////////
 // THE FOLLOWING CODE IS USED FOR RESIZE THE DIV//
 //////////////////////////////////////////////////
-
 (function($){
   
   // A collection of elements to which the resize event is bound.
@@ -1257,5 +1240,8 @@ $('#text_indent').click(function(){document.execCommand('indent', false, null);$
   };
   
 })(jQuery);
-
 </script>
+Status API Training Shop Blog About
+© 2016 GitHub, Inc. Terms Privacy Security Contact Help                
+
+	
