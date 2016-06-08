@@ -14,7 +14,7 @@
             
 		this.element		= element; 
 		this.options		= $.extend(true, {}, $.html5imageupload.defaults, options, $(this.element).data());
-		this.input			= $(this.element).find('input[type=file]');
+		this.input		= $(this.element).find('input[type=file]');
 		
 		var $window 		= $(window);
 		var _self	 		= this;
