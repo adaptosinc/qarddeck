@@ -174,12 +174,12 @@ $this->title = 'Create Qard';
 									
                                     <fieldset>
 									<div id="link_div"></div>
-                                        <div class="drop-file form-group">                                           
+                                        <div class="drop-file form-group" id="drop-file">                                           
                                             <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
                                             <h2 id="extErr">Only PDF,DOC,DOCX TYPES ARE ALLOWED</h2>                                         
                                             <h3>Drop files/click to Browse</h3></div>
                                         
-                                            <div class="drop-image form-group" >                                           
+                                            <div class="drop-image form-group" id="drop-image">                                           
 <!--                                                <img id="docimg" src="<?=Yii::$app->request->baseUrl?>/images/doc.png" alt="">-->
 
                                                 <img id="dispIcon" class="imgCenter">
@@ -936,8 +936,8 @@ function showtext() {
 									$(".file_options").show();
 									$(".link_options").hide();
 									<!------------------->
-                                       $(".drop-file").hide();
-                                       $(".drop-image").show();
+                                       $("#drop-file").hide();
+                                       $("#drop-image").show();
                                       // $(".fileName").val(response.code);
                                        $(".fileSwitch").hide();                
                                        $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');                
@@ -947,8 +947,8 @@ function showtext() {
 									$(".file_options").show();
 									$(".link_options").hide();
 									<!------------------->
-                                       $(".drop-file").hide();
-                                       $(".drop-image").show();
+                                       $("#drop-file").hide();
+                                       $("#drop-image").show();
                                       // $(".fileName").val(response.code);
                                        $(".fileSwitch").hide();                
                                        $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');                
@@ -957,7 +957,7 @@ function showtext() {
 								else
 								{
 									//hide file options
-									$(".drop-file , .drop-image , .file_options").hide();
+									$("#drop-file , #drop-image , .file_options").hide();
 									//show link options
 									$(".link_options").show();
 									$('#link_div').html(data);
