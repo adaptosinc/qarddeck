@@ -19,6 +19,8 @@ $this->title = 'Create Qard';
 <link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
 <script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-tagsinput.min.js" type="text/javascript"></script>
 <script src="<?= Yii::$app->request->baseUrl?>/js/typeahead.js" type="text/javascript"></script>
+<!--only for this page-->
+<link href="<?= Yii::$app->request->baseUrl?>/css/custom.css" rel="stylesheet">
 
 <!-- requiered for fore color of text -->
 <link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-colorpicker.min.css" rel="stylesheet">
@@ -331,9 +333,12 @@ function showtext() {
 
 </script>        
 <script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
+<script src="<?= Yii::$app->request->baseUrl?>/js/jquery.caret.js" type="text/javascript"></script>
 <script type="text/javascript">
 	  
     $(function(){ 
+	var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
+	var w3 = (typeof window.getSelection != "undefined") && true;
 	$("#extErr").hide();
 	removeBr();
 	// on click image tab should increase block height
@@ -359,18 +364,37 @@ function showtext() {
 	
 	
 	
-	
-	//increase height of the div
-	$(document).delegate("#working_div .current_blk","blur keydown keyup click",function(event){
-	    
+	$(document).delegate("#working_div .current_blk","blur keyup",function(event){
 	    if(event.keyCode==8){
 		
-//		$(this).css("height","auto");
+		var str=$(this).html();
+		$(this).html(str.replace(/((<br>)(<br>))?$/gm, ""));
+	    //		$(this).css("height","auto");
 		console.log("scroll"+$(this).innerHeight());
-		console.log($(this).html());
+		console.log(str.replace(/((<br>)(<br>))?$/gm, ""));
+		$(this).css("height","auto");
+		var scrollHeight=Math.ceil(parseInt($(this)[0].scrollHeight)/37.5);
+		var height_number=scrollHeight;
+		
+		$("#working_div div").each(function(){
+		    if(typeof $(this).attr("data-height") !== typeof undefined){
+			$(this).attr("data-height",height_number);
+		    }
+		    $(this).css("height",(height_number*37.5));
+		});
+		console.log($(this).caret('offset'));
+		$(this).caret('pos', 3);
+	    }else{
+		checkHeight(event);
+	    //	    removeBr();
 	    }
+	});
+	
+	
+	//increase height of the div
+	$(document).delegate("#working_div .current_blk","keydown click",function(event){
+	    
 	    checkHeight(event);
-//	    removeBr();
 	});
 	
 	
@@ -560,25 +584,12 @@ function showtext() {
      */
     function totalHeight(){
 	var total_height=0;
-	
-	
-	$(".qard-div .current").each(function(){
-	    
-	    
+	$(".qard-div .current_blk").each(function(){
 	    var attr = $(this).attr('data-height');
-
-	    // For some browsers, `attr` is undefined; for others, `attr` is false. Check for both.
 	    if (typeof attr !== typeof undefined && attr !== false) {
 	      // Element has this attribute
-	      total_height +=parseInt($(this).attr("data-height"))*37.5;
-	    }
-	    
-//	    if($(this)[0].hasAttribute("data-height")){ 
-//		
-//		total_height +=parseInt($(this).attr("data-height"))*37.5;
-//	    }
-	}); 
-	    return total_height;
+	      total_height +=parseInt($(this).attr("data-height"))*37.5;}
+	}); return total_height;
 	}
     
     
@@ -608,6 +619,8 @@ function showtext() {
 	var total_height=totalHeight();
 	if(total_height>(600-37.5)){
 	    $(".add-block .add-another").hide();
+	}else{
+	    $(".add-block .add-another").show();
 	}
 	
 	var offsetHeight=parseInt($("#working_div .current_blk")[0].offsetHeight);
@@ -639,7 +652,12 @@ function showtext() {
 	
 	if(scrollHeight > offsetHeight && total_height<=(600-37.5)){
 	    
-	    $("#working_div div").each(function(){if(typeof $(this).attr("data-height") !== typeof undefined){$(this).attr("data-height",height_number);}$(this).css("height",(height_number*37.5));});
+	    $("#working_div div").each(function(){
+		if(typeof $(this).attr("data-height") !== typeof undefined){
+		    $(this).attr("data-height",height_number);
+		}
+		    $(this).css("height",(height_number*37.5));
+	    });
 //	    $("#working_div .parent_current_blk").css("height",height);
 //	    $("#working_div .current_blk").css("height",height);
 	    
@@ -706,13 +724,17 @@ function showtext() {
 		
 		if(checkForNew){
 		    
-//		    if(data.new_block){
-			//for new block
-//			$("#working_div").remove();
+		    var total_height=totalHeight();
+		    console.log("tao"+total_height);
+		    if(total_height<600){
+			
 			var new_div='<div id="blk_'+getNextBlockId()+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div>';
 			$("#working_div").html(new_div);
 			console.log("added new block");
-//		    }
+		    }else{
+			$("#working_div").remove();
+			alert("qard is full");
+		    }
 		}
 		
 		//removing uneccessary created working block

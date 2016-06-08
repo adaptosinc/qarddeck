@@ -120,13 +120,15 @@ class BlockController extends Controller
         }
     }
     public function actionTest($qard_id){
-	$blocks=  \app\models\QardBlock::findAll(['qard_id'=>$qard_id]);
-	
-	echo "<pre>";
-	print_r($blocks);die;
-	foreach($blocks as $key=>$value){
-	    //creae$blocks['block_properties']
-	}
+//	
+//	$blocks=  \app\models\QardBlock::findAll(['qard_id'=>$qard_id]);
+//	
+//	echo "<pre>";
+//	print_r($blocks);die;
+//	foreach($blocks as $key=>$value){
+//	    //creae$blocks['block_properties']
+//	}
+//	echo "vaijy";die;
     }
     
     /**
