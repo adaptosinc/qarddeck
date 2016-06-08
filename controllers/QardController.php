@@ -33,7 +33,7 @@ class QardController extends Controller
      * Lists all Qard models.
      * @return mixed
      */
-    public function actionIndex(){
+/*     public function actionIndex(){
         
         $searchModel = new SearchQard();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -42,8 +42,19 @@ class QardController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-    }
-
+    } */
+    /**
+     * Lists all Qard models.
+     * @return mixed
+     */
+      public function actionIndex(){ 
+	  
+		$qards = Qard::find()->all();
+		
+		return $this->render('qard_stream',[
+			'qards' => $qards,
+		]);
+	  }
     /**
      * Displays a single Qard model.
      * @param integer $id
@@ -261,10 +272,13 @@ class QardController extends Controller
 			';
 			**/
 			echo '
-			<div class="review-qard row">
-				<div class="img-preview col-sm-3 col-md-3">
-					<img src="'.$image.'" alt="">
-					<button id="url_img_remove" onClick="changePic(this)" class="btn btn-default btn-remove">Remove</button>
+			<div id="review-qard-id" class="review-qard row" id="">
+				<div class="img-preview col-sm-3 col-md-3">';
+			if($image)
+				echo '<img src="'.$image.'" alt="">';
+			else
+				echo '<i class="fa fa-file-image-o" style="font-size: 12em;" aria-hidden="true"></i>';
+			echo '<button id="url_img_remove" onClick="changePic(this)" class="btn btn-default btn-remove">Remove</button>
 				</div>
 				<div class="col-sm-9 col-md-9" id="title_desc_url">
 					<div class="url-content">

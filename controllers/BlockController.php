@@ -85,12 +85,14 @@ class BlockController extends Controller
 		
 		if(empty($block->errors) && !is_array($block)){
 		    
-		    echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image));
+		    
+		    
+		    echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$block->text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id']));
 		    exit;
 		    
 		}  else {
 		    echo "unable to create block";
-		    print_r($block->errors);
+		    //print_r($block->errors);
 		}
 		
 	    }else{
@@ -117,7 +119,16 @@ class BlockController extends Controller
             ]);
         }
     }
-
+    public function actionTest($qard_id){
+	$blocks=  \app\models\QardBlock::findAll(['qard_id'=>$qard_id]);
+	
+	echo "<pre>";
+	print_r($blocks);die;
+	foreach($blocks as $key=>$value){
+	    //creae$blocks['block_properties']
+	}
+    }
+    
     /**
      * Updates an existing Block model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -344,6 +355,8 @@ class BlockController extends Controller
 	    $post['link_image']=$image_name;
 	    $block->link_image=$post['link_image'];
 	    $is_true=true;
+//	    echo "vijay";
+//	    die;
 	}
 	
 	

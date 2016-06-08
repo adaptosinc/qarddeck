@@ -940,8 +940,11 @@
 			if (options.buttonDone != false) {
 				$(tools).append($(_self.button.done).on({
 					'touchstart click': function(e) { 
+						
 						e.preventDefault();
-						_self.imageCrop() 
+						_self.imageCrop(); 
+						setTimeout("add_block();",1000);
+//						setInterval(function(){add_block();},1000);
 					}
 				}));
 			}

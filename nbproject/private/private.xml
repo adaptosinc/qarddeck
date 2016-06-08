@@ -2,13 +2,11 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/xampp/htdocs/qarddeck/controllers/UserController.php</file>
-            <file>file:/C:/xampp/htdocs/qarddeck/config/db.php</file>
-            <file>file:/C:/xampp/htdocs/qarddeck/components/views/profile.php</file>
-            <file>file:/C:/xampp/htdocs/qarddeck/views/qard/view.php</file>
-            <file>file:/C:/xampp/htdocs/qarddeck/controllers/QardController.php</file>
-            <file>file:/C:/xampp/htdocs/qarddeck/views/qard/create.php</file>
+        <group name="wordpress">
+            <file>file:/var/www/html/qarddeck/controllers/BlockController.php</file>
+            <file>file:/var/www/html/qarddeck/views/qard/create.php</file>
+            <file>file:/var/www/html/qarddeck/web/css/custom.css</file>
+            <file>file:/var/www/html/qarddeck/web/css/master.css</file>
         </group>
     </open-files>
 </project-private>
