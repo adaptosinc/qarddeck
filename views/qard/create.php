@@ -25,7 +25,7 @@ $this->title = 'Create Qard';
 
 <!--for image crop-->
 <link href="<?= Yii::$app->request->baseUrl?>/css/html5imageupload.css" rel="stylesheet">
-
+<link href="<?= Yii::$app->request->baseUrl?>/css/custom.css" rel="stylesheet">
 
 <script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-colorpicker.js" type="text/javascript"></script>	
 
@@ -293,7 +293,7 @@ $this->title = 'Create Qard';
 			<li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/eye.png" alt=""></a></li>
 			<li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/comment.png" alt=""></a></li>
 			<li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/icon-paint.png" alt=""></a></li>
-			<li><button class="btn btn-sm btn-default" name="preview">Preview</button></li>
+			<li><button class="btn btn-sm btn-default" name="preview" id="qard_preview">Preview</button></li>
 			<li onclick="addSaveCard(event)"><button class="btn btn-sm btn-default" name="preview">Save</button></li>
 		    </ul>
 		</div>
@@ -999,10 +999,7 @@ function showtext() {
 				+"</div></div></div></div>";			
 			
 		}
-		//	return false;
-		//return false;
 		$('#link_div').empty();
-
 		$('#link_div').html(html);	
 		$('.link_options').show();
 		$(".drop-file , .drop-image , .file_options").hide();
@@ -1113,7 +1110,29 @@ function showtext() {
 		$("input[id=link_url]").val('');
 		$(".link_options").hide();
 	});
+	$('#qard_preview').on('click',function(){
+		var dataUrl = renderer.domElement.toDataURL("image/png");
+		console.log(dataUrl);
+		html2canvas([document.getElementById('add-block')], {
+			onrendered: function (canvas) {
+			//document.getElementById('canvas').appendChild(canvas);
+			var data = canvas.toDataURL('image/png');
+			$.ajax({
+			   url: "<?=Url::to(['qard/save-blob'], true);?>",
+			   type: "POST",
+			   data: { 
+				 'img': data
+			   },
+			//   processData: false,
+			 //  contentType: false,
+			}).done(function(respond){
+					console.log(respond);
+				//$("#save").html("Uploaded Canvas image link: <a href="+respond+">"+respond+"</a>").hide().fadeIn("fast");
+			});
 
+		  }
+		});	
+	});
         ////////////////////////////////////
         
         //ADDED BY NANDHINI
