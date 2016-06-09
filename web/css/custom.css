@@ -67,9 +67,11 @@ and open the template in the editor.
     margin:  0 !important;
     
     border:.1px solid #000;
-    display: inline-block;
-/*    float: left/right;
+/*    display: inline-block;
     position: absolute;*/
+    
+    /*z-index: 9999;*/
+    /*position: relative;*/
     
 /*    overflow: auto;
     resize: both;*/
@@ -83,28 +85,14 @@ and open the template in the editor.
     position: absolute;
     opacity: 1;
 }
-.for_edit{
-/*    height:100%;
-    width:100%;*/
-    display: none !important;
-    
-    z-index: 1;
-}
-.for_edit :hover{
-    height:100%;
-    width:100%;
-    position: absolute;
-}
 .bgimg-block
 {
     background: #eaeaea;
+     position:relative;
 }
 .current_blk{
     
-    /*min-height: 37.5px;*/
     min-height: 37.5px;
-    /*background-color:#ede4e4;*/
-    /*overflow: hidden;*/
     
     
 }
