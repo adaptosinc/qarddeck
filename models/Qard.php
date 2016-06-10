@@ -131,4 +131,65 @@ class Qard extends \yii\db\ActiveRecord
     {
         return $this->hasMany(QardTags::className(), ['qard_id' => 'qard_id']);
     }
+	
+	public function getQardHtml(){
+		
+		$str = '<div class="col-sm-4 col-md-4" >
+				<div class="qard-content">
+					<div id="add-block" class="qard-div add-block">';
+			$blocks = $this->blocks;
+		//	print_r($blocks);
+			foreach($blocks as $block){
+				////get the inline styles///
+				$img_block_style = '';
+				$overlay_block_style = '';
+				$text_block_style = '';
+				$theme = $block->theme->theme_properties;
+				$theme = unserialize($theme);
+				if(isset($theme)){
+					//img block styles
+						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
+						if($block->link_image != ''){
+								
+								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
+								$img_block_style .= 'background-size: cover;';
+						}
+							
+						$img_block_style .= 'min-height:'.$theme['height'].'px;';
+						$img_block_style .= 'height:auto;';
+						
+					//overlay block styles
+						$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
+						$overlay_block_style .= 'background-color:'.$theme['div_bgcolor'].';';
+						$overlay_block_style .= 'min-height:'.$theme['height'].'px;';
+						$overlay_block_style .='height:auto;';
+						
+						$text_block_style .= 'min-height:'.$theme['height'].'px;';
+						$text_block_style .='height:auto;overflow:hidden;';
+				}
+				///////////////////////////
+				$str .= '<div class="bgimg-block" style="'.$img_block_style.'" >
+				<div class="bgoverlay-block" style="'.$overlay_block_style.'">
+				<div class="text-block" style="'.$text_block_style.'">';
+				$str .= $block->text;
+				$str .= '</div></div></div>';
+			}						
+		$str .= '		</div>
+				</div>
+			<div class="qard-bottom">
+				<ul class="qard-tags">
+					<li class="pull-left">#tag#tag#tag</li>
+					<li class="pull-right">x days ago</li>
+				</ul>
+				<h4>Author Full name</h4>
+				<ul class="social-list">
+					<li><a href=""><img src="images/heart.png" alt=""><br />500</a></li>
+					<li><a href=""><img src="images/comment-dark.png" alt=""><br />500</a></li>
+					<li><a href=""><img src="images/certify.png" alt=""><br />500</a></li>
+					<li><a href=""><img src="images/share.png" alt=""><br />500</a></li>
+				</ul>
+			</div>
+			</div>';		
+		return $str;
+	}
 }

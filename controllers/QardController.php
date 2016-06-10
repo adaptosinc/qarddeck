@@ -9,7 +9,8 @@ use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\db\Query;
+use yii\db\Command;
 /**
  * QardController implements the CRUD actions for Qard model.
  */
@@ -43,18 +44,46 @@ class QardController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     } */
+	
     /**
      * Lists all Qard models.
      * @return mixed
      */
-      public function actionIndex(){ 
-	  
-		$qards = Qard::find()->all();
-		//print_r($qards);die;
-		return $this->render('qard_stream',[
-			'qards' => $qards,
-		]);
-	  }
+    public function actionIndex($page=null){ 
+		$limit = 3;
+		if(!$page)
+			$page = 0;
+		$offset = $page*$limit;
+		$feed = $this->getQardsfeed($offset,$limit);
+		//	print_r($feed);die;
+		if(!$page || $page == 0){
+			return $this->render('qard_stream',[
+				'feed' => $feed,
+			]);		
+		}
+		else{
+			return $feed;		
+		}
+
+	 }
+    public function getQardsfeed($offset,$limit){
+		$feed = '';
+		$Query = new Query;
+		$Query->select(['*'])
+		->from('qard')
+		->limit($limit)
+		->offset($offset)
+		->orderBy(['last_updated_at' => SORT_DESC]);
+		
+		$command = $Query->createCommand();
+		$qards = $command->queryAll();
+		//get html feed
+		foreach($qards as $qard){
+			$model = Qard::findOne([$qard['qard_id']]);
+			$feed .= $model->getQardHtml();
+		}
+		return	$feed;
+	}
     /**
      * Displays a single Qard model.
      * @param integer $id

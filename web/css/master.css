@@ -1276,7 +1276,7 @@ a.on {
 }
 .review-qard {
     border: 1px solid #eaeaea;
-    padding: 10px 0;
+    /* padding: 10px 0; */
 	height: 100%;
 	display: block;
 }

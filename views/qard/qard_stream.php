@@ -22,9 +22,10 @@ use yii\widgets\ActiveForm;
 		<div class="popular-qards">     <!-- popular qard list -->
 			<div class="row">
 				<div class="col-sm-9 col-md-9">
-					<div class="row">
+					<div id="feed" class="row">
 					<?php  
-					foreach($qards as $qard){
+					echo $feed;
+/* 					foreach($qards as $qard){
 
 						//if($qard->qard_id == 51){
 						echo '<div class="col-sm-4 col-md-4" >
@@ -84,7 +85,7 @@ use yii\widgets\ActiveForm;
 
 						//echo "<h4>Next</br>";
 						//print_r($blocks);
-					}
+					} */
 					?>
 
 				</div>
@@ -118,8 +119,11 @@ use yii\widgets\ActiveForm;
 	</div>
 
 </section>
+<p id="loading" align="center" >
+	<img src="<?php echo \Yii::$app->homeUrl; ?>images/loading.gif" width="100px" height="100px" alt="Loading…" />
+</p>
 <script>
-$('#save').on('click',function(){
+/* $('#save').on('click',function(){
 	var dataUrl = document.getElementById('save').toDataURL("image/png");
 	console.log(dataUrl);
     html2canvas([document.getElementById('save')], {
@@ -143,7 +147,28 @@ $('#save').on('click',function(){
 	  }
 	});
 	
+}); */
+$(document).ready(function() {
+	var win = $(window);
+	var page = 1;
+	// Each time the user scrolls
+	win.scroll(function() {
+		// End of the document reached?
+		if ($(document).height() - win.height() == win.scrollTop()) {
+			$('#loading').show();
+			$.ajax({
+				url: '<?=Url::to(['qard/index'], true);?>',
+				dataType: 'html',
+				data: {'page':page},
+				success: function(html) {
+					console.log(page);
+					$('#feed').append(html);
+					$('#loading').hide();
+				}
+			});
+			page = page+1;
+		}
+	});
 });
-
 
 </script>
