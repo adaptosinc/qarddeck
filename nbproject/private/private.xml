@@ -8,5 +8,9 @@
             <file>file:/var/www/html/qarddeck/web/css/custom.css</file>
             <file>file:/var/www/html/qarddeck/web/css/master.css</file>
         </group>
+        <group>
+            <file>file:/C:/xampp/htdocs/qarddeck/views/qard/upload.php</file>
+            <file>file:/C:/xampp/htdocs/qarddeck/views/qard/create.php</file>
+        </group>
     </open-files>
 </project-private>
