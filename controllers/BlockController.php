@@ -404,7 +404,15 @@ class BlockController extends Controller
     
     public function actionDeleteBlock(){
 	$id=Yii::$app->request->post('block_id');
-	Block::deleteAll(['block_id'=>$id]);
+	if($id){
+	    $block=Block::findOne(['block_id'=>$id]);
+	    Block::deleteAll(['block_id'=>$id]);
+	    Theme::deleteAll(['theme_id'=>$block->theme_id]);
+	    echo json_encode(array("status"=>"success","response"=>"Deleted Successfully"));
+	    exit(0);
+	}else{
+	    echo json_encode(array("status"=>"failed","response"=>"Block id not present"));
+	}
 		
     }
     

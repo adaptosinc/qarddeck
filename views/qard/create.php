@@ -41,20 +41,18 @@ $this->title = 'Create Qard';
 	
 	<div class="col-sm-4 col-md-4">
 	    <div id="add-block" class="qard-div add-block">
-<!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen">
+		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen">
 		    <div class="bgoverlay-block">
 			<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
 		    </div>                                
-		</div>-->
+		</div>
 		
 		<div  id="working_div" class="working_div block active"  >
                             <div id="blk_1" class="bgimg-block parent_current_blk">
                                 <div class="bgoverlay-block">
-                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off">
-                                        
-                                    </div>                                    
-                                </div>                                
-                            </div>
+                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off"></div>                                    
+                                </div> 
+			    </div>
 		</div>    
 		<h4 class="add-another" onclick="add_block(event)">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
 	    </div>
@@ -70,7 +68,7 @@ $this->title = 'Create Qard';
 		<li role="presentation"><a id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/img.png" alt=""></a></li>                                
 		<li role="presentation"><a href="#paintblock" aria-controls="paintblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/paint.png" alt=""></a></li>
 		<li role="presentation"><a href="#copyblock" aria-controls="copyblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/copy.png" alt=""></a></li>
-		<li role="presentation"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/delete.png" alt=""></a></li>
+		<li role="presentation" id="deleteblock"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/delete.png" alt=""></a></li>
 	      </ul>
 
 	      <!-- Tab panes -->
@@ -332,11 +330,24 @@ function showtext() {
 </script>        
 <script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
 <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.caret.js" type="text/javascript"></script>
+
+<script src="<?= Yii::$app->request->baseUrl?>/js/jquery-ui.js" type="text/javascript"></script>
 <script type="text/javascript">
 	  
-    $(function(){ 
-	var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
-	var w3 = (typeof window.getSelection != "undefined") && true;
+    $(function(){
+	
+	
+	//for drag the block
+	$('#add-block').sortable({group: 'no-drop',handle: '.drag',onDragStart: function ($item, container, _super) {if(!container.options.drop)$item.clone().insertAfter($item);_super($item, container);}});
+	$(document).delegate("#add-block .parent_current_blk","mouseenter mouseleave",function(event){if(event.type=="mouseleave"){$(this).find(".drag").remove();}else{$(this).find(".bgoverlay-block").after('<div class="drag"><i class="fa fa-arrows"></i></div>');}});
+	
+	
+	
+	
+	
+	 
+	 
+//	 $('#working_div .current_blk').resizable();
 	$("#extErr").hide();
 	removeBr();
 	// on click image tab should increase block height
@@ -358,41 +369,123 @@ function showtext() {
 	});
 	
 	
+	
+	// for deleting the block
+	
+	$(document).delegate("#deleteblock","click",function(){
+	    var block_id=$("#working_div .current_blk").attr("data-block_id");
+	    if(typeof block_id!='undefined'){
+		
+		$.ajax({
+		    url:"<?=Url::to(['block/delete-block'], true)?>",
+		    type:"POST",
+		    dataType: 'json',
+		    data:{'block_id':block_id},
+		    success:function(data){
+			
+			$("#working_div").remove();
+			
+			if($("#add-block").find(".parent_current_blk")){
+			
+			    $("#add-block .parent_current_blk").last().wrap('<div  id="working_div" class="working_div active"></div>');
+			    $("#add-block .parent_current_blk").last().find(".current_blk").addClass("working_div");
+			    $("#add-block .parent_current_blk").last().find(".current_blk").attr("unselectable",'off');
+			    $("#add-block .parent_current_blk").last().find(".current_blk").attr("contenteditable",'true');
+			    if(data.status=='success'){
+				alert(data.response);
+			    }else{
+				alert(data.response);
+			    }
+			}else{
+			    var new_div='<div id="blk_'+getNextBlockId()+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div>';
+			$("#working_div").html(new_div);
+			    
+			}
+		    },
+		    error:function(data){
+			alert("unable to delete plz try again later!...")
+			
+		    }
+		});
+	    }else{
+		alert("first select/create block first");
+	    }
+	});
+	
+	
 	$(document).delegate("#reset_image","click",function(){$(".dropzone .btn-cancel").trigger("click");});
 	
 	
+	$(document).delegate("#working_div .current_blk","paste",function(event){
+	    console.log("valij");
+	    console.log("scrollheiug"+$(this)[0].scrollHeight);
+	    
+	    
+	    
+	    var total_height=totalHeight();
+	    console.log(total_height);
+	    if(total_height>(600-37.5)){
+		$(".add-block .add-another").hide();
+	    }else{
+		$(".add-block .add-another").show();
+	    }
+
+	    var offsetHeight=parseInt($("#working_div .current_blk")[0].offsetHeight);
+	    var scrollHeight=parseInt($("#working_div .current_blk")[0].scrollHeight);
+	    maxHeight=Math.ceil((scrollHeight-offsetHeight)/37.5);
+	    height_number=parseInt($("#working_div .current_blk").attr("data-height"))+maxHeight;
+	    height=height_number*37.5;
+
+
+    //	console.log("offsetHeight"+offsetHeight+"scrollHeight=="+scrollHeight);
+
+	    if(total_height>=(150)){
+		document.execCommand('undo', false, null);
+	    }
+	    
+	});
 	
 	$(document).delegate("#working_div .current_blk","blur keyup",function(event){
 	    if(event.keyCode==8){
 		
+		var cursorPos=$(this).caret('pos');
 		var str=$(this).html();
 		$(this).html(str.replace(/((<br>)(<br>))?$/gm, ""));
-	    //		$(this).css("height","auto");
-		console.log("scroll"+$(this).innerHeight());
-		console.log(str.replace(/((<br>)(<br>))?$/gm, ""));
 		$(this).css("height","auto");
 		var scrollHeight=Math.ceil(parseInt($(this)[0].scrollHeight)/37.5);
 		var height_number=scrollHeight;
-		
 		$("#working_div div").each(function(){
 		    if(typeof $(this).attr("data-height") !== typeof undefined){
 			$(this).attr("data-height",height_number);
 		    }
 		    $(this).css("height",(height_number*37.5));
 		});
-//		console.log($(this).caret('offset'));
-//		$(this).caret('pos', 3);
+		
+		$(this).caret('pos',cursorPos);
 	    }else{
 		checkHeight(event);
-	    //	    removeBr();
 	    }
 	});
-	
+	$(document).delegate("#add-block .parent_current_blk",'click',function(){
+	   if($(this).parent("#working_div").length){
+	       var cursorPos=$("#working_div .current_blk").caret('pos');
+	       
+//	       if($("*:focus").parent().parent().attr("id")==$(this).attr("id")){
+		
+//		}
+	       console.log("cusorePos"+cursorPos);
+	       $("#working_div .current_blk").caret('pos',cursorPos);
+	       $("#working_div .current_blk").focus();
+	   }
+	   console.log("viaj");
+	});
 	
 	//increase height of the div
 	$(document).delegate("#working_div .current_blk","keydown click",function(event){
-	    
 	    checkHeight(event);
+//	    $(this).focus();
+//	    $(this).caret('pos',cursorPos);
+	    
 	});
 	
 	
@@ -528,44 +621,6 @@ function showtext() {
 			
 		}		
 	}
-    function imageonly(){
-	var data=$("#image_upload").serializeArray();
-	//$("#working_div").children().css('background-image','url(<?=Yii::$app->request->baseUrl."/uploads/block/vijay.JPG)"?>');
-	
-	$("#working_div").children().append('<img src="<?=Yii::$app->request->baseUrl.'/uploads/block/vijay.JPG'?>"></img>');
-	
-	return false;
-	var block_id=$("#block_id").val() || 0;	
-	data.push({name: 'block_id', value: block_id});
-	
-	var qard_id=$("#qard_id").val() || 0;
-	data.push({name: 'qard_id', value: qard_id});
-	
-	var qard_title=$("#qard_title").val() || 0;
-	data.push({name: 'qard_title', value: qard_title});
-	
-	var tags=$("#tags").val() || 0;
-	data.push({name: 'tags', value: tags});
-	
-	var is_title=$("[name='is_title']:checked").val() || 0;
-	data.push({name: 'is_title', value: is_title});
-	
-	if(!qard_title){
-	    return false;
-	}
-	$.ajax({
-	   url:"<?=Url::to(['block/upload'], true)?>",
-	   type:"POST",
-	   dataType: 'json',
-	   data:data,
-	   success:function(data){
-	       console.log(data);
-	       var image='<img src="<?=Yii::$app->request->baseUrl?>/uploads/block/'+data.response+'" alt="not found">';
-	       //$("#working_div").html(image);
-	       $("#working_div").css("background-image","url(<?=Yii::$app->request->baseUrl?>/uploads/block/"+data.response+")");
-	   }
-	});
-    }
     
     /*
     * to find total height
@@ -651,11 +706,7 @@ function showtext() {
 //	    $("#working_div .current_blk").attr("data-height",height_number); 
 	}else if(scrollHeight>offsetHeight){
 	    if(e.keyCode!=8){
-		$('#working_div .current_blk').html(function (_,txt) {
-		    
-			return txt.slice(0, -1);
-		    });
-		e.preventDefault();}
+		document.execCommand('undo', false, null);}
 	    $(".add-block .add-another").hide();
 	}else{
 //	    console.log($("#working_div div").last().find('br'));
@@ -670,6 +721,8 @@ function showtext() {
 	
 	$.ajax({url:"<?=Url::to(['block/create'], true)?>",type:"POST",data:postData,dataType:"json",
 	   success:function(data){
+	       
+	       if(callFrom=="add_block"){
 	       
 //	       checkHeight();
 		var qard='';
@@ -690,40 +743,40 @@ function showtext() {
 		//adding before working block
 		$("#working_div").before(qard+theme+new_div);
 		
-		checkForNew=true;
-		//checking whether block is editing or adding new block
-		if(data.edit_block){
-		    //for edit block
-		    $("#add-block .parent_current_blk").each(function(){
-			if(typeof $(this).find(".current_blk").attr("data-block_id") == 'undefined' && data.blk_id!=$(this).attr("id"))
-			{
+		    checkForNew=true;
+		    //checking whether block is editing or adding new block
+		    if(data.edit_block){
+			//for edit block
+			$("#add-block .parent_current_blk").each(function(){
+			    if(typeof $(this).find(".current_blk").attr("data-block_id") == 'undefined' && data.blk_id!=$(this).attr("id"))
+			    {
+				$("#working_div").remove();
+				$(this).wrap('<div  id="working_div" class="working_div active"></div>');
+				$(this).find(".current_blk").addClass("working_div");
+				$(this).find(".current_blk").attr("unselectable",'off');
+				$(this).find(".current_blk").attr("contenteditable",'true');
+				console.log("wrap old block");
+				checkForNew=false;
+				return;
+			    }
+			});
+		    }
+
+		    if(checkForNew){
+
+			var total_height=totalHeight();
+			console.log("tao"+total_height);
+			if(total_height<600){
 			    $("#working_div").remove();
-			    $(this).wrap('<div  id="working_div" class="working_div active"></div>');
-			    $(this).find(".current_blk").addClass("working_div");
-			    $(this).find(".current_blk").attr("unselectable",'off');
-			    $(this).find(".current_blk").attr("contenteditable",'true');
-			    console.log("wrap old block");
-			    checkForNew=false;
-			    return;
+			    var new_div='<div  id="working_div" class="working_div active"></div><div id="blk_'+getNextBlockId()+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div></div>';
+			    $("#add-block .parent_current_blk:last").after(new_div);
+			    console.log("added new block");
+			}else{
+			    $("#working_div").remove();
+			    alert("qard is full");
 			}
-		    });
-		}
-		
-		if(checkForNew){
-		    
-		    var total_height=totalHeight();
-		    console.log("tao"+total_height);
-		    if(total_height<600){
-			
-			var new_div='<div id="blk_'+getNextBlockId()+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div>';
-			$("#working_div").html(new_div);
-			console.log("added new block");
-		    }else{
-			$("#working_div").remove();
-			alert("qard is full");
 		    }
 		}
-		
 		//removing uneccessary created working block
 		$("#add-block div").each(function(){
 		    if( $(this).attr('id')=="working_div" && $(this).html()==""){
@@ -825,7 +878,7 @@ function showtext() {
 //    });
     
     function addSaveCard(){
-	
+	var deleteblk=[];
 	// if storing image
 	var data=$("#image_upload").serializeArray();
 	var qard_title=$("#qard_title").val() || 0;
@@ -879,6 +932,8 @@ function showtext() {
 	    //to get current block id
 	    var blk_id=$(this).attr("id");
 	    data.push({name: 'blk_id', value: blk_id});
+	    
+	    $(this).addClass("delete_blk");
 		
 //	    if(typeof $(this).find(".current_blk").html() == typeof undefined && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
 //		alert("please enter block or image to save");
@@ -887,9 +942,14 @@ function showtext() {
 //
 //	    console.log(data);
 //	    return false;
+	    
+	    
 	    commanAjaxFun(data,'save_block');
+	    
 		 
 	});
+	
+//	$("#add-block .delete_blk").remove();
 	
 	
     }
