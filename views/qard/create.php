@@ -370,7 +370,7 @@ $this->title = 'Create Qard';
 <!--			<button type="submit" class="box__button">Upload</button>-->
 		</div>
                                              <h3><center>or...</center></h3>
- <div class="form-group">                                            
+ <div class="form-group" id="showlinkUrl">                                            
                                                 <input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
                                                 <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
                                             </div>
@@ -1331,6 +1331,7 @@ function showtext() {
                                   data: form_data,                        
                                   type: 'post',
                                   success: function(response){
+                                       $("#dispIcon").show(); 
                                        $(".drop-file").hide();
                                        $(".drop-image").show();
                                             $("#showFile").show();   
@@ -1351,11 +1352,17 @@ function showtext() {
              });
         $('#reflink').click(function(e) { 
          
-         location.reload();
+                // location.reload();
           // $(".drop-file").show();
         //   $(".drop-image").hide();
          //  $(".fileSwitch").show();   
 //         $(".fileSwitch").show();
+
+                $("#dispIcon").hide();                
+		$(".drop-file , .drop-image , .file_options").show();
+                $(".fileSwitch").show();   
+		$("input[id=link_url]").val('');		
+                $("#showFile").hide();
         }); 
   
 </script>
@@ -1513,12 +1520,8 @@ $('#text_indent').click(function(){document.execCommand('indent', false, null);$
 			// automatically submit the form on file select
 			input.addEventListener( 'change', function( e )
 			{
-				showFiles( e.target.files );
-
-				
-				triggerFormSubmit();
-
-				
+				showFiles( e.target.files );				
+				triggerFormSubmit();				
 			});
 
 			// drag&drop files if the feature is available
@@ -1950,6 +1953,7 @@ if(ext=="pdf" || ext=="docx" || ext=="doc"){
           },
           success: function(data) {
             console.log(data);
+             $("#dispIcon").hide(); 
              $("#showFile").show();   
             $(".drop-file").hide();
             $(".drop-image").show();
