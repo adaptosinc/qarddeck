@@ -9,7 +9,8 @@ use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\db\Query;
+use yii\db\Command;
 /**
  * QardController implements the CRUD actions for Qard model.
  */
@@ -43,18 +44,46 @@ class QardController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     } */
+	
     /**
      * Lists all Qard models.
      * @return mixed
      */
-      public function actionIndex(){ 
-	  
-		$qards = Qard::find()->all();
+    public function actionIndex($page=null){ 
+		$limit = 3;
+		if(!$page)
+			$page = 0;
+		$offset = $page*$limit;
+		$feed = $this->getQardsfeed($offset,$limit);
+		//	print_r($feed);die;
+		if(!$page || $page == 0){
+			return $this->render('qard_stream',[
+				'feed' => $feed,
+			]);		
+		}
+		else{
+			return $feed;		
+		}
+
+	 }
+    public function getQardsfeed($offset,$limit){
+		$feed = '';
+		$Query = new Query;
+		$Query->select(['*'])
+		->from('qard')
+		->limit($limit)
+		->offset($offset)
+		->orderBy(['last_updated_at' => SORT_DESC]);
 		
-		return $this->render('qard_stream',[
-			'qards' => $qards,
-		]);
-	  }
+		$command = $Query->createCommand();
+		$qards = $command->queryAll();
+		//get html feed
+		foreach($qards as $qard){
+			$model = Qard::findOne([$qard['qard_id']]);
+			$feed .= $model->getQardHtml();
+		}
+		return	$feed;
+	}
     /**
      * Displays a single Qard model.
      * @param integer $id
@@ -304,21 +333,6 @@ class QardController extends Controller
 			//print_R($img_array);
 	}
 	public function actionRenderFrame($url){
-/* 		$c = curl_init($url);			
-		$options = array(
-			CURLOPT_RETURNTRANSFER => true,     // return web page
-			CURLOPT_HEADER         => false,    // don't return headers
-			CURLOPT_FOLLOWLOCATION => true,     // follow redirects
-			CURLOPT_ENCODING       => "",       // handle all encodings
-			CURLOPT_USERAGENT      => "spider", // who am i
-			CURLOPT_AUTOREFERER    => true,     // set referer on redirect
-			CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
-			CURLOPT_TIMEOUT        => 120,      // timeout on response
-			CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
-			CURLOPT_SSL_VERIFYPEER => false     // Disabled SSL Cert checks
-		);
-		curl_setopt_array( $c, $options );
-		$html = curl_exec($c);	 */	
 		$parse = parse_url($url);
 		$domain = $parse['scheme'] . '://' . $parse['host'] . '/';
 		$content = file_get_contents($url);
@@ -352,7 +366,27 @@ class QardController extends Controller
 		else
 		 return true;
 	}
+	
+	/**
+	 * Save a screenshot of the qard
+	 * Using html2canvas
+	 * Saves to uploads/qards folder
+	 * Returns filename or error
+	 */
+	public function actionSaveBlob(){
 
+		define('UPLOAD_DIR', 'uploads/qards/');
+		$post_body = file_get_contents('php://input');
+		$img = $_POST['img'];
+		$img = str_replace('data:image/png;base64,', '', $img);
+		$img = str_replace(' ', '+', $img);
+		$data = base64_decode($img);
+		$file = 'uploads/qards/' . uniqid() . '.png';
+		$success = file_put_contents($file, $data);
+		print $success ? $file : 'Unable to save the file.';
+	
+	}
+	
     /**
      * Finds the Qard model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

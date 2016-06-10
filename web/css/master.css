@@ -530,6 +530,22 @@ button[name="preview"] {
     /*font-weight: bold;*/
     overflow: hidden;
 }
+.bgimg-block:hover .drag {
+    display: block;
+    height: auto;
+    width: auto;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    text-align: center;
+    padding: 10px;
+}
+.drag {
+    position: relative;
+    float: right;
+    margin-top: -50px;
+    display: none;
+    color: #fff;
+}
 
 /* ===========================
  * Profile
@@ -1276,7 +1292,7 @@ a.on {
 }
 .review-qard {
     border: 1px solid #eaeaea;
-    padding: 10px 0;
+    /* padding: 10px 0; */
 	height: 100%;
 	display: block;
 }
