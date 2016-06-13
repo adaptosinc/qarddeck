@@ -354,7 +354,7 @@ $this->title = 'Create Qard';
                                             <h3>Drop files/click to Browse</h3></div>
                                         
                                             <div class="drop-image form-group" id="drop-image" style="min-height:0px!important;">                                           
-<!-- <img id="docimg" src="<? = Yii::$app->request->baseUrl?>/images/doc.png" alt="">-->
+
                                                 <img id="dispIcon" class="imgCenter">
                                                 <span id="showFile">
                                                         <input type="text" name="filename" class="form-control fileName" placeholder="File Name">
