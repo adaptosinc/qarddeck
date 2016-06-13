@@ -9,7 +9,8 @@ use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\db\Query;
+use yii\db\Command;
 /**
  * QardController implements the CRUD actions for Qard model.
  */
@@ -43,18 +44,48 @@ class QardController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     } */
+	
     /**
      * Lists all Qard models.
      * @return mixed
      */
-      public function actionIndex(){ 
-	  
-		$qards = Qard::find()->all();
-		//print_r($qards);die;
-		return $this->render('qard_stream',[
-			'qards' => $qards,
-		]);
-	  }
+    public function actionIndex($page=null){ 
+		$limit = 5;
+		if(!$page)
+			$page = 0;
+		$offset = $page*$limit;
+		$feed = $this->getQardsfeed($offset,$limit);
+		//	print_r($feed);die;
+		if(!$page || $page == 0){
+			return $this->render('qard_stream',[
+				'feed' => $feed,
+			]);		
+		}
+		else{
+			return $feed;		
+		}
+
+	 }
+    public function getQardsfeed($offset,$limit){
+		$feed = '';
+		$Query = new Query;
+		$Query->select(['*'])
+		->from('qard')
+		->limit($limit)
+		->offset($offset)
+		->orderBy(['last_updated_at' => SORT_DESC]);
+		
+		$command = $Query->createCommand();
+		$qards = $command->queryAll();
+		//get html feed
+		foreach($qards as $qard){
+			$model = Qard::findOne([$qard['qard_id']]);
+			$modelFeed = $model->getQardHtml();
+			if( $modelFeed != '')
+				$feed .= $modelFeed;
+		}
+		return	$feed;
+	}
     /**
      * Displays a single Qard model.
      * @param integer $id
@@ -378,30 +409,73 @@ class QardController extends Controller
      public function isMobile(){
          return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
     }
+    public function beforeAction($action)
+    {            
+	if ($action->id == 'url' ) {
+	    $this->enableCsrfValidation = false;
+	}
+
+	return parent::beforeAction($action);
+    }
+    
+ 
     /**
      * Uploads the document
      * @return uploaded file name
      */    
         public function actionUrl(){
-            
-                if (Yii::$app->request->isAjax) {                
-                   $move = Yii::$app->basePath.'\web\uploads\docs\\';              
-                   $moveto = $move.$_FILES["file"]['name'];
-                   $_FILES["file"]['tmp_name'];
-                   $_FILES["file"]['size'];
-                   $_FILES['file']['error'];
-                        if(file_exists($move.$_FILES["file"]['name'])) {
-                             //chmod($move.$_FILES["file"]['name'],0755); //Change the file permissions if allowed
-                             unlink($move.$_FILES["file"]['name']); //remove the file
-                         }
-                   move_uploaded_file($_FILES['file']['tmp_name'], $move.$_FILES["file"]['name']);
-                   $prof_img_path =  $_FILES["file"]['name'];
-//                   $profile->temp_image = "uploads/".$prof_img_path; 
-//                   $profile->save(false);
-                   \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                    return [
-                        'code' => $_FILES["file"]['name'],
-                    ];
-               }  
+           
+                if (Yii::$app->request->isAjax) {  
+                     $uploaded = array(); 
+                     if(isset($_FILES['files']['tmp_name'])){
+                        
+                        // Number of uploaded files
+                        $num_files = count($_FILES['files']['tmp_name']);
+                        $upload_dir = Yii::$app->basePath.'\web\uploads\docs\\';
+                        /** loop through the array of files ***/
+                        for($i=0; $i < $num_files;$i++)
+                        {
+                           
+                           // copy the file to the specified dir 
+                           if(move_uploaded_file($_FILES['filename']['tmp_name'],$upload_dir.'/'.$_FILES['filename']['name']))
+                                {
+                                     \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                                        return [
+                                           'code' => $_FILES['filename']['name'],
+                                        ];
+                                   
+                                }
+                               
+                            
+                        }
+                    }                    
+               }
         }
+        /**
+     * Uploads the document
+     * @return uploaded file name
+     */ 
+        public function actionSimple(){
+           if (Yii::$app->request->isAjax) {  
+                  if($_FILES["file"]['name']){
+                            $move = Yii::$app->basePath.'\web\uploads\docs\\';              
+                            $moveto = $move.$_FILES["file"]['name'];
+                            $_FILES["file"]['tmp_name'];
+                            $_FILES["file"]['size'];
+                            $_FILES['file']['error'];
+                                 if(file_exists($move.$_FILES["file"]['name'])) {
+                                      //chmod($move.$_FILES["file"]['name'],0755); //Change the file permissions if allowed
+                                      unlink($move.$_FILES["file"]['name']); //remove the file
+                                  }
+                            move_uploaded_file($_FILES['file']['tmp_name'], $move.$_FILES["file"]['name']);
+                            $prof_img_path =  $_FILES["file"]['name'];
+//         //                   $profile->temp_image = "uploads/".$prof_img_path; 
+//         //                   $profile->save(false);
+                             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                             return [
+                                 'code' => $_FILES["file"]['name'],
+                             ];
+     }}
+           }
+     
 }

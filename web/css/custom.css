@@ -100,8 +100,10 @@ and open the template in the editor.
 .drop-image{
     overflow: hidden;
 }
-/*#working_div div[contenteditable="true"]:focus {
-    outline: 0;
-    box-shadow:none;
-}*/
+.waiting_logo{
+    display:none;background: rgba(0, 0, 0, 0.6);border: 1px solid black;height: 100%;left: 0;padding: 0 2px 2px;position: absolute;text-align: center;top: 0;width: 100%;min-height: 990px;z-index: 50;
+}
+.waiting_logo > img{
+    margin-top:30%;
+}
 

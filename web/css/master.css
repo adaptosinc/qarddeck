@@ -716,6 +716,16 @@ ul.comment-tags li{
 ul.comment-tags li.pull-right{
     color: #000 !important;
 }
+/* masonry */
+.grid-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.grid {
+    column-count: 3;
+    column-gap: 20px;
+}
 
 
 /* ==================================
@@ -1292,7 +1302,7 @@ a.on {
 }
 .review-qard {
     border: 1px solid #eaeaea;
-    padding: 10px 0;
+    /* padding: 10px 0; */
 	height: 100%;
 	display: block;
 }
