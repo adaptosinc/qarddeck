@@ -5,5 +5,9 @@
         <group name="wordpress">
             <file>file:/var/www/html/qarddeck/views/qard/create.php</file>
         </group>
+        <group>
+            <file>file:/C:/xampp/htdocs/qarddeck/views/qard/upload.php</file>
+            <file>file:/C:/xampp/htdocs/qarddeck/views/qard/create.php</file>
+        </group>
     </open-files>
 </project-private>
