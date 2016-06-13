@@ -1361,7 +1361,8 @@ function showtext() {
                 $("#dispIcon").hide();                
 		$(".drop-file , .drop-image , .file_options").show();
                 $(".fileSwitch").show();   
-		$("input[id=link_url]").val('');		
+		$("input[id=link_url]").val('');	
+                $('input[id=qard-url-upload-click]').val('');
                 $("#showFile").hide();
         }); 
   
@@ -1961,6 +1962,7 @@ if(ext=="pdf" || ext=="docx" || ext=="doc"){
             $(".fileSwitch").hide();         
           },
           error: function() {
+              alert("already");
             // Log the error, show an alert, whatever works for you
           }
         });
