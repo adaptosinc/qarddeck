@@ -134,11 +134,12 @@ class Qard extends \yii\db\ActiveRecord
 	
 	public function getQardHtml(){
 		
-		$str = '<div class="col-sm-4 col-md-4" >
+		$str = '<div class="grid-item" >
 				<div class="qard-content">
 					<div id="add-block" class="qard-div add-block">';
 			$blocks = $this->blocks;
-		//	print_r($blocks);
+			if(isset($blocks) && !empty($blocks)){
+			//	print_R($blocks);die;
 			foreach($blocks as $block){
 				////get the inline styles///
 				$img_block_style = '';
@@ -173,7 +174,8 @@ class Qard extends \yii\db\ActiveRecord
 				<div class="text-block" style="'.$text_block_style.'">';
 				$str .= $block->text;
 				$str .= '</div></div></div>';
-			}						
+
+			}	
 		$str .= '		</div>
 				</div>
 			<div class="qard-bottom">
@@ -189,7 +191,78 @@ class Qard extends \yii\db\ActiveRecord
 					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/share.png" alt=""><br />500</a></li>
 				</ul>
 			</div>
-			</div>';		
+			</div>';	
+				
 		return $str;
+		
+			}	
+	
+	}
+	public function getQardHtml1(){
+		
+		$str = '<div class="col-sm-4 col-md-4 grid-item" >
+				<div>
+					<div>';
+			$blocks = $this->blocks;
+			if(isset($blocks) && !empty($blocks)){
+			//	print_R($blocks);die;
+			foreach($blocks as $block){
+				////get the inline styles///
+				$img_block_style = '';
+				$overlay_block_style = '';
+				$text_block_style = '';
+				$theme = $block->theme->theme_properties;
+				$theme = unserialize($theme);
+				if(isset($theme)){
+					//img block styles
+						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
+						if($block->link_image != ''){
+								
+								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
+								$img_block_style .= 'background-size: cover;';
+						}
+							
+						//$img_block_style .= 'min-height:'.$theme['height'].'px;';
+						//$img_block_style .= 'height:auto;';
+						
+					//overlay block styles
+						$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
+						$overlay_block_style .= 'background-color:'.$theme['div_bgcolor'].';';
+						//$overlay_block_style .= 'min-height:'.$theme['height'].'px;';
+						//$overlay_block_style .='height:auto;';
+						
+						//$text_block_style .= 'min-height:'.$theme['height'].'px;';
+						$text_block_style .='overflow:hidden;';
+				}
+				///////////////////////////
+				$str .= '<div class="bgimg-block" style="'.$img_block_style.'" >
+				<div class="bgoverlay-block" style="'.$overlay_block_style.'">
+				<div class="text-block" style="'.$text_block_style.'">';
+				$str .= $block->text;
+				$str .= '</div></div></div>';
+
+			}	
+		$str .= '		</div>
+				</div>
+			<div class="qard-bottom">
+				<ul class="qard-tags">
+					<li class="pull-left">#tag#tag#tag</li>
+					<li class="pull-right">x days ago</li>
+				</ul>
+				<h4>Author Full name</h4>
+				<ul class="social-list">
+					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/heart.png" alt=""><br />500</a></li>
+					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/comment-dark.png" alt=""><br />500</a></li>
+					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/certify.png" alt=""><br />500</a></li>
+					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/share.png" alt=""><br />500</a></li>
+				</ul>
+			</div>
+			</div>';	
+				
+		return $str;
+		
+	}		
+	else
+		return '';
 	}
 }

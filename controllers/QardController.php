@@ -50,7 +50,7 @@ class QardController extends Controller
      * @return mixed
      */
     public function actionIndex($page=null){ 
-		$limit = 3;
+		$limit = 5;
 		if(!$page)
 			$page = 0;
 		$offset = $page*$limit;
@@ -80,7 +80,9 @@ class QardController extends Controller
 		//get html feed
 		foreach($qards as $qard){
 			$model = Qard::findOne([$qard['qard_id']]);
-			$feed .= $model->getQardHtml();
+			$modelFeed = $model->getQardHtml();
+			if( $modelFeed != '')
+				$feed .= $modelFeed;
 		}
 		return	$feed;
 	}
