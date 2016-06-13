@@ -41,11 +41,17 @@ $this->title = 'Create Qard';
 	
 	<div class="col-sm-4 col-md-4">
 	    <div id="add-block" class="qard-div add-block">
-		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen">
+		<?php
+		if(isset($model['qard_id'])){
+		    echo '<input type="hidden" name="qard_id" value="'.$model['qard_id'].'">';
+		}
+		?>
+		<input type="hidden" name="theme_id" value="<?=$model['theme_id']?>">
+<!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen">
 		    <div class="bgoverlay-block">
 			<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
 		    </div>                                
-		</div>
+		</div>-->
 		
 		<div  id="working_div" class="working_div block active"  >
                             <div id="blk_1" class="bgimg-block parent_current_blk">
@@ -338,12 +344,47 @@ function showtext() {
 	
 	
 	//for drag the block
-	$('#add-block').sortable({group: 'no-drop',handle: '.drag',onDragStart: function ($item, container, _super) {if(!container.options.drop)$item.clone().insertAfter($item);_super($item, container);}});
-	$(document).delegate("#add-block .parent_current_blk","mouseenter mouseleave",function(event){if(event.type=="mouseleave"){$(this).find(".drag").remove();}else{$(this).find(".bgoverlay-block").after('<div class="drag"><i class="fa fa-arrows"></i></div>');}});
+	$('#add-block').sortable({
+	    group: 'no-drop',
+	    handle: '.drag',
+	    onDragStart: function ($item, container, _super) 
+		{if(!container.options.drop)$item.clone().insertAfter($item);_super($item, container);},
+	    update : function () 
+	    {
+		var postData=getOrderOfBlocks();
+		$.ajax({url:"<?=Url::to(['block/change-priority'], true)?>",type:"POST",data:postData,dataType:"json",
+		    success:function(data){
+			console.log(data);
+
+		    },
+		    error:function(data){
+			console.log(data);
+		    }
+		});
+	    } 
+	    });
+	$(document).delegate("#add-block .parent_current_blk","mouseenter mouseleave",function(event){
+	    if(event.type==="mouseleave"){
+		$(this).find(".drag").remove();
+	    }else{
+		if($(this).find("div").hasClass("drag")===false){
+		$(this).find(".bgoverlay-block").after('<div class="drag"><i class="fa fa-arrows"></i></div>');}
+	    }});
 	
 	
 	
-	
+	function getOrderOfBlocks(){
+	    var data={};
+	    var i=0;
+	    $("#add-block .parent_current_blk").each(function(index){
+		var blk_id=$(this).find(".current_blk").attr("data-block_id");
+		if(typeof blk_id !== 'undefined'){
+		    data[i++]=[index,blk_id];
+		}
+	    });
+	    
+	    return data;
+	}
 	
 	 
 	 
@@ -593,34 +634,18 @@ function showtext() {
       }
     });
     
-    function getStyle(){
-    
-	var data=[];
-	var image_opacity=$("#working_div img").css("opacity") || 1; 
-	var div_opacity=$("#working_div div").css("opacity");
-	var div_bgcolor=$("#working_div div").css("background-color");
-	var height=parseInt($("#working_div div").attr("data-height"))*37.5;
-	
-	
-	data.push({name: 'image_opacity', value: image_opacity});
-	data.push({name: 'div_opacity', value: div_opacity});
-	data.push({name: 'div_bgcolor', value: div_bgcolor});
-	data.push({name: 'height', value: height});
-    }
-    
-    
     
     function setHeightBlock(unit){
-		var blk_size = unit;
-		size=blk_size*37.5;
-		console.log(size);
-		if(size<600){
-			$("#working_div").parent().css("height",size);
-			$("#working_div div").css("min-height",size);
-			$("#working_div div").attr("data-height",blk_size);
-			
-		}		
-	}
+	var blk_size = unit;
+	size=blk_size*37.5;
+	console.log(size);
+	if(size<600){
+		$("#working_div").parent().css("height",size);
+		$("#working_div div").css("min-height",size);
+		$("#working_div div").attr("data-height",blk_size);
+
+	}		
+    }
     
     /*
     * to find total height
@@ -631,6 +656,7 @@ function showtext() {
 	    var attr = $(this).attr('data-height');
 	    if (typeof attr !== typeof undefined && attr !== false) {
 	      // Element has this attribute
+	      console.log("data-height"+$(this).attr("data-height"));
 	      total_height +=parseInt($(this).attr("data-height"))*37.5;}
 	}); return total_height;
 	}
@@ -678,10 +704,10 @@ function showtext() {
 //	    console.log("vijay");
 	    if(scrollHeight > offsetHeight){
 		if(e.keyCode!=8){
-		$('#working_div .current_blk').html(function (_,txt) {
-		    
-			return txt.slice(0, -1);
-		    });
+//		$('#working_div .current_blk').html(function (_,txt) {
+//		    
+//			return txt.slice(0, -1);
+//		    });
 		e.preventDefault();}
 	    
 	    }else{
@@ -738,7 +764,7 @@ function showtext() {
 		//creating overlay-block or middel block
 		    new_div+='<div class="bgoverlay-block" style="background-color:'+data.div_bgcolor+';opacity:'+data.div_opacity+';height:'+height+'px;">';
 		//creating main block or text block
-		    new_div+='<div data-height="'+(data.height/37.5)+'" style="height:'+height+'px;" data-block_id="'+data.block_id+'" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" class="text-block current_blk">'+data.text+'</div></div></div>';
+		    new_div+='<div data-height="'+(data.height/37.5)+'" style="height:'+height+'px;" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" class="text-block current_blk">'+data.text+'</div></div></div>';
 		
 		//adding before working block
 		$("#working_div").before(qard+theme+new_div);
@@ -768,7 +794,7 @@ function showtext() {
 			console.log("tao"+total_height);
 			if(total_height<600){
 			    $("#working_div").remove();
-			    var new_div='<div  id="working_div" class="working_div active"></div><div id="blk_'+getNextBlockId()+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div></div>';
+			    var new_div='<div  id="working_div" class="working_div active"><div id="blk_'+getNextBlockId()+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div></div>';
 			    $("#add-block .parent_current_blk:last").after(new_div);
 			    console.log("added new block");
 			}else{
@@ -776,6 +802,9 @@ function showtext() {
 			    alert("qard is full");
 			}
 		    }
+		}else{
+		    $("#"+data.blk_id).find(".current_blk").attr("data-block_id",data.block_id);
+		    $("#"+data.blk_id).find(".current_blk").attr("data-theme_id",data.theme_id);
 		}
 		//removing uneccessary created working block
 		$("#add-block div").each(function(){
@@ -801,7 +830,7 @@ function showtext() {
     /*
     * add_block with all values
     */
-    function add_block(event){
+    function add_block(event){    
 	// to check height
 //	checkHeight(event);
 	// if storing image

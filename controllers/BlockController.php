@@ -85,8 +85,6 @@ class BlockController extends Controller
 		
 		if(empty($block->errors) && !is_array($block)){
 		    
-		    
-		    
 		    echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$block->text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id']));
 		    exit;
 		    
@@ -394,7 +392,7 @@ class BlockController extends Controller
     */
     public function beforeAction($action)
     {            
-	if ($action->id == 'upload' || $action->id == 'deleteBlock') {
+	if ($action->id == 'upload' || $action->id == 'deleteBlock' || $action->id=='change-priority') {
 	    $this->enableCsrfValidation = false;
 	}
 
@@ -416,82 +414,16 @@ class BlockController extends Controller
 		
     }
     
-    /* 
-     * for image
-     */
-    public function actionUpload(){
+    public function actionChangePriority() {
 	
-	$image_name='83571464244259-7.JPG';
-	echo json_encode(array('success'=>'true','response'=>$image_name));
-	exit;
+	$priority_arr=Yii::$app->request->post();
+//	$query = new Query;
 	
-	$post=Yii::$app->request->post();
+	//$connection->createCommand()->update('user', ['status' => 1], 'age > 30')->execute();
+	print_r($priority_arr);
+	exit(0 );
 	
-	//to create theme for qard
-	$theme=$this->createTheme($post);
-	
-	if(empty($theme->errors) && !is_array($theme)){
-	    
-	    $qard=$this->createQard($post, $theme->theme_id);
-	    
-	    if(empty($qard->errors) && !is_array($qard)){
-		
-		/*
-		* to upload image 
-		*/
-		$image=  json_decode($post['thumb_values']);
-		$img = str_replace('data:image/jpeg;base64,', '', $image->data);
-		$img = str_replace(' ', '+', $img);
-		$image_data = base64_decode($img);
-		$image_name=rand(0000,9999).time().'-'.$qard->qard_id.'.JPG';
-		$file = Yii::$app->basePath.'/web/uploads/block/' .$image_name;
-		$success = file_put_contents($file, $image_data);
-		if(!$success){
-		    
-		    Qard::findOne($qard->qard_id)->delete();
-		    Theme::findOne($theme->theme_id)->delete();
-		}
-		$post['link_image']=$image_name;
-		$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
-		$tags=$this->createTagsQard($post,$qard->qard_id);
-		
-		if(empty($block->errors) && !is_array($block)){
-		   // echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id));
-		    echo json_encode(array('success'=>'true','response'=>$image_name));
-		    exit;
-		    
-		}  else {
-		    
-		    Qard::findOne($qard->qard_id)->delete();
-		    Theme::findOne($theme->theme_id)->delete();
-		    unlink($file);
-		    echo "unable to create block";
-		    exit();
-		}
-		
-	    }else{
-		echo "unable to create qard";
-		
-		print_r($qard);
-		echo Theme::findOne($theme->theme_id)->delete();
-	    }
-	    
-	}else{
-	    echo "unable to create theme";
-	    print_r($theme->errors);
-	}
-	
-//	$model->=\Yii::$app->request->post('tags');
-
-	exit(0);
-	
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->block_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
 	
     }
+    
 }

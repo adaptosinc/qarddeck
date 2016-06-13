@@ -96,21 +96,15 @@ class QardController extends Controller
 				return $this->redirect(['user/login','qard_id'=>$q_id]);
 				//at login/sign-up,check if qard-id is there,if yes assign the user to the same qard once logged in
 			}
-				
-			
-			
-			
-
-			
-			echo "viay";
-			print_r($_POST);
-			print_r($_FILES);
-			exit(0);
            // return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
+	    
+//	    echo "<pre>";
+//	    print_r($model->attributes);
+//	    die;
             if(!$this->isMobile()){ 
                 return $this->render('create', [
-                    'model' => $model,
+                    'model' => $theme->attributes,
                 ]);
             }else{
                 $this->layout = 'mobilelayout';
@@ -118,7 +112,9 @@ class QardController extends Controller
                     'model' => $model,
                 ]);                
             }
+	    
         }
+	
     }
 
     /**

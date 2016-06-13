@@ -97,7 +97,9 @@ and open the template in the editor.
     
 }
 
-
+.drop-image{
+    overflow: hidden;
+}
 /*#working_div div[contenteditable="true"]:focus {
     outline: 0;
     box-shadow:none;
