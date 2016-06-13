@@ -393,7 +393,6 @@ $this->title = 'Create Qard';
                                                         <label for="cmn-toggle-6"></label>
                                                     </div>  <span>Open in New Tab</span>                                                  
                                                 </div>
-												<li><a href="#"><img id="reflink" src="<? =Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
                                             </div>-->  
 											<ul class="on-off pull-right link_options" style="display:none">
                                                 <li>
