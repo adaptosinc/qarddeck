@@ -547,6 +547,36 @@ button[name="preview"] {
     color: #fff;
 }
 
+
+li.color{
+    /*background: #73b1a2;*/
+    width: 30px;
+    height: 30px;
+}
+li.color:nth-child(1){
+    background: #73b1a2;
+}
+li.color:nth-child(2){
+    background: #c55;
+}
+li.color:nth-child(3){
+    background: #f5fcb2;
+}
+li.color:nth-child(4){
+    background: #4778E3;
+}
+li.color:nth-child(5){
+    background: #73b1a2;
+}
+li#text_color button {
+    background:transparent;
+    border:0;
+    border-radius:0;
+}
+li#text_color .dropdown-menu {
+    padding: 4px;
+}
+
 /* ===========================
  * Profile
  * ========================= */

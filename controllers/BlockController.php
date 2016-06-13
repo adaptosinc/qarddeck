@@ -85,7 +85,7 @@ class BlockController extends Controller
 		
 		if(empty($block->errors) && !is_array($block)){
 		    $text=(empty($block->text))?'':$block->text;
-		    echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id']));
+		    echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id'],'block_priority'=>$block->block_priority));
 		    exit;
 		    
 		}  else {
@@ -319,6 +319,9 @@ class BlockController extends Controller
 	$block->status=0;
 	// 0 for no and 1 for yes
 	$block->is_title=$post['is_title'];
+	// to arranging block in order
+	$block->block_priority=$post['block_priority'];
+	
 	
 	$is_true=false;
 	//for text
@@ -417,11 +420,11 @@ class BlockController extends Controller
     public function actionChangePriority() {
 	
 	$priority_arr=Yii::$app->request->post();
-//	$query = new Query;
-	
-	//$connection->createCommand()->update('user', ['status' => 1], 'age > 30')->execute();
-	print_r($priority_arr);
-	exit(0 );
+	foreach ($priority_arr as $value){
+	    $block=Block::findOne(['block_id'=>$value[1]]);
+	    $block->block_priority=$value[0];
+	    $block->save(false);
+	}
 	
 	
     }

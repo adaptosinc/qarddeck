@@ -6,185 +6,9 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Qard */
 $this->title = 'Create Qard';
 ?>
-<!-- requiered for tag -->
-<style>
-    .imgCenter {
-       display: block;
-       margin: 0 auto;
-       height: 120px;
-    }   
-    
- </style>   
- 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400" />
-	<style>
-
-
-				.box
-				{
-					font-size: 1.25rem; /* 20 */
-					background-color: transparent;
-					position: relative;
-				}
-				.box.has-advanced-upload
-				{
-					outline:0;
-					outline-offset: -10px;
-
-					-webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
-					transition: outline-offset .15s ease-in-out, background-color .15s linear;
-				}
-                                input#qard-url-upload {
-                                    opacity: 0;
-                                }
-                                label[for="file"] {
-                                    font-size: 20px;
-                                }
-                                .box__input {
-                                    text-align: center;
-                                }                                
-				.box.is-dragover
-				{
-					outline-offset: -20px;
-					outline-color: #c8dadf;
-					background-color: #fff;
-				}
-					.box__dragndrop,
-					.box__icon
-					{
-						display: none;
-					}
-					.box.has-advanced-upload .box__dragndrop
-					{
-						display: inline;
-					}
-					.box.has-advanced-upload .box__icon
-					{
-						width: 100%;
-						height: 80px;
-						fill: #92b0b3;
-						display: block;
-						margin-bottom: 40px;
-					}
-
-					.box.is-uploading .box__input,
-					.box.is-success .box__input,
-					.box.is-error .box__input
-					{
-						visibility: hidden;
-					}
-
-					.box__uploading,
-					.box__success,
-					.box__error
-					{
-						display: none;
-					}
-					.box.is-uploading .box__uploading,
-					.box.is-success .box__success,
-					.box.is-error .box__error
-					{
-						display: block;
-						position: absolute;
-						top: 50%;
-						right: 0;
-						left: 0;
-
-						-webkit-transform: translateY( -50% );
-						transform: translateY( -50% );
-					}
-					.box__uploading
-					{
-						font-style: italic;
-					}
-					.box__success
-					{
-						-webkit-animation: appear-from-inside .25s ease-in-out;
-						animation: appear-from-inside .25s ease-in-out;
-					}
-						@-webkit-keyframes appear-from-inside
-						{
-							from	{ -webkit-transform: translateY( -50% ) scale( 0 ); }
-							75%		{ -webkit-transform: translateY( -50% ) scale( 1.1 ); }
-							to		{ -webkit-transform: translateY( -50% ) scale( 1 ); }
-						}
-						@keyframes appear-from-inside
-						{
-							from	{ transform: translateY( -50% ) scale( 0 ); }
-							75%		{ transform: translateY( -50% ) scale( 1.1 ); }
-							to		{ transform: translateY( -50% ) scale( 1 ); }
-						}
-
-					.box__restart
-					{
-						font-weight: 700;
-					}
-					.box__restart:focus,
-					.box__restart:hover
-					{
-						color: #39bfd3;
-					}
-
-					.js .box__file
-					{
-						width: 0.1px;
-						height: 0.1px;
-						opacity: 0;
-						overflow: hidden;
-						position: absolute;
-						z-index: -1;
-					}
-					.js .box__file + label
-					{
-						max-width: 80%;
-						text-overflow: ellipsis;
-						white-space: nowrap;
-						cursor: pointer;
-						display: inline-block;
-						overflow: hidden;
-					}
-					.js .box__file + label:hover strong,
-					.box__file:focus + label strong,
-					.box__file.has-focus + label strong
-					{
-						color: #39bfd3;
-					}
-					.js .box__file:focus + label,
-					.js .box__file.has-focus + label
-					{
-						outline: 1px dotted #000;
-						outline: -webkit-focus-ring-color auto 5px;
-					}
-						.js .box__file + label *
-						{
-							/* pointer-events: none; */ /* in case of FastClick lib use */
-						}
-
-					.no-js .box__file + label
-					{
-						display: none;
-					}
-
-					.no-js .box__button
-					{
-						display: block;
-					}
-					.box__button
-					{
-						font-weight: 700;
-						color: #e5edf1;
-						background-color: #39bfd3;
-						display: none;
-						padding: 8px 16px;
-						margin: 40px auto 0;
-					}
-						.box__button:hover,
-						.box__button:focus
-						{
-							background-color: #0f3c4b;
-						}
-
-	</style>
-
+<!-- requiered for tag -->  
+ <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400"/>
+ 
 	<!-- remove this if you use Modernizr -->
 	<script>(function(e,t,n){var r=e.querySelectorAll("html")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);</script>
 <link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
@@ -227,11 +51,11 @@ $this->title = 'Create Qard';
 		</div>-->
 		
 		<div  id="working_div" class="working_div block active"  >
-                            <div id="blk_1" class="bgimg-block parent_current_blk">
-                                <div class="bgoverlay-block">
-                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off"></div>                                    
-                                </div> 
-			    </div>
+		    <div id="blk_1" class="bgimg-block parent_current_blk">
+			<div class="bgoverlay-block">
+			    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off" data-block_priority="1"></div>                                    
+			</div> 
+		    </div>
 		</div>    
 		<h4 class="add-another" onclick="add_block(event)">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
 	    </div>
@@ -283,7 +107,20 @@ $this->title = 'Create Qard';
 					    <option value="justifyCenter">center</option>
 					    <option  value="justifyFull">justify</option>
 					</select></li>
-				<li id="text_color"><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/fonts.png" alt="" ></a></li>
+				<li id="text_color">			    
+<div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><img src="<?=Yii::$app->request->baseUrl?>/images/fonts.png" alt="" >	
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+      <li class="color" onclick="document.execCommand('foreColor',false,'#73b1a2');"></li>
+      <li class="color" onclick="document.execCommand('foreColor', false, '#fff');"</li>
+      <li class="color" onclick="document.execCommand('foreColor', false, '#fff');"></li>
+    <li class="color" onclick="document.execCommand('foreColor', false, '#fff');"></li>
+    <li class="color" onclick="document.execCommand('foreColor', false, '#fff');"></li>
+  </ul>
+</div>
+				</li>
 				<li id="text_indent"><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/leftalign.png" alt=""></a></li>
 			    </ul>
 			</div>                                                                               
@@ -538,7 +375,7 @@ function showtext() {
 		{if(!container.options.drop)$item.clone().insertAfter($item);_super($item, container);},
 	    update : function () 
 	    {
-		var postData=getOrderOfBlocks();
+		var postData=getNSetOrderOfBlocks();
 		$.ajax({url:"<?=Url::to(['block/change-priority'], true)?>",type:"POST",data:postData,dataType:"json",
 		    success:function(data){
 			console.log(data);
@@ -560,16 +397,16 @@ function showtext() {
 	
 	
 	
-	function getOrderOfBlocks(){
+	function getNSetOrderOfBlocks(){
 	    var data={};
 	    var i=0;
 	    $("#add-block .parent_current_blk").each(function(index){
 		var blk_id=$(this).find(".current_blk").attr("data-block_id");
 		if(typeof blk_id !== 'undefined'){
-		    data[i++]=[index,blk_id];
+		    $(this).find(".current_blk").attr("data-block_priority",(i+1));
+		    data[i++]=[i,blk_id];
 		}
 	    });
-	    
 	    return data;
 	}
 	
@@ -590,10 +427,9 @@ function showtext() {
 			}
 			
 			$(this).css("height",(4*37.5));
-		    })
+		    });
 		}
 	    }else{
-		console.log('vijay');
 		removeBr();
 	    }
 	});
@@ -604,7 +440,7 @@ function showtext() {
 	
 	$(document).delegate("#deleteblock","click",function(){
 	    var block_id=$("#working_div .current_blk").attr("data-block_id");
-	    if(typeof block_id!='undefined'){
+	    if(typeof block_id!=='undefined'){
 		
 		$.ajax({
 		    url:"<?=Url::to(['block/delete-block'], true)?>",
@@ -621,7 +457,7 @@ function showtext() {
 			    $("#add-block .parent_current_blk").last().find(".current_blk").addClass("working_div");
 			    $("#add-block .parent_current_blk").last().find(".current_blk").attr("unselectable",'off');
 			    $("#add-block .parent_current_blk").last().find(".current_blk").attr("contenteditable",'true');
-			    if(data.status=='success'){
+			    if(data.status==='success'){
 				alert(data.response);
 			    }else{
 				alert(data.response);
@@ -676,7 +512,7 @@ function showtext() {
 	});
 	
 	$(document).delegate("#working_div .current_blk","blur keyup",function(event){
-	    if(event.keyCode==8){
+	    if(event.keyCode===8){
 		
 		var cursorPos=$(this).caret('pos');
 		var str=$(this).html();
@@ -696,19 +532,13 @@ function showtext() {
 		checkHeight(event);
 	    }
 	});
-	$(document).delegate("#add-block .parent_current_blk",'click',function(){
-	   if($(this).parent("#working_div").length){
-	       var cursorPos=$("#working_div .current_blk").caret('pos');
-	       
-//	       if($("*:focus").parent().parent().attr("id")==$(this).attr("id")){
-		
-//		}
-	       console.log("cusorePos"+cursorPos);
-	       $("#working_div .current_blk").caret('pos',cursorPos);
-	       $("#working_div .current_blk").focus();
-	   }
-	   console.log("viaj");
-	});
+//	$(document).delegate("#add-block .parent_current_blk",'click',function(){
+//	   if($(this).parent("#working_div").length){
+////	       var cursorPos=$("#working_div .current_blk").caret('pos');
+////	       $("#working_div .current_blk").caret('pos',cursorPos);
+////	       $("#working_div .current_blk").focus();
+//	   }
+//	});
 	
 	//increase height of the div
 	$(document).delegate("#working_div .current_blk","keydown click",function(event){
@@ -724,7 +554,7 @@ function showtext() {
 	});
 	$(document).delegate('.add-block > div',"dblclick",function(event){
 	    
-	    if($(this).attr("id")!='working_div'){
+	    if($(this).attr("id")!=='working_div'){
 		
 		$('#working_div .current_blk').removeAttr("unselectable");
 		$("#working_div .current_blk").removeAttr("contenteditable");
@@ -845,7 +675,7 @@ function showtext() {
 	    var attr = $(this).attr('data-height');
 	    if (typeof attr !== typeof undefined && attr !== false) {
 	      // Element has this attribute
-	      console.log("data-height"+$(this).attr("data-height"));
+//	      console.log("data-height"+$(this).attr("data-height"));
 	      total_height +=parseInt($(this).attr("data-height"))*37.5;}
 	}); return total_height;
 	}
@@ -854,13 +684,13 @@ function showtext() {
     
     function removeBr(){
 	
-	if($("#working_div .current_blk").text()==""){
+	if($("#working_div .current_blk").text()===""){
 	    $("#working_div div").each(function(){if(typeof $(this).attr("data-height") !== typeof undefined){$(this).attr("data-height",1);}$(this).css("height",(1*37.5));});
 	    
 	}else{
 	    $($("#working_div .current_blk").get().reverse()).each(function(index){
 		console.log(index+"----"+(index)%2);
-		if(($(this).is("br")) && (((index)%2)==0))
+		if(($(this).is("br")) && (((index)%2)===0))
 		{
 		    if($(this).prev().is('br')){
 			console.log("vijay");
@@ -892,7 +722,7 @@ function showtext() {
 	if(total_height>=(600)){
 //	    console.log("vijay");
 	    if(scrollHeight > offsetHeight){
-		if(e.keyCode!=8){
+		if(e.keyCode!==8){
 //		$('#working_div .current_blk').html(function (_,txt) {
 //		    
 //			return txt.slice(0, -1);
@@ -901,7 +731,7 @@ function showtext() {
 	    
 	    }else{
 		console.log("onlye enter");
-		if(e.keyCode==1)
+		if(e.keyCode===1)
 		    e.preventDefault();
 	    }
 	}
@@ -928,17 +758,43 @@ function showtext() {
 	}
     }
     
-    function getNextBlockId(){var blk_id=0;$(".add-block div").each(function(){var attr = $(this).attr('id');if (typeof attr !== typeof undefined && attr !== false && attr.search("_")) {new_blk_id=attr.split('_');if(blk_id<parseInt(new_blk_id[1])){blk_id=parseInt(new_blk_id[1]);}}});return ++blk_id;}
+    function getNextBlockId() {
+    var blk_id = 0;
+    $(".add-block div").each(function() {
+        var attr = $(this).attr('id');
+        if (typeof attr !== typeof undefined && attr !== false && attr.search("_")) {
+            new_blk_id = attr.split('_');
+            if (blk_id < parseInt(new_blk_id[1])) {
+                blk_id = parseInt(new_blk_id[1]);
+            }
+        }
+    });
+    return ++blk_id;
+}
     
+    function getNextBlockPriority(){
+	var blk_pri=0;
+	$(".add-block .parent_current_blk").each(function(){
+	    var attr = $(this).find(".current_blk").attr('data-block_priority');
+	    if (typeof attr !== typeof undefined) {
+		
+		if(blk_pri<parseInt(attr)){
+		    blk_pri=parseInt(attr);
+		}
+	    }
+	});return ++blk_pri;
+    }
     function commanAjaxFun(postData,callFrom){
 	
 //	console.log(postData);return false;
 	
 	$.ajax({url:"<?=Url::to(['block/create'], true)?>",type:"POST",data:postData,dataType:"json",async:false,
 	   success:function(data){
-	       $("#wait").hide();
+	       
 	       
 	       if(callFrom==="add_block"){
+		   
+		   $("#wait").hide();
 	       
 //	       checkHeight();
 		var qard='';
@@ -954,7 +810,7 @@ function showtext() {
 		//creating overlay-block or middel block
 		    new_div+='<div class="bgoverlay-block" style="background-color:'+data.div_bgcolor+';opacity:'+data.div_opacity+';height:'+data.height+'px;">';
 		//creating main block or text block
-		    new_div+='<div data-height="'+(data.height/37.5)+'" style="height:'+data.height+'px;" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" class="text-block current_blk">'+data.text+'</div></div></div>';
+		    new_div+='<div data-height="'+(data.height/37.5)+'" style="height:'+data.height+'px;" data-block_id="'+data.block_id+'" data-theme_id="'+data.theme_id+'" data-block_priority="'+data.block_priority+'" class="text-block current_blk">'+data.text+'</div></div></div>';
 		
 		//adding before working block
 		$("#working_div").before(qard+theme+new_div);
@@ -981,10 +837,12 @@ function showtext() {
 		    if(checkForNew){
 
 			var total_height=totalHeight();
+			
 			console.log("tao"+total_height);
+			var nextBlockPriority=getNextBlockPriority();
 			if(total_height<600){
 			    $("#working_div").remove();
-			    var new_div='<div  id="working_div" class="working_div active"><div id="blk_'+getNextBlockId()+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div></div>';
+			    var new_div='<div  id="working_div" class="working_div active"><div id="blk_'+getNextBlockId()+'" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off" data-block_priority="'+nextBlockPriority+'"></div></div></div></div>';
 			    $("#add-block .parent_current_blk:last").after(new_div);
 			    console.log("added new block");
 			}else{
@@ -1018,10 +876,15 @@ function showtext() {
 	
     }
     
+    
+    
+    
+    
+    
     /*
     * add_block with all values
     */
-    function add_block(event){    
+    function add_block(event){  
     
 	$("#wait").show();
 	// to check height
@@ -1072,6 +935,11 @@ function showtext() {
 	
 	var blk_id=$("#working_div .parent_current_blk").attr("id");
 	data.push({name: 'blk_id', value: blk_id});
+	
+	 // check whether theme is already preasent for qard or not
+	var block_priority=$("#working_div .current_blk").attr("data-block_priority") || 0;
+	data.push({name: 'block_priority', value: block_priority});
+	
 ////	console.log("df"+$("#working_div .current_blk").text());
 //	if($("#working_div .current_blk").text().trim() == '' && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
 //		    console.log("please enter block or image to save");
@@ -1082,33 +950,19 @@ function showtext() {
 //	console.log(data);
 //	return false;
 	return commanAjaxFun(data,'add_block');
+	$("#wait").hide();
     }
     
-    
-    
-//    //height overflow
-//    $("#working_div div").on("blur keydown",function(){
-//	
-//	if($(this).scrollHeight>600){
-//	   $("#Block_error").modal('show');
-//	   $("#disp_error").text('can not write on card user extra text to continue!...');
-//	   showtext();
-//	}else if($(this).height()>$('#cur_block').height()){
-//	    var height=parseInt($("#cur_block").height())+37.5;
-//	    $("#cur_block").css('height',height);
-//	}
-//    });
-    
     function addSaveCard(){
-	var deleteblk=[];
+	$("#wait").show();
 	// if storing image
 	var data=$("#image_upload").serializeArray();
 	var qard_title=$("#qard_title").val() || 0;
 	data.push({name: 'qard_title', value: qard_title});
 	//if qard title is empty
-	if(qard_title==''){alert("please enter qard title");return false;}
+	if(qard_title===''){alert("please enter qard title");return false;}
 	
-	$("#add-block .parent_current_blk").each(function(){
+	$("#add-block .parent_current_blk").each(function(index){
 	    
 	    // getting opacity for image-block div
 	    var image_opacity=parseFloat($(this).css("opacity") || 0); 
@@ -1122,7 +976,7 @@ function showtext() {
 	    
 	    //if it contains background as image then true
 	    var div_bgimage=$(this).css("background-image");
-	    if(typeof div_bgimage  == 'undefined' ){
+	    if(typeof div_bgimage  === 'undefined' ){
 	    var div_bgimage=$(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 	    }
 	    data.push({name: 'div_bgimage', value: div_bgimage});
@@ -1141,12 +995,18 @@ function showtext() {
 	    // check whether theme is already preasent for qard or not
 	    var theme_id=$(this).find(".current_blk").attr("data-theme_id") || 0;
 	    data.push({name: 'theme_id', value: theme_id});
+	     // check whether theme is already preasent for qard or not
+	    $(this).find(".current_blk").attr("data-block_priority",(index+1));
+	    data.push({name: 'block_priority', value: index+1});
 	    //check qard id is present to edit or add new qard
 	    var qard_id=$("#qard_id").val() || 0;
 	    data.push({name: 'qard_id', value: qard_id});
 	    // getting tags fot qard
 	    var tags=$("#tags").val() || 0;
 	    data.push({name: 'tags', value: tags});
+	    
+	    var qard_title=$("#qard_title").val() || 0;
+	    data.push({name: 'qard_title', value: qard_title});
 	    
 	    //if block contains title for block then true
 	    var is_title=$("[name='is_title']:checked").val() || 0;
@@ -1279,10 +1139,10 @@ function showtext() {
 		var title = $('input[name=url_title]').val();
 		var content = $('textarea[name=url_content]').val();
 		var image = $('#review-qard-id .img-preview > img').attr('src');
-		if(typeof title == 'undefined')
+		if(typeof title === 'undefined')
 			return false;
 		//console.log(title);
-		if(typeof image == 'undefined'){
+		if(typeof image === 'undefined'){
 			var str = '<span class="url-qard-block" id="url_parent'+$("#working_div div").attr("id")+'">'+
 			'<span class="col-sm-12 col-md-12" id="title_desc_url'+$("#working_div div").attr("id")+'">'+
 			'<span class="url-content"><h4>'+title+'</h4>'
@@ -1408,6 +1268,7 @@ function showtext() {
         }); 
   
 </script>
+
 <!--dont touch-->
 <script type="text/javascript">
 $(function(){
@@ -1443,7 +1304,11 @@ $('#text_family').change(function(){document.execCommand("fontName", false, $(th
 /*
  * to change to fore color of the text
  */
-$('#text_color').colorpicker().on('changeColor', function(e) {document.execCommand("foreColor", false, e.color.toHex());$('.working_div').focus();return false;});
+//$('#text_color li').on('click', function(e) {
+//   
+//    var color=$(this).css("background-color"); // get id of clicked li
+//console.log(color);
+//    document.execCommand('foreColor', false, '#fff');$('.working_div').focus();return false;});
 /*
  * to make text in indent
  */
@@ -1569,7 +1434,7 @@ $('#text_indent').click(function(){document.execCommand('indent', false, null);$
 			// drag&drop files if the feature is available
 			if( isAdvancedUpload )
 			{
-                            console.log("adv uplo");
+                            
 				form.classList.add( 'has-advanced-upload' ); // letting the CSS part to know drag&drop is supported by the browser
 
 				[ 'drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop' ].forEach( function( event )
