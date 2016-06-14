@@ -105,7 +105,7 @@ class Qard extends \yii\db\ActiveRecord
      */
     public function getBlocks()
     {
-        return $this->hasMany(QardBlock::className(), ['qard_id' => 'qard_id']);
+        return $this->hasMany(QardBlock::className(), ['qard_id' => 'qard_id'])->orderBy(['block_priority' => SORT_ASC]);;
     }
 	
     /**
@@ -132,7 +132,7 @@ class Qard extends \yii\db\ActiveRecord
         return $this->hasMany(QardTags::className(), ['qard_id' => 'qard_id']);
     }
 	
-	public function getQardHtml(){
+	public function getQardHtml($single=null){
 		
 		$str = '<div class="grid-item" >
 				<div class="qard-content">

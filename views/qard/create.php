@@ -126,6 +126,7 @@ $this->title = 'Create Qard';
 			</div>                                                                               
 			<div class="form-group col-sm-3 col-md-3">                                            
 			    <select id="text_family">
+				<option value="Roboto"> Roboto</option>
 				<option value="Inconsolata"> Inconsolata</option>
 				<option value="monospace"> monospace</option>
 			    </select>

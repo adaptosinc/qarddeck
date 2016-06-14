@@ -66,6 +66,7 @@ class QardController extends Controller
 		}
 
 	 }
+
     public function getQardsfeed($offset,$limit){
 		$feed = '';
 		$Query = new Query;
@@ -86,6 +87,7 @@ class QardController extends Controller
 		}
 		return	$feed;
 	}
+	
     /**
      * Displays a single Qard model.
      * @param integer $id
@@ -93,8 +95,13 @@ class QardController extends Controller
      */
     public function actionView($id)
     {
+		$this->layout = "plain";
+		$model = $this->findModel($id);
+		$single = true;
+		$modelFeed = $model->getQardHtml($single);	
+		//print_r($modelFeed);die;
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $modelFeed,
         ]);
     }
 
