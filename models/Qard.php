@@ -136,7 +136,7 @@ class Qard extends \yii\db\ActiveRecord
 		
 		$str = '<div class="grid-item" >
 				<div class="qard-content">
-					<div id="add-block" class="qard-div add-block">';
+					<div id="add-block'.$this->qard_id.'" class="qard-div add-block">';
 			$blocks = $this->blocks;
 			if(isset($blocks) && !empty($blocks)){
 			//	print_R($blocks);die;
