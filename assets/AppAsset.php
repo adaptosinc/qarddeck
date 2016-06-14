@@ -22,6 +22,7 @@ class AppAsset extends AssetBundle
 	'font-awesome/css/font-awesome.css',
 	//'css/html5imageupload.css',
 	'css/master.css',
+	'css/fonts.css',
     ];
     public $jsOptions = [
 	'position' => \yii\web\view::POS_HEAD,
