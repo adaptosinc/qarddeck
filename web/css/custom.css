@@ -93,10 +93,14 @@ and open the template in the editor.
 .current_blk{
     
     min-height: 37.5px;
+    -webkit-user-select=none;
+    -moz-user-select:none;
     
     
 }
-
+*[contenteditable] {
+    -webkit-user-select: auto !important;
+}
 .drop-image{
     overflow: hidden;
 }

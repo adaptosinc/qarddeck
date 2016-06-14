@@ -1,31 +1,11 @@
 
-<link href="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet">
-<script src="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js" type="text/javascript"></script>
-<script src="<?= Yii::$app->request->baseUrl?>/js/typeahead.js" type="text/javascript"></script>
+<link href="<?= Yii::$app->request->baseUrl?>/css/select2.css" rel="stylesheet">
+<select class="js-example-basic-multiple" multiple="multiple">
+  <option value="AL">Alabama</option>
+  <option value="WY">Wyoming</option>
+</select>
+<script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
 
-<input type="text" id="vijatags"  data-role="tagsinput" />
-
-<script>
-var citynames = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-  queryTokenizer: Bloodhound.tokenizers.whitespace,
-  prefetch: {
-    url: 'http://localhost/qarddeck/web/tag/get-all-tags',
-    filter: function(list) {
-      return $.map(list, function(cityname) {
-        return { name: cityname }; });
-    }
-  }
-});
-citynames.initialize();
-
-$('#vijatags').tagsinput({
-  typeaheadjs: {
-    name: 'citynames',
-    displayKey: 'name',
-    valueKey: 'name',
-    source: citynames.ttAdapter()
-  }
-});
+<script type="text/javascript">
+$(".js-example-basic-multiple").select2();
 </script>
-

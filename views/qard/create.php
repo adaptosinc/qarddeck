@@ -11,9 +11,11 @@ $this->title = 'Create Qard';
  
 	<!-- remove this if you use Modernizr -->
 	<script>(function(e,t,n){var r=e.querySelectorAll("html")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);</script>
-<link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
+	
+<link href="<?= Yii::$app->request->baseUrl?>/css/select2.css" rel="stylesheet">
+<!--<link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
 <script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-tagsinput.min.js" type="text/javascript"></script>
-<script src="<?= Yii::$app->request->baseUrl?>/js/typeahead.js" type="text/javascript"></script>
+<script src="<?= Yii::$app->request->baseUrl?>/js/typeahead.js" type="text/javascript"></script>-->
 <!--only for this page-->
 <link href="<?= Yii::$app->request->baseUrl?>/css/custom.css" rel="stylesheet">
 
@@ -44,9 +46,14 @@ $this->title = 'Create Qard';
 		}
 		?>
 		<input type="hidden" name="theme_id" value="<?=$model['theme_id']?>">
-<!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen">
-		    <div class="bgoverlay-block">
+<!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
+		    <div class="bgoverlay-block" style="height:75px;">
 			<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
+		    </div>                                
+		</div>
+		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: #0055cc" style="height:150px;">
+		    <div class="bgoverlay-block" style="height:150px;">
+			<div class="text-block current_blk" data-height="4" style="height:150px;"></div>                                    
 		    </div>                                
 		</div>-->
 		
@@ -311,7 +318,13 @@ $this->title = 'Create Qard';
 			<input type="text" name="qard_title" id="qard_title" class="form-control" placeholder="Qard Title">
 		    </div>
 		    <div class="col-sm-6 col-md-6">
-			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">
+<!--			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">-->
+			
+			<select class="js-example-basic-multiple form-control"  id="tags" name="tags" multiple="multiple">
+			    <?php foreach($tags as $key=>$value){
+				echo '<option value="'.$value->name.'">'.$value->name.'</option>';
+			    }?>
+			</select>
 		    </div>                                    
 		</div>
 		<div class="col-sm-4 col-md-4">
@@ -356,14 +369,20 @@ function showtext() {
     }
 }
 </script>        
+<script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
+
+
 <script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
 <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.caret.js" type="text/javascript"></script>
 
 <script src="<?= Yii::$app->request->baseUrl?>/js/jquery-ui.js" type="text/javascript"></script>
+
 <script type="text/javascript">
 	  
 
     $(function(){ 
+	
+	$(".js-example-basic-multiple").select2();
         $("#showFile").hide();    
 
 	//for drag the block
@@ -416,18 +435,12 @@ function showtext() {
 //	 $('#working_div .current_blk').resizable();
 
 	$("#extErr").hide();
-	removeBr();
+	
 	// on click image tab should increase block height
 	$(document).delegate("#cmn-toggle-3","click",function(){
 	    if($(this).is(":checked")){
 		if(parseInt($("#working_div .current_blk").attr("data-height"))<4){
-		    $("#working_div div").each(function(){
-			if(typeof $(this).attr("data-height") !== typeof undefined){
-			    $(this).attr("data-height",4);
-			}
-			
-			$(this).css("height",(4*37.5));
-		    });
+		   setHeightBlock(4);
 		}
 	    }else{
 		removeBr();
@@ -483,53 +496,48 @@ function showtext() {
 	
 	
 	$(document).delegate("#working_div .current_blk","paste",function(event){
-	    console.log("valij");
-	    console.log("scrollheiug"+$(this)[0].scrollHeight);
-	    
-	    
-	    
-	    var total_height=totalHeight();
-	    console.log(total_height);
-	    if(total_height>(600-37.5)){
-		$(".add-block .add-another").hide();
-	    }else{
-		$(".add-block .add-another").show();
-	    }
-
-	    var offsetHeight=parseInt($("#working_div .current_blk")[0].offsetHeight);
-	    var scrollHeight=parseInt($("#working_div .current_blk")[0].scrollHeight);
-	    maxHeight=Math.ceil((scrollHeight-offsetHeight)/37.5);
-	    height_number=parseInt($("#working_div .current_blk").attr("data-height"))+maxHeight;
-	    height=height_number*37.5;
-
-
-    //	console.log("offsetHeight"+offsetHeight+"scrollHeight=="+scrollHeight);
-
-	    if(total_height>=(150)){
-		document.execCommand('undo', false, null);
-	    }
+	     // cancel paste
+	    event.preventDefault();
+	    // get text representation of clipboard
+	    var text = event.originalEvent.clipboardData.getData('Text');
+	    // insert text manually
+	    document.execCommand("insertHTML", false, text);
+	    setHeightBlock('',event);
+//	    var total_height=totalHeight();
+//	    console.log(total_height);
+//	    if(total_height>(600-37.5)){
+//		$(".add-block .add-another").hide();
+//	    }else{
+//		$(".add-block .add-another").show();
+//	    }
+//
+//	    var offsetHeight=parseInt($("#working_div .current_blk")[0].offsetHeight);
+//	    var scrollHeight=parseInt($("#working_div .current_blk")[0].scrollHeight);
+//	    maxHeight=Math.ceil((scrollHeight-offsetHeight)/37.5);
+//	    height_number=parseInt($("#working_div .current_blk").attr("data-height"))+maxHeight;
+//	    height=height_number*37.5;
+//
+//
+//    //	console.log("offsetHeight"+offsetHeight+"scrollHeight=="+scrollHeight);
+//
+//	    if(total_height>=(150)){
+//		document.execCommand('undo', false, null);
+//	    }
 	    
 	});
 	
 	$(document).delegate("#working_div .current_blk","blur keyup",function(event){
 	    if(event.keyCode===8){
-		
 		var cursorPos=$(this).caret('pos');
 		var str=$(this).html();
 		$(this).html(str.replace(/((<br>)(<br>))?$/gm, ""));
 		$(this).css("height","auto");
 		var scrollHeight=Math.ceil(parseInt($(this)[0].scrollHeight)/37.5);
 		var height_number=scrollHeight;
-		$("#working_div div").each(function(){
-		    if(typeof $(this).attr("data-height") !== typeof undefined){
-			$(this).attr("data-height",height_number);
-		    }
-		    $(this).css("height",(height_number*37.5));
-		});
-		
+		setHeightBlock(height_number);
 		$(this).caret('pos',cursorPos);
 	    }else{
-		checkHeight(event);
+		setHeightBlock('',event);
 	    }
 	});
 //	$(document).delegate("#add-block .parent_current_blk",'click',function(){
@@ -542,7 +550,8 @@ function showtext() {
 	
 	//increase height of the div
 	$(document).delegate("#working_div .current_blk","keydown click",function(event){
-	    checkHeight(event);
+	    setHeightBlock('',event);
+//	    checkHeight(event);
 //	    $(this).focus();
 //	    $(this).caret('pos',cursorPos);
 	    
@@ -618,54 +627,10 @@ function showtext() {
 	});
 	//for block
 	$(document).delegate("#blk_size","keyup keydown",function(){
-	    var blk_size=parseInt($(this).val()) || 1;
-	    size=blk_size*37.5;
-	    console.log(size);
-	    if(size<600){
-		$("#working_div div").css("height",size);
-		$("#working_div div").css("min-height",size);
-		$("#working_div div").attr("data-height",blk_size);
-	    }
+	    setHeightBlock($(this).val());
 	});
     });
-    
-    /*
-     *  this to create tag on tags
-     */
-    var citynames = new Bloodhound({
-      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-      queryTokenizer: Bloodhound.tokenizers.whitespace,
-      prefetch: {
-	url: "<?=Url::to(['tag/get-all-tags'],true)?>",
-	filter: function(list) {
-	  return $.map(list, function(cityname) {
-	    return { name: cityname }; });
-	}
-      }
-    });
-    citynames.initialize();
-    $('#tags').tagsinput({
-      typeaheadjs: {
-	name: 'citynames',
-	displayKey: 'name',
-	valueKey: 'name',
-	source: citynames.ttAdapter()
-      }
-    });
-    
-    
-    function setHeightBlock(unit){
-	var blk_size = unit;
-	size=blk_size*37.5;
-	console.log(size);
-	if(size<600){
-		$("#working_div").parent().css("height",size);
-		$("#working_div div").css("min-height",size);
-		$("#working_div div").attr("data-height",blk_size);
-
-	}		
-    }
-    
+      
     /*
     * to find total height
      */
@@ -674,11 +639,55 @@ function showtext() {
 	$(".qard-div .current_blk").each(function(){
 	    var attr = $(this).attr('data-height');
 	    if (typeof attr !== typeof undefined && attr !== false) {
-	      // Element has this attribute
-//	      console.log("data-height"+$(this).attr("data-height"));
 	      total_height +=parseInt($(this).attr("data-height"))*37.5;}
 	}); return total_height;
+    }
+    
+    function setHeightBlock(height,event){
+	var size = height*37.5;
+	var total_height=totalHeight();	
+	console.log("total_height="+total_height);
+	var offsetHeight=parseInt($("#working_div .current_blk")[0].offsetHeight);
+	var scrollHeight=parseInt($("#working_div .current_blk")[0].scrollHeight);
+	var maxHeight=Math.ceil((scrollHeight-offsetHeight)/37.5);	
+	if(height){
+//	    if(Math.ceil(offsetHeight/37.5)>height){
+//		return false;
+//	    }
+	    var height_number=height-parseInt($("#working_div .current_blk").attr("data-height"));
+	    total_height=total_height+(height_number*37.5);  
+	    console.log("total after="+total_height);
+	    
+	}else{
+	    
+	    
+	    
+	    console.log("maxHieght"+maxHeight);
+	    total_height=(maxHeight*37.5)+total_height;
+	    console.log("total after="+total_height);
+	    height=(parseInt($("#working_div .current_blk").attr("data-height"))+maxHeight);
+//	    height=height_number*37.5;
+	    
 	}
+	$(".add-block .add-another").show();
+	if(total_height<=600 ){
+	    
+	    console.log("viay"+height);
+	    $("#working_div .parent_current_blk").css("height",(height*37.5));
+	    $("#working_div .bgoverlay-block").css("height",(height*37.5));
+	    $("#working_div .current_blk").css("height",(height*37.5));
+	    $("#working_div .current_blk").attr("data-height",height);
+	    return true;
+//	}else if(scrollHeight > offsetHeight){
+//	    
+	}else{
+	    $(".add-block .add-another").hide();
+	    document.execCommand('undo', false, null);
+	    return false;
+	}	
+    }
+    
+    
     
     
     
@@ -702,61 +711,50 @@ function showtext() {
 	    });
 	}
     }
-    function checkHeight(e){
-	var total_height=totalHeight();
-	if(total_height>(600-37.5)){
-	    $(".add-block .add-another").hide();
-	}else{
-	    $(".add-block .add-another").show();
-	}
-	
-	var offsetHeight=parseInt($("#working_div .current_blk")[0].offsetHeight);
-	var scrollHeight=parseInt($("#working_div .current_blk")[0].scrollHeight);
-	maxHeight=Math.ceil((scrollHeight-offsetHeight)/37.5);
-	height_number=parseInt($("#working_div .current_blk").attr("data-height"))+maxHeight;
-	height=height_number*37.5;
-	
-	
+//    function checkHeight(e){
+//	var total_height=totalHeight();
+//	if(total_height>(600-37.5)){
+//	    $(".add-block .add-another").hide();
+//	}else{
+//	    $(".add-block .add-another").show();
+//	}
+//	
+//	var offsetHeight=parseInt($("#working_div .current_blk")[0].offsetHeight);
+//	var scrollHeight=parseInt($("#working_div .current_blk")[0].scrollHeight);
+//	maxHeight=Math.ceil((scrollHeight-offsetHeight)/37.5);
+//	console.log("maxHieght"+maxHeight);
+//	
+//	height_number=parseInt($("#working_div .current_blk").attr("data-height"))+maxHeight;
+//	height=height_number*37.5;
+//	
+//	
 //	console.log("offsetHeight"+offsetHeight+"scrollHeight=="+scrollHeight);
-	
-	if(total_height>=(600)){
-//	    console.log("vijay");
-	    if(scrollHeight > offsetHeight){
-		if(e.keyCode!==8){
-//		$('#working_div .current_blk').html(function (_,txt) {
-//		    
-//			return txt.slice(0, -1);
-//		    });
-		e.preventDefault();}
-	    
-	    }else{
-		console.log("onlye enter");
-		if(e.keyCode===1)
-		    e.preventDefault();
-	    }
-	}
-	
-	
-	if(scrollHeight > offsetHeight && total_height<=(600-37.5)){
-	    
-	    $("#working_div div").each(function(){
-		if(typeof $(this).attr("data-height") !== typeof undefined){
-		    $(this).attr("data-height",height_number);
-		}
-		    $(this).css("height",(height_number*37.5));
-	    });
-//	    $("#working_div .parent_current_blk").css("height",height);
-//	    $("#working_div .current_blk").css("height",height);
-	    
-//	    $("#working_div .current_blk").attr("data-height",height_number); 
-	}else if(scrollHeight>offsetHeight){
-	    if(e.keyCode!=8){
-		document.execCommand('undo', false, null);}
-	    $(".add-block .add-another").hide();
-	}else{
-//	    console.log($("#working_div div").last().find('br'));
-	}
-    }
+//	
+//	
+////	if(total_height>=(600)){
+//////	    console.log("vijay");
+////	    if(scrollHeight > offsetHeight){
+////		if(e.keyCode!==8){
+////		    e.preventDefault();
+////		}
+////	    
+////	    }else{
+////		if(e.keyCode===1)
+////		    e.preventDefault();
+////	    }
+////	}
+//	
+//	
+//	if(scrollHeight > offsetHeight && total_height<=(600-37.5)){
+//	    setHeightBlock(height_number);
+//	}else if(scrollHeight>offsetHeight){
+//	    if(e.keyCode!==8){
+//		document.execCommand('undo', false, null);}
+//	    $(".add-block .add-another").hide();
+//	}else{
+////	    console.log($("#working_div div").last().find('br'));
+//	}
+//    }
     
     function getNextBlockId() {
     var blk_id = 0;
@@ -856,7 +854,7 @@ function showtext() {
 		}
 		//removing uneccessary created working block
 		$("#add-block div").each(function(){
-		    if( $(this).attr('id')=="working_div" && $(this).html()==""){
+		    if( $(this).attr('id')==="working_div" && $(this).html()===""){
 		    $("#working_div").remove();}
 		});
 		
@@ -886,7 +884,7 @@ function showtext() {
     */
     function add_block(event){  
     
-	$("#wait").show();
+//	$("#wait").show();
 	// to check height
 //	checkHeight(event);
 	// if storing image
@@ -927,7 +925,10 @@ function showtext() {
 	var qard_title=$("#qard_title").val() || 0;
 	data.push({name: 'qard_title', value: qard_title});
 	
-	var tags=$("#tags").val() || 0;
+	
+
+	var tags= [];
+	$('#tags :selected').each(function(i, selected){tags[i] = $(selected).text();});
 	data.push({name: 'tags', value: tags});
 	
 	var is_title=$("[name='is_title']:checked").val() || 0;
@@ -1002,7 +1003,8 @@ function showtext() {
 	    var qard_id=$("#qard_id").val() || 0;
 	    data.push({name: 'qard_id', value: qard_id});
 	    // getting tags fot qard
-	    var tags=$("#tags").val() || 0;
+	    var tags=[];
+	    $('#tags :selected').each(function(i, selected){tags[i] = $(selected).text();});
 	    data.push({name: 'tags', value: tags});
 	    
 	    var qard_title=$("#qard_title").val() || 0;
@@ -1119,7 +1121,7 @@ function showtext() {
 				//var link = '<h4 class="url-content"><a href="'+preview_url+'">'+title+'</a></h4>'
 				//$('.working_div div').html(link);
 				showUrlPreview();
-				checkHeight();
+				setHeightBlock('','');
 			}
 		});		
 	}
@@ -1164,7 +1166,7 @@ function showtext() {
 		//setHeightBlock(5);
 	//	$("#working_div div").html(str);
 		$("#working_div .current_blk").html(str);
-		checkHeight();
+		setHeightBlock('','');
 		//$('#link_div').hide();
 		
 	}

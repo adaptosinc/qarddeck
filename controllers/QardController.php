@@ -129,13 +129,11 @@ class QardController extends Controller
 			}
            // return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
-	    
-//	    echo "<pre>";
-//	    print_r($model->attributes);
-//	    die;
+	    $tags=\app\models\Tag::find()->all();
             if(!$this->isMobile()){ 
                 return $this->render('create', [
                     'model' => $theme->attributes,
+		    'tags'=>$tags
                 ]);
             }else{
                 $this->layout = 'mobilelayout';
