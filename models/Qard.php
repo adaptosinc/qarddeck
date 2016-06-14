@@ -134,8 +134,8 @@ class Qard extends \yii\db\ActiveRecord
 	
 	public function getQardHtml($single=null){
 		
-		$str = '<div class="grid-item" id="qard'.$this->qard_id.'">
-				<div class="qard-content">
+		$str = '<div class="grid-item">
+				<div class="qard-content" id="qard'.$this->qard_id.'">
 					<div id="add-block'.$this->qard_id.'" class="qard-div add-block">';
 			$blocks = $this->blocks;
 			if(isset($blocks) && !empty($blocks)){
