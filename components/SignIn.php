@@ -21,7 +21,11 @@ class SignIn extends Widget
         $model = new LoginForm();	    
 		
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            \Yii::$app->controller->goBack();
+			if(isset(Yii::$app->session['qard']) && Yii::$app->session['qard'] != '' ){
+				return \Yii::$app->controller->redirect(['qard/view','id'=>Yii::$app->session['qard']]);
+			}
+			else
+				\Yii::$app->controller->goBack();
         }
         return $this->render('login', [
             'model' => $model,

@@ -27,6 +27,22 @@ class QardController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['login', 'logout', 'signup'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['login', 'signup'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['logout'],
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -126,15 +142,16 @@ class QardController extends Controller
 		}
         if ($model->load(Yii::$app->request->post())) {
 			
+			$model->save(false);
 			if(!\Yii::$app->user->id){
 				//save false here with out user id and status as draft
-				$model->save(false);
+				//$model->save(false);
 				//aftersave take the qard-id as a param and send to login page
-				$q_id = $model->qard_id;
+				\Yii::$app->session['qard']= $model->qard_id;
 				return $this->redirect(['user/login','qard_id'=>$q_id]);
 				//at login/sign-up,check if qard-id is there,if yes assign the user to the same qard once logged in
 			}
-           // return $this->redirect(['view', 'id' => $model->qard_id]);
+            return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
 	    $tags=\app\models\Tag::find()->all();
             if(!$this->isMobile()){ 
@@ -456,7 +473,7 @@ class QardController extends Controller
                     }                    
                }
         }
-        /**
+     /**
      * Uploads the document
      * @return uploaded file name
      */ 
