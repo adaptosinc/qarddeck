@@ -9,6 +9,7 @@ use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use yii\db\Query;
 use yii\db\Command;
 /**
@@ -29,16 +30,16 @@ class QardController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['login', 'logout', 'signup'],
+                'only' => ['publish'],
                 'rules' => [
-                    [
+/*                  [
                         'allow' => true,
                         'actions' => ['login', 'signup'],
                         'roles' => ['?'],
-                    ],
+                    ], */
                     [
                         'allow' => true,
-                        'actions' => ['logout'],
+                        'actions' => ['publish'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -88,6 +89,7 @@ class QardController extends Controller
 		$Query = new Query;
 		$Query->select(['*'])
 		->from('qard')
+		->where(['status'=>1])
 		->limit($limit)
 		->offset($offset)
 		->orderBy(['last_updated_at' => SORT_DESC]);
@@ -153,7 +155,7 @@ class QardController extends Controller
 			}
             return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
-	    $tags=\app\models\Tag::find()->all();
+			$tags=\app\models\Tag::find()->all();
             if(!$this->isMobile()){ 
                 return $this->render('create', [
                     'model' => $theme->attributes,
@@ -169,7 +171,25 @@ class QardController extends Controller
         }
 	
     }
-
+    /**
+     * Updates an existing Qard model to the status published.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+	public function actionPublish($id=null){
+		if(!$id)
+			$id = Yii::$app->session['qard'];
+		$model = $this->findModel($id);
+		$model->status = 1;
+		$model->user_id = \Yii::$app->user->id;
+		if($model->save(false)){
+			//generate the qard image here
+			unset(\Yii::$app->session['qard']);
+			return $this->redirect(['view','id' => $model->qard_id]); //change this to consume window
+		}
+			
+	} 
     /**
      * Updates an existing Qard model.
      * If update is successful, the browser will be redirected to the 'view' page.
