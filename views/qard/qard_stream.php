@@ -107,6 +107,18 @@ $(document).ready(function() {
 			page = page+1;
 		}
 	});
+	$('.social-list li a').on('click',function(){
+		console.log($(this).attr('act-type'));
+			$.ajax({
+				url: '<?=Url::to(['qard/activity'], true);?>',
+				dataType: 'html',
+				type : 'GET',
+				data: {'id':$(this).attr('act-id'),'type':$(this).attr('act-type')},
+				success: function(response) {
+					console.log(response);
+				}
+			});
+	});
 });
 
 </script>

@@ -185,10 +185,10 @@ class Qard extends \yii\db\ActiveRecord
 				</ul>
 				<h4>Author Full name</h4>
 				<ul class="social-list">
-					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/heart.png" alt=""><br />500</a></li>
-					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/comment-dark.png" alt=""><br />500</a></li>
-					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/certify.png" alt=""><br />500</a></li>
-					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/share.png" alt=""><br />500</a></li>
+					<li><a act-id="'.$this->qard_id.'" act-type="like"><img src="'.\Yii::$app->homeUrl.'images/heart.png" alt=""><br />500</a></li>
+					<li><a act-id="'.$this->qard_id.'" act-type="comment"><img src="'.\Yii::$app->homeUrl.'images/comment-dark.png" alt=""><br />500</a></li>
+					<li><a act-id="'.$this->qard_id.'" act-type="bookmark"><img src="'.\Yii::$app->homeUrl.'images/certify.png" alt=""><br />500</a></li>
+					<li><a act-id="'.$this->qard_id.'" act-type="share"><img src="'.\Yii::$app->homeUrl.'images/share.png" alt=""><br />500</a></li>
 				</ul>
 			</div>
 			</div>';	
