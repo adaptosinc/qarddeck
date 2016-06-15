@@ -17,6 +17,10 @@ AppAsset::register($this);
 <head>
 <meta charset="<?= Yii::$app->charset ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:type" content="website" />    
+<meta property="og:image" itemprop="image primaryImageOfPage" content="http://wordpressmonks.com/works/qarddeck/web/images/logo.png" />
+<meta name="description" property="og:description" itemprop="description" content="Share what you love,think and know. Easily." />
+
 <?= Html::csrfMetaTags() ?>
 <title><?= Html::encode($this->title) ?></title>
 <?php $this->head() ?>
