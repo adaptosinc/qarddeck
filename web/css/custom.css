@@ -65,7 +65,7 @@ and open the template in the editor.
     word-wrap: break-word;
     padding: 0 !important;
     margin:  0 !important;
-    
+    cursor: row-resize;
     border:.1px solid #000;
 /*    display: inline-block;
     position: absolute;*/
@@ -75,6 +75,13 @@ and open the template in the editor.
     
 /*    overflow: auto;
     resize: both;*/
+}
+
+.dragbar{
+   background-color:black;
+   height:10px;
+   width: 100%;
+   cursor: row-resize;
 }
 
 .for_bgoverlay{

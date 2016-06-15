@@ -11,6 +11,7 @@
             <file>file:/var/www/html/qarddeck/controllers/QardController.php</file>
             <file>file:/var/www/html/qarddeck/views/qard/create.php</file>
             <file>file:/var/www/html/qarddeck/web/css/custom.css</file>
+            <file>file:/var/www/html/qarddeck/views/qard/test.php</file>
             <file>file:/var/www/html/qarddeck/web/css/master.css</file>
             <file>file:/var/www/html/qarddeck/controllers/ThemeController.php</file>
         </group>

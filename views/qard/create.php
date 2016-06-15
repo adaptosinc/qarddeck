@@ -35,6 +35,10 @@ $this->title = 'Create Qard';
 
     <!-- requiered for get selected fiels in text editing -->
     <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.selection.js" type="text/javascript"></script>
+    
+    <!--for resize block-->
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <!-- requiered for drop down of an image -->
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
@@ -419,17 +423,34 @@ $this->title = 'Create Qard';
                     });
                 }
             });
+//	    $("#working_div .current_blk").resizable({
+//	    containment: "#add-block",
+//	    handles: 's, n'
+//	    });
             $(document).delegate("#add-block .parent_current_blk", "mouseenter mouseleave", function(event) {
                 if (event.type === "mouseleave") {
                     $(this).find(".drag").remove();
+
                 } else {
+		    
                     if ($(this).find("div").hasClass("drag") === false) {
                         $(this).find(".bgoverlay-block").after('<div class="drag"><i class="fa fa-arrows"></i></div>');
                     }
                 }
             });
-
-
+	   
+	    var dragging = false;
+    $(document).delegate('#working_div .current_blk','mousedown',function(event){
+	    dragging = true;});
+    $(document).mouseup(function(event){
+	if (dragging) {
+	    var percentage = Math.ceil((event.pageY-148)/37.5);
+	    console.log("percentage"+percentage);
+	    setHeightBlock(percentage);
+	    $(document).unbind('mousemove');
+	    dragging = false;
+	}
+    });
 
             function getNSetOrderOfBlocks() {
                 var data = {};
@@ -568,10 +589,19 @@ $this->title = 'Create Qard';
             ////	       $("#working_div .current_blk").focus();
             //	   }
             //	});
+	    
+//	    $(document).delegate("#working_div .current_blk", "click", function(event) {
+//		var cursorPos = $(this).caret('pos');
+//		console.log(cursorPos);
+//		$(this).focus();
+//		$(this).caret('pos', cursorPos);
+//	    });
 
             //increase height of the div
-            $(document).delegate("#working_div .current_blk", "keydown", function(event) {
+            $(document).delegate("#working_div .current_blk", "click", function(event) {
+		
                 setHeightBlock('', event);
+		
                 //	    checkHeight(event);
                 //	    $(this).focus();
                 //	    $(this).caret('pos',cursorPos);
@@ -661,9 +691,9 @@ $this->title = 'Create Qard';
                 var attr = $(this).attr('data-height');
 
                 if (typeof attr !== typeof undefined && attr !== false) {
-                    console.log(attr);
+//                    console.log(attr);
                     total_height1 += parseInt(attr) * 37.5;
-                    console.log(total_height1);
+//                    console.log(total_height1);
                 }
             });
             return total_height1;
@@ -676,6 +706,8 @@ $this->title = 'Create Qard';
             var offsetHeight = parseInt($("#working_div .current_blk")[0].offsetHeight);
             var scrollHeight = parseInt($("#working_div .current_blk")[0].scrollHeight);
             var maxHeight = Math.ceil((scrollHeight - offsetHeight) / 37.5);
+	    
+	    	console.log("offsetHeight="+offsetHeight+"scrollHeight="+scrollHeight);
             if (height) {
                 //	    if(Math.ceil(offsetHeight/37.5)>height){
                 //		return false;
@@ -685,7 +717,7 @@ $this->title = 'Create Qard';
                 //	    console.log("total after="+total_height);
 
             } else {
-                //	    console.log("maxHieght"+maxHeight);
+                	    console.log("maxHieght"+maxHeight);
                 total_height = (maxHeight * 37.5) + total_height;
                 //	    console.log("total after="+total_height);
                 height = (parseInt($("#working_div .current_blk").attr("data-height")) + maxHeight);
@@ -693,6 +725,7 @@ $this->title = 'Create Qard';
 
             }
             $(".add-block .add-another").show();
+//	    return false;
             if (total_height <= 600) {
 
                 //	    console.log("viay"+height);
