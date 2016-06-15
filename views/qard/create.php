@@ -886,14 +886,14 @@ $this->title = 'Create Qard';
                     } else {
                         $("#" + data.blk_id).find(".current_blk").attr("data-block_id", data.block_id);
                         $("#" + data.blk_id).find(".current_blk").attr("data-theme_id", data.theme_id);
- 						var user = '<?php echo \Yii::$app->user->id; ?>';
+/*  						var user = '<?php echo \Yii::$app->user->id; ?>';
 						if(!user || user == ''){
 							$('.pull-right button[data-target="#myModal"]').trigger('click');	
-						}else{
+						}else{ */
 							var url = '<?=Url::to(['qard/publish'], true);?>';
 							//redirect to publish and view qard
 							window.location.replace(url);
-						}
+						/* } */
 						$("#wait").hide();
                     }
                     //removing uneccessary created working block

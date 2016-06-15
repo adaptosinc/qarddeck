@@ -1,8 +1,14 @@
-
 <?php
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use app\assets\AppAsset;
+if(isset($_GET['login']) && $_GET['login']=='true' && \Yii::$app->user->isGuest ){
+?>
+<script>
+	$('.pull-right button[data-target="#myModal"]').trigger('click');	
+</script>
+<?php
+}
 ?>
 <section class="home-main content">
     
