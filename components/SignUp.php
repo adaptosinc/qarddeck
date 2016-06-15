@@ -59,6 +59,10 @@ class SignUp extends Widget
 						->send();
 					\Yii::$app->getSession()->setFlash('success', "Please dont forget to verify your email. Have a great day");
 					\Yii::$app->user->login($model, '3600*24*30');
+					if(isset(Yii::$app->session['qard']) && Yii::$app->session['qard'] != '' ){
+						\Yii::$app->controller->redirect(['qard/publish']);
+					}
+					else
 					\Yii::$app->controller->redirect(['site/index']);
 				}				
 				

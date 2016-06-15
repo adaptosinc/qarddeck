@@ -62,60 +62,61 @@ class BlockController extends Controller
     }
 
     /**
-     * Creates a new Block model.
+     * Creates a new Block model along with a qard and a block theme.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
         
-	$post=Yii::$app->request->post();
-		
-	//to create theme for qard
-	$theme=$this->createTheme($post);
- 
-	if(empty($theme->errors) && !is_array($theme)){
+		$post=Yii::$app->request->post();
+			
+		//to create theme for qard
+		$theme=$this->createTheme($post);
+	 
+		if(empty($theme->errors) && !is_array($theme)){ 
 	    
 	    $qard = $this->createQard($post, $theme->theme_id);
 	   
 	    
 	    if(empty($qard->errors) && !is_array($qard)){
-		$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
-		$tags=$this->createTagsQard($post,$qard->qard_id);
-		
-		if(empty($block->errors) && !is_array($block)){
-		    $text=(empty($block->text))?'':$block->text;
-		    echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id'],'block_priority'=>$block->block_priority));
-		    exit;
-		    
-		}  else {
-		    echo "unable to create block";
-		    //print_r($block->errors);
-		}
+			//echo $qard->qard_id;die;
+			$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
+			$tags=$this->createTagsQard($post,$qard->qard_id);
+			
+			if(empty($block->errors) && !is_array($block)){
+				$text=(empty($block->text))?'':$block->text;
+				echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id'],'block_priority'=>$block->block_priority));
+				exit;
+				
+			}  else {
+				echo "unable to create block";
+				//print_r($block->errors);
+			}
 		
 	    }else{
-		echo "unable to create qard";
+			echo "unable to create qard";
 		
-		print_r($qard);
-		echo Theme::findOne($theme->theme_id)->delete();
+			print_r($qard);
+			echo Theme::findOne($theme->theme_id)->delete();
 	    }
 	    
-	}else{
-	    echo "unable to create theme";
-	    print_r($theme);
-	}
-	
-//	$model->=\Yii::$app->request->post('tags');
+		}else{
+			echo "unable to create theme";
+			print_r($theme);
+		}
+		
+	//	$model->=\Yii::$app->request->post('tags');
 
-	exit(0);
-	
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->block_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+		exit(0);
+		
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			return $this->redirect(['view', 'id' => $model->block_id]);
+		} else {
+			return $this->render('create', [
+				'model' => $model,
+			]);
+		}
     }
     public function actionTest($qard_id){
 //	
@@ -214,27 +215,31 @@ class BlockController extends Controller
      * to create Qard if created then update the qard
      */
     public function createQard($post,$theme_id){
+		
+		$qard = false;
+		if(!empty($post['qard_id'])){
+			$qard = Qard::findOne($post['qard_id']);
+		}else {
+			$qard=new Qard();
+		}
+		
+	//	print_r($qard);die;
+		if(!empty($post['qard_title'])){
+			$qard->title=$post['qard_title'];
+		}
+		
+		//$qard->url='test url';
+		if(\Yii::$app->user->id){
+			$qard->user_id = Yii::$app->user->id;
+		}
+		$qard->qard_privacy=1;
+		$qard->qard_theme=$theme_id;
+		$qard->save(false);
+		
+		//if(!\Yii::$app->user->id)
+			\Yii::$app->session['qard']= $qard->qard_id; //always save the current qard id to session
+		return $qard;	
 	
-	
-	$qard = false;
-	if(!empty($post['qard_id'])){
-	    $qard = Qard::findOne($post['qard_id']);
-	}else {
-	    $qard=new Qard();
-	}
-	
-//	print_r($qard);die;
-	if(!empty($post['qard_title'])){
-	    $qard->title=$post['qard_title'];
-	}
-	
-	//$qard->url='test url';
-	if(\Yii::$app->user->id){
-	    $qard->user_id=Yii::$app->user->id;}
-	$qard->qard_privacy=1;
-	$qard->qard_theme=$theme_id;
-	$qard->save(false);
-	return $qard;	
     }
     
     /*

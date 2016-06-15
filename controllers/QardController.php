@@ -9,8 +9,10 @@ use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use yii\db\Query;
 use yii\db\Command;
+use yii\db\Connection;
 /**
  * QardController implements the CRUD actions for Qard model.
  */
@@ -27,23 +29,24 @@ class QardController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['publish','activity'],
+                'rules' => [
+/*                  [
+                        'allow' => true,
+                        'actions' => ['login', 'signup'],
+                        'roles' => ['?'],
+                    ], */
+                    [
+                        'allow' => true,
+                        'actions' => ['publish','activity'],
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
         ];
     }
-
-    /**
-     * Lists all Qard models.
-     * @return mixed
-     */
-/*     public function actionIndex(){
-        
-        $searchModel = new SearchQard();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    } */
 	
     /**
      * Lists all Qard models.
@@ -66,16 +69,21 @@ class QardController extends Controller
 		}
 
 	 }
-
+	 
+    /**
+     * Generate the qards feed html for a request.
+     * @param integer $offset and $limit
+     * @return html
+     */
     public function getQardsfeed($offset,$limit){
 		$feed = '';
 		$Query = new Query;
 		$Query->select(['*'])
-		->from('qard')
-		->limit($limit)
-		->offset($offset)
-		->orderBy(['last_updated_at' => SORT_DESC]);
-		
+			->from('qard')
+			->where(['status'=>1])
+			->limit($limit)
+			->offset($offset)
+			->orderBy(['last_updated_at' => SORT_DESC]);	
 		$command = $Query->createCommand();
 		$qards = $command->queryAll();
 		//get html feed
@@ -126,17 +134,18 @@ class QardController extends Controller
 		}
         if ($model->load(Yii::$app->request->post())) {
 			
+			$model->save(false);
 			if(!\Yii::$app->user->id){
 				//save false here with out user id and status as draft
-				$model->save(false);
+				//$model->save(false);
 				//aftersave take the qard-id as a param and send to login page
-				$q_id = $model->qard_id;
+				\Yii::$app->session['qard']= $model->qard_id;
 				return $this->redirect(['user/login','qard_id'=>$q_id]);
 				//at login/sign-up,check if qard-id is there,if yes assign the user to the same qard once logged in
 			}
-           // return $this->redirect(['view', 'id' => $model->qard_id]);
+            return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
-	    $tags=\app\models\Tag::find()->all();
+			$tags=\app\models\Tag::find()->all();
             if(!$this->isMobile()){ 
                 return $this->render('create', [
                     'model' => $theme->attributes,
@@ -152,7 +161,28 @@ class QardController extends Controller
         }
 	
     }
+    /**
+     * Updates an existing Qard model to the status published.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+	public function actionPublish(){
+		//if(!$id)
+			
+		$id = Yii::$app->session['qard'];
+		$model = Qard::findOne($id);
 
+		if ($model== null)
+			return $this->redirect(['site/index']);
+		$model->status = 1;
+		$model->user_id = \Yii::$app->user->id;
+		if($model->save(false)){
+			//generate the qard image here
+			unset(\Yii::$app->session['qard']);
+			return $this->redirect(['view','id' => $model->qard_id]); //change this to consume window
+		}
+			
+	} 
     /**
      * Updates an existing Qard model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -184,6 +214,33 @@ class QardController extends Controller
 
         return $this->redirect(['index']);
     }
+	/**
+	 * To record the user activity for a qard
+	 * @return mixed
+	 */
+	public function actionActivity($id,$type){
+		$query = new Query;
+		//see if the row already exists or not
+		$query->select(['*'])
+			->from('qard_user_activity')
+			->where(['activity_type' => $type,
+					'qard_id' => $id,
+					'user_id'=> \Yii::$app->user->id]);
+		$command = $query->createCommand();
+		$activities = $command->queryAll();
+		if(empty($activities)){
+			//$connection = new Connection;
+			$command = \Yii::$app->db->createCommand()->insert('qard_user_activity', [
+				'activity_type' => $type,
+				'qard_id' => $id,
+				'user_id'=> \Yii::$app->user->id,
+			]);
+			if($command->execute())
+				return $type."ed";			
+		}
+		else return "already".$type."ed";	
+
+	}
 	/**
 	 * Fetch the h2 and image from a url 
 	 * For url preview
@@ -285,24 +342,6 @@ class QardController extends Controller
 				$image = $domain.$image;
 			//echo $domain;echo $result;
 			/******************************/
-			//;die;
-			/**
-			echo '
-			<div class="review-qard row">
-				<div class="img-preview col-sm-3 col-md-3">
-					<img src="'.$image.'" alt="">
-				</div>
-				<div class="col-sm-9 col-md-9">
-					<div class="url-content">
-						<h4>'.$title.'</h4>
-						<div class="url-text">
-							<p>'.$content.'</p>
-						</div>
-					</div>                                            
-				</div>
-			</div> 
-			';
-			**/
 			echo '
 			<div id="review-qard-id" class="review-qard row" id="">
 				<div class="img-preview col-sm-3 col-md-3">';
@@ -324,17 +363,19 @@ class QardController extends Controller
 			';
 			/**/
 			echo '<div> <h3>Consume Preview</h3>';
-			//echo "<div><h1>".$title."</h1>";
-			//echo "<img src='".$image."' />";
-			//echo "<p>".$content."</p>";
+
 			if($this->isFrameAllowed($url))
 				echo '<iframe sandbox="allow-scripts allow-forms" src="'.$url.'" style="border:none"  width="100%" height="500px" ></iframe></div>';
 			else echo '<div style="color: red;">Framing is not allowed for this site. Please enable "Open Link in New Tab"</div>';
 			//full content
 			echo '</div>';
-
-			//print_R($img_array);
 	}
+	
+	/**
+	 * Deprecated method
+	 * Used to generate the web page content as a whole
+	 * Written as a work-around for x-frame-options:deny or sameorigin
+	 */
 	public function actionRenderFrame($url){
 		$parse = parse_url($url);
 		$domain = $parse['scheme'] . '://' . $parse['host'] . '/';
@@ -346,20 +387,13 @@ class QardController extends Controller
 
 		echo $content;
 	}
+	
+	/**
+	 * Method to check whether framing is allowed for a url
+	 * @return boolean
+	 */	
 	public function isFrameAllowed($url){
 		$h = get_headers($url,1);
-/* 		print_r($h);
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_FILETIME, true);
-        curl_setopt($curl, CURLOPT_NOBODY, true);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HEADER, true);	
-		curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,false);
-		$headers = curl_exec($curl);	
-		$info = curl_getinfo($curl);
-		print_r($headers);
-		print_r($info); */
 		if(isset($h['X-Frame-Options'])){
 			if($h['X-Frame-Options'] == "sameorigin" || $h['X-Frame-Options'] =="SAMEORIGIN" ||  $h['X-Frame-Options'] == "DENY" || $h['X-Frame-Options'] == "deny")
 				return false;
@@ -456,7 +490,7 @@ class QardController extends Controller
                     }                    
                }
         }
-        /**
+     /**
      * Uploads the document
      * @return uploaded file name
      */ 

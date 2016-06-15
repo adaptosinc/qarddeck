@@ -919,6 +919,15 @@ $this->title = 'Create Qard';
                     } else {
                         $("#" + data.blk_id).find(".current_blk").attr("data-block_id", data.block_id);
                         $("#" + data.blk_id).find(".current_blk").attr("data-theme_id", data.theme_id);
+/*  						var user = '<?php echo \Yii::$app->user->id; ?>';
+						if(!user || user == ''){
+							$('.pull-right button[data-target="#myModal"]').trigger('click');	
+						}else{ */
+							var url = '<?=Url::to(['qard/publish'], true);?>';
+							//redirect to publish and view qard
+							window.location.replace(url);
+						/* } */
+						$("#wait").hide();
                     }
                     //removing uneccessary created working block
                     $("#add-block div").each(function() {
@@ -1345,7 +1354,10 @@ $this->title = 'Create Qard';
         });
 
         $('#qard_preview').on('click', function() {
-            var dataUrl = renderer.domElement.toDataURL("image/png");
+	//		$('div[id=myModal]').tab('show');
+
+
+/*             var dataUrl = renderer.domElement.toDataURL("image/png");
             console.log(dataUrl);
             html2canvas([document.getElementById('add-block')], {
                 onrendered: function(canvas) {
@@ -1365,7 +1377,7 @@ $this->title = 'Create Qard';
                     });
 
                 }
-            });
+            }); */
         });
 
         ////////////////////////////////////
