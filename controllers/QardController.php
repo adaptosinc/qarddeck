@@ -238,7 +238,28 @@ class QardController extends Controller
 			if($command->execute())
 				return $type."ed";			
 		}
-		else return "already".$type."ed";	
+		else{
+		
+			if($type != 'share'){
+				//do an unlike,do an unfollow or an un-bookmark
+				$command = \Yii::$app->db->createCommand()->delete('qard_user_activity',[				
+				'activity_type' => $type,
+				'qard_id' => $id,
+				'user_id'=> \Yii::$app->user->id]);
+					if($command->execute())
+							return 'Un'.$type."ed";	
+			}
+			else{
+			$command = \Yii::$app->db->createCommand()->insert('qard_user_activity', [
+				'activity_type' => $type,
+				'qard_id' => $id,
+				'user_id'=> \Yii::$app->user->id,
+			]);
+			if($command->execute())
+				return $type."ed Again";				
+			}
+
+		}
 
 	}
 	/**
