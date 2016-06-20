@@ -935,7 +935,7 @@ $this->title = 'Create Qard';
 			return false;
 		}
 
-		$("#add-block .parent_current_blk").each(function(index) {
+		$("#add-block .parent_current_blk").each(function(obj,index) {
 
 			// getting opacity for image-block div
 			var image_opacity = parseFloat($(this).css("opacity") || 0);
@@ -950,7 +950,8 @@ $this->title = 'Create Qard';
 				value: div_opacity
 			});
 			//OVERLAY color for overlay block
-			var div_bgcolor = $(this).find(".bgimg-block").css("background-color");
+			var div_bgcolor = $(this).css("background-color");
+			//console.log(div_bgcolor);return;
 			data.push({
 				name: 'div_bgcolor',
 				value: div_bgcolor
