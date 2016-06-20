@@ -249,14 +249,14 @@ class QardController extends Controller
 					if($command->execute())
 							return 'Un'.$type."ed";	
 			}
-			else{
-			$command = \Yii::$app->db->createCommand()->insert('qard_user_activity', [
-				'activity_type' => $type,
-				'qard_id' => $id,
-				'user_id'=> \Yii::$app->user->id,
-			]);
-			if($command->execute())
-				return $type."ed Again";				
+			else if($type == 'share'){
+				$command = \Yii::$app->db->createCommand()->insert('qard_user_activity', [
+					'activity_type' => $type,
+					'qard_id' => $id,
+					'user_id'=> \Yii::$app->user->id,
+				]);
+				if($command->execute())
+					return $type."ed Again";				
 			}
 
 		}

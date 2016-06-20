@@ -31,7 +31,10 @@ and open the template in the editor.
     border: 1px solid;
     height: 400px;
     min-height: 400px;
-    background-color: #dbd3d3;
+    background-color: #dbd3d3; 
+}
+.bgimg-block {
+	border-bottom: 1px solid #ccc;
 }
 #working_div img{
     width: 100%;
@@ -65,7 +68,7 @@ and open the template in the editor.
     word-wrap: break-word;
     padding: 0 !important;
     margin:  0 !important;
-    cursor: row-resize;
+    
     border:.1px solid #000;
 /*    display: inline-block;
     position: absolute;*/
@@ -86,7 +89,7 @@ and open the template in the editor.
 
 .for_bgoverlay{
     height:auto;
-    width:385px;;
+    width:385px;
     display:block;
     top: 0px;
     position: absolute;
@@ -94,7 +97,7 @@ and open the template in the editor.
 }
 .bgimg-block
 {
-    background: #eaeaea;
+   /* background: #eaeaea; */
      position:relative;
 }
 .current_blk{
