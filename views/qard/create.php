@@ -805,18 +805,27 @@ $this->title = 'Create Qard';
             });
 
 
-            var div_bgcolor = $("#working_div .bgoverlay-block").css("background-color");
+/*             var div_bgcolor = $("#working_div .bgoverlay-block").css("background-color");
             data.push({
                 name: 'div_bgcolor',
                 value: div_bgcolor
             });
-
+ */
+			var div_bgcolor = $("#working_div .bgimg-block").css("background-color");
+            data.push({
+                name: 'div_bgcolor',
+                value: div_bgcolor
+            });
             var div_bgimage = $("#working_div .bgimg-block").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
             data.push({
                 name: 'div_bgimage',
                 value: div_bgimage
             });
-
+/*             var div_bg_color = $("#working_div .bgimg-block").css("background-color");
+            data.push({
+                name: 'div_bg_color',
+                value: div_bg_color
+            }); */
 
             var height = parseInt($("#working_div .current_blk").attr("data-height")) * 37.5;
             data.push({
