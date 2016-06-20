@@ -950,7 +950,7 @@ $this->title = 'Create Qard';
 				value: div_opacity
 			});
 			//OVERLAY color for overlay block
-			var div_bgcolor = $(this).find(".bgoverlay-block").css("background-color");
+			var div_bgcolor = $(this).find(".bgimg-block").css("background-color");
 			data.push({
 				name: 'div_bgcolor',
 				value: div_bgcolor
