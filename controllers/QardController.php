@@ -148,8 +148,9 @@ class QardController extends Controller
 			$tags=\app\models\Tag::find()->all();
             if(!$this->isMobile()){ 
                 return $this->render('create', [
-                    'model' => $theme->attributes,
-		    'tags'=>$tags
+                    'model' => $model,
+					'theme' => $theme,
+					'tags'=>$tags
                 ]);
             }else{
                 $this->layout = 'mobilelayout';

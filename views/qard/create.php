@@ -51,10 +51,16 @@ $this->title = 'Create Qard';
                 <div id="add-block" class="qard-div add-block" style="overflow:hidden">
                     <?php
 		if(isset($model['qard_id'])){
-		    echo '<input type="hidden" name="qard_id" value="'.$model['qard_id'].'">';
+		    echo 'Qard<input type="hidden" name="qard_id" value="'.$model['qard_id'].'">';
 		}
 		?>
-                        <input type="hidden" name="theme_id" value="<?=$model['theme_id']?>">
+        <input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
+		
+		<?php 
+		//get theme properties
+		$theme_properties = unserialize($theme['theme_properties']);
+		//print_r($theme_properties);
+		?>
                         <!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
 		    <div class="bgoverlay-block" style="height:75px;">
 			<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
@@ -130,11 +136,8 @@ $this->title = 'Create Qard';
     <span class="caret"></span>
   </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                    <li class="color" data-color="#73b1a2" onClick="setForeColor(this);"></li>
-                                                    <li class="color" data-color="#c55" onClick="setForeColor(this);" </li>
-                                                        <li class="color" data-color="#f5fcb2" onClick="setForeColor(this);"></li>
-                                                        <li class="color" data-color="#4778E3" onClick="setForeColor(this);"></li>
-                                                        <li class="color" data-color="#73b1a2" onClick="setForeColor(this);"></li>
+                                                    <li class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></li>
+                                                    <li class="color" style="background:<?php echo $theme_properties['light_text_color'];?>" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);" </li>
                                                 </ul>
                                             </div>
                                             </li>
@@ -311,6 +314,14 @@ $this->title = 'Create Qard';
                                 <div class="form-group col-sm-6 col-md-6">
                                     <h4>Block Background Color</h4>
                                     <input type="text" name="blk_color" id="bg_color" class="form-control" placeholder="Background color (#0000)">
+									<ul>
+                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_1'] ?>" data-color="<?php echo $theme_properties['theme_color_1'] ?>" onclick="setBGColor(this);"></li>
+                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_2'] ?>" data-color="<?php echo $theme_properties['theme_color_2'] ?>" onclick="setBGColor(this);"></li>
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_3'] ?>" data-color="<?php echo $theme_properties['theme_color_3'] ?>" onclick="setBGColor(this);"></li>
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_4'] ?>" data-color="<?php echo $theme_properties['theme_color_4'] ?>" onclick="setBGColor(this);"></li>
+										
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_5'] ?>" data-color="<?php echo $theme_properties['theme_color_5'] ?>" onclick="setBGColor(this);"></li>							
+									</ul>
                                 </div>
 
                             </fieldset>
@@ -382,6 +393,11 @@ $this->title = 'Create Qard';
                 s.style.display = "none";
             }
         }
+		function setBGColor(elem){
+			color = $(elem).attr('data-color');
+			$('#bg_color').val(color);
+			$("#working_div .bgimg-block").css('background-color', color);
+		}
     </script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
 
