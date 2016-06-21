@@ -865,7 +865,16 @@ $this->title = 'Create Qard';
                 name: 'div_opacity',
                 value: div_opacity
             });
-
+			//overlay color
+			var div_overlaycolor = $("#working_div .bgoverlay-block").css("background-color");
+			if(typeof div_overlaycolor === 'undefined') {
+				div_overlaycolor = 'transparent';
+			}
+			console.log(div_overlaycolor);
+			data.push({
+				name: 'div_overlaycolor',
+				value: div_overlaycolor
+			});	
 
 /*             var div_bgcolor = $("#working_div .bgoverlay-block").css("background-color");
             data.push({
@@ -874,6 +883,7 @@ $this->title = 'Create Qard';
             });
  */
 			var div_bgcolor = $("#working_div .bgimg-block").css("background-color");
+			console.log(div_bgcolor);
             data.push({
                 name: 'div_bgcolor',
                 value: div_bgcolor
@@ -995,7 +1005,18 @@ $this->title = 'Create Qard';
 				name: 'div_opacity',
 				value: div_opacity
 			});
-			//OVERLAY color for overlay block
+
+			//overlay color
+			var div_overlaycolor = $(this).find(".bgoverlay-block").css("background-color");
+			if(typeof div_overlaycolor === 'undefined') {
+				div_overlaycolor = 'transparent';
+			}
+			console.log('overlay'+div_overlaycolor);return;
+			data.push({
+				name: 'div_overlaycolor',
+				value: div_overlaycolor
+			});			
+			//Background color for background block
 			var div_bgcolor = $(this).css("background-color");
 			//console.log(div_bgcolor);return;
 			data.push({
@@ -1153,9 +1174,9 @@ $this->title = 'Create Qard';
 						img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
 					}
 					//creating parent block or img-block
-					var new_div = '<div id="' + data.blk_id + '" class="bgimg-block parent_current_blk" style="height:' + data.height + 'px;' + img + '">';
+					var new_div = '<div id="' + data.blk_id + '" class="bgimg-block parent_current_blk" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
 					//creating overlay-block or middel block
-					new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_bgcolor + ';opacity:' + data.div_opacity + ';height:' + data.height + 'px;">';
+					new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' + data.div_opacity + ';height:' + data.height + 'px;">';
 					//creating main block or text block
 					new_div += '<div data-height="' + (data.height / 37.5) + '" style="height:' + data.height + 'px;" data-block_id="' + data.block_id + '" data-theme_id="' + data.theme_id + '" data-block_priority="' + data.block_priority + '" class="text-block current_blk">' + data.text + '</div></div></div>';
 

@@ -155,13 +155,15 @@ class Qard extends \yii\db\ActiveRecord
 								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 								$img_block_style .= 'background-size: cover;';
 						}
-							
+						if($theme['div_bgcolor'] != '')
+							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
 						$img_block_style .= 'min-height:'.$theme['height'].'px;';
 						$img_block_style .= 'height:auto;';
 						
 					//overlay block styles
 						$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
-						$overlay_block_style .= 'background-color:'.$theme['div_bgcolor'].';';
+						if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
+							$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
 						$overlay_block_style .= 'min-height:'.$theme['height'].'px;';
 						$overlay_block_style .='height:auto;';
 						
