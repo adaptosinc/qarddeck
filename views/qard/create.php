@@ -136,8 +136,8 @@ $this->title = 'Create Qard';
     <span class="caret"></span>
   </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                    <li class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></li>
-                                                    <li class="color" style="background:<?php echo $theme_properties['light_text_color'];?>" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);" </li>
+                                                    <a href="#" class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>;display: inline-block;height: 25px;width: 25px;" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></a>
+                                                    <a href="#" class="color" style="background:<?php echo $theme_properties['light_text_color'];?>;display: inline-block;height: 25px;width: 25px;" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);"></a>
                                                 </ul>
                                             </div>
                                             </li>
@@ -383,6 +383,9 @@ $this->title = 'Create Qard';
     <!-- /.modal -->
 
     <script type="text/javascript">
+	$("#working_div .current_blk").focus();
+	document.execCommand('styleWithCSS', false, true);
+    document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
         function showtext() {
             //code
             var s = document.getElementById('descfield');
@@ -671,9 +674,19 @@ $this->title = 'Create Qard';
 		
 		function setForeColor(inp) {
 	//		document.execCommand('styleWithCSS', false, true);
-			$("#working_div .current_blk").focusEnd();
+	$("#working_div .current_blk").focus();
+	var html = getSelected();
+	console.log(html);
+	console.log(html.focusNode.textContent);
+	html = html.focusNode.textContent;
+//console.log(t.anchorNode.childNodes.data);
+			//$("#working_div .current_blk").focusEnd();
 			document.execCommand('styleWithCSS', false, true);
 			document.execCommand('foreColor', false, $(inp).attr('data-color'));
+			//var css = "color: "+$(inp).attr('data-color')+";";
+			//var html = '<div style="'+css+'">'+html+'</div>';
+			//replaceSelectionWithHtml(html);
+			//document.execCommand('insertHTML', false, '<span style="'+css+'">'+document.getSelection()+'</span>');
 		}
 		//$('#text_color li').on('click', function(e) {
 		//   
@@ -688,6 +701,22 @@ $this->title = 'Create Qard';
 			$('.working_div').children().focus();
 			return false;
 		});
+		function getSelected() {
+            if (window.getSelection) {
+                return window.getSelection();
+            }
+            else if (document.getSelection) {
+                return document.getSelection();
+            }
+            else {
+                var selection = document.selection && document.selection.createRange();
+                if (selection.text) {
+                    return selection.text;
+                }
+                return false;
+            }
+            return false;
+        };
 		$.fn.focusEnd = function() {
 			$(this).focus();
 			var tmp = $('<span />').appendTo($(this)),
@@ -709,6 +738,23 @@ $this->title = 'Create Qard';
 			tmp.remove();
 			return this;
 		}		
+		function replaceSelectionWithHtml(html) {
+			var range, html;
+			if (window.getSelection && window.getSelection().getRangeAt) {
+				range = window.getSelection().getRangeAt(0);
+				range.deleteContents();
+				var div = document.createElement("div");
+				div.innerHTML = html;
+				var frag = document.createDocumentFragment(), child;
+				while ( (child = div.firstChild) ) {
+					frag.appendChild(child);
+				}
+				range.insertNode(frag);
+			} else if (document.selection && document.selection.createRange) {
+				range = document.selection.createRange();
+				range.pasteHTML(html);
+			}
+		}
 		/********************/
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
