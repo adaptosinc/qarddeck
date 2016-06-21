@@ -1011,7 +1011,7 @@ $this->title = 'Create Qard';
 			if(typeof div_overlaycolor === 'undefined') {
 				div_overlaycolor = 'transparent';
 			}
-			console.log('overlay'+div_overlaycolor);return;
+			//console.log('overlay'+div_overlaycolor);return;
 			data.push({
 				name: 'div_overlaycolor',
 				value: div_overlaycolor
