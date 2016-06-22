@@ -922,11 +922,15 @@ $this->title = 'Create Qard';
                 name: 'block_id',
                 value: block_id
             });
-
+			var qard_theme_id = $('input[name=theme_id]').val();
+            data.push({
+                name: 'qard_theme_id',
+                value: qard_theme_id 
+            });
             var theme_id = $("#working_div .current_blk").attr("data-theme_id") || 0;
             data.push({
                 name: 'theme_id',
-                value: theme_id
+                value: theme_id 
             });
 
             var qard_id = $("#qard_id").val() || 0;
@@ -990,7 +994,11 @@ $this->title = 'Create Qard';
 			alert("please enter qard title");
 			return false;
 		}
-
+		var qard_theme_id = $('input[name=theme_id]').val();
+		data.push({
+			name: 'qard_theme_id',
+			value: qard_theme_id 
+		});
 		$("#add-block .parent_current_blk").each(function(obj,index) {
 
 			// getting opacity for image-block div
@@ -1336,6 +1344,73 @@ $this->title = 'Create Qard';
 
         });
 		/* end of link block functions */
+		/** File upload functions **/
+        //ADDED BY NANDHINI
+        $('.drop-file').on('click', function(e) {
+            $('#qard-url-upload-click').trigger('click');
+
+            return false;
+            //  $('#qard-url-upload').click();             
+        });
+
+        $('input[id=qard-url-upload-click]').change(function(e) {
+            // $('#profile-image-upload').click();
+            var file_data = $('#qard-url-upload-click').prop('files')[0];
+            var form_data = new FormData();
+            form_data.append('file', file_data);
+            var myfile = $(this).val();
+            var ext = myfile.split('.').pop();
+            if (ext == "pdf" || ext == "docx" || ext == "doc") {
+                $("#extErr").hide();
+                if (ext == "pdf") {
+                    $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');
+                }
+                if (ext == "docx" || ext == "doc") {
+                    $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
+
+                }
+                $.ajax({
+                    url: "<?=Url::to(['qard/simple'], true)?>",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data,
+                    type: 'post',
+                    success: function(response) {
+                        $("#dispIcon").show();
+                        $(".drop-file").hide();
+                        $(".drop-image").show();
+                        $("#showFile").show();
+                        $(".fileName").val(response.code);
+                        $(".fileSwitch").hide();
+                        // console.log(response);
+                        //count++;
+                    }
+                });
+            } else {
+                $(".drop-file").show();
+                $("#extErr").show();
+                $("#showFile").hide();
+                $(".fileName").val('');
+                $(".fileSwitch").show();
+            }
+        });
+        $('#reflink').click(function(e) {
+
+            // location.reload();
+            // $(".drop-file").show();
+            //   $(".drop-image").hide();
+            //  $(".fileSwitch").show();   
+            //         $(".fileSwitch").show();
+
+            $("#dispIcon").hide();
+            $(".drop-file , .drop-image , .file_options").show();
+            $(".fileSwitch").show();
+            $("input[id=link_url]").val('');
+            $('input[id=qard-url-upload-click]').val('');
+            $("#showFile").hide();
+        });		
+		/*** End of file upload functions **/
 		/** Dragging functions **/
 		function getNSetOrderOfBlocks() {
 			var data = {};
