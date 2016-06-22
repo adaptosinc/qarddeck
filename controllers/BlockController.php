@@ -358,8 +358,8 @@ class BlockController extends Controller
 	    $file = $file_path .$image_name;
 	    $success = file_put_contents($file, $image_data);
 	    if(!$success){
-		Qard::findOne($qard->qard_id)->delete();
-		Theme::findOne($theme->theme_id)->delete();
+			Qard::findOne($qard->qard_id)->delete();
+			Theme::findOne($theme->theme_id)->delete();
 	    }
 	    $post['link_image']=$image_name;
 	    $block->link_image=$post['link_image'];

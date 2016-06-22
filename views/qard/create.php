@@ -425,7 +425,7 @@ $this->title = 'Create Qard';
 /* 	$(document).delegate("#working_div .current_blk", "hover", function(event) {	
 	
 	}); */
-	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize", function(event) {		
+	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize DOMSubtreeModified", function(event) {		
 		/*
 		 * calculate the total height of the qard
 		*/
@@ -1298,7 +1298,7 @@ $this->title = 'Create Qard';
                     //var link = '<h4 class="url-content"><a href="'+preview_url+'">'+title+'</a></h4>'
                     //$('.working_div div').html(link);
                     showUrlPreview();
-                    setHeightBlock('', '');
+                    //setHeightBlock('', '');
                 }
             });
         }
@@ -1336,7 +1336,9 @@ $this->title = 'Create Qard';
                     '</span></span></span></span>';
             }
             $("#working_div .current_blk").html(str);
-            setHeightBlock('', '');
+			$("#working_div .current_blk")[0].css("height", 'auto');
+			var scrollHeight = Math.ceil(parseInt($("#working_div .current_blk")[0].scrollHeight) / 37.5);
+			setHeightBlock($("#working_div .current_blk"),scrollHeight);
         }
 		
         $('#url_reset_link').on('click', function() {
@@ -1352,6 +1354,7 @@ $this->title = 'Create Qard';
 		/* end of link block functions */
 		/** File upload functions **/
         //ADDED BY NANDHINI
+
            $(".dispFileName").on('click', function(e) {
            if($('.dispFileName').is(':checked')){
                var fileName = $(".fileName").val();   
@@ -1369,6 +1372,8 @@ $this->title = 'Create Qard';
                 $("#working_div .current_blk").html(span);
 	}
         
+
+		$("#showFile").hide();
         $('.drop-file').on('click', function(e) {
             $('#qard-url-upload-click').trigger('click');
 

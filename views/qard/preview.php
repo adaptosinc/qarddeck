@@ -72,12 +72,76 @@ $this->title = 'Create Qard';
 		    </div>                                
 		</div>-->
 
-		<?php echo $model->getQardHtml(); ?>
+		<?php 		
+		
+		$str = '
+				<div class="qard-content" id="qard'.$model->qard_id.'" >
+				<div id="add-block'.$model->qard_id.'" class="add-block">';
+
+			if(isset($blocks) && !empty($blocks)){
+			//	print_R($blocks);die;
+			foreach($blocks as $block){
+				////get the inline styles///
+				$img_block_style = '';
+				$overlay_block_style = '';
+				$text_block_style = '';
+				$theme = $block->theme->theme_properties;
+				$theme = unserialize($theme);
+				if(isset($theme)){
+					//img block styles
+						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
+						if($block->link_image != ''){
+								
+								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
+								$img_block_style .= 'background-size: cover;';
+						}
+						if($theme['div_bgcolor'] != '')
+							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
+						$img_block_style .= 'height:'.$theme['height'].'px;';
+						//$img_block_style .= 'height:auto;';
+						
+					//overlay block styles
+						$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
+						if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
+							$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
+						$overlay_block_style .= 'height:'.$theme['height'].'px;';
+						//$overlay_block_style .='height:auto;';
+						
+						$text_block_style .= 'height:'.$theme['height'].'px;';
+						$text_block_style .='overflow:hidden;';
+						//$text_block_style .='height:auto;';
+				}
+				///////////////////////////
+				$str .= '<div class="bgimg-block" style="'.$img_block_style.'" >
+				<div class="bgoverlay-block" style="'.$overlay_block_style.'">
+				<div class="text-block" style="'.$text_block_style.'">';
+				$str .= $block->text;
+				$str .= '</div></div></div>';
+
+			}	}
+		$str .= '		</div>
+				</div>
+			<div class="qard-bottom">
+				<ul class="qard-tags">
+					<li class="pull-left">#tag#tag#tag</li>
+					<li class="pull-right">x days ago</li>
+				</ul>
+				<h4>Author Full name</h4>
+				<ul class="social-list">
+					<li><a act-id="'.$model->qard_id.'" act-type="like"><img src="'.\Yii::$app->homeUrl.'images/heart.png" alt=""><br />500</a></li>
+					<li><a act-id="'.$model->qard_id.'" act-type="comment"><img src="'.\Yii::$app->homeUrl.'images/comment-dark.png" alt=""><br />500</a></li>
+					<li><a act-id="'.$model->qard_id.'" act-type="bookmark"><img src="'.\Yii::$app->homeUrl.'images/certify.png" alt=""><br />500</a></li>
+					<li><a act-id="'.$model->qard_id.'" act-type="share"><img src="'.\Yii::$app->homeUrl.'images/share.png" alt=""><br />500</a></li>
+				</ul>
+			</div>
+			';	
+			echo $str;
+			?>
                
             </div>
 		<div class="col-sm-8 col-md-8" style="border: 1px solid #eaeaea;height:700px"> Preview goes here</div>
         </div>
-        <div class="bottom-card row">
+        <!--<div class="bottom-card row">
             <div class="col-sm-8 col-md-8">
                 <div class="col-sm-6 col-md-6">
                     <input type="text" name="qard_title" id="qard_title" class="form-control" placeholder="Qard Title">
@@ -85,7 +149,7 @@ $this->title = 'Create Qard';
                 <div class="col-sm-6 col-md-6">
                     <!--			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">-->
 
-                    <select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
+                     <!--<select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
 
 			</select>
                 </div>
@@ -100,7 +164,7 @@ $this->title = 'Create Qard';
                     <li onclick="addSaveCard(event)"><button class="btn btn-sm btn-default" name="preview">Save</button></li>
                 </ul>
             </div>
-        </div>
+        </div>-->
     </section>
     <!-- block_error popup -->
 
