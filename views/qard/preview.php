@@ -139,7 +139,7 @@ $this->title = 'Create Qard';
 			?>
                
             </div>
-		<div class="col-sm-8 col-md-8" style="border: 1px solid #eaeaea;height:700px"> Preview goes here</div>
+		<div class="col-sm-8 col-md-8" style="border: 1px solid #eaeaea;height:700px"> <iframe src="https://player.vimeo.com/video/171427463" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/171427463">LIFE AFTER LIFE - Director&rsquo;s cut</a> from <a href="https://vimeo.com/user7204826">Cyprien Cl&eacute;ment-Delmas</a> on <a href="https://vimeo.com">Vimeo</a>.</p></div>
         </div>
         <!--<div class="bottom-card row">
             <div class="col-sm-8 col-md-8">
