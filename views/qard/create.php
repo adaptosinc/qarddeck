@@ -1363,11 +1363,10 @@ $this->title = 'Create Qard';
                setLink($(this),''); 
            }
         });
-        function setLink(elem,fileName){
-                $("#working_div .current_blk").css("background-color", '#eaeaea');        
+        function setLink(elem,fileName){     
                 if(fileName!=''){
-                       var span = "<span>Add Your Description Here!<br><span style='margin-left:230px;'>"+fileName+"<img style='width:7%;height:31%;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span></span>";                      }else{
-                  var span = "<span>Add Your Description Here!<br><img style='width:7%;height:31%;margin-left:350px;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";                      }                       
+                       var span = "Add Your Description Here!<br><span style='height: 24px;width: 25px;'>"+fileName+"<img src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";                      }else{
+                  var span = "<span>Add Your Description Here!<br><img style='height: 24px;width: 25px;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";                      }                       
                 $("#working_div .current_blk").html(span);
 	}
         
