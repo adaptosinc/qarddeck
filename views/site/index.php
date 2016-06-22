@@ -16,7 +16,7 @@ if(isset($_GET['login']) && $_GET['login']=='true' && \Yii::$app->user->isGuest 
     <h5 class="text-success"><b><?= Yii::$app->session->getFlash('twitter-success');?></b></h5>
     <h5 class="text-success><b><?= Yii::$app->session->getFlash('fb-success');?></b?</h5>
     <div class="action-qard">
-	<button class="btn btn-default qard">Qards in Action</button>
+	<button class="btn btn-default qard"><a href="<?php echo \Yii::$app->homeUrl;?>qard">Qards in Action</a></button>
 	<button class="btn btn-warning" onClick="window.location = '<?php echo \Yii::$app->homeUrl?>/qard/create';">Create a Qard</button>
 	<button class="btn btn-default qard">Introductory Video</button>
     </div>

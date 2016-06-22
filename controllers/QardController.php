@@ -162,6 +162,26 @@ class QardController extends Controller
         }
 	
     }
+	
+	/**
+	 * To preview the qard while creating/editing
+	 * Idea is to reload the saved/drafed qard with the selected theme
+	 * @param integer qard_id, theme_id
+	 * @return mixed
+	 */
+	 public function actionPreviewQard($qard_id,$theme_id=null){
+		 
+		$qard = $this->findModel($qard_id);
+		$theme = $qard->qardTheme;
+		$blocks = $qard->blocks;
+		//print_r($theme);die;
+		return $this->render('preview', [
+			'model' => $qard,
+			'theme' => $theme,
+			'blocks' => $blocks,
+		]); 		
+	 }
+	 
     /**
      * Updates an existing Qard model to the status published.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -184,6 +204,7 @@ class QardController extends Controller
 		}
 			
 	} 
+
     /**
      * Updates an existing Qard model.
      * If update is successful, the browser will be redirected to the 'view' page.

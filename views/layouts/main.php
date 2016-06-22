@@ -66,7 +66,7 @@ AppAsset::register($this);
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Wall</button>
                         </li>
                         <li>
-                            <button class="btn btn-default qard" data-toggle="modal" data-target="">Qards</button>
+                            <button class="btn btn-default qard" data-toggle="modal"><a href="<?php echo \Yii::$app->homeUrl;?>qard">Qards</a></button>
                         </li>
                         <li>
                             <button class="btn btn-default qard" data-toggle="modal" data-target="">Deck</button>

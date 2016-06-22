@@ -56,6 +56,8 @@ class ThemeController extends Controller
 			'models' => $models
 		]);
 	 }
+	 
+	 
     /**
      * Displays a single Theme model.
      * @param integer $id

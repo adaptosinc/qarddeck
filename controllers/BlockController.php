@@ -76,7 +76,7 @@ class BlockController extends Controller
 	 
 		if(empty($theme->errors) && !is_array($theme)){ 
 	    
-	    $qard = $this->createQard($post, $theme->theme_id);
+	    $qard = $this->createQard($post, $post['qard_theme_id']);
 	   
 	    
 	    if(empty($qard->errors) && !is_array($qard)){
@@ -247,32 +247,32 @@ class BlockController extends Controller
      */
     public function createTheme($post){
 	
-	$theme = false;
-	if(!empty($post['theme_id'])){
-	    $theme = Theme::findOne($post['theme_id']);
-	}else {
-	    $theme=new Theme();
-	}
-	
-	$theme->theme_type=0; //theme type 1 define theme for qard o theme for block
-	$theme->theme_properties='test'; // serialized data all theme details
-	$serilized_arr['image_opacity']=  $post['image_opacity'];
-	$serilized_arr['div_opacity']=  $post['div_opacity'];
-	$serilized_arr['div_bgcolor']=$post['div_bgcolor'];
-	$serilized_arr['div_overlaycolor']=$post['div_overlaycolor'];
-	
-	if(strpos('/',$post['div_bgimage'])){
-	    $url_split=  explode('/',$post['div_bgimage']);
-	    $serilized_arr['div_bgimage']=end($url_split);
-	}else{
-	    $serilized_arr['div_bgimage']="";
-	}
-	    
-	$serilized_arr['height']=$post['height'];
-	$theme->theme_properties=  serialize($serilized_arr);	
-	
-	$theme->save(false);
-	return $theme;
+		$theme = false;
+		if(!empty($post['theme_id'])){
+			$theme = Theme::findOne($post['theme_id']);
+		}else {
+			$theme=new Theme();
+		}
+		
+		$theme->theme_type=0; //theme type 1 define theme for qard o theme for block
+		$theme->theme_properties='test'; // serialized data all theme details
+		$serilized_arr['image_opacity']=  $post['image_opacity'];
+		$serilized_arr['div_opacity']=  $post['div_opacity'];
+		$serilized_arr['div_bgcolor']=$post['div_bgcolor'];
+		$serilized_arr['div_overlaycolor']=$post['div_overlaycolor'];
+		
+		if(strpos('/',$post['div_bgimage'])){
+			$url_split=  explode('/',$post['div_bgimage']);
+			$serilized_arr['div_bgimage']=end($url_split);
+		}else{
+			$serilized_arr['div_bgimage']="";
+		}
+			
+		$serilized_arr['height']=$post['height'];
+		$theme->theme_properties=  serialize($serilized_arr);	
+		
+		$theme->save(false);
+		return $theme;
     }
     /*
      * 
