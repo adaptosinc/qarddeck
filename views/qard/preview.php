@@ -77,7 +77,7 @@ $this->title = 'Create Qard';
             </div>
 		<div class="col-sm-8 col-md-8" style="border: 1px solid #eaeaea;height:700px"> Preview goes here</div>
         </div>
-        <div class="bottom-card row">
+        <!--<div class="bottom-card row">
             <div class="col-sm-8 col-md-8">
                 <div class="col-sm-6 col-md-6">
                     <input type="text" name="qard_title" id="qard_title" class="form-control" placeholder="Qard Title">
@@ -85,7 +85,7 @@ $this->title = 'Create Qard';
                 <div class="col-sm-6 col-md-6">
                     <!--			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">-->
 
-                    <select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
+                     <!--<select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
 
 			</select>
                 </div>
@@ -100,7 +100,7 @@ $this->title = 'Create Qard';
                     <li onclick="addSaveCard(event)"><button class="btn btn-sm btn-default" name="preview">Save</button></li>
                 </ul>
             </div>
-        </div>
+        </div>-->
     </section>
     <!-- block_error popup -->
 

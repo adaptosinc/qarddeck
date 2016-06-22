@@ -1346,6 +1346,7 @@ $this->title = 'Create Qard';
 		/* end of link block functions */
 		/** File upload functions **/
         //ADDED BY NANDHINI
+		$("#showFile").hide();
         $('.drop-file').on('click', function(e) {
             $('#qard-url-upload-click').trigger('click');
 
