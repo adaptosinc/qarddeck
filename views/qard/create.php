@@ -419,7 +419,7 @@ $this->title = 'Create Qard';
 /* 	$(document).delegate("#working_div .current_blk", "hover", function(event) {	
 	
 	}); */
-	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize", function(event) {		
+	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize DOMSubtreeModified", function(event) {		
 		/*
 		 * calculate the total height of the qard
 		*/
@@ -1292,7 +1292,7 @@ $this->title = 'Create Qard';
                     //var link = '<h4 class="url-content"><a href="'+preview_url+'">'+title+'</a></h4>'
                     //$('.working_div div').html(link);
                     showUrlPreview();
-                    setHeightBlock('', '');
+                    //setHeightBlock('', '');
                 }
             });
         }
@@ -1330,7 +1330,9 @@ $this->title = 'Create Qard';
                     '</span></span></span></span>';
             }
             $("#working_div .current_blk").html(str);
-            setHeightBlock('', '');
+			$("#working_div .current_blk")[0].css("height", 'auto');
+			var scrollHeight = Math.ceil(parseInt($("#working_div .current_blk")[0].scrollHeight) / 37.5);
+			setHeightBlock($("#working_div .current_blk"),scrollHeight);
         }
 		
         $('#url_reset_link').on('click', function() {
