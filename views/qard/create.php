@@ -241,6 +241,10 @@ $this->title = 'Create Qard';
                                             <input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
                                             <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
                                         </div>
+										<h3><center>or...</center></h3>
+                                        <div class="form-group" id="embedCode">
+                                            <input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
+                                        </div>
                                         <!--<div class="form-group link_options" style="display:none">
                                                 <div class="col-sm-4 col-md-4 on-off">
                                                     <div class="switch">
@@ -381,13 +385,8 @@ $this->title = 'Create Qard';
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-    <script type="text/javascript">    
-                $( document ).ready(function() {
-    console.log( "ready!" );$("#showFile").hide();
-});
-    </script>
+
     <script type="text/javascript">
-        
 	$("#working_div .current_blk").focus();
 	document.execCommand('styleWithCSS', false, true);
     document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
@@ -1364,18 +1363,16 @@ $this->title = 'Create Qard';
                setLink($(this),''); 
            }
         });
-        function setLink(elem,fileName){
-                $("#working_div .current_blk").css("background-color", '#eaeaea');      
+
+        function setLink(elem,fileName){     
                var click = 'showFiles("'+fileName+'")';
                 if(fileName!=''){
-                    
-                       var span = "<span>Add Your Description Here!<br><span>"+fileName+"<img onclick="+click+" style='width:7%;height:31%;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span></span>";                      }else{
-                  var span = "<span>Add Your Description Here!<br><img  onclick="+click+" style='width:7%;height:31%;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";                      }                       
+                       var span = "Add Your Description Here!<br><span style='height: 24px;width: 25px;'>"+fileName+"<img onclick="+click+" src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";                                    }else{
+                  var span = "<span>Add Your Description Here!<br><img onclick="+click+" style='height: 24px;width: 25px;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";    
+              }               
                 $("#working_div .current_blk").html(span);
 	}
-        
-
-		$("#showFile").hide();
+        $("#showFile").hide();
         $('.drop-file').on('click', function(e) {
             $('#qard-url-upload-click').trigger('click');
 
