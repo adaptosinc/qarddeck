@@ -1365,10 +1365,12 @@ $this->title = 'Create Qard';
            }
         });
         function setLink(elem,fileName){
-                $("#working_div .current_blk").css("background-color", '#eaeaea');        
+                $("#working_div .current_blk").css("background-color", '#eaeaea');      
+               var click = 'showFiles("'+fileName+'")';
                 if(fileName!=''){
-                       var span = "<span>Add Your Description Here!<br><span style='margin-left:230px;'>"+fileName+"<img style='width:7%;height:31%;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span></span>";                      }else{
-                  var span = "<span>Add Your Description Here!<br><img style='width:7%;height:31%;margin-left:350px;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";                      }                       
+                    
+                       var span = "<span>Add Your Description Here!<br><span>"+fileName+"<img onclick="+click+" style='width:7%;height:31%;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span></span>";                      }else{
+                  var span = "<span>Add Your Description Here!<br><img  onclick="+click+" style='width:7%;height:31%;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";                      }                       
                 $("#working_div .current_blk").html(span);
 	}
         
@@ -1454,6 +1456,16 @@ $this->title = 'Create Qard';
 		}
 		/** End of dragging function **/
 		
+                
+         function showFiles(fileName){
+          alert(fileName)   ;
+          
+          
+          }
+                
+                
+                
+                
 	/***************************/
         </script>
         
