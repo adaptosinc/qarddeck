@@ -1521,7 +1521,11 @@ $this->title = 'Create Qard';
           
                 }
                 if (ext == "doc" || ext == 'docx') {
+
                     var test = "<?= Yii::$app->request->baseUrl?>/uploads/docs/"+fileName;
+
+                 //   var test = "http://docs.google.com/gview?url=http://wordpressmonks.com< ?= Yii::$app->request->baseUrl?>/uploads/"+fileName;
+
                       var object = '<iframe style="width:600px;height:500px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
                         
                     object += "</object>";       $("#showFilePreview").html(object); $("#showFilePreview").hide();
