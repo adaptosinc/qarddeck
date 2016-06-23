@@ -314,7 +314,7 @@ $this->title = 'Create Qard';
 
             var ext = fileName.split('.').pop();
             if (ext == "pdf" ) {
-				var object = "<span id='spanob'><object id='obj' data=\"../uploads/docs/"+fileName+"\" type=\"application/pdf\" width=\"800px\" height=\"500px\">";
+				var object = "<span id='spanob'><object id='obj' data=\"../uploads/docs/"+fileName+"\" type=\"application/pdf\" width=\"100%\" height=\"500px\">";
 				object += "</object>";       
 				$("#preview").html(object);          
                 }
