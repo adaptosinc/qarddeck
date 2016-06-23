@@ -221,7 +221,7 @@ $this->title = 'Create Qard';
                                         <h3>Drop files/click to Browse</h3></div>
 
                                     <div class="drop-image form-group" id="drop-image" style="min-height:0px!important;">
-
+                                        <div id="showFilePreview"></div>
                                         <img id="dispIcon" class="imgCenter">
                                         <span id="showFile">
                                                         <input type="text" name="filename" class="filename form-control fileName" placeholder="File Name">
@@ -241,10 +241,10 @@ $this->title = 'Create Qard';
                                             <input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
                                             <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
                                         </div>
-										<h3><center>or...</center></h3>
+<!--										<h3><center>or...</center></h3>
                                         <div class="form-group" id="embedCode">
                                             <input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
-                                        </div>
+                                        </div>-->
                                         <!--<div class="form-group link_options" style="display:none">
                                                 <div class="col-sm-4 col-md-4 on-off">
                                                     <div class="switch">
@@ -1357,20 +1357,21 @@ $this->title = 'Create Qard';
            $(".dispFileName").on('click', function(e) {
            if($('.dispFileName').is(':checked')){
                var fileName = $(".fileName").val();   
-               setLink($(this),fileName);
+               setLink($(this),fileName,2);
            }else{
                var fileName = $(".fileName").val();   
-               setLink($(this),''); 
+               setLink($(this),fileName,3); 
            }
         });
 
-        function setLink(elem,fileName){     
-               var click = 'showFiles("'+fileName+'")';
-                if(fileName!=''){
-                       var span = "Add Your Description Here!<br><span style='height: 24px;width: 25px;'>"+fileName+"<img onclick="+click+" src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";                                    }else{
+        function setLink(elem,fileName,id){     
+            var click = 'showFilePrev("'+fileName+'")';
+            if(id!=3 && id!=1){
+                  var span = "Add Your Description Here!<br><span style='height: 24px;width: 25px;'>"+fileName+"<img onclick="+click+" style='height: 24px;width: 25px;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>"; 
+              }else{
                   var span = "<span>Add Your Description Here!<br><img onclick="+click+" style='height: 24px;width: 25px;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";    
-              }               
-                $("#working_div .current_blk").html(span);
+            }               
+            $("#working_div .current_blk").html(span);
 	}
         $("#showFile").hide();
         $('.drop-file').on('click', function(e) {
@@ -1409,7 +1410,7 @@ $this->title = 'Create Qard';
                         $("#showFile").show();
                         $(".fileName").val(response.code);
                         $(".fileSwitch").hide();
-                        setLink($(this),'');
+                        setLink($(this),response.code,1);
                         // console.log(response);
                         //count++;
                     }
@@ -1436,6 +1437,7 @@ $this->title = 'Create Qard';
             $("input[id=link_url]").val('');
             $('input[id=qard-url-upload-click]').val('');
             $("#showFile").hide();
+            $("#showFilePreview").empty();
         });		
 		/*** End of file upload functions **/
 		/** Dragging functions **/
@@ -1454,15 +1456,20 @@ $this->title = 'Create Qard';
 		/** End of dragging function **/
 		
                 
-         function showFiles(fileName){
-          alert(fileName)   ;
+         function showFilePrev(fileName){
+           var ext = fileName.split('.').pop();
+            if (ext == "pdf" ) {
+                    var object = "<span id='spanob'><object id='obj' data=\"../uploads/docs/"+fileName+"\" type=\"application/pdf\" width=\"600px\" height=\"500px\">";
+                    object += "</object>";                    
+                }
+                if (ext == "doc" || ext == 'docx') {
+                      var object = '<iframe style="width:600px;height:500px;" class="doc" src="<?= Yii::$app->request->baseUrl?>/uploads/docs/"'+fileName+'&embedded=true"></iframe>';  
+               }
+          $("#showFilePreview").html(object);
+          $("#dispIcon").hide();
+          $("#showFile").hide();
           
-          
-          }
-                
-                
-                
-                
+          }  
 	/***************************/
         </script>
         
