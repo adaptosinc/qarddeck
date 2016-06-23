@@ -558,7 +558,7 @@ class QardController extends Controller
                              $newfilename =  $file;
                                    if(file_exists($move.$newfilename)) {
                                   
-                                      unlink($move.$_FILES["file"]['name']); //remove the file
+                                      unlink($move.$newfilename); //remove the file
                                   }
                                  
 //move_uploaded_file($_FILES["file"]["tmp_name"], "../img/imageDirectory/" . $newfilename);
