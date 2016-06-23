@@ -1517,7 +1517,7 @@ $this->title = 'Create Qard';
                     object += "</object>";                    
                 }
                 if (ext == "doc" || ext == 'docx') {
-                    var test = "<?= Yii::$app->request->baseUrl?>/uploads/"+fileName;
+                    var test = "http://docs.google.com/gview?url=<?= Yii::$app->request->baseUrl?>/uploads/"+fileName;
                       var object = '<iframe style="width:600px;height:500px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
                       console.log(object);
                }
