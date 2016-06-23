@@ -990,6 +990,13 @@ $this->title = 'Create Qard';
 			$("#working_div .parent_current_blk").unwrap();
 			var new_div = '<div  id="working_div" class="working_div active"><div id="blk_' + getNextBlockId() + '" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off" data-block_priority="' + nextBlockPriority + '"></div></div></div></div>';
 			$("#add-block .parent_current_blk:last").after(new_div); */
+         $("#dispIcon").hide();
+            $(".drop-file , .drop-image , .file_options").show();
+            $(".fileSwitch").show();
+            $("input[id=link_url]").val('');
+            $('input[id=qard-url-upload-click]').val('');
+            $("#showFile").hide();
+            $("#showFilePreview").empty();
 	}
 	function addSaveCard() {
 		$("#wait").show();
@@ -1499,6 +1506,8 @@ $this->title = 'Create Qard';
 		
                 
          function showFilePrev(fileName){
+             $(".drop-file").hide();
+                        $(".fileSwitch").hide();
            var ext = fileName.split('.').pop();
             if (ext == "pdf" ) {
                     var object = "<span id='spanob'><object id='obj' data=\"../uploads/docs/"+fileName+"\" type=\"application/pdf\" width=\"600px\" height=\"500px\">";
@@ -1944,6 +1953,7 @@ $this->title = 'Create Qard';
                                     $("#showFile").show();
                                     $(".drop-file").hide();
                                     $(".drop-image").show();
+                                    setLink($(this),data.code,1);
                                     $(".fileName").val(data.code);
                                     $(".fileSwitch").hide();
                                 },
