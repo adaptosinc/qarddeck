@@ -310,7 +310,25 @@ $this->title = 'Create Qard';
                 }
             });
         }
+         function showFilePrev(fileName){
 
+            var ext = fileName.split('.').pop();
+            if (ext == "pdf" ) {
+				var object = "<span id='spanob'><object id='obj' data=\"../uploads/docs/"+fileName+"\" type=\"application/pdf\" width=\"600px\" height=\"500px\">";
+				object += "</object>";       
+				$("#preview").html(object);          
+                }
+            if (ext == "doc" || ext == 'docx') {
+				var test = "<?= Yii::$app->request->baseUrl?>/uploads/docs/"+fileName;
+
+				var object = '<iframe style="width:600px;height:500px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
+					
+				object += "</object>";       
+				$("#preview").html(object); 
+				console.log(object);
+               }
+         
+          }  
 		/** End of dragging function **/
 		
 	/***************************/
