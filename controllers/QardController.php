@@ -200,7 +200,7 @@ class QardController extends Controller
 		if($model->save(false)){
 			//generate the qard image here
 			unset(\Yii::$app->session['qard']);
-			return $this->redirect(['view','id' => $model->qard_id]); //change this to consume window
+			return $this->redirect(['preview-qard','qard_id' => $model->qard_id]); //change this to consume window
 		}
 			
 	} 
@@ -517,7 +517,7 @@ class QardController extends Controller
                         
                         // Number of uploaded files
                         $num_files = count($_FILES['files']['tmp_name']);
-                        $upload_dir = Yii::$app->basePath.'\web\uploads\docs\\';
+                        $upload_dir = Yii::$app->basePath.'/web/uploads/';
                         /** loop through the array of files ***/
                         for($i=0; $i < $num_files;$i++)
                         {
@@ -548,6 +548,7 @@ class QardController extends Controller
         public function actionSimple(){
            if (Yii::$app->request->isAjax) {  
                   if($_FILES["file"]['name']){
+
                             $move = Yii::$app->basePath.'\web\uploads\docs\\';      
                             $file =  str_replace(' ', '_',  $_FILES["file"]['name']);
                             $moveto = $move.$_FILES["file"]['name'];
