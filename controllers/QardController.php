@@ -521,16 +521,17 @@ class QardController extends Controller
                         /** loop through the array of files ***/
                         for($i=0; $i < $num_files;$i++)
                         {
-                            $file =  str_replace(' ', '_',  $_FILES["filename"]['name']);
-                            $temp = explode(".", $_FILES["filename"]["name"]);
-                            $newfilename =  $file;
+                           
                            // copy the file to the specified dir 
-                           //if(move_uploaded_file($_FILES['filename']['tmp_name'],$upload_dir.'/'.$_FILES['filename']['name']))
-                              if(move_uploaded_file($_FILES['filename']['tmp_name'],$upload_dir.'/'.$newfilename))
+                             $file =  str_replace(' ', '_',  $_FILES["filename"]['name']);
+                             $temp = explode(".", $_FILES["filename"]["name"]);
+                            $newfilename = $file;
+                           if(move_uploaded_file($_FILES['filename']['tmp_name'],$upload_dir.'/'.$newfilename))
                                 {
+                               
                                      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                                         return [
-                                           'code' => $file, //$_FILES['filename']['name'],
+                                           'code' => $file,//$_FILES['filename']['name'],
                                         ];
                                    
                                 }
@@ -547,28 +548,25 @@ class QardController extends Controller
         public function actionSimple(){
            if (Yii::$app->request->isAjax) {  
                   if($_FILES["file"]['name']){
-                            $move = Yii::$app->basePath.'\web\uploads\docs\\';    
+                            $move = Yii::$app->basePath.'\web\uploads\docs\\';      
                             $file =  str_replace(' ', '_',  $_FILES["file"]['name']);
                             $moveto = $move.$_FILES["file"]['name'];
+                            $temp = explode(".", $_FILES["file"]["name"]);
+                            $newfilename = $file;
                             $_FILES["file"]['tmp_name'];
                             $_FILES["file"]['size'];
                             $_FILES['file']['error'];
-                                 //if(file_exists($move.$_FILES["file"]['name'])) {
-                             $temp = explode(".", $_FILES["file"]["name"]);
-                             $newfilename =  $file;
-                                   if(file_exists($move.$newfilename)) {
-                                  
-                                      unlink($move.$newfilename); //remove the file
+                                 if(file_exists($move.$_FILES["file"]['name'])) {
+                                      //chmod($move.$_FILES["file"]['name'],0755); //Change the file permissions if allowed
+                                      unlink($move.$_FILES["file"]['name']); //remove the file
                                   }
-                                 
-//move_uploaded_file($_FILES["file"]["tmp_name"], "../img/imageDirectory/" . $newfilename);
                             move_uploaded_file($_FILES['file']['tmp_name'], $move.$newfilename);
                             $prof_img_path =  $_FILES["file"]['name'];
 //         //                   $profile->temp_image = "uploads/".$prof_img_path; 
 //         //                   $profile->save(false);
                              \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                              return [
-                                 'code' =>  $file // $_FILES["file"]['name'],
+                                 'code' => $file,//$_FILES["file"]['name'],
                              ];
      }}
            }
