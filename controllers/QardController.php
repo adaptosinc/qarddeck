@@ -291,7 +291,7 @@ class QardController extends Controller
 	 * @return mixed
 	 */
 	public function actionUrlPreview($url){
-		
+			$output_array = [];
 			//$url = $_POST['url'];		
 			$c = curl_init($url);			
 			$options = array(
@@ -310,13 +310,19 @@ class QardController extends Controller
 			$html = curl_exec($c);
 			$mimeType = curl_getinfo($c, CURLINFO_CONTENT_TYPE);
 			if($mimeType == 'application/pdf') {
-				echo "PDF";die;
+				$output_array['type'] = 'PDF';
+				echo json_encode($output_array);
+				die;
 			}
                         if($mimeType == 'application/msword') {
-				echo "DOC";die;
+							$output_array['type'] = 'DOC';
+							echo json_encode($output_array);
+							die;
 			}
                         if($mimeType == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-				echo "DOCX";die;
+				$output_array['type'] = 'DOCX';
+				echo json_encode($output_array);
+				die;
 			}
                         
 			//echo $html;
@@ -384,34 +390,32 @@ class QardController extends Controller
 			if($first == '/' && $result != '//')
 				$image = $domain.$image;
 			//echo $domain;echo $result;
-			/******************************/
-			echo '
-			<div id="review-qard-id" class="review-qard row" id="">
+			$preview_html = '<div id="review-qard-id" class="review-qard row" id="">';
+			if($this->isFrameAllowed($url)){
+				$preview_html .= '<iframe src="'.$url.'" style="border:none"  width="100%" height="500px" ></iframe>';
+			}else{
+				$preview_html .= '
 				<div class="img-preview col-sm-3 col-md-3">';
-			if($image)
-				echo '<img src="'.$image.'" alt="">';
-			else
-				echo '<i class="fa fa-file-image-o" style="font-size: 12em;" aria-hidden="true"></i>';
-			echo '<button id="url_img_remove" onClick="changePic(this)" class="btn btn-default btn-remove">Remove</button>
-				</div>
-				<div class="col-sm-9 col-md-9" id="title_desc_url">
-					<div class="url-content">
-						<h4><input name="url_title" type="text" class="form-control" value="'.$title.'" /></h4>
-						<div class="url-text">
-							<p><textarea name="url_content" class="form-control">'.$content.'</textarea></p>
-						</div>
-					</div>                                
-				</div>
-			</div> 
-			';
+				if($image)
+					$preview_html .= '<img src="'.$image.'" alt="">';
+				else
+					$preview_html .= '<i class="fa fa-file-image-o" style="font-size: 12em;" aria-hidden="true"></i>';
+/* 				$preview_html .= '<button id="url_img_remove" onClick="changePic(this)" class="btn btn-default btn-remove">Remove</button></div><div class="col-sm-9 col-md-9" id="title_desc_url"><div class="url-content"><h4><input name="url_title" type="text" class="form-control" value="'.$title.'" /></h4><div class="url-text"><p><textarea name="url_content" class="form-control">'.$content.'</textarea></p></div></div></div></div> ';	 */		
+				$preview_html .= '</div><div class="col-sm-9 col-md-9" id="title_desc_url"><div class="url-content"><h4><a href='.$url.' target="blank">'.$title.'</a></h4><div class="url-text"><p>'.$content.'</p></div></div></div>';	
+			}
+			$preview_html .= '</div>';
+			
 			/**/
-			echo '<div> <h3>Consume Preview</h3>';
-
-			if($this->isFrameAllowed($url))
-				echo '<iframe sandbox="allow-scripts allow-forms" src="'.$url.'" style="border:none"  width="100%" height="500px" ></iframe></div>';
-			else echo '<div style="color: red;">Framing is not allowed for this site. Please enable "Open Link in New Tab"</div>';
-			//full content
-			echo '</div>';
+			//echo '<div> <h3>Consume Preview</h3>';
+			//$title = explode('.',$title);
+			/******************************/
+			//FORMAT THE OUTPUT IN JSON
+			$link_icon = '<p><div id="previewLink" onclick = "displayLink(this);" data-url="'.$url.'"><input type="hidden" value="'.$url.'" id="hiddenUrl"/><img src="'.Yii::$app->request->baseUrl.'/images/link-trans.png" alt=""></div></p>';
+			$output_array['preview_html'] = $preview_html;
+			$output_array['work_space_text'] ='<div id="qardContent">'. substr($title,0,150).'...'.$link_icon.'</div>';//link_icon with onclik function
+			$output_array['type'] = 'web_page';
+			/*****************************/
+			echo json_encode($output_array);
 	}
 	
 	/**
