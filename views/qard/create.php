@@ -494,7 +494,6 @@ $this->title = 'Create Qard';
 		$(document).delegate("#add-block .parent_current_blk", "mouseenter mouseleave", function(event) {
 			if (event.type === "mouseleave") {
 				$(this).find(".drag").remove();
-
 			} else {
 		
 				if ($(this).find("div").hasClass("drag") === false) {
@@ -515,7 +514,7 @@ $this->title = 'Create Qard';
 							$(this).resizable('widget').trigger('mouseup');
 						} */
 					}
-				});	
+				});				
 			}
 		});
 	   
@@ -531,6 +530,7 @@ $this->title = 'Create Qard';
 			dragging = false;
 		}
 		}); */
+		
 		$('#add-block').sortable({
 			group: 'no-drop',
 			handle: '.drag',
@@ -761,7 +761,7 @@ $this->title = 'Create Qard';
 	/**** Link Block operations ******/
         $('input[id=link_url]').on('change', function() {
 
-            callUrl(this);
+            callUrl(this,0);
         });
         $('body').on('change', $('input[name=url_title]', 'textarea[name=url_content]'), function() {
             showUrlPreview();
@@ -789,11 +789,11 @@ $this->title = 'Create Qard';
 
             }
             $('#link_div').empty();
-            $('#link_div').html(html);
+            //$('#link_div').html(html);
+			//$('#link_div').hide();
             $('.link_options').show();
             $(".drop-file  , .file_options").hide();
-
-        });
+        }); 
         $('#cmn-toggle-5').on('change', function() {
             console.log($(this).val());
         });
@@ -1238,19 +1238,22 @@ $this->title = 'Create Qard';
 		/*
 		* Link block functions
 		*/
-        function callUrl(urlField) {
+        function callUrl(urlField,displayCheck) {
             console.log($(urlField).val());
+			$('#link_div').hide();
             var preview_url = $(urlField).val();
             var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
             $.ajax({
                 url: get_preview_url,
                 type: "GET",
+				datatype : 'json',
                 data: {
                     'url': preview_url
                 },
                 success: function(data) {
+					data = $.parseJSON(data);
                     console.log(data);
-                    if (data == 'PDF' || data == 'pdf') {
+                    if (data.type == 'PDF' || data.type == 'pdf') {
                         <!--ADDED BY DENCY -->
                         $(".file_options").show();
                         $(".link_options").hide();
@@ -1261,7 +1264,7 @@ $this->title = 'Create Qard';
                         $(".fileSwitch").hide();
                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');
                     }
-                    if (data == 'DOC' || data == 'DOCX') {
+                    if (data.type == 'DOC' || data.type == 'DOCX') {
                         <!--ADDED BY DENCY -->
                         $(".file_options").show();
                         $(".link_options").hide();
@@ -1273,6 +1276,20 @@ $this->title = 'Create Qard';
                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
                     }
                     //$('.working_div div').html(data);
+					if (data.type == 'web_page') {
+						//added by kavitha
+						if(displayCheck==1){
+							
+						}else{
+						$("#working_div .current_blk").html(data.work_space_text);
+						setHeightBlock('', '');
+                        $("#drop-file  , .file_options").hide();
+                        //show link options
+                        $(".link_options").show();
+						}
+                        $('#link_div').html(data.preview_html);
+						
+                    }
                     else {
                         //hide file options
                         $("#drop-file  , .file_options").hide();
@@ -1283,12 +1300,14 @@ $this->title = 'Create Qard';
                     //var title = $('input[name=url_title]').val();
                     //var link = '<h4 class="url-content"><a href="'+preview_url+'">'+title+'</a></h4>'
                     //$('.working_div div').html(link);
-                    showUrlPreview();
+                    //showUrlPreview();
+					if(displayCheck!=1){
                     setHeightBlock('', '');
+					}
                 }
             });
         }
-
+		
         function changePic(v) {
             $(v).parent().remove();
             $('#working_div').find('span.img-preview').remove();
@@ -1311,20 +1330,27 @@ $this->title = 'Create Qard';
             if (typeof image === 'undefined') {
                 var str = '<span class="url-qard-block" id="url_parent' + $("#working_div div").attr("id") + '">' +
                     '<span class="col-sm-12 col-md-12" id="title_desc_url' + $("#working_div div").attr("id") + '">' +
-                    '<span class="url-content"><h4>' + title + '</h4>' +
-                    '<span class="url-text"><p>' + content + '</p>' +
+                    '<span class="url-content"><p></p>' +
+                    '<span class="url-text"><p>' + content.substring(0,125) + '...</p>' +
                     '</span></span></span></span>';
             } else {
                 var str = '<span class="review-qard" id="url_parent' + $("#working_div div").attr("id") + '"><span class="img-preview col-sm-3 col-md-3"><img src="' + image + '" alt=""></span>' +
                     '<span class="col-sm-9 col-md-9" id="title_desc_url' + $("#working_div div").attr("id") + '">' +
-                    '<span class="url-content"><h4>' + title + '</h4>' +
-                    '<span class="url-text"><p>' + content + '</p>' +
+                    '<span class="url-content"><p></p>' +
+                    '<span class="url-text"><p>' + content.substring(0,125) + '...</p>' +
                     '</span></span></span></span>';
             }
             $("#working_div .current_blk").html(str);
             setHeightBlock('', '');
         }
-		
+		function displayLink(identifier){
+			var dataurl = $(identifier).data('url');
+			var checkit = $(identifier).find('#hiddenUrl');
+			var displayCheck =1;
+			callUrl(checkit,displayCheck);
+			$('#link_div').show();
+			return false;
+		}
         $('#url_reset_link').on('click', function() {
             $('#link_div').empty();
             $(".drop-file , .drop-image , .file_options").show();

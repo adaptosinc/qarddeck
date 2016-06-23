@@ -543,8 +543,14 @@ button[name="preview"] {
     display: none;
     color: #fff;
 }
-
-
+#previewLink{
+	cursor:pointer;
+}
+#previewLink img{
+	max-width:none;
+	width:auto !important;
+	height:auto;
+}
 li.color{
     /*background: #73b1a2;*/
     width: 30px;
