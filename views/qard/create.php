@@ -845,6 +845,12 @@ $this->title = 'Create Qard';
 		/** End of Image block operations **/
         ////////////////////////////////////	
 	/** Functions : callable **/
+	function adjustHeight(){
+		var elem = $('#working_div .current_blk');
+		$(elem).css("height", 'auto');
+		var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight) / 37.5);
+		setHeightBlock(elem,scrollHeight);		
+	}
 	function setHeightBlock(elem,offset){
 		//check total block height before that
 			var h = offset*37.5;
@@ -1295,7 +1301,7 @@ $this->title = 'Create Qard';
 							
 						}else{
 						$("#working_div .current_blk").html(data.work_space_text);
-						setHeightBlock('', '');
+						adjustHeight();
                         $("#drop-file  , .file_options").hide();
                         //show link options
                         $(".link_options").show();
@@ -1316,7 +1322,7 @@ $this->title = 'Create Qard';
 
                     //showUrlPreview();
 					if(displayCheck!=1){
-                    setHeightBlock('', '');
+						adjustHeight();
 					}
 
                     //showUrlPreview();
