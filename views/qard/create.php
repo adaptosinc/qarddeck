@@ -1259,7 +1259,7 @@ $this->title = 'Create Qard';
 		*/
         function callUrl(urlField,displayCheck) {
             console.log($(urlField).val());
-			$('#link_div').show();
+			$('#link_div').hide();
             var preview_url = $(urlField).val();
             var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
             $.ajax({
@@ -1297,6 +1297,7 @@ $this->title = 'Create Qard';
                     //$('.working_div div').html(data);
 					if (data.type == 'web_page') {
 						//added by kavitha
+						$('#link_div').show();
 						if(displayCheck==1){
 							
 						}else{
