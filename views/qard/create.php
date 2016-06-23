@@ -1259,7 +1259,7 @@ $this->title = 'Create Qard';
 		*/
         function callUrl(urlField,displayCheck) {
             console.log($(urlField).val());
-			$('#link_div').hide();
+			$('#link_div').show();
             var preview_url = $(urlField).val();
             var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
             $.ajax({
@@ -1504,7 +1504,7 @@ $this->title = 'Create Qard';
         </script>
         
     <script>
-        'use strict';;
+        'use strict';
         (function(document, window, index) {
             // feature detection for drag&drop upload
             var isAdvancedUpload = function() {
