@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 	<div class="main-content">
 		<div class="popular-qards">     <!-- popular qard list -->
 			<div class="row">
-				<div class="col-sm-9 col-md-9" >
+				<div class="col-sm-12 col-md-12" >
 					<div class="grid">
 						<?php  
 							echo $feed;
@@ -118,6 +118,12 @@ $(document).ready(function() {
 					console.log(response);
 				}
 			});
+	});
+	$('.qard-content').on('click',function(){
+		var data_id = $(this).attr('id');
+		var id = data_id.replace("qard", "");
+		var url = '<?=Url::to(['qard/preview-qard'], true);?>';
+		window.location.href = url+"?qard_id="+id;
 	});
 });
 
