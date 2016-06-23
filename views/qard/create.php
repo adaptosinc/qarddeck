@@ -771,7 +771,7 @@ $this->title = 'Create Qard';
         $('body').on('change', $('input[name=url_title]', 'textarea[name=url_content]'), function() {
             showUrlPreview();
         });
-        $(document).delegate('span.review-qard', 'dblclick', function() {
+/*         $(document).delegate('span.review-qard', 'dblclick', function() {
             //	e.preventDefault();
             console.log('Double clicked');
             $('.nav-tabs a[href="#linkblock"]').tab('show');
@@ -798,7 +798,7 @@ $this->title = 'Create Qard';
 			//$('#link_div').hide();
             $('.link_options').show();
             $(".drop-file  , .file_options").hide();
-        }); 
+        });  */
         $('#cmn-toggle-5').on('change', function() {
             console.log($(this).val());
         });
@@ -1370,14 +1370,18 @@ $this->title = 'Create Qard';
 			var scrollHeight = Math.ceil(parseInt($("#working_div .current_blk")[0].scrollHeight) / 37.5);
 			setHeightBlock($("#working_div .current_blk"),scrollHeight);
         }
+		/**
+		 * Click on link icon to see the content
+		**/
 		function displayLink(identifier){
 			var dataurl = $(identifier).data('url');
 			var checkit = $(identifier).find('#hiddenUrl');
-			var displayCheck =1;
+			var displayCheck = 1;
 			callUrl(checkit,displayCheck);
 			$('#link_div').show();
 			return false;
 		}
+		/**********************************/
         $('#url_reset_link').on('click', function() {
             $('#link_div').empty();
             $(".drop-file , .drop-image , .file_options").show();
