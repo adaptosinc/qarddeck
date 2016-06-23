@@ -1513,11 +1513,11 @@ $this->title = 'Create Qard';
                         $(".fileSwitch").hide();
            var ext = fileName.split('.').pop();
             if (ext == "pdf" ) {
-                    var object = "<span id='spanob'><object id='obj' data=\"../uploads/qards/"+fileName+"\" type=\"application/pdf\" width=\"600px\" height=\"500px\">";
+                    var object = "<span id='spanob'><object id='obj' data=\"../uploads/"+fileName+"\" type=\"application/pdf\" width=\"600px\" height=\"500px\">";
                     object += "</object>";                    
                 }
                 if (ext == "doc" || ext == 'docx') {
-                    var test = "<?= Yii::$app->request->baseUrl?>/uploads/qards/"+fileName;
+                    var test = "<?= Yii::$app->request->baseUrl?>/uploads/"+fileName;
                       var object = '<iframe style="width:600px;height:500px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
                       console.log(object);
                }
