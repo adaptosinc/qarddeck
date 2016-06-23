@@ -1517,7 +1517,9 @@ $this->title = 'Create Qard';
                     object += "</object>";                    
                 }
                 if (ext == "doc" || ext == 'docx') {
-                      var object = '<iframe style="width:600px;height:500px;" class="doc" src="<?= Yii::$app->request->baseUrl?>/uploads/docs/"'+fileName+'&embedded=true"></iframe>';  
+                    var test = "<?= Yii::$app->request->baseUrl?>/uploads/docs/"+fileName;
+                      var object = '<iframe style="width:600px;height:500px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
+                      console.log(object);
                }
           $("#showFilePreview").html(object);
           $("#dispIcon").hide();
