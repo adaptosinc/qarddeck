@@ -424,7 +424,7 @@ $this->title = 'Create Qard';
 /* 	$(document).delegate("#working_div .current_blk", "hover", function(event) {	
 	
 	}); */
-	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize DOMSubtreeModified", function(event) {		
+	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize", function(event) {		
 		/*
 		 * calculate the total height of the qard
 		*/
