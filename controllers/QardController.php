@@ -401,18 +401,18 @@ class QardController extends Controller
 				else
 					$preview_html .= '<i class="fa fa-file-image-o" style="font-size: 12em;" aria-hidden="true"></i>';
 /* 				$preview_html .= '<button id="url_img_remove" onClick="changePic(this)" class="btn btn-default btn-remove">Remove</button></div><div class="col-sm-9 col-md-9" id="title_desc_url"><div class="url-content"><h4><input name="url_title" type="text" class="form-control" value="'.$title.'" /></h4><div class="url-text"><p><textarea name="url_content" class="form-control">'.$content.'</textarea></p></div></div></div></div> ';	 */		
-				$preview_html .= '</div><div class="col-sm-9 col-md-9" id="title_desc_url"><div class="url-content"><h4>'.$title.'" </h4><div class="url-text"><p>'.$content.'</p></div></div></div>';	
+				$preview_html .= '</div><div class="col-sm-9 col-md-9" id="title_desc_url"><div class="url-content"><h4 href="'.$url.'"><a>'.$title.'"</a></h4><div class="url-text"><p>'.$content.'</p></div></div></div>';	
 			}
 			$preview_html .= '</div>';
 			
 			/**/
 			//echo '<div> <h3>Consume Preview</h3>';
-			
+			//$title = explode('.',$title);
 			/******************************/
 			//FORMAT THE OUTPUT IN JSON
-			$link_icon = '<p><div id="previewLink" onclick = "displayLink(this);" data-url="'.$url.'"><input type="hidden" value="'.$url.'" id="hiddenUrl"/><img src="'.Yii::$app->request->baseUrl.'/images/link-trans.png" alt=""/></div></p>';
+			$link_icon = '<p><div id="previewLink" onclick = "displayLink(this);" data-url="'.$url.'"><input type="hidden" value="'.$url.'" id="hiddenUrl"/><i class="fa fa-link"></i></div></p>';
 			$output_array['preview_html'] = $preview_html;
-			$output_array['work_space_text'] = $content.$link_icon;//link_icon with onclik function
+			$output_array['work_space_text'] ='<div id="qardContent">'. substr($title,0,150).'...'.$link_icon.'</div>';//link_icon with onclik function
 			$output_array['type'] = 'web_page';
 			/*****************************/
 			echo json_encode($output_array);

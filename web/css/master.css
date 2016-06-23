@@ -544,7 +544,14 @@ button[name="preview"] {
     color: #fff;
 }
 #previewLink{
-	cursor:pointer;
+	cursor: pointer;
+    width: 29px;
+    background-color: rgba(100, 145, 185, 0.96);
+    color: #fff;
+    font-size: 17px;
+    padding: 0px 6px;
+    border: solid 1px #3277b3;
+    border-radius: 4px;
 }
 #previewLink img{
 	max-width:none;
@@ -1422,4 +1429,8 @@ a.on {
 }
 .dropzone img.ghost {
     opacity: 0;
+}
+#qardContent{
+	padding:5px 8px;
+	margin:5px;
 }
