@@ -545,12 +545,10 @@ button[name="preview"] {
 }
 #previewLink{
 	cursor: pointer;
-    width: 29px;
-    background-color: rgba(100, 145, 185, 0.96);
-    color: #fff;
-    font-size: 17px;
-    padding: 0px 6px;
-    border: solid 1px #3277b3;
+    width: 28px;
+    background-color: #fff;
+    padding: 0px 2px;
+    border: solid 1px #fff;
     border-radius: 4px;
 }
 #previewLink img{
