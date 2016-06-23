@@ -200,7 +200,7 @@ class QardController extends Controller
 		if($model->save(false)){
 			//generate the qard image here
 			unset(\Yii::$app->session['qard']);
-			return $this->redirect(['view','id' => $model->qard_id]); //change this to consume window
+			return $this->redirect(['preview-qard','qard_id' => $model->qard_id]); //change this to consume window
 		}
 			
 	} 

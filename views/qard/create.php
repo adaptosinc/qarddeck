@@ -241,10 +241,10 @@ $this->title = 'Create Qard';
                                             <input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
                                             <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
                                         </div>
-<!--										<h3><center>or...</center></h3>
+										<h3><center>or...</center></h3>
                                         <div class="form-group" id="embedCode">
                                             <input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
-                                        </div>-->
+                                        </div>
                                         <!--<div class="form-group link_options" style="display:none">
                                                 <div class="col-sm-4 col-md-4 on-off">
                                                     <div class="switch">
@@ -990,6 +990,15 @@ $this->title = 'Create Qard';
 			$("#working_div .parent_current_blk").unwrap();
 			var new_div = '<div  id="working_div" class="working_div active"><div id="blk_' + getNextBlockId() + '" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off" data-block_priority="' + nextBlockPriority + '"></div></div></div></div>';
 			$("#add-block .parent_current_blk:last").after(new_div); */
+			
+		   $("#dispIcon").hide();
+		   $(".drop-file , .drop-image , .file_options").show();
+		   $(".fileSwitch").show();
+		   $("input[id=link_url]").val('');
+		   $('input[id=qard-url-upload-click]').val('');
+		   $("#showFile").hide();
+		   $("#showFilePreview").empty();
+			
 	}
 	function addSaveCard() {
 		$("#wait").show();
@@ -1378,6 +1387,7 @@ $this->title = 'Create Qard';
 			var checkit = $(identifier).find('#hiddenUrl');
 			var displayCheck = 1;
 			callUrl(checkit,displayCheck);
+			$('.nav-tabs a[href="#linkblock"]').tab('show');
 			$('#link_div').show();
 			return false;
 		}
