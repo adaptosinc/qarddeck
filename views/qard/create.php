@@ -146,10 +146,10 @@ $this->title = 'Create Qard';
                                 </div>
                                 <div class="form-group col-sm-3 col-md-3">
                                     <select id="text_family">
-				<option value="Roboto"> Roboto</option>
-				<option value="Inconsolata"> Inconsolata</option>
-				<option value="monospace"> monospace</option>
-			    </select>
+										<option value="Roboto"> Roboto</option>
+										<option value="Inconsolata"> Inconsolata</option>
+										<option value="monospace"> monospace</option>
+									</select>
                                 </div>
                                 <ul class="on-off pull-left">
                                     <li>
@@ -673,31 +673,16 @@ $this->title = 'Create Qard';
 			$('.working_div').focus();
 			return false;
 		});
+		
 		/*
 		 * to change to fore color of the text
 		 */
 		
 		function setForeColor(inp) {
-	//		document.execCommand('styleWithCSS', false, true);
-	$("#working_div .current_blk").focus();
-	var html = getSelected();
-	console.log(html);
-	console.log(html.focusNode.textContent);
-	html = html.focusNode.textContent;
-//console.log(t.anchorNode.childNodes.data);
-			//$("#working_div .current_blk").focusEnd();
+			$("#working_div .current_blk").focus();
 			document.execCommand('styleWithCSS', false, true);
 			document.execCommand('foreColor', false, $(inp).attr('data-color'));
-			//var css = "color: "+$(inp).attr('data-color')+";";
-			//var html = '<div style="'+css+'">'+html+'</div>';
-			//replaceSelectionWithHtml(html);
-			//document.execCommand('insertHTML', false, '<span style="'+css+'">'+document.getSelection()+'</span>');
 		}
-		//$('#text_color li').on('click', function(e) {
-		//   
-		//    var color=$(this).css("background-color"); // get id of clicked li
-		//console.log(color);
-		//    document.execCommand('foreColor', false, '#fff');$('.working_div').focus();return false;});
 		/*
 		 * to make text in indent
 		 */
@@ -706,60 +691,9 @@ $this->title = 'Create Qard';
 			$('.working_div').children().focus();
 			return false;
 		});
-		function getSelected() {
-            if (window.getSelection) {
-                return window.getSelection();
-            }
-            else if (document.getSelection) {
-                return document.getSelection();
-            }
-            else {
-                var selection = document.selection && document.selection.createRange();
-                if (selection.text) {
-                    return selection.text;
-                }
-                return false;
-            }
-            return false;
-        };
-		$.fn.focusEnd = function() {
-			$(this).focus();
-			var tmp = $('<span />').appendTo($(this)),
-				node = tmp.get(0),
-				range = null,
-				sel = null;
 
-			if (document.selection) {
-				range = document.body.createTextRange();
-				range.moveToElementText(node);
-				range.select();
-			} else if (window.getSelection) {
-				range = document.createRange();
-				range.selectNode(node);
-				sel = window.getSelection();
-				sel.removeAllRanges();
-				sel.addRange(range);
-			}
-			tmp.remove();
-			return this;
-		}		
-		function replaceSelectionWithHtml(html) {
-			var range, html;
-			if (window.getSelection && window.getSelection().getRangeAt) {
-				range = window.getSelection().getRangeAt(0);
-				range.deleteContents();
-				var div = document.createElement("div");
-				div.innerHTML = html;
-				var frag = document.createDocumentFragment(), child;
-				while ( (child = div.firstChild) ) {
-					frag.appendChild(child);
-				}
-				range.insertNode(frag);
-			} else if (document.selection && document.selection.createRange) {
-				range = document.selection.createRange();
-				range.pasteHTML(html);
-			}
-		}
+	
+
 		/********************/
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	

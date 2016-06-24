@@ -452,6 +452,17 @@ class QardController extends Controller
 	}
 	
 	/**
+	 * Method to get the preview image of an embed code
+	 * @param html $embed_code
+	 * @return mixed
+	 */	
+	public function actionEmbedUrl($embed_code){
+		//get the src url
+		//fetch the meta image from the url response
+		return '<img src="image_url" onClick = "embedCode(this)" data-content-url = "iframe-src"';		
+	}
+	
+	/**
 	 * Save a screenshot of the qard
 	 * Using html2canvas
 	 * Saves to uploads/qards folder
