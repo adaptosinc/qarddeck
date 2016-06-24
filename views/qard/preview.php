@@ -139,7 +139,7 @@ $this->title = 'Create Qard';
 			?>
                
             </div>
-		<div class="col-sm-8 col-md-8" id="preview" style="border: 1px solid #eaeaea;height:500px"> <iframe src="https://player.vimeo.com/video/171427463" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/171427463">LIFE AFTER LIFE - Director&rsquo;s cut</a> from <a href="https://vimeo.com/user7204826">Cyprien Cl&eacute;ment-Delmas</a> on <a href="https://vimeo.com">Vimeo</a>.</p></div>
+		<div class="col-sm-8 col-md-8" id="preview" style="border: 1px solid #eaeaea;height:500px"> <iframe src="https://player.vimeo.com/video/171427463" width="870" height="700" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>
         </div>
         <!--<div class="bottom-card row">
             <div class="col-sm-8 col-md-8">
@@ -310,7 +310,25 @@ $this->title = 'Create Qard';
                 }
             });
         }
+         function showFilePrev(fileName){
 
+            var ext = fileName.split('.').pop();
+            if (ext == "pdf" ) {
+				var object = "<span id='spanob'><object id='obj' data=\"../uploads/docs/"+fileName+"\" type=\"application/pdf\" width=\"100%\" height=\"700px\">";
+				object += "</object>";       
+				$("#preview").html(object);          
+                }
+            if (ext == "doc" || ext == 'docx') {
+				var test = "<?= Yii::$app->request->baseUrl?>/uploads/docs/"+fileName;
+
+				var object = '<iframe style="width:100%;height:700px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
+					
+				object += "</object>";       
+				$("#preview").html(object); 
+				console.log(object);
+               }
+         
+          }  
 		/** End of dragging function **/
 		
 	/***************************/

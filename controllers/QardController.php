@@ -452,6 +452,17 @@ class QardController extends Controller
 	}
 	
 	/**
+	 * Method to get the preview image of an embed code
+	 * @param html $embed_code
+	 * @return mixed
+	 */	
+	public function actionEmbedUrl($embed_code){
+		//get the src url
+		//fetch the meta image from the url response
+		return '<img src="image_url" onClick = "embedCode(this)" data-content-url = "iframe-src"';		
+	}
+	
+	/**
 	 * Save a screenshot of the qard
 	 * Using html2canvas
 	 * Saves to uploads/qards folder
@@ -548,7 +559,8 @@ class QardController extends Controller
         public function actionSimple(){
            if (Yii::$app->request->isAjax) {                 
                   if($_FILES["file"]['name']){
-                            $move = Yii::$app->basePath.'\web\uploads\docs\\';      
+
+                            $move = Yii::$app->basePath.'/web/uploads/docs/';    
                             $file =  str_replace(' ', '_',  $_FILES["file"]['name']);
                             $moveto = $move.$_FILES["file"]['name'];
                             $temp = explode(".", $_FILES["file"]["name"]);
