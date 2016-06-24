@@ -1475,29 +1475,30 @@ $this->title = 'Create Qard';
 		
                 
          function showFilePrev(fileName){
-             $(".drop-file").hide();
-                        $(".fileSwitch").hide();
-           var ext = fileName.split('.').pop();
-            if (ext == "pdf" ) {
-                    var object = "<span id='spanob'><object id='obj' data=\"../uploads/docs/"+fileName+"\" type=\"application/pdf\" width=\"600px\" height=\"500px\">";
-                    object += "</object>";       
-                     $("#showFilePreview").html(object);$("#showFilePreview").show();  
-          $("#dispIcon").hide();
-          $("#showFile").hide();
-          
-                }
-                if (ext == "doc" || ext == 'docx') {
+			$(".drop-file").hide();
+				$(".fileSwitch").hide();
+				var ext = fileName.split('.').pop();
+			if (ext == "pdf" ) {
+				var object = "<span id='spanob'><object id='obj' data=\"../uploads/docs/"+fileName+"\" type=\"application/pdf\" width=\"600px\" height=\"500px\">";
+				object += "</object>";       
+				 $("#showFilePreview").html(object);$("#showFilePreview").show();  
+				$("#dispIcon").hide();
+				$("#showFile").hide();
+	  
+			}
+			if (ext == "doc" || ext == 'docx') {
 
 
-                    var test = "<?= Yii::$app->request->baseUrl?>/uploads/docs/"+fileName;
+				var test = "<?= Yii::$app->request->baseUrl?>/uploads/docs/"+fileName;
 
-                      var object = '<iframe style="width:600px;height:500px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
-                        
-                    object += "</object>";       $("#showFilePreview").html(object); $("#showFilePreview").hide();
-                      console.log(object);
-               }
-         
-          }
+				var object = '<iframe style="width:600px;height:500px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
+					
+				object += "</object>";      
+				$("#showFilePreview").html(object); 
+				$("#showFilePreview").hide();
+				console.log(object);
+		   }
+        }
 		//Embedd Video Starts
 		$('input[id=embed_code]').on('change', function() {
             callEmbedUrl(this);

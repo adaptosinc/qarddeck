@@ -1550,6 +1550,59 @@ $this->title = 'Edit Qard';
                }
          
           }  
+		//Embedd Video Starts
+		$('input[id=embed_code]').on('change', function() {
+            callEmbedUrl(this);
+        });
+		function callEmbedUrl(videoUrl){
+			$('#link_div').hide();
+            var embedd_preview_url = $(videoUrl).val();
+            var get_embed_url = "<?=Url::to(['qard/embed-url'], true);?>";
+            $.ajax({
+                url: get_embed_url,
+                type: "GET",
+				datatype : 'json',
+                data: {
+                    'embed_code': embedd_preview_url
+                },
+                success: function(data) {
+					data = $.parseJSON(data);
+                    console.log(data);
+					$("#drop-file  , .file_options").hide();
+					$("#working_div .current_blk").html(data.video_img);
+					adjustHeight();
+					$('#link_div').html(data.iframelink);
+					$('#link_div').show();
+                }
+            });
+		}
+		function calldisplayEmbedUrl(videoUrl){
+			$('#link_div').hide();
+            var embedd_preview_url = $(videoUrl).val();
+            var get_embed_url = "<?=Url::to(['qard/embeddisplay-url'], true);?>";
+            $.ajax({
+                url: get_embed_url,
+                type: "GET",
+				datatype : 'json',
+                data: {
+                    'embed_code': embedd_preview_url
+                },
+                success: function(data) {
+					data = $.parseJSON(data);
+                    console.log(data);
+					$("#drop-file  , .file_options").hide();
+					$('#link_div').html(data.iframelink);
+					$('#link_div').show();
+                }
+            });
+		}
+		function embedCode(videoLink){
+			var eUrl = $(videoLink).siblings('input[id=embedHide]');
+			console.log(eUrl);
+			calldisplayEmbedUrl(eUrl);
+			$('#embed_code').val($(videoLink).attr('data-content-url'));
+		}
+		//Embedd Video ends
 	/***************************/
         </script>
         

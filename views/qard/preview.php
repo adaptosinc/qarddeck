@@ -216,23 +216,16 @@ $this->title = 'Preview Qard';
 
     <script src="<?= Yii::$app->request->baseUrl?>/js/jquery-ui.js" type="text/javascript"></script>
 	<script>
-	/**
-	  * Script re-written by Dency G B 
-	 **/
-
-	/**** Handle the main work space ******/
 	
-	/**
-	 * Click on link icon to see the content
-	**/
-	function displayLink(identifier){
-		var dataurl = $(identifier).data('url');
-		var checkit = $(identifier).find('#hiddenUrl');
-		var displayCheck = 1;
-		callUrl(checkit,displayCheck);
-		$('#preview').show();
-		return false;
-	}
+		/** link preview **/
+		function displayLink(identifier){
+			var dataurl = $(identifier).data('url');
+			var checkit = $(identifier).find('#hiddenUrl');
+			var displayCheck = 1;
+			callUrl(checkit,displayCheck);
+			$('#preview').show();
+			return false;
+		}
 		/*
 		* Link block functions
 		*/
@@ -311,6 +304,7 @@ $this->title = 'Preview Qard';
                 }
             });
         }
+		/** File preview **/
          function showFilePrev(fileName){
 
             var ext = fileName.split('.').pop();
@@ -330,6 +324,14 @@ $this->title = 'Preview Qard';
                }
          
           }  
+		/** Embed code preview **/
+		function embedCode(videoLink){
+			var eUrl = $(videoLink).siblings('input[id=embedHide]').val();
+			console.log(eUrl);
+			var html = '<iframe src="'+eUrl+'" width="100%" height="700" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+			//calldisplayEmbedUrl(eUrl);
+			$('#preview').html(html);
+		}
 		/** End of dragging function **/
 		
 	/***************************/
