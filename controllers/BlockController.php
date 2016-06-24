@@ -393,8 +393,7 @@ class BlockController extends Controller
 	*/
 	
 	
-    }
-    
+    }    
     
     /**
     * @inheritdoc

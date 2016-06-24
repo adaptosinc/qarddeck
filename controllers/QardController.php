@@ -517,7 +517,7 @@ class QardController extends Controller
                         
                         // Number of uploaded files
                         $num_files = count($_FILES['files']['tmp_name']);
-                        $upload_dir = Yii::$app->basePath.'/web/uploads/';
+                        $upload_dir = Yii::$app->basePath.'/web/uploads/docs/';
                         /** loop through the array of files ***/
                         for($i=0; $i < $num_files;$i++)
                         {
@@ -546,9 +546,8 @@ class QardController extends Controller
      * @return uploaded file name
      */ 
         public function actionSimple(){
-           if (Yii::$app->request->isAjax) {  
+           if (Yii::$app->request->isAjax) {                 
                   if($_FILES["file"]['name']){
-
                             $move = Yii::$app->basePath.'\web\uploads\docs\\';      
                             $file =  str_replace(' ', '_',  $_FILES["file"]['name']);
                             $moveto = $move.$_FILES["file"]['name'];
@@ -571,5 +570,6 @@ class QardController extends Controller
                              ];
      }}
            }
+           
      
 }
