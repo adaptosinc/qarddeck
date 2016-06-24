@@ -45,7 +45,7 @@ $this->title = 'Preview Qard';
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
-		<button style="margin-left: 350px;" class="btn btn-default qard" data-toggle="modal" data-target="#myModaledit"><a href="<?=Url::to(['qard/edit','id'=>$model->qard_id], true)?>">Edit</a></button>
+		<button style="margin-left: 350px;" class="btn btn-default qard" ><a href="<?=Url::to(['qard/edit','id'=>$model->qard_id], true)?>">Edit</a></button>
         <div class="row">
 
             <div class="col-sm-4 col-md-4">
