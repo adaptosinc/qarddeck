@@ -1028,10 +1028,12 @@ $this->title = 'Create Qard';
 				value: theme_id
 			});
 			// check whether theme is already preasent for qard or not
-			$(this).find(".current_blk").attr("data-block_priority", (index + 1));
+			var calc_index = index + 1;
+			//$(this).find(".current_blk").attr("data-block_priority", (index + 1));
+			var block_priority = $(this).find(".current_blk").attr("data-block_priority") || calc_index;
 			data.push({
 				name: 'block_priority',
-				value: index + 1
+				value: block_priority
 			});
 			//check qard id is present to edit or add new qard
 			var qard_id = $("#qard_id").val() || 0;

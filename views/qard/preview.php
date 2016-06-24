@@ -4,7 +4,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
-$this->title = 'Create Qard';
+$this->title = 'Preview Qard';
 ?>
     <!-- requiered for tag -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400" />
@@ -45,6 +45,7 @@ $this->title = 'Create Qard';
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
+		<button style="margin-left: 350px;" class="btn btn-default qard" data-toggle="modal" data-target="#myModaledit"><a href="<?=Url::to(['qard/edit','id'=>$model->qard_id], true)?>">Edit</a></button>
         <div class="row">
 
             <div class="col-sm-4 col-md-4">
