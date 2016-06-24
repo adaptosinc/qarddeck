@@ -50,35 +50,78 @@ $this->title = 'Create Qard';
             <div class="col-sm-4 col-md-4">
                 <div id="add-block" class="qard-div add-block" style="overflow:hidden">
                     <?php
-		if(isset($model['qard_id'])){
-		    echo '<input type="hidden" name="qard_id" value="'.$model['qard_id'].'">';
-		}
-		?>
-        <input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
+						if(isset($model->qard_id)){
+							echo '<input type="hidden" id="qard_id" name="qard_id" value="'.$model->qard_id.'">';
+						}
+					?>
+					<input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
 		
-		<?php 
-		//get theme properties
-		$theme_properties = unserialize($theme['theme_properties']);
-		//print_r($theme_properties);
-		?>
-                        <!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
-		    <div class="bgoverlay-block" style="height:75px;">
-			<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
-		    </div>                                
-		</div>
-		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: #0055cc" style="height:150px;">
-		    <div class="bgoverlay-block" style="height:150px;">
-			<div class="text-block current_blk" data-height="4" style="height:150px;"></div>                                    
-		    </div>                                
-		</div>-->
-
-                        <div id="working_div" class="working_div block active">
+					<?php 
+					//get theme properties
+						$theme_properties = unserialize($theme['theme_properties']);
+					//print_r($theme_properties);
+					$blocks = $model->blocks;
+					$str = '';
+					$i = 1;
+					foreach($blocks as $block){
+						////get the inline styles///						
+						$img_block_style = '';
+						$overlay_block_style = '';
+						$text_block_style = '';
+						$theme = $block->theme->theme_properties;
+						$theme = unserialize($theme);
+						$height_in_BU = $theme['height']/37.5;
+						if(isset($theme)){
+							//img block styles
+								$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
+								if($block->link_image != ''){
+										
+										$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
+										$img_block_style .= 'background-size: cover;';
+								}
+								if($theme['div_bgcolor'] != '')
+									$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
+								$img_block_style .= 'height:'.$theme['height'].'px;';
+								//$img_block_style .= 'height:auto;';
+								
+							//overlay block styles
+								$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
+								if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
+									$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
+								$overlay_block_style .= 'height:'.$theme['height'].'px;';
+								//$overlay_block_style .='height:auto;';
+								
+								$text_block_style .= 'height:'.$theme['height'].'px;';
+								$text_block_style .='overflow:hidden;';
+								//$text_block_style .='height:auto;';
+						}
+						///////////////////////////
+					if($i == 1)
+						$str .= '<div id="working_div" class="working_div block active">';
+						
+						$str .= '<div id="blk_'.$i.'" class="bgimg-block parent_current_blk ui-resizable" style="'.$img_block_style.'" >
+						<div class="bgoverlay-block" style="'.$overlay_block_style.'">';
+					if($i == 1)
+						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk working_div" contenteditable="true" unselectable="off" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="overflow:hidden" style="'.$text_block_style.'">';
+					else
+						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="'.$text_block_style.'">';
+						$str .= $block->text;
+						$str .= '</div>';
+						
+						$str .= '</div></div>';	
+						if($i == 1)
+							$str .= '</div>';
+						$i = $i+1;;
+					}
+					echo $str;
+					?>
+<!--                         <div id="working_div" class="working_div block active">
                             <div id="blk_1" class="bgimg-block parent_current_blk">
                                 <div class="bgoverlay-block">
                                     <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off" data-block_priority="1" style="overflow:hidden"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <h4 class="add-another" onclick="add_block(event)" style="display:block">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
                 </div>
             </div>
@@ -146,10 +189,10 @@ $this->title = 'Create Qard';
                                 </div>
                                 <div class="form-group col-sm-3 col-md-3">
                                     <select id="text_family">
-				<option value="Roboto"> Roboto</option>
-				<option value="Inconsolata"> Inconsolata</option>
-				<option value="monospace"> monospace</option>
-			    </select>
+										<option value="Roboto"> Roboto</option>
+										<option value="Inconsolata"> Inconsolata</option>
+										<option value="monospace"> monospace</option>
+									</select>
                                 </div>
                                 <ul class="on-off pull-left">
                                     <li>
@@ -1127,7 +1170,8 @@ $this->title = 'Create Qard';
 					var qard = '';
 					var theme = '';
 					//if qard is editing
-					if (!$("#qard_id").attr("value")) {
+					if ($("#qard_id").val()=='') {
+						alert($("#qard_id").val());
 						qard = '<input id="qard_id" type="hidden" value="' + data.qard_id + '">';
 					}
 					// if stored data contain image then true

@@ -162,7 +162,49 @@ class QardController extends Controller
         }
 	
     }
-	
+	public function actionEdit($id,$theme_id=null){
+		$model = $this->findModel($id);
+		$theme_id = $model->qard_theme;
+		if(!$theme_id){
+			//go and select a theme and then come back
+			return $this->redirect(['theme/select-theme']);
+		}
+		else{
+			$theme = Theme::findOne($theme_id);
+			if(!$theme){
+				\Yii::$app->getSession()->setFlash('error', 'Please select a theme');
+				return $this->redirect(['theme/select-theme']);
+			}
+		}
+        if ($model->load(Yii::$app->request->post())) {
+			
+			$model->save(false);
+			if(!\Yii::$app->user->id){
+				//save false here with out user id and status as draft
+				//$model->save(false);
+				//aftersave take the qard-id as a param and send to login page
+				\Yii::$app->session['qard']= $model->qard_id;
+				return $this->redirect(['user/login','qard_id'=>$q_id]);
+				//at login/sign-up,check if qard-id is there,if yes assign the user to the same qard once logged in
+			}
+            return $this->redirect(['view', 'id' => $model->qard_id]);
+        } else {
+			$tags=\app\models\Tag::find()->all();
+            if(!$this->isMobile()){ 
+                return $this->render('edit', [
+                    'model' => $model,
+					'theme' => $theme,
+					'tags'=>$tags
+                ]);
+            }else{
+                $this->layout = 'mobilelayout';
+                return $this->render('mobile/create', [
+                    'model' => $model,
+                ]);                
+            }
+	    
+        }
+	}
 	/**
 	 * To preview the qard while creating/editing
 	 * Idea is to reload the saved/drafed qard with the selected theme
