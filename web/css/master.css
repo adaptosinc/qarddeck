@@ -1432,3 +1432,15 @@ a.on {
 	padding:5px 8px;
 	margin:5px;
 }
+#qardContent .embed_content div,#qardContent .embed_content p {
+    display: inline-block;
+	margin:5px;
+}
+#qardContent .embed_content div{
+	width:10%;
+	text-align:right;
+	cursor:pointer;
+}
+#qardContent .embed_content p{
+	width:78%;
+}
