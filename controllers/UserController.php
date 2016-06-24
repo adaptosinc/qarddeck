@@ -271,7 +271,7 @@ class UserController extends Controller
             $idToUpdate =  \Yii::$app->user->id;
             $profile = Profile::find()->where(['user_id' => $idToUpdate])->one();
                 if (Yii::$app->request->isAjax) {                
-                   $move = Yii::$app->basePath.'\web\uploads\\';              
+                   $move = Yii::$app->basePath.'/web/uploads/';              
                    $moveto = $move.$_FILES["file"]['name'];
                    $_FILES["file"]['tmp_name'];
                    $_FILES["file"]['size'];
