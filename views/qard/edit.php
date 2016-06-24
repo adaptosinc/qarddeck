@@ -4,9 +4,8 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
-$this->title = 'Create Qard';
+$this->title = 'Edit Qard';
 ?>
-
     <!-- requiered for tag -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400" />
 
@@ -51,35 +50,78 @@ $this->title = 'Create Qard';
             <div class="col-sm-4 col-md-4">
                 <div id="add-block" class="qard-div add-block" style="overflow:hidden">
                     <?php
-		if(isset($model['qard_id'])){
-		    echo '<input type="hidden" name="qard_id" value="'.$model['qard_id'].'">';
-		}
-		?>
-        <input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
+						if(isset($model->qard_id)){
+							echo '<input type="hidden" id="qard_id" name="qard_id" value="'.$model->qard_id.'">';
+						}
+					?>
+					<input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
 		
-		<?php 
-		//get theme properties
-		$theme_properties = unserialize($theme['theme_properties']);
-		//print_r($theme_properties);
-		?>
-                        <!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
-		    <div class="bgoverlay-block" style="height:75px;">
-			<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
-		    </div>                                
-		</div>
-		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: #0055cc" style="height:150px;">
-		    <div class="bgoverlay-block" style="height:150px;">
-			<div class="text-block current_blk" data-height="4" style="height:150px;"></div>                                    
-		    </div>                                
-		</div>-->
-
-                        <div id="working_div" class="working_div block active">
+					<?php 
+					//get theme properties
+						$theme_properties = unserialize($theme['theme_properties']);
+					//print_r($theme_properties);
+					$blocks = $model->blocks;
+					$str = '';
+					$i = 1;
+					foreach($blocks as $block){
+						////get the inline styles///						
+						$img_block_style = '';
+						$overlay_block_style = '';
+						$text_block_style = '';
+						$theme = $block->theme->theme_properties;
+						$theme = unserialize($theme);
+						$height_in_BU = $theme['height']/37.5;
+						if(isset($theme)){
+							//img block styles
+								$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
+								if($block->link_image != ''){
+										
+										$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
+										$img_block_style .= 'background-size: cover;';
+								}
+								if($theme['div_bgcolor'] != '')
+									$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
+								$img_block_style .= 'height:'.$theme['height'].'px;';
+								//$img_block_style .= 'height:auto;';
+								
+							//overlay block styles
+								$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
+								if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
+									$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
+								$overlay_block_style .= 'height:'.$theme['height'].'px;';
+								//$overlay_block_style .='height:auto;';
+								
+								$text_block_style .= 'height:'.$theme['height'].'px;';
+								$text_block_style .='overflow:hidden;';
+								//$text_block_style .='height:auto;';
+						}
+						///////////////////////////
+					if($i == 1)
+						$str .= '<div id="working_div" class="working_div block active">';
+						
+						$str .= '<div id="blk_'.$i.'" class="bgimg-block parent_current_blk ui-resizable" style="'.$img_block_style.'" >
+						<div class="bgoverlay-block" style="'.$overlay_block_style.'">';
+					if($i == 1)
+						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk working_div" contenteditable="true" unselectable="off" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="overflow:hidden" style="'.$text_block_style.'">';
+					else
+						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="'.$text_block_style.'">';
+						$str .= $block->text;
+						$str .= '</div>';
+						
+						$str .= '</div></div>';	
+						if($i == 1)
+							$str .= '</div>';
+						$i = $i+1;;
+					}
+					echo $str;
+					?>
+<!--                         <div id="working_div" class="working_div block active">
                             <div id="blk_1" class="bgimg-block parent_current_blk">
                                 <div class="bgoverlay-block">
                                     <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off" data-block_priority="1" style="overflow:hidden"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <h4 class="add-another" onclick="add_block(event)" style="display:block">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
                 </div>
             </div>
@@ -147,10 +189,10 @@ $this->title = 'Create Qard';
                                 </div>
                                 <div class="form-group col-sm-3 col-md-3">
                                     <select id="text_family">
-				<option value="Roboto"> Roboto</option>
-				<option value="Inconsolata"> Inconsolata</option>
-				<option value="monospace"> monospace</option>
-			    </select>
+										<option value="Roboto"> Roboto</option>
+										<option value="Inconsolata"> Inconsolata</option>
+										<option value="monospace"> monospace</option>
+									</select>
                                 </div>
                                 <ul class="on-off pull-left">
                                     <li>
@@ -215,7 +257,6 @@ $this->title = 'Create Qard';
                                 <form method="post" action="" id="qard-url-upload" enctype="multipart/form-data" novalidate class="box">
 
                                     <div id="link_div"></div>
-                                    
                                     <div class="drop-file form-group" id="drop-file">
                                         <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
 
@@ -931,7 +972,6 @@ $this->title = 'Create Qard';
             $(".drop-file , .drop-image , .file_options").show();
             $(".fileSwitch").show();
             $("input[id=link_url]").val('');
-			$("input[id=embed_code]").val('');
             $('input[id=qard-url-upload-click]').val('');
             $("#showFile").hide();
             $("#showFilePreview").empty();
@@ -1132,7 +1172,8 @@ $this->title = 'Create Qard';
 					var qard = '';
 					var theme = '';
 					//if qard is editing
-					if (!$("#qard_id").attr("value")) {
+					if ($("#qard_id").val()=='') {
+						alert($("#qard_id").val());
 						qard = '<input id="qard_id" type="hidden" value="' + data.qard_id + '">';
 					}
 					// if stored data contain image then true
@@ -1371,7 +1412,7 @@ $this->title = 'Create Qard';
             return false;
             //  $('#qard-url-upload').click();             
         });     
-        $('input[id=qard-url-upload-click]').on('change',function(e) {
+        $('input[id=qard-url-upload-click]').change(function(e) {
             // $('#profile-image-upload').click();
             var file_data = $('#qard-url-upload-click').prop('files')[0];
             var form_data = new FormData();
@@ -1385,15 +1426,14 @@ $this->title = 'Create Qard';
                 }
                 if (ext == "docx" || ext == "doc") {
                     $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
+
                 }
-                var csrfToken = $('meta[name="csrf-token"]').attr("content");
                 $.ajax({
                     url: "<?=Url::to(['qard/simple'], true)?>",
                     cache: false,
                     contentType: false,
                     processData: false,
                     data: form_data,
-                    //data: form_data,
                     type: 'post',
                     success: function(response) {
                         $("#dispIcon").show();
@@ -1471,65 +1511,12 @@ $this->title = 'Create Qard';
                       console.log(object);
                }
          
-          }
-		//Embedd Video Starts
-		$('input[id=embed_code]').on('change', function() {
-            callEmbedUrl(this);
-        });
-		function callEmbedUrl(videoUrl){
-			$('#link_div').hide();
-            var embedd_preview_url = $(videoUrl).val();
-            var get_embed_url = "<?=Url::to(['qard/embed-url'], true);?>";
-            $.ajax({
-                url: get_embed_url,
-                type: "GET",
-				datatype : 'json',
-                data: {
-                    'embed_code': embedd_preview_url
-                },
-                success: function(data) {
-					data = $.parseJSON(data);
-                    console.log(data);
-					$("#drop-file  , .file_options").hide();
-					$("#working_div .current_blk").html(data.video_img);
-					adjustHeight();
-					$('#link_div').html(data.iframelink);
-					$('#link_div').show();
-                }
-            });
-		}
-		function calldisplayEmbedUrl(videoUrl){
-			$('#link_div').hide();
-            var embedd_preview_url = $(videoUrl).val();
-            var get_embed_url = "<?=Url::to(['qard/embeddisplay-url'], true);?>";
-            $.ajax({
-                url: get_embed_url,
-                type: "GET",
-				datatype : 'json',
-                data: {
-                    'embed_code': embedd_preview_url
-                },
-                success: function(data) {
-					data = $.parseJSON(data);
-                    console.log(data);
-					$("#drop-file  , .file_options").hide();
-					$('#link_div').html(data.iframelink);
-					$('#link_div').show();
-                }
-            });
-		}
-		function embedCode(videoLink){
-			var eUrl = $(videoLink).siblings('input[id=embedHide]');
-			console.log(eUrl);
-			calldisplayEmbedUrl(eUrl);
-			$('#embed_code').val($(videoLink).attr('data-content-url'));
-		}
-		//Embedd Video ends
+          }  
 	/***************************/
         </script>
+        
     <script>
         'use strict';
-
         (function(document, window, index) {
             // feature detection for drag&drop upload
             var isAdvancedUpload = function() {
@@ -1549,7 +1536,7 @@ $this->title = 'Create Qard';
                     showFiles = function(files) {
                         label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
                     },
-                    triggerFormSubmit = function() { return false;
+                    triggerFormSubmit = function() {
                         var event = document.createEvent('HTMLEvents');
                         event.initEvent('submit', true, false);
                         form.dispatchEvent(event);
@@ -1564,7 +1551,320 @@ $this->title = 'Create Qard';
 
                 // automatically submit the form on file select
                 input.addEventListener('change', function(e) {
-  
+                    showFiles(e.target.files);
+                    triggerFormSubmit();
+                });
+
+                // drag&drop files if the feature is available
+                if (isAdvancedUpload) {
+
+                    form.classList.add('has-advanced-upload'); // letting the CSS part to know drag&drop is supported by the browser
+
+                    ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(function(event) {
+                        form.addEventListener(event, function(e) {
+                            // preventing the unwanted behaviours
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    });
+                    ['dragover', 'dragenter'].forEach(function(event) {
+                        form.addEventListener(event, function() {
+                            form.classList.add('is-dragover');
+                        });
+                    });
+                    ['dragleave', 'dragend', 'drop'].forEach(function(event) {
+                        form.addEventListener(event, function() {
+                            form.classList.remove('is-dragover');
+                        });
+                    });
+                    form.addEventListener('drop', function(e) {
+                        console.log("adv drop");
+                        droppedFiles = e.dataTransfer.files; // the files that were dropped
+                        showFiles(droppedFiles);
+
+
+                        triggerFormSubmit();
+
+                    });
+                }
+
+
+                // if the form was submitted
+                form.addEventListener('submit', function(e) {
+
+                    // preventing the duplicate submissions if the current one is in progress
+                    if (form.classList.contains('is-uploading')) return false;
+
+                    form.classList.add('is-uploading');
+                    form.classList.remove('is-error');
+
+                    if (isAdvancedUpload) // ajax file upload for modern browsers
+                    {
+                        e.preventDefault();
+
+                        // gathering the form data
+                        var ajaxData = new FormData(form);
+                        if (droppedFiles) {
+                            console.log("insid");
+                            Array.prototype.forEach.call(droppedFiles, function(file) {
+                                ajaxData.append(input.getAttribute('name'), file);
+                            });
+                        }
+
+                        // ajax request
+                        var ajax = new XMLHttpRequest();
+                        ajax.open(form.getAttribute('method'), form.getAttribute('action'), true);
+
+                        ajax.onload = function() {
+                            form.classList.remove('is-uploading');
+                            if (ajax.status >= 200 && ajax.status < 400) {
+                                var data = JSON.parse(ajax.responseText);
+                                form.classList.add(data.success == true ? 'is-success' : 'is-error');
+                                if (!data.success) errorMsg.textContent = data.error;
+                            }
+
+                        }
+
+                        ajax.onerror = function() {
+                            form.classList.remove('is-uploading');
+                            alert('Error. Please, try again!');
+                        }
+
+                        ajax.send(ajaxData);
+                    } else // fallback Ajax solution upload for older browsers
+                    {
+                        var iframeName = 'uploadiframe' + new Date().getTime(),
+                            iframe = document.createElement('iframe');
+
+                        $iframe = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
+
+                        iframe.setAttribute('name', iframeName);
+                        iframe.style.display = 'none';
+
+                        document.body.appendChild(iframe);
+                        form.setAttribute('target', iframeName);
+
+                        iframe.addEventListener('load', function() {
+                            var data = JSON.parse(iframe.contentDocument.body.innerHTML);
+                            form.classList.remove('is-uploading')
+                            form.classList.add(data.success == true ? 'is-success' : 'is-error')
+                            form.removeAttribute('target');
+                            if (!data.success) errorMsg.textContent = data.error;
+                            iframe.parentNode.removeChild(iframe);
+                        });
+                    }
+                });
+
+                // restart the form if has a state of error/success
+                Array.prototype.forEach.call(restart, function(entry) {
+                    entry.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        form.classList.remove('is-error', 'is-success');
+                        input.click();
+                    });
+                });
+
+                // Firefox focus bug fix for file input
+                input.addEventListener('focus', function() {
+                    input.classList.add('has-focus');
+                });
+                input.addEventListener('blur', function() {
+                    input.classList.remove('has-focus');
+                });
+
+            });
+        }(document, window, 0));
+    </script>
+    <script>
+        'use strict';
+
+        ;
+        (function($, window, document, undefined) {
+            // feature detection for drag&drop upload
+
+            var isAdvancedUpload = function() {
+                var div = document.createElement('div');
+                return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
+            }();
+
+
+            // applying the effect for every form
+
+            $('.box').each(function() {
+                var $form = $(this),
+                    $input = $form.find('input[type="file"]'),
+                    $label = $form.find('label'),
+                    $errorMsg = $form.find('.box__error span'),
+                    $restart = $form.find('.box__restart'),
+                    droppedFiles = false,
+                    showFiles = function(files) {
+                        //					$label.text( files.length > 1 ? ( $input.attr( 'data-multiple-caption' ) || '' ).replace( '{count}', files.length ) : files[ 0 ].name );
+                    };
+
+                // letting the server side to know we are going to make an Ajax request
+                $form.append('<input type="hidden" name="ajax" value="1" />');
+
+                // automatically submit the form on file select
+                $input.on('change', function(e) {
+                    showFiles(e.target.files);
+
+
+                    $form.trigger('submit');
+
+
+                });
+
+
+                // drag&drop files if the feature is available
+                if (isAdvancedUpload) {
+                    $form
+                        .addClass('has-advanced-upload') // letting the CSS part to know drag&drop is supported by the browser
+                        .on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+                            // preventing the unwanted behaviours
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                        })
+                        .on('dragover dragenter', function() //
+                            {
+                                $form.addClass('is-dragover');
+                            })
+                        .on('dragleave dragend drop', function() {
+                            $form.removeClass('is-dragover');
+                        })
+                        .on('drop', function(e) {
+                            droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
+
+                            console.log(droppedFiles);
+                            showFiles(droppedFiles);
+
+
+                            $form.trigger('submit'); // automatically submit the form on file drop
+
+
+                        });
+                }
+
+
+                // if the form was submitted
+
+                $form.on('submit', function(e) {
+                    // preventing the duplicate submissions if the current one is in progress
+                    if ($form.hasClass('is-uploading')) return false;
+
+                    $form.addClass('is-uploading').removeClass('is-error');
+
+                    if (isAdvancedUpload) // ajax file upload for modern browsers
+                    {
+                        e.preventDefault();
+
+                        // gathering the form data
+                        var ajaxData = new FormData($form.get(0));
+
+                        console.log(ajaxData);
+                        if (droppedFiles) {
+                            $.each(droppedFiles, function(i, file) {
+                                ajaxData.append($input.attr('name'), file);
+                            });
+                        }
+
+                        // ajax request
+                        $.ajax({
+                            url: $form.attr('action'),
+                            type: $form.attr('method'),
+                            data: ajaxData,
+                            dataType: 'json',
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            complete: function() {
+                                $form.removeClass('is-uploading');
+                            },
+                            success: function(data) {
+                                $form.addClass(data.success == true ? 'is-success' : 'is-error');
+                                if (!data.success) $errorMsg.text(data.error);
+                            },
+                            error: function() {
+                                //alert( 'Error. Please, contact the webmaster!' );
+                            }
+                        });
+                    } else // fallback Ajax solution upload for older browsers
+                    {
+                        var iframeName = 'uploadiframe' + new Date().getTime(),
+                            $iframe = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
+
+                        $('body').append($iframe);
+                        $form.attr('target', iframeName);
+
+                        $iframe.one('load', function() {
+                            var data = $.parseJSON($iframe.contents().find('body').text());
+                            $form.removeClass('is-uploading').addClass(data.success == true ? 'is-success' : 'is-error').removeAttr('target');
+                            if (!data.success) $errorMsg.text(data.error);
+                            $iframe.remove();
+                        });
+                    }
+                });
+
+
+                // restart the form if has a state of error/success
+
+                $restart.on('click', function(e) {
+                    e.preventDefault();
+                    $form.removeClass('is-error is-success');
+                    $input.trigger('click');
+                });
+
+                // Firefox focus bug fix for file input
+                $input
+                    .on('focus', function() {
+                        $input.addClass('has-focus');
+                    })
+                    .on('blur', function() {
+                        $input.removeClass('has-focus');
+                    });
+            });
+
+        })(jQuery, window, document);
+    </script>
+
+    <script>
+        'use strict';
+
+        ;
+        (function(document, window, index) {
+            // feature detection for drag&drop upload
+            var isAdvancedUpload = function() {
+                var div = document.createElement('div');
+                return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
+            }();
+
+
+            // applying the effect for every form
+            var forms = document.querySelectorAll('.box');
+            Array.prototype.forEach.call(forms, function(form) {
+                var input = form.querySelector('input[type="file"]'),
+                    label = form.querySelector('label'),
+                    errorMsg = form.querySelector('.box__error span'),
+                    restart = form.querySelectorAll('.box__restart'),
+                    droppedFiles = false,
+                    showFiles = function(files) {
+                        label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
+                    },
+                    triggerFormSubmit = function() {
+                        var event = document.createEvent('HTMLEvents');
+                        event.initEvent('submit', true, false);
+                        form.dispatchEvent(event);
+                    };
+
+                // letting the server side to know we are going to make an Ajax request
+                var ajaxFlag = document.createElement('input');
+                ajaxFlag.setAttribute('type', 'hidden');
+                ajaxFlag.setAttribute('name', 'ajax');
+                ajaxFlag.setAttribute('value', 1);
+                form.appendChild(ajaxFlag);
+
+                // automatically submit the form on file select
+                input.addEventListener('change', function(e) {
                     showFiles(e.target.files);
 
 
@@ -1599,7 +1899,10 @@ $this->title = 'Create Qard';
                         showFiles(droppedFiles);
                         //            var file_data = $('#qard-url-upload').prop('files')[0];   
                         //console.log($("#qard-url-upload").serializeArray());
-                        
+
+
+
+
                         var ajaxData = new FormData($('#qard-url-upload').get(0));
                         var fileType;
                         if (droppedFiles) {
@@ -1632,6 +1935,7 @@ $this->title = 'Create Qard';
                                 contentType: false,
                                 processData: false,
                                 complete: function() {
+
                                     $('#qard-url-upload').removeClass('is-uploading');
                                 },
                                 success: function(data) {
@@ -1671,7 +1975,7 @@ $this->title = 'Create Qard';
 
                             }
                             $.ajax({
-                                url: "< ?=Url::to(['qard/url'], true)?>",
+                                url: "<?=Url::to(['qard/url'], true)?>",
                                 cache: false,
                                 contentType: false,
                                 processData: false,
@@ -1698,7 +2002,6 @@ $this->title = 'Create Qard';
 
                 // if the form was submitted
                 form.addEventListener('submit', function(e) {
-                
                     // preventing the duplicate submissions if the current one is in progress
                     if (form.classList.contains('is-uploading')) return false;
 
@@ -1727,7 +2030,7 @@ $this->title = 'Create Qard';
                                 var data = JSON.parse(ajax.responseText);
                                 form.classList.add(data.success == true ? 'is-success' : 'is-error');
                                 if (!data.success) errorMsg.textContent = data.error;
-                            } else //alert('Error. Please, contact the webmaster!');
+                            } else alert('Error. Please, contact the webmaster!');
                         }
 
                         ajax.onerror = function() {
