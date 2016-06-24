@@ -137,8 +137,8 @@ $this->title = 'Create Qard';
     <span class="caret"></span>
   </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                    <a href="#" class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>;display: inline-block;height: 25px;width: 25px;" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></a>
-                                                    <a href="#" class="color" style="background:<?php echo $theme_properties['light_text_color'];?>;display: inline-block;height: 25px;width: 25px;" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);"></a>
+                                                    <a href="#" class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>;display: inline-block;height: 25px;width: 25px;" data-fontcolor-id="dark_text_color" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></a>
+                                                    <a href="#" class="color" style="background:<?php echo $theme_properties['light_text_color'];?>;display: inline-block;height: 25px;width: 25px;" data-fontcolor-id="light_text_color" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);"></a>
                                                 </ul>
                                             </div>
                                             </li>
@@ -321,12 +321,12 @@ $this->title = 'Create Qard';
                                     <h4>Block Background Color</h4>
                                     <input type="text" name="blk_color" id="bg_color" class="form-control" placeholder="Background color (#0000)">
 									<ul>
-                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_1'] ?>" data-color="<?php echo $theme_properties['theme_color_1'] ?>" onclick="setBGColor(this);"></li>
-                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_2'] ?>" data-color="<?php echo $theme_properties['theme_color_2'] ?>" onclick="setBGColor(this);"></li>
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_3'] ?>" data-color="<?php echo $theme_properties['theme_color_3'] ?>" onclick="setBGColor(this);"></li>
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_4'] ?>" data-color="<?php echo $theme_properties['theme_color_4'] ?>" onclick="setBGColor(this);"></li>
+                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_1'] ?>" data-bgcolor-id="theme_color_1" data-color="<?php echo $theme_properties['theme_color_1'] ?>" onclick="setBGColor(this);"></li>
+                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_2'] ?>" data-bgcolor-id="theme_color_2" data-color="<?php echo $theme_properties['theme_color_2'] ?>" onclick="setBGColor(this);"></li>
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_3'] ?>" data-bgcolor-id="theme_color_3" data-color="<?php echo $theme_properties['theme_color_3'] ?>" onclick="setBGColor(this);"></li>
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_4'] ?>" data-bgcolor-id="theme_color_4" data-color="<?php echo $theme_properties['theme_color_4'] ?>" onclick="setBGColor(this);"></li>
 										
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_5'] ?>" data-color="<?php echo $theme_properties['theme_color_5'] ?>" onclick="setBGColor(this);"></li>							
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_5'] ?>" data-bgcolor-id="theme_color_5" data-color="<?php echo $theme_properties['theme_color_5'] ?>" onclick="setBGColor(this);"></li>							
 									</ul>
                                 </div>
 
@@ -405,6 +405,7 @@ $this->title = 'Create Qard';
 		function setBGColor(elem){
 			color = $(elem).attr('data-color');
 			$('#bg_color').val(color);
+			$("#working_div .bgimg-block").attr('data-bgcolor-id',$(elem).attr('data-bgcolor-id'));
 			$("#working_div .bgimg-block").css('background-color', color);
 		}
              
@@ -684,6 +685,7 @@ $this->title = 'Create Qard';
 			$("#working_div .current_blk").focus();
 			document.execCommand('styleWithCSS', false, true);
 			document.execCommand('foreColor', false, $(inp).attr('data-color'));
+			$("#working_div .current_blk").attr('data-fontcolor-id',$(inp).attr('data-fontcolor-id'));
 		}
 		/*
 		 * to make text in indent
@@ -919,6 +921,19 @@ $this->title = 'Create Qard';
                 name: 'block_priority',
                 value: block_priority
             });		
+			
+			//addded data bgcolor id and font color id
+			var data_bgcolor_id = $("#working_div .bgimg-block").attr("data-bgcolor-id") || 0;
+            data.push({
+                name: 'data_bgcolor_id',
+                value: data_bgcolor_id
+            });	
+			var data_fontcolor_id = $("#working_div .current_blk").attr("data-fontcolor-id") || 0;
+            data.push({
+                name: 'data_fontcolor_id',
+                value: data_fontcolor_id
+            });	
+			
 			commanAjaxFun(data, 'add_block');
 			//create another working block(div)
                                 //$("#working_div").remove();
@@ -1069,7 +1084,18 @@ $this->title = 'Create Qard';
 				name: 'blk_id',
 				value: blk_id
 			});
-
+			//addded data bgcolor id and font color id
+			var data_bgcolor_id = $(this).attr("data-bgcolor-id") || 0;
+            data.push({
+                name: 'data_bgcolor_id',
+                value: data_bgcolor_id
+            });	
+			var data_fontcolor_id = $(this).find(".current_blk").attr("data-fontcolor-id") || 0;
+            data.push({
+                name: 'data_fontcolor_id',
+                value: data_fontcolor_id
+            });	
+			
 			$(this).addClass("delete_blk");
 
 			//	    if(typeof $(this).find(".current_blk").html() == typeof undefined && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){

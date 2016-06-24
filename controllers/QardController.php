@@ -163,19 +163,13 @@ class QardController extends Controller
 	
     }
 	public function actionEdit($id,$theme_id=null){
+		$switch_theme = false;
 		$model = $this->findModel($id);
-		$theme_id = $model->qard_theme;
-		if(!$theme_id){
-			//go and select a theme and then come back
-			return $this->redirect(['theme/select-theme']);
-		}
-		else{
-			$theme = Theme::findOne($theme_id);
-			if(!$theme){
-				\Yii::$app->getSession()->setFlash('error', 'Please select a theme');
-				return $this->redirect(['theme/select-theme']);
-			}
-		}
+		if($theme_id)
+			$switch_theme = true;
+		if(!$theme_id)
+			$theme_id = $model->qard_theme;
+		$theme = Theme::findOne($theme_id);
         if ($model->load(Yii::$app->request->post())) {
 			
 			$model->save(false);
@@ -194,6 +188,7 @@ class QardController extends Controller
                 return $this->render('edit', [
                     'model' => $model,
 					'theme' => $theme,
+					'switch_theme' => $switch_theme,
 					'tags'=>$tags
                 ]);
             }else{

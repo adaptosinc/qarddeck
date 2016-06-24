@@ -260,6 +260,8 @@ class BlockController extends Controller
 		$serilized_arr['div_opacity']=  $post['div_opacity'];
 		$serilized_arr['div_bgcolor']=$post['div_bgcolor'];
 		$serilized_arr['div_overlaycolor']=$post['div_overlaycolor'];
+		$serilized_arr['data_bgcolor_id']=$post['data_bgcolor_id'];
+		$serilized_arr['data_fontcolor_id']=$post['data_fontcolor_id'];
 		
 		if(strpos('/',$post['div_bgimage'])){
 			$url_split=  explode('/',$post['div_bgimage']);
