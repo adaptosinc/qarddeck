@@ -447,7 +447,7 @@ class QardController extends Controller
 			//$title = explode('.',$title);
 			/******************************/
 			//FORMAT THE OUTPUT IN JSON
-			$link_icon = '<p><div id="previewLink" onclick = "displayLink(this);" data-url="'.$url.'"><input type="hidden" value="'.$url.'" id="hiddenUrl"/><img src="'.Yii::$app->request->baseUrl.'/images/link-trans.png" alt=""></div></p>';
+			$link_icon = '<p><div id="previewLink" contenteditable="false" onclick = "displayLink(this);" data-url="'.$url.'"><input type="hidden" value="'.$url.'" id="hiddenUrl"/><img src="'.Yii::$app->request->baseUrl.'/images/link-trans.png" alt=""></div></p>';
 			$output_array['preview_html'] = $preview_html;
 			$output_array['work_space_text'] ='<div id="qardContent">'. substr($title,0,150).'...'.$link_icon.'</div>';//link_icon with onclik function
 			$output_array['type'] = 'web_page';
@@ -496,7 +496,56 @@ class QardController extends Controller
 	public function actionEmbedUrl($embed_code){
 		//get the src url
 		//fetch the meta image from the url response
-		return '<img src="image_url" onClick = "embedCode(this)" data-content-url = "iframe-src"';		
+		$video_array = [];
+		$doc = new \DOMDocument();
+		@$doc->loadHTML($embed_code);
+		$src = $doc->getElementsByTagName('iframe')->item(0)->getAttribute('src');
+		$c = curl_init($src);			
+		$options = array(
+			CURLOPT_RETURNTRANSFER => true,     // return web page
+			CURLOPT_HEADER         => false,    // don't return headers
+			CURLOPT_FOLLOWLOCATION => true,     // follow redirects
+			CURLOPT_ENCODING       => "",       // handle all encodings
+			CURLOPT_USERAGENT      => "spider", // who am i
+			CURLOPT_AUTOREFERER    => true,     // set referer on redirect
+			CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
+			CURLOPT_TIMEOUT        => 120,      // timeout on response
+			CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
+			CURLOPT_SSL_VERIFYPEER => false     // Disabled SSL Cert checks
+		);
+		curl_setopt_array( $c, $options );
+		$html = curl_exec($c);
+		
+		$doc2 = new \DOMDocument();
+		@$doc2->loadHTML($html);
+		$title =false;
+		$titles = $doc2->getElementsByTagName('title');
+		if($titles->length > 0){ 
+			foreach($titles as $title){
+				$title = $title->textContent;
+			}
+		}
+		$embed_code1 = $src;
+		//Youtube code
+		if (strpos($src, 'youtube') !== false) {
+			$videoid = str_replace("https://www.youtube.com/embed/",'',$src);
+			$video_link = '<div id="qardContent"><div class="embed_title">'.$title.'</div><div class="embed_content"><input type="hidden" id="embedHide" value="'.$src.'"/><p>https://youtu.be/'.$videoid.'</p><div onclick="embedCode(this)" contenteditable="false"><i class="fa fa-youtube-play fa-2x"></i></div></div></div>';
+		}else{
+			$videoid = str_replace("https://player.vimeo.com/video/",'',$src);
+			$video_link = '<div id="qardContent"><div class="embed_title">'.$title.'</div><div class="embed_content"><input type="hidden" id="embedHide" value="'.$src.'"/><p>https://vimeo.com/'.$videoid.'</p><div onclick="embedCode(this)" contenteditable="false"><i class="fa fa-youtube-play fa-2x"></i></div></div></div>';
+		}
+		$video_array['video_img'] = $video_link;
+		$video_array['iframelink'] = $embed_code;
+		/****** youtube code ends *****/
+		echo json_encode($video_array);		
+	}
+	public function actionEmbeddisplayUrl($embed_code){
+		//get the src url
+		//fetch the meta image from the url response
+		$video_array = [];
+		$iframelink = '<iframe src="'.$embed_code.'" width="510" height="320" frameborder="0" allowfullscreen></iframe>';
+		$video_array['iframelink'] = $iframelink;
+		echo json_encode($video_array);		
 	}
 	
 	/**
