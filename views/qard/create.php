@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Qard */
 $this->title = 'Create Qard';
 ?>
+
     <!-- requiered for tag -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400" />
 
@@ -214,6 +215,7 @@ $this->title = 'Create Qard';
                                 <form method="post" action="" id="qard-url-upload" enctype="multipart/form-data" novalidate class="box">
 
                                     <div id="link_div"></div>
+                                    
                                     <div class="drop-file form-group" id="drop-file">
                                         <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
 
@@ -1366,7 +1368,7 @@ $this->title = 'Create Qard';
             return false;
             //  $('#qard-url-upload').click();             
         });     
-        $('input[id=qard-url-upload-click]').change(function(e) {
+        $('input[id=qard-url-upload-click]').on('change',function(e) {
             // $('#profile-image-upload').click();
             var file_data = $('#qard-url-upload-click').prop('files')[0];
             var form_data = new FormData();
@@ -1380,14 +1382,15 @@ $this->title = 'Create Qard';
                 }
                 if (ext == "docx" || ext == "doc") {
                     $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
-
                 }
+                var csrfToken = $('meta[name="csrf-token"]').attr("content");
                 $.ajax({
                     url: "<?=Url::to(['qard/simple'], true)?>",
                     cache: false,
                     contentType: false,
                     processData: false,
                     data: form_data,
+                    //data: form_data,
                     type: 'post',
                     success: function(response) {
                         $("#dispIcon").show();
@@ -1468,9 +1471,9 @@ $this->title = 'Create Qard';
           }  
 	/***************************/
         </script>
-        
     <script>
         'use strict';
+
         (function(document, window, index) {
             // feature detection for drag&drop upload
             var isAdvancedUpload = function() {
@@ -1490,7 +1493,7 @@ $this->title = 'Create Qard';
                     showFiles = function(files) {
                         label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
                     },
-                    triggerFormSubmit = function() {
+                    triggerFormSubmit = function() { return false;
                         var event = document.createEvent('HTMLEvents');
                         event.initEvent('submit', true, false);
                         form.dispatchEvent(event);
@@ -1505,320 +1508,7 @@ $this->title = 'Create Qard';
 
                 // automatically submit the form on file select
                 input.addEventListener('change', function(e) {
-                    showFiles(e.target.files);
-                    triggerFormSubmit();
-                });
-
-                // drag&drop files if the feature is available
-                if (isAdvancedUpload) {
-
-                    form.classList.add('has-advanced-upload'); // letting the CSS part to know drag&drop is supported by the browser
-
-                    ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(function(event) {
-                        form.addEventListener(event, function(e) {
-                            // preventing the unwanted behaviours
-                            e.preventDefault();
-                            e.stopPropagation();
-                        });
-                    });
-                    ['dragover', 'dragenter'].forEach(function(event) {
-                        form.addEventListener(event, function() {
-                            form.classList.add('is-dragover');
-                        });
-                    });
-                    ['dragleave', 'dragend', 'drop'].forEach(function(event) {
-                        form.addEventListener(event, function() {
-                            form.classList.remove('is-dragover');
-                        });
-                    });
-                    form.addEventListener('drop', function(e) {
-                        console.log("adv drop");
-                        droppedFiles = e.dataTransfer.files; // the files that were dropped
-                        showFiles(droppedFiles);
-
-
-                        triggerFormSubmit();
-
-                    });
-                }
-
-
-                // if the form was submitted
-                form.addEventListener('submit', function(e) {
-
-                    // preventing the duplicate submissions if the current one is in progress
-                    if (form.classList.contains('is-uploading')) return false;
-
-                    form.classList.add('is-uploading');
-                    form.classList.remove('is-error');
-
-                    if (isAdvancedUpload) // ajax file upload for modern browsers
-                    {
-                        e.preventDefault();
-
-                        // gathering the form data
-                        var ajaxData = new FormData(form);
-                        if (droppedFiles) {
-                            console.log("insid");
-                            Array.prototype.forEach.call(droppedFiles, function(file) {
-                                ajaxData.append(input.getAttribute('name'), file);
-                            });
-                        }
-
-                        // ajax request
-                        var ajax = new XMLHttpRequest();
-                        ajax.open(form.getAttribute('method'), form.getAttribute('action'), true);
-
-                        ajax.onload = function() {
-                            form.classList.remove('is-uploading');
-                            if (ajax.status >= 200 && ajax.status < 400) {
-                                var data = JSON.parse(ajax.responseText);
-                                form.classList.add(data.success == true ? 'is-success' : 'is-error');
-                                if (!data.success) errorMsg.textContent = data.error;
-                            }
-
-                        }
-
-                        ajax.onerror = function() {
-                            form.classList.remove('is-uploading');
-                            alert('Error. Please, try again!');
-                        }
-
-                        ajax.send(ajaxData);
-                    } else // fallback Ajax solution upload for older browsers
-                    {
-                        var iframeName = 'uploadiframe' + new Date().getTime(),
-                            iframe = document.createElement('iframe');
-
-                        $iframe = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
-
-                        iframe.setAttribute('name', iframeName);
-                        iframe.style.display = 'none';
-
-                        document.body.appendChild(iframe);
-                        form.setAttribute('target', iframeName);
-
-                        iframe.addEventListener('load', function() {
-                            var data = JSON.parse(iframe.contentDocument.body.innerHTML);
-                            form.classList.remove('is-uploading')
-                            form.classList.add(data.success == true ? 'is-success' : 'is-error')
-                            form.removeAttribute('target');
-                            if (!data.success) errorMsg.textContent = data.error;
-                            iframe.parentNode.removeChild(iframe);
-                        });
-                    }
-                });
-
-                // restart the form if has a state of error/success
-                Array.prototype.forEach.call(restart, function(entry) {
-                    entry.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        form.classList.remove('is-error', 'is-success');
-                        input.click();
-                    });
-                });
-
-                // Firefox focus bug fix for file input
-                input.addEventListener('focus', function() {
-                    input.classList.add('has-focus');
-                });
-                input.addEventListener('blur', function() {
-                    input.classList.remove('has-focus');
-                });
-
-            });
-        }(document, window, 0));
-    </script>
-    <script>
-        'use strict';
-
-        ;
-        (function($, window, document, undefined) {
-            // feature detection for drag&drop upload
-
-            var isAdvancedUpload = function() {
-                var div = document.createElement('div');
-                return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-            }();
-
-
-            // applying the effect for every form
-
-            $('.box').each(function() {
-                var $form = $(this),
-                    $input = $form.find('input[type="file"]'),
-                    $label = $form.find('label'),
-                    $errorMsg = $form.find('.box__error span'),
-                    $restart = $form.find('.box__restart'),
-                    droppedFiles = false,
-                    showFiles = function(files) {
-                        //					$label.text( files.length > 1 ? ( $input.attr( 'data-multiple-caption' ) || '' ).replace( '{count}', files.length ) : files[ 0 ].name );
-                    };
-
-                // letting the server side to know we are going to make an Ajax request
-                $form.append('<input type="hidden" name="ajax" value="1" />');
-
-                // automatically submit the form on file select
-                $input.on('change', function(e) {
-                    showFiles(e.target.files);
-
-
-                    $form.trigger('submit');
-
-
-                });
-
-
-                // drag&drop files if the feature is available
-                if (isAdvancedUpload) {
-                    $form
-                        .addClass('has-advanced-upload') // letting the CSS part to know drag&drop is supported by the browser
-                        .on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
-                            // preventing the unwanted behaviours
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                        })
-                        .on('dragover dragenter', function() //
-                            {
-                                $form.addClass('is-dragover');
-                            })
-                        .on('dragleave dragend drop', function() {
-                            $form.removeClass('is-dragover');
-                        })
-                        .on('drop', function(e) {
-                            droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
-
-                            console.log(droppedFiles);
-                            showFiles(droppedFiles);
-
-
-                            $form.trigger('submit'); // automatically submit the form on file drop
-
-
-                        });
-                }
-
-
-                // if the form was submitted
-
-                $form.on('submit', function(e) {
-                    // preventing the duplicate submissions if the current one is in progress
-                    if ($form.hasClass('is-uploading')) return false;
-
-                    $form.addClass('is-uploading').removeClass('is-error');
-
-                    if (isAdvancedUpload) // ajax file upload for modern browsers
-                    {
-                        e.preventDefault();
-
-                        // gathering the form data
-                        var ajaxData = new FormData($form.get(0));
-
-                        console.log(ajaxData);
-                        if (droppedFiles) {
-                            $.each(droppedFiles, function(i, file) {
-                                ajaxData.append($input.attr('name'), file);
-                            });
-                        }
-
-                        // ajax request
-                        $.ajax({
-                            url: $form.attr('action'),
-                            type: $form.attr('method'),
-                            data: ajaxData,
-                            dataType: 'json',
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            complete: function() {
-                                $form.removeClass('is-uploading');
-                            },
-                            success: function(data) {
-                                $form.addClass(data.success == true ? 'is-success' : 'is-error');
-                                if (!data.success) $errorMsg.text(data.error);
-                            },
-                            error: function() {
-                                //alert( 'Error. Please, contact the webmaster!' );
-                            }
-                        });
-                    } else // fallback Ajax solution upload for older browsers
-                    {
-                        var iframeName = 'uploadiframe' + new Date().getTime(),
-                            $iframe = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
-
-                        $('body').append($iframe);
-                        $form.attr('target', iframeName);
-
-                        $iframe.one('load', function() {
-                            var data = $.parseJSON($iframe.contents().find('body').text());
-                            $form.removeClass('is-uploading').addClass(data.success == true ? 'is-success' : 'is-error').removeAttr('target');
-                            if (!data.success) $errorMsg.text(data.error);
-                            $iframe.remove();
-                        });
-                    }
-                });
-
-
-                // restart the form if has a state of error/success
-
-                $restart.on('click', function(e) {
-                    e.preventDefault();
-                    $form.removeClass('is-error is-success');
-                    $input.trigger('click');
-                });
-
-                // Firefox focus bug fix for file input
-                $input
-                    .on('focus', function() {
-                        $input.addClass('has-focus');
-                    })
-                    .on('blur', function() {
-                        $input.removeClass('has-focus');
-                    });
-            });
-
-        })(jQuery, window, document);
-    </script>
-
-    <script>
-        'use strict';
-
-        ;
-        (function(document, window, index) {
-            // feature detection for drag&drop upload
-            var isAdvancedUpload = function() {
-                var div = document.createElement('div');
-                return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-            }();
-
-
-            // applying the effect for every form
-            var forms = document.querySelectorAll('.box');
-            Array.prototype.forEach.call(forms, function(form) {
-                var input = form.querySelector('input[type="file"]'),
-                    label = form.querySelector('label'),
-                    errorMsg = form.querySelector('.box__error span'),
-                    restart = form.querySelectorAll('.box__restart'),
-                    droppedFiles = false,
-                    showFiles = function(files) {
-                        label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
-                    },
-                    triggerFormSubmit = function() {
-                        var event = document.createEvent('HTMLEvents');
-                        event.initEvent('submit', true, false);
-                        form.dispatchEvent(event);
-                    };
-
-                // letting the server side to know we are going to make an Ajax request
-                var ajaxFlag = document.createElement('input');
-                ajaxFlag.setAttribute('type', 'hidden');
-                ajaxFlag.setAttribute('name', 'ajax');
-                ajaxFlag.setAttribute('value', 1);
-                form.appendChild(ajaxFlag);
-
-                // automatically submit the form on file select
-                input.addEventListener('change', function(e) {
+  
                     showFiles(e.target.files);
 
 
@@ -1853,10 +1543,7 @@ $this->title = 'Create Qard';
                         showFiles(droppedFiles);
                         //            var file_data = $('#qard-url-upload').prop('files')[0];   
                         //console.log($("#qard-url-upload").serializeArray());
-
-
-
-
+                        
                         var ajaxData = new FormData($('#qard-url-upload').get(0));
                         var fileType;
                         if (droppedFiles) {
@@ -1889,7 +1576,6 @@ $this->title = 'Create Qard';
                                 contentType: false,
                                 processData: false,
                                 complete: function() {
-
                                     $('#qard-url-upload').removeClass('is-uploading');
                                 },
                                 success: function(data) {
@@ -1929,7 +1615,7 @@ $this->title = 'Create Qard';
 
                             }
                             $.ajax({
-                                url: "<?=Url::to(['qard/url'], true)?>",
+                                url: "< ?=Url::to(['qard/url'], true)?>",
                                 cache: false,
                                 contentType: false,
                                 processData: false,
@@ -1956,6 +1642,7 @@ $this->title = 'Create Qard';
 
                 // if the form was submitted
                 form.addEventListener('submit', function(e) {
+                
                     // preventing the duplicate submissions if the current one is in progress
                     if (form.classList.contains('is-uploading')) return false;
 
@@ -1984,7 +1671,7 @@ $this->title = 'Create Qard';
                                 var data = JSON.parse(ajax.responseText);
                                 form.classList.add(data.success == true ? 'is-success' : 'is-error');
                                 if (!data.success) errorMsg.textContent = data.error;
-                            } else alert('Error. Please, contact the webmaster!');
+                            } else //alert('Error. Please, contact the webmaster!');
                         }
 
                         ajax.onerror = function() {

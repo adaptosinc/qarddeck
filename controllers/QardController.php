@@ -599,10 +599,10 @@ class QardController extends Controller
      * @return uploaded file name
      */ 
         public function actionSimple(){
-           if (Yii::$app->request->isAjax) {  
+           if (Yii::$app->request->isAjax) {                 
                   if($_FILES["file"]['name']){
 
-                            $move = Yii::$app->basePath.'/web/uploads/docs/';      
+                            $move = Yii::$app->basePath.'/web/uploads/docs/';    
                             $file =  str_replace(' ', '_',  $_FILES["file"]['name']);
                             $moveto = $move.$_FILES["file"]['name'];
                             $temp = explode(".", $_FILES["file"]["name"]);
@@ -624,5 +624,6 @@ class QardController extends Controller
                              ];
      }}
            }
+           
      
 }
