@@ -1560,7 +1560,7 @@ $this->title = 'Edit Qard';
             var get_embed_url = "<?=Url::to(['qard/embed-url'], true);?>";
             $.ajax({
                 url: get_embed_url,
-                type: "GET",
+                type: "POST",
 				datatype : 'json',
                 data: {
                     'embed_code': embedd_preview_url

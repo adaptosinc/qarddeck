@@ -493,9 +493,10 @@ class QardController extends Controller
 	 * @param html $embed_code
 	 * @return mixed
 	 */	
-	public function actionEmbedUrl($embed_code){
+	public function actionEmbedUrl(){
 		//get the src url
 		//fetch the meta image from the url response
+		$embed_code = \Yii::$app->request->post()['embed_code'];
 		$video_array = [];
 		$doc = new \DOMDocument();
 		@$doc->loadHTML($embed_code);
