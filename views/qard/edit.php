@@ -110,10 +110,12 @@ $this->title = 'Edit Qard';
 								//$text_block_style .='height:auto;';
 						}
 						///////////////////////////
+					if(!isset($theme['data_style_qard']))
+						$theme['data_style_qard'] = "line";
 					if($i == 1)
 						$str .= '<div id="working_div" class="working_div block active">';
 						
-						$str .= '<div id="blk_'.$i.'" data-bgcolor-id="'.$theme['data_bgcolor_id'].'" class="bgimg-block parent_current_blk ui-resizable" style="'.$img_block_style.'" >
+						$str .= '<div id="blk_'.$i.'" data-style-qard="'.$theme['data_style_qard'].'" data-bgcolor-id="'.$theme['data_bgcolor_id'].'" class="bgimg-block parent_current_blk ui-resizable '.$theme['data_style_qard'].'" style="'.$img_block_style.'" >
 						<div class="bgoverlay-block" style="'.$overlay_block_style.'">';
 					if($i == 1)
 						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk working_div" contenteditable="true" unselectable="off" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="overflow:hidden" style="'.$text_block_style.'">';
@@ -151,6 +153,7 @@ $this->title = 'Edit Qard';
                         <li role="presentation"><a href="#paintblock" aria-controls="paintblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/paint.png" alt=""></a></li>
                         <li role="presentation"><a href="#copyblock" aria-controls="copyblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/copy.png" alt=""></a></li>
                         <li role="presentation" id="deleteblock"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/delete.png" alt=""></a></li>
+						<li role="presentation"><a id="styleblock_tab" href="#styleblock" aria-controls="styleblock" role="tab" data-toggle="tab">Style Card</a></li>
                     </ul>
                     <!--added by vijay-->
 
@@ -389,6 +392,69 @@ $this->title = 'Edit Qard';
                         </div>
                         <div role="tabpanel" class="tab-pane" id="copyblock">..</div>
                         <div role="tabpanel" class="tab-pane" id="deleteblock">.</div>
+						<?php /* Style card starts Here */ ?>
+						<div role="tabpanel" class="tab-pane" id="styleblock">.
+							<h3 style="text-align: center;">Customize The Look & Feel of Your Qard</h3>
+							<button class="btn btn-default">Back</button>
+                            <h4>Style</h4>
+                            <div class="theme-content">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="flat col-sm-3 col-md-3">
+                                            <div class="qard-content">
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>                                
+                                            </div>
+                
+                                        </div>
+                                        <div class="line col-sm-3 col-md-3">
+                                            <div class="qard-content">
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>                                
+                                            </div>
+                                        </div>                                        
+                                        <div class="gap col-sm-3 col-md-3">
+                                            <div class="qard-content">
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>                                
+                                            </div>
+                                        </div>
+                                        <div class="shadow col-sm-3 col-md-3">
+                                            <div class="qard-content">
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>
+                                                <div class="block-style"></div>                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <h4>Qard Theme</h4>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6">
+                                            <ul class="theme-bglist">
+                                                <li class="bglist" style="background:<?=$theme_properties['theme_color_1']?>;"></li>
+                                                <li class="bglist" style="background:<?=$theme_properties['theme_color_2']?>;"></li>
+                                                <li class="bglist" style="background:<?=$theme_properties['theme_color_3']?>;"></li>
+                                                <li class="bglist" style="background:<?=$theme_properties['theme_color_4']?>;"></li>
+												<li class="bglist" style="background:<?=$theme_properties['theme_color_5']?>;"></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <button class="btn btn-default">Change Theme</button>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+						<?php /* Style card Ends Here */ ?>
                     </div>
 
                 </div>
@@ -470,7 +536,7 @@ $this->title = 'Edit Qard';
 			$("#working_div .bgimg-block").css('background-color', color);
 			$("#working_div .bgimg-block").attr('data-bgcolor-id',$(elem).attr('data-bgcolor-id'));
 		}
-             
+
     </script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
 
@@ -995,7 +1061,14 @@ $this->title = 'Edit Qard';
                 name: 'data_fontcolor_id',
                 value: data_fontcolor_id
             });	
-			
+			// add the block style also
+			var data_style_qard = $("#working_div .bgimg-block").attr('data-style-qard') || 'line';
+			//console.log("block_style:"+data_style_qard);return;
+            data.push({
+                name: 'data_style_qard',
+                value: data_style_qard
+            });	
+						
 			commanAjaxFun(data, 'add_block');
 			//create another working block(div)
                                 //$("#working_div").remove();
@@ -1157,7 +1230,13 @@ $this->title = 'Edit Qard';
                 name: 'data_fontcolor_id',
                 value: data_fontcolor_id
             });	
-			
+			// add the block style also
+			var data_style_qard = $(this).attr('data-style-qard') || 'line';
+            data.push({
+                name: 'data_style_qard',
+                value: data_style_qard
+            });	
+						
 			$(this).addClass("delete_blk");
 
 			//	    if(typeof $(this).find(".current_blk").html() == typeof undefined && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
@@ -1229,7 +1308,7 @@ $this->title = 'Edit Qard';
 						img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
 					}
 					//creating parent block or img-block
-					var new_div = '<div id="' + data.blk_id + '" class="bgimg-block parent_current_blk" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
+					var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'"  style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
 					//creating overlay-block or middel block
 					new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' + data.div_opacity + ';height:' + data.height + 'px;">';
 					//creating main block or text block
@@ -1259,7 +1338,7 @@ $this->title = 'Edit Qard';
 					if (checkForNew) {
 						    var nextBlockPriority = getNextBlockPriority();
 							$("#working_div").remove();
-							var new_div = '<div  id="working_div" class="working_div active"><div id="blk_' + getNextBlockId() + '" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off" data-block_priority="' + nextBlockPriority + '"></div></div></div></div>';
+							var new_div = '<div  id="working_div" class="working_div active"><div id="blk_' + getNextBlockId() + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" data-style-qard = "'+data.data_style_qard+'"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off" data-block_priority="' + nextBlockPriority + '"></div></div></div></div>';
 							$("#add-block .parent_current_blk:last").after(new_div);
 					}
 				} 
@@ -1612,6 +1691,32 @@ $this->title = 'Edit Qard';
 			$('#embed_code').val($(videoLink).attr('data-content-url'));
 		}
 		//Embedd Video ends
+		
+		// Styling Card script starts
+		$('.qard-content').click(function(){
+			var styleCard = $(this).parent();
+			if(styleCard.hasClass( "line" )){
+				$('.bgimg-block').addClass('line');
+				$('.bgimg-block').removeClass('flat gap shadow');
+				$('.bgimg-block').attr('data-style-qard','line');
+			}
+			else if(styleCard.hasClass( "gap" )){
+				$('.bgimg-block').addClass('gap');
+				$('.bgimg-block').removeClass('flat line shadow');
+				$('.bgimg-block').attr('data-style-qard','gap');
+			}
+			else if(styleCard.hasClass( "shadow" )){
+				$('.bgimg-block').addClass('shadow');
+				$('.bgimg-block').removeClass('flat line gap');
+				$('.bgimg-block').attr('data-style-qard','shadow');
+			}else{
+				$('.bgimg-block').addClass('flat');
+				$('.bgimg-block').removeClass('gap line shadow');
+				$('.bgimg-block').attr('data-style-qard','flat');
+			}
+		});
+		// Styling Card script Ends
+		
 	/***************************/
         </script>
         

@@ -34,7 +34,7 @@ and open the template in the editor.
     background-color: #dbd3d3; 
 }
 .bgimg-block {
-	border-bottom: 1px solid #ccc;
+	/*border-bottom: 1px solid #ccc;*/
 }
 #working_div img{
     width: 100%;

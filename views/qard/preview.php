@@ -98,22 +98,24 @@ $this->title = 'Preview Qard';
 						}
 						if($theme['div_bgcolor'] != '')
 							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
-						$img_block_style .= 'height:'.$theme['height'].'px;';
-						//$img_block_style .= 'height:auto;';
+						$img_block_style .= 'min-height:'.$theme['height'].'px;';
+						$img_block_style .= 'height:auto;';
 						
 					//overlay block styles
 						$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
 						if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
 							$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
-						$overlay_block_style .= 'height:'.$theme['height'].'px;';
-						//$overlay_block_style .='height:auto;';
+						$overlay_block_style .= 'min-height:'.$theme['height'].'px;';
+						$overlay_block_style .='height:auto;';
 						
-						$text_block_style .= 'height:'.$theme['height'].'px;';
+						$text_block_style .= 'min-height:'.$theme['height'].'px;';
 						$text_block_style .='overflow:hidden;';
-						//$text_block_style .='height:auto;';
+						$text_block_style .='height:auto;';
 				}
 				///////////////////////////
-				$str .= '<div class="bgimg-block" style="'.$img_block_style.'" >
+				if(!isset($theme['data_style_qard']))
+					$theme['data_style_qard'] = 'line';
+				$str .= '<div class="bgimg-block '.$theme['data_style_qard'].'" style="'.$img_block_style.'" >
 				<div class="bgoverlay-block" style="'.$overlay_block_style.'">
 				<div class="text-block" style="'.$text_block_style.'">';
 				$str .= $block->text;

@@ -86,7 +86,7 @@ class BlockController extends Controller
 			
 			if(empty($block->errors) && !is_array($block)){
 				$text=(empty($block->text))?'':$block->text;
-				echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_overlaycolor'=>$post['div_overlaycolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id'],'block_priority'=>$block->block_priority));
+				echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_overlaycolor'=>$post['div_overlaycolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id'],'block_priority'=>$block->block_priority, 'data_style_qard'=>$_POST['data_style_qard']));
 				exit;
 				
 			}  else {
@@ -256,12 +256,13 @@ class BlockController extends Controller
 		
 		$theme->theme_type=0; //theme type 1 define theme for qard o theme for block
 		$theme->theme_properties='test'; // serialized data all theme details
-		$serilized_arr['image_opacity']=  $post['image_opacity'];
-		$serilized_arr['div_opacity']=  $post['div_opacity'];
-		$serilized_arr['div_bgcolor']=$post['div_bgcolor'];
-		$serilized_arr['div_overlaycolor']=$post['div_overlaycolor'];
-		$serilized_arr['data_bgcolor_id']=$post['data_bgcolor_id'];
-		$serilized_arr['data_fontcolor_id']=$post['data_fontcolor_id'];
+		$serilized_arr['image_opacity'] = $post['image_opacity'];
+		$serilized_arr['div_opacity'] = $post['div_opacity'];
+		$serilized_arr['div_bgcolor'] = $post['div_bgcolor'];
+		$serilized_arr['div_overlaycolor'] = $post['div_overlaycolor'];
+		$serilized_arr['data_bgcolor_id'] = $post['data_bgcolor_id'];
+		$serilized_arr['data_fontcolor_id'] = $post['data_fontcolor_id'];
+		$serilized_arr['data_style_qard'] = $post['data_style_qard'];
 		
 		if(strpos('/',$post['div_bgimage'])){
 			$url_split=  explode('/',$post['div_bgimage']);
