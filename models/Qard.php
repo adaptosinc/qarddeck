@@ -171,8 +171,10 @@ class Qard extends \yii\db\ActiveRecord
 						$text_block_style .='overflow:hidden;';
 						//$text_block_style .='height:auto;';
 				}
+				if(!isset($theme['data_style_qard']))
+					$theme['data_style_qard'] = "line";
 				///////////////////////////
-				$str .= '<div class="bgimg-block" style="'.$img_block_style.'" >
+				$str .= '<div class="bgimg-block '.$theme['data_style_qard'].'" style="'.$img_block_style.'" >
 				<div class="bgoverlay-block" style="'.$overlay_block_style.'">
 				<div class="text-block" style="'.$text_block_style.'">';
 				$str .= $block->text;
