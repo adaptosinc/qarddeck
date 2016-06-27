@@ -348,7 +348,7 @@ $this->title = 'Create Qard';
                 <div class="col-sm-6 col-md-6">
                     <!--			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">-->
 
-                    <select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
+            <select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
 			    <?php foreach($tags as $key=>$value){
 				echo '<option value="'.$value->name.'">'.$value->name.'</option>';
 			    }?>
@@ -421,6 +421,7 @@ $this->title = 'Create Qard';
 	/**
 	  * Script re-written by Dency G B 
 	 **/
+	 $(".js-example-basic-multiple").select2();
 
 	/**** Handle the main work space ******/
 

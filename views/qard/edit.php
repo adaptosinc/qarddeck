@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use app\models\QardTags;
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
 $this->title = 'Edit Qard';
@@ -397,16 +398,23 @@ $this->title = 'Edit Qard';
         <div class="bottom-card row">
             <div class="col-sm-8 col-md-8">
                 <div class="col-sm-6 col-md-6">
-                    <input type="text" name="qard_title" id="qard_title" class="form-control" placeholder="Qard Title">
+                    <input type="text" name="qard_title" id="qard_title" value="<?php echo $model->title;?>" class="form-control" placeholder="Qard Title">
                 </div>
                 <div class="col-sm-6 col-md-6">
                     <!--			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">-->
 
-                    <select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
-			    <?php foreach($tags as $key=>$value){
-				echo '<option value="'.$value->name.'">'.$value->name.'</option>';
-			    }?>
-			</select>
+                <select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
+					<?php 					
+						$selected_tags = QardTags::find()->where(['qard_id'=>$model->qard_id])->asArray()->all();
+						//print_r($selected_tags);exit;
+						foreach($tags as $key=>$value){
+							if(array_key_exists($key,$selected_tags))
+								echo '<option value="'.$value->name.'" selected>'.$value->name.'</option>';
+							else
+								echo '<option value="'.$value->name.'">'.$value->name.'</option>';
+						}
+					?>
+				</select>
                 </div>
             </div>
             <div class="col-sm-4 col-md-4">
@@ -475,7 +483,8 @@ $this->title = 'Edit Qard';
 	/**
 	  * Script re-written by Dency G B 
 	 **/
-
+	$(".js-example-basic-multiple").select2();
+	//$(".js-example-basic-multiple").select2().select2('val',1);
 	/**** Handle the main work space ******/
 
 /* 	$(document).delegate("#working_div .current_blk", "hover", function(event) {	
