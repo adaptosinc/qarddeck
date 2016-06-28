@@ -2,9 +2,10 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use app\models\QardComments;
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
-$this->title = 'Preview Qard';
+$this->title = 'Consume Qard';
 ?>
     <!-- requiered for tag -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400" />
@@ -142,7 +143,22 @@ $this->title = 'Preview Qard';
 			?>
                
             </div>
-		<div class="col-sm-8 col-md-8" id="preview" style="border: 1px solid #eaeaea;height:500px"> <iframe src="https://player.vimeo.com/video/171427463" width="870" height="700" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>
+		<div class="col-sm-8 col-md-8" id="preview" style="border: 1px solid #eaeaea;height:500px"> 
+			<div id="comments">
+				<form></form>
+				<?php 
+				//form for new comments
+				//<form></form>
+				
+				//load old comments
+				$comments = QardComments::find()->where(['qard_id'=>$qard_id])->all();
+				foreach($comments as $comment){
+					//arrange it
+				}
+				?>
+			</div>
+			<div id="share"></div>
+		</div>
         </div>
         <!--<div class="bottom-card row">
             <div class="col-sm-8 col-md-8">
