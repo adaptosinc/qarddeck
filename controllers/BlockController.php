@@ -284,27 +284,31 @@ class BlockController extends Controller
 	$qardTags=new QardTags();
 	$tags=new Tag();
 	//checking whether tags are present or not
+	//print_r($post);die;
 	if(!empty($post['tags'])){
 	    // tags are in string with comm format 
-	    $tags=  array_unique(explode(',', $post['tags']));
+	    $tags =  $post['tags'];
+		//print_r($tags);
+		$tags = explode(',',$tags);
+		//print_r($tags);die;
 	    //deleting all records that are present with qard_id
 	    QardTags::deleteAll(['qard_id'=>$qard_id]);
 	    $tag_details='';
 	    foreach ($tags as $tag) {
 		// checking whether entered tags present in db or not if not then skip to insert
-		$tag_details=Tag::find()->where(['name'=>$tag])->one();
+/* 		$tag_details=Tag::find()->where(['name'=>$tag])->one();
 		
-		if(!empty($tag_details)){
+		if(!empty($tag_details)){ */
 		    $qardTags=new QardTags();
 		    $qardTags->qard_id=$qard_id;
-		    $qardTags->tag_id=$tag_details->tag_id;
-		    if($qardTags->validate()){
+		    $qardTags->tag_id=$tag;
+		   // if($qardTags->validate()){
 			$qardTags->save();
-		    }else{
+/* 		    }else{
 			QardTags::deleteAll(['qard_id'=>$qard_id]);
 			return $qardTags;
-		    }
-		}
+		    } */
+		//}
 		
 	    }
 	}else{

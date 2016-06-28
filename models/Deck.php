@@ -15,6 +15,8 @@ use Yii;
  * @property string $bg_image
  * @property string $title
  * @property string $description
+ * @property timestamp $created_at
+ * @property timestamp $updated_at
  *
  * @property Privacy $deckPrivacy
  * @property DeckComment[] $deckComments
