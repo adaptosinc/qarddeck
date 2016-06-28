@@ -110,7 +110,13 @@ $model->bg_image = "null.png";
 										}',
 				],
 			]);?>
-			<div id="preview"></div>
+			<div id="preview">
+			<?php  
+			if(!$model->isNewRecord){
+				echo '<img src="'.$model->cover_image.'" width=200px height=200px />';
+			}
+			?>
+			</div>
 			<?php ActiveForm::end(); ?>			
 		</li>                                               
 	</ul>
