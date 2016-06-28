@@ -13,7 +13,6 @@
 Thumbs.db
 
 # composer vendor dir
-vendor
 runtime/*
 config/db.php
 

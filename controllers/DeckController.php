@@ -67,7 +67,9 @@ class DeckController extends Controller
     {
         $model = new Deck();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+			$model->bg_image = $model->cover_image;
+			$model->save();
             return $this->redirect(['view', 'id' => $model->deck_id]);
         } else {
             return $this->render('create', [
@@ -86,7 +88,7 @@ class DeckController extends Controller
 			$fileName = $uid . '.' . $imageFile->extension;
 			$filePath = $directory . $fileName;
 			if ($imageFile->saveAs($filePath)) {
-				$path = '/img/temp/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
+				$path = '../img/temp/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
 				return Json::encode([
 					'files' => [[
 						'name' => $fileName,

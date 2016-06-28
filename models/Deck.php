@@ -24,7 +24,8 @@ use Yii;
  */
 class Deck extends \yii\db\ActiveRecord
 {
-    /**
+	public $cover_image;
+   /**
      * @inheritdoc
      */
     public static function tableName()
@@ -38,9 +39,11 @@ class Deck extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'status', 'deck_privacy', 'url', 'bg_image', 'title'], 'required'],
+            [['title','cover_image'], 'required'],
+			[['bg_image'],'safe'],
             [['user_id', 'status', 'deck_privacy'], 'integer'],
-            [['url', 'bg_image', 'title', 'description'], 'string'],
+            [['url','title', 'description'], 'string'],
+			['bg_image','file'],
             [['deck_privacy'], 'exist', 'skipOnError' => true, 'targetClass' => Privacy::className(), 'targetAttribute' => ['deck_privacy' => 'privacy_id']],
         ];
     }
