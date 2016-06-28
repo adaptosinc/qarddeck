@@ -448,7 +448,7 @@ $this->title = 'Edit Qard';
                                             </ul>
                                         </div>
                                         <div class="col-sm-6 col-md-6">
-                                            <button class="btn btn-default">Change Theme</button>
+                                            <button class="btn btn-default"><a href="<?=Yii::$app->request->baseUrl?>/theme/select-theme?q_id=<?=$model->qard_id?>">Change Theme</a></button>
                                         </div>                                        
                                     </div>
                                 </div>

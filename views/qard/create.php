@@ -391,7 +391,7 @@ $this->title = 'Create Qard';
                                             </ul>
                                         </div>
                                         <div class="col-sm-6 col-md-6">
-                                            <button class="btn btn-default">Change Theme</button>
+                                            <button class="btn btn-default"><a id="qardid-link" href="<?=Yii::$app->request->baseUrl?>/theme/select-theme">Change Theme</a></button>
                                         </div>                                        
                                     </div>
                                 </div>
@@ -1239,6 +1239,7 @@ $this->title = 'Create Qard';
 					//if qard is editing
 					if (!$("#qard_id").attr("value")) {
 						qard = '<input id="qard_id" type="hidden" value="' + data.qard_id + '">';
+						$('#qardid-link').attr("href","<?=Yii::$app->request->baseUrl?>/theme/select-theme/?q_id="+ data.qard_id +"");
 					}
 					// if stored data contain image then true
 					var img = '';

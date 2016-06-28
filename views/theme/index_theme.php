@@ -15,9 +15,12 @@ $this->params['breadcrumbs'][] = $this->title;
 		<div class="container">
 			<div class="row">
 			<?php
+			if(!isset($_REQUEST['q_id'])){
+				$_REQUEST['q_id']='';
+			}
 			foreach($models as $model){
 				$theme_properties = unserialize($model->theme_properties);
-				echo '<div class="qard-bg col-sm-2 col-md-2" id="'.$model->theme_id.'">     <!-- qard -->
+				echo '<div class="qard-bg col-sm-2 col-md-2" id="'.$model->theme_id.'" data-qid="'.$_REQUEST['q_id'].'">     <!-- qard -->
 						<div class="qard-top">
 							<h4>'.$model->theme_name.'</h4>
 						</div>
@@ -53,6 +56,12 @@ $this->params['breadcrumbs'][] = $this->title;
 	<script>
 	$('.qard-bg').on('click',function(){
 		var id = $(this).attr('id');
-		window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+id;
+		var q_id = $(this).attr('data-qid');
+		if(q_id!=''){
+			window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?theme_id='+id+'&id='+q_id;
+		}
+		else{
+			window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+id;
+		}
 	});
 	</script>
