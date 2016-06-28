@@ -4,12 +4,14 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Deck;
+use \app\models\Tag;
 use app\models\search\SearchDeck;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\Json;
+use yii\filters\AccessControl;
 
 /**
  * DeckController implements the CRUD actions for Deck model.
@@ -26,6 +28,22 @@ class DeckController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create'],
+                'rules' => [
+/*                  [
+                        'allow' => true,
+                        'actions' => ['login', 'signup'],
+                        'roles' => ['?'],
+                    ], */
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -66,12 +84,29 @@ class DeckController extends Controller
     public function actionCreate()
     {
         $model = new Deck();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		$tags = Tag::find()->all();
+        if ($model->load(Yii::$app->request->post())) {
+			//print_r(Yii::$app->request->post()['tags']);die;
+			$model->bg_image = $model->cover_image;
+			$model->user_id = \Yii::$app->user->id;
+			if($model->save()){
+				if(isset(Yii::$app->request->post()['tags'])){
+					$tags = Yii::$app->request->post()['tags'];
+					foreach($tags as $tag){
+						$command = \Yii::$app->db->createCommand()->insert('deck_tags', [
+							'deck_id' => $model->deck_id,
+							'tag_id'=> $tag,
+						]);
+						$command->execute();					
+					}
+				
+				}				
+			}
             return $this->redirect(['view', 'id' => $model->deck_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+				'tags' => $tags,
             ]);
         }
     }
@@ -86,7 +121,7 @@ class DeckController extends Controller
 			$fileName = $uid . '.' . $imageFile->extension;
 			$filePath = $directory . $fileName;
 			if ($imageFile->saveAs($filePath)) {
-				$path = '/img/temp/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
+				$path = '../img/temp/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
 				return Json::encode([
 					'files' => [[
 						'name' => $fileName,
@@ -110,12 +145,34 @@ class DeckController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+		$model->cover_image = $model->bg_image;
+		$tags = Tag::find()->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+			if($model->save()){
+				if(isset(Yii::$app->request->post()['tags'])){
+					//delete all tags first
+					$command = \Yii::$app->db->createCommand()->delete('deck_tags', [
+						'deck_id' => $model->deck_id,
+					]);
+					$command->execute();
+					//then update
+					$tags = Yii::$app->request->post()['tags'];
+					foreach($tags as $tag){
+						$command = \Yii::$app->db->createCommand()->insert('deck_tags', [
+							'deck_id' => $model->deck_id,
+							'tag_id'=> $tag,
+						]);
+						$command->execute();					
+					}
+				
+				}				
+			}
             return $this->redirect(['view', 'id' => $model->deck_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+				'tags' => $tags,
             ]);
         }
     }

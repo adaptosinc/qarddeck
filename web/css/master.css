@@ -906,6 +906,62 @@ ul.share-icons li a {
     color: #eaeaea;
     vertical-align: middle;
 }
+form#deck-form {
+    border: 2px dashed orange;
+    padding: 20px;
+}
+span.btn.btn-success.fileinput-button {
+	background:transparent;
+	color:#000;
+	border:0;
+}
+span.btn.btn-success.fileinput-button i, span.btn.btn-success.fileinput-button span {
+    display: none;
+}
+ul.deck-create li {
+    float: left;
+    padding: 10px 15px;
+}
+ul.deck-create input[type="file"] {
+  box-sizing: border-box;
+  display: inline-block;
+  font-size: 14px;
+  margin: 0;
+  padding: 8px;
+  position: relative;
+  background-color: #fff;
+  overflow: hidden;
+  width: 100%;
+  -webkit-appearance: none;
+  -webkit-box-sizing: border-box;
+  z-index: 1;
+	min-height: 130px;
+	border-radius: 10px;
+}
+ul.deck-create input[type="file"]:after { /* Mask the no file chosen label */
+  background-color: #fff;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+ul.deck-create input[type="file"]::-webkit-file-upload-button { /* Style the button */
+  background: #fff;
+  color: #555;
+  font: inherit;
+  padding: 0;
+  position: relative;
+  border: none;
+  text-align: left;
+  position: relative;
+  z-index: 100;
+  -webkit-appearance: none;
+}
 /* ==============================
     Mobile view
     ============================ */

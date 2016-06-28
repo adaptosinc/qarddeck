@@ -469,15 +469,19 @@ $this->title = 'Edit Qard';
                 <div class="col-sm-6 col-md-6">
                     <!--			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">-->
 
-                <select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
-					<?php 					
-						$selected_tags = QardTags::find()->where(['qard_id'=>$model->qard_id])->asArray()->all();
+                <select class="js-example-basic-multiple form-control" id="tags" name="tags[]" multiple="multiple">
+					<?php 		
+						$selected_tags = [];
+						$saved_tags = QardTags::find()->where(['qard_id'=>$model->qard_id])->all();
+						foreach($saved_tags as $saved_tag){
+							$selected_tags[$saved_tag->tag_id] = $saved_tag->tag_id;
+						}
 						//print_r($selected_tags);exit;
-						foreach($tags as $key=>$value){
-							if(array_key_exists($key,$selected_tags))
-								echo '<option value="'.$value->name.'" selected>'.$value->name.'</option>';
+						foreach($tags as $tag){
+							if(array_key_exists($tag->tag_id,$selected_tags))
+								echo '<option value="'.$tag->tag_id.'" selected>'.$tag->name.'</option>';
 							else
-								echo '<option value="'.$value->name.'">'.$value->name.'</option>';
+								echo '<option value="'.$tag->tag_id.'">'.$tag->name.'</option>';
 						}
 					?>
 				</select>
@@ -1023,10 +1027,7 @@ $this->title = 'Edit Qard';
                 value: qard_title
             });
 
-            var tags = [];
-            $('#tags :selected').each(function(i, selected) {
-                tags[i] = $(selected).text();
-            });
+            var tags = $("#tags").val();            
             data.push({
                 name: 'tags',
                 value: tags
@@ -1192,14 +1193,11 @@ $this->title = 'Edit Qard';
 				value: qard_id
 			});
 			// getting tags fot qard
-			var tags = [];
-			$('#tags :selected').each(function(i, selected) {
-				tags[i] = $(selected).text();
-			});
-			data.push({
-				name: 'tags',
-				value: tags
-			});
+            var tags = $("#tags").val();            
+            data.push({
+                name: 'tags',
+                value: tags
+            });
 
 			var qard_title = $("#qard_title").val() || 0;
 			data.push({

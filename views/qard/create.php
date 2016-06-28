@@ -412,9 +412,9 @@ $this->title = 'Create Qard';
                 <div class="col-sm-6 col-md-6">
                     <!--			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">-->
 
-            <select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
-			    <?php foreach($tags as $key=>$value){
-				echo '<option value="'.$value->name.'">'.$value->name.'</option>';
+            <select class="js-example-basic-multiple form-control" id="tags" name="tags[]" multiple="multiple">
+			    <?php foreach($tags as $tag){
+				echo '<option value="'.$tag->tag_id.'">'.$tag->name.'</option>';
 			    }?>
 			</select>
                 </div>
@@ -959,10 +959,8 @@ $this->title = 'Create Qard';
                 value: qard_title
             });
 
-            var tags = [];
-            $('#tags :selected').each(function(i, selected) {
-                tags[i] = $(selected).text();
-            });
+            
+            var tags = $("#tags").val();            
             data.push({
                 name: 'tags',
                 value: tags
@@ -1005,7 +1003,6 @@ $this->title = 'Create Qard';
                 name: 'data_style_qard',
                 value: data_style_qard
             });	
-			
 			commanAjaxFun(data, 'add_block');
 			//create another working block(div)
                                 //$("#working_div").remove();
@@ -1130,14 +1127,12 @@ $this->title = 'Create Qard';
 				value: qard_id
 			});
 			// getting tags fot qard
-			var tags = [];
-			$('#tags :selected').each(function(i, selected) {
-				tags[i] = $(selected).text();
-			});
-			data.push({
-				name: 'tags',
-				value: tags
-			});
+            var tags = $("#tags").val();            
+            data.push({
+                name: 'tags',
+                value: tags
+            });
+
 
 			var qard_title = $("#qard_title").val() || 0;
 			data.push({
