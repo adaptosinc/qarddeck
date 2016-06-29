@@ -76,7 +76,7 @@ $this->title = 'Consume Qard';
 		</div>-->
 
 		<?php 		
-		
+		$qard_id = $model->qard_id;
 		$str = '
 				<div class="qard-content" id="qard'.$model->qard_id.'" >
 				<div id="add-block'.$model->qard_id.'" class="add-block">'; ?>
