@@ -339,6 +339,16 @@ button.qard {
 /* ====================================
  *  Create Card
  *  =================================== */
+.add-deck{
+	border: solid 1px orange;
+    color: orange;
+    border-radius: 3px;	
+	position: relative;
+    display: block;
+    padding: 10px 15px;
+	background-color : transparent;
+}
+
 .add-block {
     min-height: 400px;
     position: relative;
@@ -690,9 +700,10 @@ section.main-profile .main-content {
 }
 .qard-bottom ul li a {
     color: #000;
+	text-decoration:none;
 }
 .qard-bottom ul li.pull-right {
-    color: #000 !important;
+    color: #ccc !important;
 }
 .qard-bottom h4 {
     color: #ff741b;
@@ -706,7 +717,19 @@ section.main-profile .main-content {
 .popular-qards {
     margin: 40px 0;
 }
-
+.deck-content img {
+    max-width: 100%;
+}
+.qard-bottom h2 {
+    margin: 0;
+    padding: 10px;
+    color: #ccc;
+    font-size: 14px;
+}
+.qard-bottom p {
+    padding: 0 10px;
+    color: #ff741b;
+}
 /* side bar */
 .featured-tags {
     padding: 20px;
@@ -962,6 +985,7 @@ ul.deck-create input[type="file"]::-webkit-file-upload-button { /* Style the but
   z-index: 100;
   -webkit-appearance: none;
 }
+
 /* ==============================
     Mobile view
     ============================ */

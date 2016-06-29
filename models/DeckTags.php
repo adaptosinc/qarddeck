@@ -62,6 +62,6 @@ class DeckTags extends \yii\db\ActiveRecord
      */
     public function getTag()
     {
-        return $this->hasOne(Tags::className(), ['tag_id' => 'tag_id']);
+        return $this->hasOne(Tag::className(), ['tag_id' => 'tag_id']);
     }
 }

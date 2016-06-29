@@ -46,6 +46,8 @@ $this->title = 'Create Qard';
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
+		<button id="add_to_deck" href="deck/select-deck" class="add-deck">Add to Deck</button>
+		</br>
         <div class="row">
 
             <div class="col-sm-4 col-md-4">
@@ -451,7 +453,19 @@ $this->title = 'Create Qard';
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-
+	<?php
+		yii\bootstrap\Modal::begin(['id' =>'add_to_deck_modal']);
+		yii\bootstrap\Modal::end();
+	?>
+	<?php 
+	$this->registerJs("$(function() {
+	   $('#add_to_deck').click(function(e) {
+		 e.preventDefault();
+		 $('#add_to_deck_modal').modal('show').find('.modal-content')
+		 .load($(this).attr('href'));
+	   });
+	});");
+	?>
     <script type="text/javascript">
 	$("#working_div .current_blk").focus();
 	document.execCommand('styleWithCSS', false, true);

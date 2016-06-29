@@ -89,8 +89,10 @@ AppAsset::register($this);
 						    </a>						    
                                                 </div>
                                                 <div class="col-sm-3 col-md-3 col-md-offset-1">
+												<a href="<?= Yii::$app->request->baseUrl?>/deck/create">
                                                     <img src="<?= Yii::$app->request->baseUrl?>/images/newdeck.png" alt="">
                                                     <h3>Create New Deck</h3>
+												</a>
                                                 </div>                                                
                                             </li>
                               </ul>
