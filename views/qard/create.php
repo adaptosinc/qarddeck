@@ -46,17 +46,17 @@ $this->title = 'Create Qard';
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
-		<button id="add_to_deck" href="deck/select-deck" class="add-deck">Add to Deck</button>
+		<button id="add_to_deck" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" class="add-deck">Add to Deck</button>
 		</br>
         <div class="row">
 
             <div class="col-sm-4 col-md-4">
                 <div id="add-block" class="qard-div add-block" style="overflow:hidden">
                     <?php
-		if(isset($model['qard_id'])){
-		    echo '<input type="hidden" name="qard_id" value="'.$model['qard_id'].'">';
-		}
-		?>
+						if(isset($model['qard_id'])){
+							echo '<input type="hidden" name="qard_id" value="'.$model['qard_id'].'">';
+						}
+					?>
         <input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
 		
 		<?php 
@@ -434,7 +434,32 @@ $this->title = 'Create Qard';
         </div>
     </section>
     <!-- block_error popup -->
-
+	<?php
+/* 		yii\bootstrap\Modal::begin([
+		'id' =>'deck-style'
+		]);
+		yii\bootstrap\Modal::end(); */
+	?>
+<div id="deck-style" class="fade modal in" role="dialog" tabindex="-1">
+	<div class="modal-dialog ">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Select a Deck to Add Qard to :
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</h4>
+			</div>
+			<div class="modal-body"></div>
+		</div>
+	</div>
+</div>
+<?php 
+$this->registerJs("$(function() {
+   $('#add_to_deck').click(function(e) {
+	 e.preventDefault();
+	 $('#deck-style').modal('show').find('.modal-body').load($(this).attr('href'));
+   });
+});");
+?>
     <div class="modal fade" tabindex="-1" id="Block_error" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -453,19 +478,7 @@ $this->title = 'Create Qard';
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-	<?php
-		yii\bootstrap\Modal::begin(['id' =>'add_to_deck_modal']);
-		yii\bootstrap\Modal::end();
-	?>
-	<?php 
-	$this->registerJs("$(function() {
-	   $('#add_to_deck').click(function(e) {
-		 e.preventDefault();
-		 $('#add_to_deck_modal').modal('show').find('.modal-content')
-		 .load($(this).attr('href'));
-	   });
-	});");
-	?>
+
     <script type="text/javascript">
 	$("#working_div .current_blk").focus();
 	document.execCommand('styleWithCSS', false, true);

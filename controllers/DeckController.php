@@ -66,6 +66,11 @@ class DeckController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     } */
+	
+    /**
+     * Lists all Deck of logged in user.
+     * @return mixed
+     */
 	public function actionMyDecks($page=null)
 	{
 		$limit = 5;
@@ -101,6 +106,33 @@ class DeckController extends Controller
 				$feed .= $modelFeed;
 		}
 		return	$feed;		
+	}
+	/**
+	 * Deck selection screen for add-to-deck 
+	 * 
+	 */
+	public function actionSelectDeck(){
+		
+		$decks = Deck::find()->where(['user_id'=>Yii::$app->user->id])->all();
+		$html = '<div class="grid">';
+		foreach($decks as $deck){
+			//make html $html.='';
+			$html .= '<div class="grid-item">';
+				$html.= '<div class="grid-img">'; //grif image
+					$html.= '<img src="'.$deck->bg_image.'" alt="">';
+				$html.= '</div>'; //grif image
+				$html.='<div class="grid-content">'; //grid-content
+					$html.='<h4>'.$deck->title.'</h4>';
+					$html.='<div class="col-sm-4 col-md-4">
+                                <img src="'.Yii::$app->request->baseUrl.'/images/qards_icon.png" alt="">20
+                            </div>
+                            <div class="col-sm-8 col-md-8">
+                                <button class="btn btn-grey"><img src="'.Yii::$app->request->baseUrl.'/images/preview_icon.png" alt="">Preview</button>
+                            </div>';
+				$html.='</div>';//grid-content
+			$html .= '</div>'; //grid item
+		}
+		return $html; 
 	}
     /**
      * Displays a single Deck model.
