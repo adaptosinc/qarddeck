@@ -388,6 +388,7 @@ $this->title = 'Consume Qard';
 					type : 'GET',
 					data: {'id':$(this).attr('act-id'),'type':$(this).attr('act-type')},
 					success: function(response) {
+
 						console.log(response);
 						if(response=='likeed'){
 							$(check).find('.image-activity').attr('src','<?=Yii::$app->request->baseUrl?>/images/heart-red.png');

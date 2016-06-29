@@ -296,6 +296,7 @@ class QardController extends Controller
 	 * @return mixed
 	 */
 	public function actionActivity($id,$type){
+
 		$query = new Query;
 		//see if the row already exists or not
 		$query->select(['*'])
