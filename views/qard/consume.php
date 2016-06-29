@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use yii\db\Query;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use app\models\QardComments;
@@ -53,7 +54,7 @@ $this->title = 'Consume Qard';
                 
                     <?php
 		if(isset($model['qard_id'])){
-		    echo '<input type="hidden" name="qard_id" value="'.$model['qard_id'].'">';
+		    echo '<input type="hidden" name="qard_id" id="qard_id" value="'.$model['qard_id'].'"><input type="hidden" name="user_id" id="user_id" value="'.$model['user_id'].'">';
 		}
 		?>
         <input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
@@ -78,8 +79,9 @@ $this->title = 'Consume Qard';
 		
 		$str = '
 				<div class="qard-content" id="qard'.$model->qard_id.'" >
-				<div id="add-block'.$model->qard_id.'" class="add-block">';
-
+				<div id="add-block'.$model->qard_id.'" class="add-block">'; ?>
+				
+<?php
 			if(isset($blocks) && !empty($blocks)){
 			//	print_R($blocks);die;
 			foreach($blocks as $block){
@@ -140,24 +142,133 @@ $this->title = 'Consume Qard';
 			</div>
 			';	
 			echo $str;
+			$qard_id = $model['qard_id'];
+			$userid = $model['user_id'];
 			?>
                
             </div>
-		<div class="col-sm-8 col-md-8" id="preview" style="border: 1px solid #eaeaea;height:500px"> 
-			<div id="comments">
-				<form></form>
-				<?php 
-				//form for new comments
-				//<form></form>
-				
-				//load old comments
-				$comments = QardComments::find()->where(['qard_id'=>$qard_id])->all();
-				foreach($comments as $comment){
-					//arrange it
-				}
-				?>
+
+		<div class="col-sm-8 col-md-8" id="preview <?=$userid?>" style="border: 1px solid #eaeaea;"> 
+			<div id="cardconsumetabs">
+				<ul class="nav nav-tabs col-sm-1 col-md-1" role="tablist">
+					<?php
+						$query = new Query;
+						$hquery = $query->select('*')
+							->from('qard_user_activity')
+							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'like']);
+						$command = $hquery->createCommand();
+						$data = $command->queryAll();
+						if(empty($data)){
+							$himg = '<img src="'.Yii::$app->request->baseUrl.'/images/heart_icon.png" class="image-activity" alt="">';
+						}else{
+							$himg = '<img src="'.Yii::$app->request->baseUrl.'/images/heart-red.png" class="image-activity" alt="">';
+						}
+						$bkquery = $query->select('*')
+							->from('qard_user_activity')
+							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'bookmark']);
+						$command = $bkquery->createCommand();
+						$data = $command->queryAll();
+						if(empty($data)){
+							$bkimg = '<img src="'.Yii::$app->request->baseUrl.'/images/bookmark_icon.png" class="image-activity" alt="" style="width:15px;">';
+						}else{
+							$bkimg = '<img src="'.Yii::$app->request->baseUrl.'/images/bookmark_blue.png" class="image-activity" alt="">';
+						}
+					?>						
+					<li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab"><img class="image-default" src="<?=Yii::$app->request->baseUrl?>/images/comments_icon.png" alt=""><img class="image-close" src="<?=Yii::$app->request->baseUrl?>/images/close_icon_light.png" alt=""></a></li>                                
+					<li role="presentation"><a href="#shareblock" aria-controls="shareblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/share_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->request->baseUrl?>/images/close_icon_light.png" alt=""></a></li>                                
+					<li role="presentation" class="tootip activity_card" data-title="Qard was added to your bookmarks" act-type="bookmark" act-id="<?=$model->qard_id?>"><a href="#bookmarkblock" aria-controls="bookmarkblock" role="tab" data-toggle="tab"><?=$bkimg?></a></li>                                
+
+					<li role="presentation" class="tootip activity_card" data-title="Qard was added to your favourites" act-type="like" act-id="<?=$model->qard_id?>"><a href="#favblock" aria-controls="favblock" role="tab" data-toggle="tab"><?=$himg?></a></li>
+
+					<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/pop-up_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->request->baseUrl?>/images/close_icon_light.png" alt=""></a></li>                               
+				</ul>
+				<div class="preview-tab col-md-11 col-sm-11" style="display: none;">
+					<div class="bookmark-content">
+						<img src="<?=Yii::$app->request->baseUrl?>/images/demo_icon.png" alt="">
+						<h4>Explore the Qard Blocks by clicking the links on the qard</h4>
+					</div>                                      
+					<div class="active-link-preview" style="display: none;">
+						<h4>Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+						<div class="active-preview-content">
+						</div>
+					</div>
+				</div> 
+				<div class="tab-content col-md-11 col-sm-11">                               
+                    <div role="tabpanel" class="tab-pane active" id="comments">
+						<?php $comments = QardComments::find()->where(['qard_id'=>$qard_id])->orderBy('created_at DESC')->all();
+						/* function date_compare($a, $b)
+						{
+							$t1 = strtotime($a['created_at']);
+							$t2 = strtotime($b['created_at']);
+							return $t2 - $t1;
+						}    
+						usort($comments, 'date_compare'); */
+							?>
+						<div class="cardblock-header">
+							<h4>Comments(<?=count($comments)?>)<span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+						</div>
+						<form>
+							<h4 class="comment-input"><input type="text" id="comment-input" name="comment-input" class="col-sm-10 col-md-10" placeholder="Share what you're thinking..."><button id="commentSubmit" class="btn qard col-sm-2 col-md-2">POST</button></h4>
+						</form>
+						<ul class="comment-list">
+						<?php 
+						//load old comments
+						foreach($comments as $comment){
+							//arrange it
+						?>
+						  <li>
+							  <div class="comment-img col-sm-1 col-md-1">
+							  <?php $profile_photo = $comment->userProfile->profile_photo; ?>
+								  <img src="<?=$profile_photo?>" alt="">
+							  </div>
+							  <div class="comment-txt col-sm-11 col-md-11">
+								  <p><strong><?=$comment['text']?></strong></p>
+								  <?php 
+								  $datetime = $comment['created_at'];
+								  $date = date('M j Y g:i A', strtotime($datetime));
+								  $date = new DateTime($date);
+								  $datetime1 = new DateTime("now"); 
+								  $diff = $datetime1->diff($date)->format("%a");
+								  if($diff == 0){
+									  $diff = 'Today';
+								  }else if($diff==1){
+									  $diff = '1 day ago';
+								  }else{
+									  $diff = $diff.' days ago';
+								  }
+								  ?>
+								  <p class="post-date"><?=$diff?></p>
+							  </div>
+						  </li>
+						<?php } ?>
+						</ul>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="shareblock"></div>
+					<div role="tabpanel" class="tab-pane" id="bookmarkblock">
+						<div class="bookmark-content">
+							<img src="<?=Yii::$app->request->baseUrl?>/images/demo_icon.png" alt="">
+							<h4>Explore the Qard Blocks by clicking the links on the qard</h4>
+						</div>                                      
+						<div class="active-link-preview" style="display: none;">
+							<h4>Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+							<div class="active-preview-content">
+							</div>
+						</div>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="favblock">
+						<div class="bookmark-content">
+							<img src="<?=Yii::$app->request->baseUrl?>/images/demo_icon.png" alt="">
+							<h4>Explore the Qard Blocks by clicking the links on the qard</h4>
+						</div>                                      
+						<div class="active-link-preview" style="display: none;">
+							<h4>Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+							<div class="active-preview-content">
+							</div>
+						</div>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="fileblock"></div>
+				</div>
 			</div>
-			<div id="share"></div>
 		</div>
         </div>
         <!--<div class="bottom-card row">
@@ -234,13 +345,75 @@ $this->title = 'Consume Qard';
 
     <script src="<?= Yii::$app->request->baseUrl?>/js/jquery-ui.js" type="text/javascript"></script>
 	<script>
-	
+		/* adding tabs script ***/
+		$(document).ready(function(){
+            var avalue = "active";
+            if($('ul.nav.nav-tabs li').hasClass(avalue) === false) {
+                $('.preview-tab').css('display','block');
+                $('.tab-content').css('display','none');
+            }
+            $('ul.nav.nav-tabs li').click(function(){
+                $('.preview-tab').css('display','none');
+                $('.tab-content').css('display','block');            
+            });
+			$('#cardconsumetabs a').click(function (e) {
+              e.preventDefault();
+              $(this).tab('show');
+            });
+			$('#commentSubmit').click(function(e){
+				e.preventDefault();
+				var qardid = $('#qard_id').val();
+				var userid = $('#user_id').val();
+				var qardcomment = $('#comment-input').val();
+				if(qardid!=''){
+					$.ajax({
+						url: '<?=Url::to(['comments/create'], true);?>',
+						type: "POST",
+						data: {
+							'qardid': qardid,'userid':userid ,'qardcomment':qardcomment
+						},
+						success: function(data) {
+							$('.comment-list').load(location.href +" .comment-list>*","");
+						}
+					});
+				}
+
+			});
+			$('.activity_card').on('click',function(){
+				var check =$(this);
+				console.log($(this).attr('act-type'));
+				$.ajax({
+					url: '<?=Url::to(['qard/activity'], true);?>',
+					dataType: 'html',
+					type : 'GET',
+					data: {'id':$(this).attr('act-id'),'type':$(this).attr('act-type')},
+					success: function(response) {
+						console.log(response);
+						if(response=='likeed'){
+							$(check).find('.image-activity').attr('src','<?=Yii::$app->request->baseUrl?>/images/heart-red.png');
+						}else if(response=='Unlikeed'){
+							$(check).find('.image-activity').attr('src','<?=Yii::$app->request->baseUrl?>/images/heart_icon.png');
+						}else if(response=='bookmarked'){
+							$(check).find('.image-activity').attr('style','width:auto');
+							$(check).find('.image-activity').attr('src','<?=Yii::$app->request->baseUrl?>/images/bookmark_blue.png');
+						}else{
+							$(check).find('.image-activity').attr('style','width:15px');
+							$(check).find('.image-activity').attr('src','<?=Yii::$app->request->baseUrl?>/images/bookmark_icon.png');
+						}
+					}
+				});
+			});
+
+        });
+
 		/** link preview **/
 		function displayLink(identifier){
 			var dataurl = $(identifier).data('url');
 			var checkit = $(identifier).find('#hiddenUrl');
 			var displayCheck = 1;
 			callUrl(checkit,displayCheck);
+			$('.tab-pane').removeClass('active');
+			$('#bookmarkblock').addClass('active');
 			$('#preview').show();
 			return false;
 		}
@@ -297,7 +470,7 @@ $this->title = 'Consume Qard';
                         //show link options
                         $(".link_options").show();
 						}
-                        $('#preview').html(data.preview_html);
+                        $('.bookmark-content').html(data.preview_html);
 						
                     }
                     else {
