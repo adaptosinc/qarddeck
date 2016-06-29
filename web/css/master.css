@@ -1531,3 +1531,131 @@ a#styleblock_tab {
     color: orange;
     border-radius: 3px;
 }
+
+/* comment tab */
+
+h4.comment-input {
+    display: inline-block;
+    width: 100%;
+    background: #f1f1f1;
+    padding: 10px;   
+}
+h4.comment-input input {
+    height: 36px;
+    background: #fff;
+    box-shadow: none;
+    border-top-left-radius: 5px;
+    border: 1px solid #ccc;
+    border-bottom-left-radius: 5px;
+    font-weight: 400;
+    font-size: 16px;    
+}
+h4.comment-input button, h4.share-input button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.cardblock-header i.fa.fa-times-thin:before {
+    font-size: 40px;
+    color: #7e7f8c;
+    font-weight: bold;
+}
+.cardblock-header h4 span.pull-right {
+    margin-top: -10px;
+}
+.preview-tab h4 span.pull-right {
+    margin-top: -10px;
+}
+.preview-tab i.fa.fa-times-thin:before {
+    font-size: 40px;
+    color: #7e7f8c;
+    font-weight: bold;
+}
+.comment-img {
+    overflow: hidden;
+    text-align: center;
+    padding: 0;
+}
+.comment-img img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+}
+ul.comment-list li {
+    min-height: 80px;
+    margin-bottom: 20px;
+    height: auto;
+    display: block;
+}
+ul.comment-list {
+    padding: 0 20px;
+	height: 300px;
+    overflow-y: scroll;
+}
+.comment-txt p{
+    margin-bottom: 5px;
+}
+p.post-date {
+    color: #ccc;
+}
+.preview-tab h4 span.pull-right {
+    margin-top: -10px;
+}
+.preview-tab i.fa.fa-times-thin:before {
+    font-size: 40px;
+    color: #7e7f8c;
+    font-weight: bold;
+}
+.bookmark-content>img {
+    width: 300px;
+    height: 300px;
+}
+.bookmark-content {
+    text-align: center;
+    padding: 40px;
+}
+#cardconsumetabs .nav-tabs li.tootip.active:after {
+    content: attr(data-title);
+    background: #fff;
+    width: 300px;
+    padding: 8px;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    margin: -36px 58px;
+    display: block;
+    border-radius: 3px;
+    z-index: 20000;
+    position: relative;
+}
+#cardconsumetabs ul.nav-tabs li {
+    width: 40px;
+    text-align: center;
+	background: #e4e4e4;
+    border-radius: 50%;
+    height: 40px;
+    clear: both;
+    float: none;
+    margin: 15px auto;
+}
+#cardconsumetabs ul.nav-tabs li.active a {
+    background: transparent;
+}
+#cardconsumetabs ul.nav-tabs li a {
+    padding: 8px;
+    text-align: center;
+    margin: 0;
+}
+#cardconsumetabs ul.nav-tabs li a img {
+    max-width: 100%;
+}
+#cardconsumetabs ul.nav-tabs li.active .image-default {
+    display: none;
+}
+#cardconsumetabs .image-close {
+    display: none;
+}
+#cardconsumetabs ul.nav-tabs li.active .image-close {
+    display: block;
+    padding: 5px;
+}

@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+
 /**
  * CommentsController implements the CRUD actions for QardComments model.
  */
@@ -66,18 +67,18 @@ class CommentsController extends Controller
         $model = new QardComments();
 		//Yii::$app->request->post() //post
         if (Yii::$app->request->post()) {
+			
 			$model = new QardComments();
-			$model->text = $_POST[''];
-			$model->qard_id = //qard id
-			if($model->save()){
-				//as json take abck the comment
-			}
+			
+			$model->text = $_POST['qardcomment'];
+			$model->qard_id = $_POST['qardid'];
+			$model->user_id = $_POST['userid'];
+			
+			$model->save();
             //return $this->redirect(['view', 'id' => $model->qard_comment_id]);
         } 
     }
-/* 	public function actionComments($qard_id){
-		
-	} */
+
     /**
      * Updates an existing QardComments model.
      * If update is successful, the browser will be redirected to the 'view' page.
