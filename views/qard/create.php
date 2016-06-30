@@ -43,6 +43,10 @@ $this->title = 'Create Qard';
 
     <!-- requiered for drop down of an image -->
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
+	
+	<script src="/qarddeck/web/assets/f6f0bd19/js/vendor/jquery.ui.widget.js"></script>
+	<script src="/qarddeck/web/assets/f6f0bd19/js/jquery.iframe-transport.js"></script>
+	<script src="/qarddeck/web/assets/f6f0bd19/js/jquery.fileupload.js"></script>
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
@@ -452,14 +456,34 @@ $this->title = 'Create Qard';
 		</div>
 	</div>
 </div>
-<?php 
-$this->registerJs("$(function() {
-   $('#add_to_deck').click(function(e) {
-	 e.preventDefault();
-	 $('#deck-style').modal('show').find('.modal-body').load($(this).attr('href'));
-   });
-});");
-?>
+<div id="add_new_deck_modal" class="fade modal in" role="dialog" tabindex="-1">
+	<div class="modal-dialog ">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Add new Deck :
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</h4>
+			</div>
+			<div class="modal-body"></div>
+		</div>
+	</div>
+</div>
+
+	<?php 
+	$this->registerJs("$(function() {
+	   $('#add_to_deck').click(function(e) {
+		 e.preventDefault();
+		 console.log($(this).attr('href'));
+		 var qard_id = $('#qard_id').val(); 
+/* 		 if(typeof qard_id == 'undefined' || qard_id == '' || qard_id == 0)
+		 {
+			 alert('You need to create atleast one block');
+			 return;
+		 } */
+		 $('#deck-style').modal('show').find('.modal-body').load($(this).attr('href'));
+	   });	   
+	});");
+	?>
     <div class="modal fade" tabindex="-1" id="Block_error" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -493,6 +517,13 @@ $this->registerJs("$(function() {
                 s.style.display = "none";
             }
         }
+		function showModal(elem){
+			  //$('#add_new_deck').click(function(e) {
+				 //e.preventDefault();
+				 //console.log($(elem).attr('href'));
+				 $('#add_new_deck_modal').modal('show').find('.modal-body').load("/qarddeck/web/deck/create-ajax");
+			   //});			
+		}
 		function setBGColor(elem){
 			color = $(elem).attr('data-color');
 			$('#bg_color').val(color);
