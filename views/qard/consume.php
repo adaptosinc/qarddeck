@@ -505,19 +505,17 @@ $this->title = 'Consume Qard';
 				object += "</object>";       
 				$('.tab-pane').removeClass('active');
 				$('#bookmarkblock').addClass('active');
-				$('.bookmark-content').html(object);        
+				$('.bookmark-content').html(object);
                 }
             if (ext == "doc" || ext == 'docx') {
 				var test = "<?= Yii::$app->request->baseUrl?>/uploads/docs/"+fileName;
 
 				var object = '<iframe style="width:100%;height:700px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
 					
-				object += "</object>";    			
-				//$("#preview").html(object); 
+				object += "</object>";        
 				$('.tab-pane').removeClass('active');
 				$('#bookmarkblock').addClass('active');
 				$('.bookmark-content').html(object);
-				//$('#preview').show();	
 				console.log(object);
                }
          
@@ -528,7 +526,9 @@ $this->title = 'Consume Qard';
 			console.log(eUrl);
 			var html = '<iframe src="'+eUrl+'" width="100%" height="700" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 			//calldisplayEmbedUrl(eUrl);
-			$('#preview').html(html);
+			$('.tab-pane').removeClass('active');
+			$('#bookmarkblock').addClass('active');
+			$('.bookmark-content').html(html);
 		}
 		/** End of dragging function **/
 		
