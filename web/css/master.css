@@ -985,32 +985,26 @@ ul.deck-create input[type="file"]::-webkit-file-upload-button { /* Style the but
   z-index: 100;
   -webkit-appearance: none;
 }
+div#add_new_deck {
+    border: 2px dashed orange;
+    padding: 20px;
+}
+div#add_new_deck input[type="file"] {
+    display: inline-block;
+    font-size: 14px;
+    margin: 0;
+    padding: 8px;
+    position: relative;
+    background-color: #fff;
+    overflow: hidden;
+    width: 100%;
+    -webkit-appearance: none;
+    -webkit-box-sizing: border-box;
+    z-index: 1;
+    min-height: 130px;
+    border-radius: 10px;
+}
 
-#add_new_deck_modal {
-    background: rgba(58, 57, 57, 0.85);
-}
-#add_new_deck_modal .modal-dialog {
-    width: 80%;
-    background: #fafafa;
-    border-radius: 40px;
-    padding: 40px;
-	height:100%;
-}
-#add_new_deck_modal h4.modal-title {
-    text-align: left;
-    font-weight: 300;
-}
-#add_new_deck_modal button.close {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgb(70, 83, 96);
-    color: #fff;
-}
-#add_new_deck_modal button.close span {
-    margin-top: -5px;
-    display: block;
-}
 #deck-style {
     background: rgba(58, 57, 57, 0.85);
 }

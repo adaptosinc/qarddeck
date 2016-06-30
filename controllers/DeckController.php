@@ -117,7 +117,7 @@ class DeckController extends Controller
 		$html = '<div class="grid">';
 		foreach($decks as $deck){
 			//make html $html.='';
-			$html .= '<div class="grid-item">';
+			$html .= '<div class="grid-item" id="'.$deck->deck_id.'" onClick="selectDeck(this)">';
 				$html.= '<div class="grid-img">'; //grif image
 					$html.= '<img src="'.$deck->bg_image.'" alt="">';
 				$html.= '</div>'; //grif image
@@ -133,7 +133,15 @@ class DeckController extends Controller
 			$html .= '</div>'; //grid item
 		}
 		//add new form
-		$html .= '<button id="add_new_deck" class="btn" data-toggle="modal" onClick="showModal(this)" >Add New</button>';
+		$html .= '<div class="grid-item">
+					<div id="add_new_deck">
+						<form onSubmit="saveDeck(this);return false;">
+						<input type="file" id="deck-bg_image" class="class" name="Deck[bg_image]" value="null.png" accept="image/*" data-url="/qarddeck/web/deck/set-cover-image">
+						<input type="text" name="title" placeholder="Title of Deck"/>
+						<button type="submit" class="btn btn-success">Add Deck</button>
+						</form>
+					</div>
+				</div>';
 		$html .= '</div>';
 		
 		return $html; 
@@ -184,40 +192,7 @@ class DeckController extends Controller
             ]);
         }
     }
-    /**
-     * Creates a new Deck model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreateAjax()
-    {
-        $model = new Deck();
-		$tags = Tag::find()->all();
-        if ($model->load(Yii::$app->request->post())) {
-			//print_r(Yii::$app->request->post()['tags']);die;
-			$model->bg_image = $model->cover_image;
-			$model->user_id = \Yii::$app->user->id;
-			if($model->save()){
-				if(isset(Yii::$app->request->post()['tags'])){
-					$tags = Yii::$app->request->post()['tags'];
-					foreach($tags as $tag){
-						$command = \Yii::$app->db->createCommand()->insert('deck_tags', [
-							'deck_id' => $model->deck_id,
-							'tag_id'=> $tag,
-						]);
-						$command->execute();					
-					}
-				
-				}				
-			}
-           // return $this->redirect(['my-decks']);
-        } else {
-            return $this->renderPartial('_form', [
-                'model' => $model,
-				'tags' => $tags,
-            ]);
-        }
-    }
+
 	public function actionSetCoverImage(){
 		$imageFile = UploadedFile::getInstanceByName('Deck[bg_image]');
 		$directory = \Yii::getAlias('@app/web/img/temp') . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;

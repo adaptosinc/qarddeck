@@ -43,10 +43,7 @@ $this->title = 'Create Qard';
 
     <!-- requiered for drop down of an image -->
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
-	
-	<script src="/qarddeck/web/assets/f6f0bd19/js/vendor/jquery.ui.widget.js"></script>
-	<script src="/qarddeck/web/assets/f6f0bd19/js/jquery.iframe-transport.js"></script>
-	<script src="/qarddeck/web/assets/f6f0bd19/js/jquery.fileupload.js"></script>
+
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
@@ -453,21 +450,13 @@ $this->title = 'Create Qard';
 				</h4>
 			</div>
 			<div class="modal-body"></div>
-		</div>
-	</div>
-</div>
-<div id="add_new_deck_modal" class="fade modal in" role="dialog" tabindex="-1">
-	<div class="modal-dialog ">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Add new Deck :
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				</h4>
+			<div class="grid">
+
 			</div>
-			<div class="modal-body"></div>
 		</div>
 	</div>
 </div>
+
 
 	<?php 
 	$this->registerJs("$(function() {
@@ -507,6 +496,7 @@ $this->title = 'Create Qard';
 	$("#working_div .current_blk").focus();
 	document.execCommand('styleWithCSS', false, true);
     document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
+	
         function showtext() {
             //code
             var s = document.getElementById('descfield');
@@ -517,12 +507,12 @@ $this->title = 'Create Qard';
                 s.style.display = "none";
             }
         }
-		function showModal(elem){
-			  //$('#add_new_deck').click(function(e) {
-				 //e.preventDefault();
-				 //console.log($(elem).attr('href'));
-				 $('#add_new_deck_modal').modal('show').find('.modal-body').load("/qarddeck/web/deck/create-ajax");
-			   //});			
+		function saveDeck(deck){
+		    console.log("Handle the saving here");			
+		}
+		function selectDeck(deck){
+			var deck_id = $(deck).attr('id');
+			console.log(deck_id);
 		}
 		function setBGColor(elem){
 			color = $(elem).attr('data-color');
