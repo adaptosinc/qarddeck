@@ -12,6 +12,9 @@ use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\Json;
 use yii\filters\AccessControl;
+use yii\db\Query;
+use yii\db\Command;
+use yii\db\Connection;
 
 /**
  * DeckController implements the CRUD actions for Deck model.
@@ -32,7 +35,7 @@ class DeckController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create'],
+                'only' => ['create','my-decks'],
                 'rules' => [
 /*                  [
                         'allow' => true,
@@ -41,7 +44,7 @@ class DeckController extends Controller
                     ], */
                     [
                         'allow' => true,
-                        'actions' => ['create'],
+                        'actions' => ['create','my-decks'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -53,7 +56,7 @@ class DeckController extends Controller
      * Lists all Deck models.
      * @return mixed
      */
-    public function actionIndex()
+/*     public function actionIndex()
     {
         $searchModel = new SearchDeck();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -62,8 +65,75 @@ class DeckController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-    }
-
+    } */
+	
+    /**
+     * Lists all Deck of logged in user.
+     * @return mixed
+     */
+	public function actionMyDecks($page=null)
+	{
+		$limit = 5;
+		if(!$page)
+			$page = 0;
+		$offset = $page*$limit;
+		$feed = $this->getDecksfeed($offset,$limit);
+		if(!$page || $page == 0){
+			return $this->render('my_decks',[
+				'feed' => $feed
+			]);
+		}
+		else{
+			return $feed;		
+		}
+	}
+	public function getDecksfeed($offset,$limit){
+		$feed = '';
+		$Query = new Query;
+		$Query->select(['*'])
+			->from('deck')
+			->where(['user_id'=>\Yii::$app->user->id])
+			->limit($limit)
+			->offset($offset)
+			->orderBy(['created_at' => SORT_DESC]);	
+		$command = $Query->createCommand();
+		$decks = $command->queryAll();
+		//get html feed
+		foreach($decks as $deck){
+			$model = Deck::findOne([$deck['deck_id']]);
+			$modelFeed = $model->getDeckHtml();
+			if( $modelFeed != '')
+				$feed .= $modelFeed;
+		}
+		return	$feed;		
+	}
+	/**
+	 * Deck selection screen for add-to-deck 
+	 * 
+	 */
+	public function actionSelectDeck(){
+		
+		$decks = Deck::find()->where(['user_id'=>Yii::$app->user->id])->all();
+		$html = '<div class="grid">';
+		foreach($decks as $deck){
+			//make html $html.='';
+			$html .= '<div class="grid-item">';
+				$html.= '<div class="grid-img">'; //grif image
+					$html.= '<img src="'.$deck->bg_image.'" alt="">';
+				$html.= '</div>'; //grif image
+				$html.='<div class="grid-content">'; //grid-content
+					$html.='<h4>'.$deck->title.'</h4>';
+					$html.='<div class="col-sm-4 col-md-4">
+                                <img src="'.Yii::$app->request->baseUrl.'/images/qards_icon.png" alt="">20
+                            </div>
+                            <div class="col-sm-8 col-md-8">
+                                <button class="btn btn-grey"><img src="'.Yii::$app->request->baseUrl.'/images/preview_icon.png" alt="">Preview</button>
+                            </div>';
+				$html.='</div>';//grid-content
+			$html .= '</div>'; //grid item
+		}
+		return $html; 
+	}
     /**
      * Displays a single Deck model.
      * @param integer $id
@@ -102,7 +172,7 @@ class DeckController extends Controller
 				
 				}				
 			}
-            return $this->redirect(['view', 'id' => $model->deck_id]);
+            return $this->redirect(['my-decks']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -168,7 +238,8 @@ class DeckController extends Controller
 				
 				}				
 			}
-            return $this->redirect(['view', 'id' => $model->deck_id]);
+            //return $this->redirect(['view', 'id' => $model->deck_id]);
+			return $this->redirect(['my-decks']);
         } else {
             return $this->render('update', [
                 'model' => $model,

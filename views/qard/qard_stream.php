@@ -122,7 +122,7 @@ $(document).ready(function() {
 	$('.qard-content').on('click',function(){
 		var data_id = $(this).attr('id');
 		var id = data_id.replace("qard", "");
-		var url = '<?=Url::to(['qard/preview-qard'], true);?>';
+		var url = '<?=Url::to(['qard/consume'], true);?>';
 		window.location.href = url+"?qard_id="+id;
 	});
 });

@@ -95,7 +95,13 @@ class UserProfile extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Privacy::className(), ['privacy_id' => 'profile_privacy']);
     }
-      public function upload()
+	
+	public function getFullName()
+	{
+		return $this->firstname.' '.$this->lastname;
+	}
+	
+    public function upload()
     {
         if ($this->validate()) {
             $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);

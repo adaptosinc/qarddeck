@@ -339,6 +339,16 @@ button.qard {
 /* ====================================
  *  Create Card
  *  =================================== */
+.add-deck{
+	border: solid 1px orange;
+    color: orange;
+    border-radius: 3px;	
+	position: relative;
+    display: block;
+    padding: 10px 15px;
+	background-color : transparent;
+}
+
 .add-block {
     min-height: 400px;
     position: relative;
@@ -690,9 +700,10 @@ section.main-profile .main-content {
 }
 .qard-bottom ul li a {
     color: #000;
+	text-decoration:none;
 }
 .qard-bottom ul li.pull-right {
-    color: #000 !important;
+    color: #ccc !important;
 }
 .qard-bottom h4 {
     color: #ff741b;
@@ -706,7 +717,19 @@ section.main-profile .main-content {
 .popular-qards {
     margin: 40px 0;
 }
-
+.deck-content img {
+    max-width: 100%;
+}
+.qard-bottom h2 {
+    margin: 0;
+    padding: 10px;
+    color: #ccc;
+    font-size: 14px;
+}
+.qard-bottom p {
+    padding: 0 10px;
+    color: #ff741b;
+}
 /* side bar */
 .featured-tags {
     padding: 20px;
@@ -961,6 +984,52 @@ ul.deck-create input[type="file"]::-webkit-file-upload-button { /* Style the but
   position: relative;
   z-index: 100;
   -webkit-appearance: none;
+}
+#deck-style {
+    background: rgba(58, 57, 57, 0.85);
+}
+#deck-style .modal-dialog {
+    width: 80%;
+    background: #fafafa;
+    border-radius: 40px;
+    padding: 40px;
+}
+#deck-style h4.modal-title {
+    text-align: left;
+    font-weight: 300;
+}
+#deck-style button.close {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgb(70, 83, 96);
+    color: #fff;
+}
+#deck-style button.close span {
+    margin-top: -5px;
+    display: block;
+}
+#deck-style .grid {
+    column-count: 4;
+    column-gap: 40px;
+    -moz-column-count: 4;
+    -moz-column-gap: 40px;
+}
+#deck-style .grid-item .btn-grey {
+    border-radius: 20px;
+}
+#deck-style .grid-item .btn-grey img {
+    width: 25px;
+    height: 15px;
+}
+#deck-style .grid-img {
+    max-height: 150px;
+    overflow: hidden;
+    max-width: 100%;
+    min-height: 150px;
+}
+#deck-style .grid-img img {
+    max-width: 100%;
 }
 /* ==============================
     Mobile view

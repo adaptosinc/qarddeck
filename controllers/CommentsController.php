@@ -8,6 +8,7 @@ use app\models\search\QardComments as QardCommentsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 
 /**
@@ -25,6 +26,22 @@ class CommentsController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create'],
+                'rules' => [
+/*                  [
+                        'allow' => true,
+                        'actions' => ['login', 'signup'],
+                        'roles' => ['?'],
+                    ], */
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -64,6 +81,7 @@ class CommentsController extends Controller
      */
     public function actionCreate()
     {
+
         $model = new QardComments();
 		//Yii::$app->request->post() //post
         if (Yii::$app->request->post()) {
@@ -72,7 +90,7 @@ class CommentsController extends Controller
 			
 			$model->text = $_POST['qardcomment'];
 			$model->qard_id = $_POST['qardid'];
-			$model->user_id = $_POST['userid'];
+			$model->user_id = \Yii::$app->user->id;
 			
 			$model->save();
             //return $this->redirect(['view', 'id' => $model->qard_comment_id]);
