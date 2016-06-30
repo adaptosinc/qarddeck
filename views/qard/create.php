@@ -507,8 +507,11 @@ $this->title = 'Create Qard';
                 s.style.display = "none";
             }
         }
+		//DECK FUNCTIONS
 		function saveDeck(deck){
-		    console.log("Handle the saving here");			
+		    console.log("Handle the saving here");
+		//once it is saved load the same here, either load the modal again
+        //or append it to the deck list and make it selectable		
 		}
 		function selectDeck(deck){
 			var deck_id = $(deck).attr('id');
