@@ -113,7 +113,7 @@ class Qard extends \yii\db\ActiveRecord
      */
     public function getQardDecks()
     {
-        return $this->hasMany(QardDeck::className(), ['qard_id' => 'qard_id']);
+        return $this->hasOne(QardDeck::className(), ['qard_id' => 'qard_id']);
     }
 
     /**

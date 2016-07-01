@@ -46,8 +46,17 @@ $this->title = 'Edit Qard';
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
+		<button id="add_to_deck" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" class="add-deck">Add to Deck</button>
+		</br>
         <div class="row">
-
+			<?php 
+			$qard_deck = $model->qardDecks;
+			if($qard_deck && $qard_deck->deck_id){
+				$deck_id = $qard_deck->deck_id;
+				echo "Deck ID".$deck_id;
+			}
+			
+			?>
             <div class="col-sm-4 col-md-4">
                 <div id="add-block" class="qard-div add-block" style="overflow:hidden">
                     <?php
@@ -500,7 +509,38 @@ $this->title = 'Edit Qard';
         </div>
     </section>
     <!-- block_error popup -->
+<div id="deck-style" class="fade modal in" role="dialog" tabindex="-1">
+	<div class="modal-dialog ">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Select a Deck to Add Qard to :
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</h4>
+			</div>
+			<div class="modal-body"></div>
+			<div class="grid">
 
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	<?php 
+	$this->registerJs("$(function() {
+	   $('#add_to_deck').click(function(e) {
+		 e.preventDefault();
+		 console.log($(this).attr('href'));
+		 var qard_id = $('#qard_id').val(); 
+/* 		 if(typeof qard_id == 'undefined' || qard_id == '' || qard_id == 0)
+		 {
+			 alert('You need to create atleast one block');
+			 return;
+		 } */
+		 $('#deck-style').modal('show').find('.modal-body').load($(this).attr('href'));
+	   });	   
+	});");
+	?>
     <div class="modal fade" tabindex="-1" id="Block_error" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -534,6 +574,26 @@ $this->title = 'Edit Qard';
                 s.style.display = "none";
             }
         }
+		//DECK FUNCTIONS
+		function saveDeck(deck){
+		    console.log("Handle the saving here");
+		//once it is saved load the same here, either load the modal again
+        //or append it to the deck list and make it selectable		
+		}
+		function addToDeck(deck){
+			var deck_id = $(deck).attr('id');
+			var qard_id = $('#qard_id').val()||0;
+			$.ajax({
+				url : '<?=Url::to(['deck/add-qard'], true)?>',
+				type : 'POST',
+				data : {'qard_id':qard_id,'deck_id':deck_id},
+				success : function(response){
+					console.log(response);
+					//load the a new create page with a deckid included request
+				}				
+			});
+			console.log(deck_id);
+		}
 		function setBGColor(elem){
 			color = $(elem).attr('data-color');
 			$('#bg_color').val(color);

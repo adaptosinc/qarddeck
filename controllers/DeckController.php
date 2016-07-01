@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Deck;
+use app\models\QardDeck;
 use \app\models\Tag;
 use app\models\search\SearchDeck;
 use yii\web\Controller;
@@ -117,7 +118,7 @@ class DeckController extends Controller
 		$html = '<div class="grid">';
 		foreach($decks as $deck){
 			//make html $html.='';
-			$html .= '<div class="grid-item" id="'.$deck->deck_id.'" onClick="selectDeck(this)">';
+			$html .= '<div class="grid-item" id="'.$deck->deck_id.'" onClick="addToDeck(this)">';
 				$html.= '<div class="grid-img">'; //grif image
 					$html.= '<img src="'.$deck->bg_image.'" alt="">';
 				$html.= '</div>'; //grif image
@@ -146,6 +147,30 @@ class DeckController extends Controller
 		
 		return $html; 
 	}
+	
+	/**
+	 * Add qard to a Deck
+	 * @param integer $deck_id,$qard_id
+	 * @return boolean
+	 */
+	public function actionAddQard(){
+		//print_r(Yii::$app->request->post());die;
+		$qard_id = Yii::$app->request->post()['qard_id'];
+		$deck_id = Yii::$app->request->post()['deck_id'];
+		
+			$model = new QardDeck();
+			$model->qard_id = $qard_id;
+			$model->deck_id = $deck_id;
+		if($qard_id != 0 && $deck_id != 0 ){
+			$model->save();	
+				echo "Success";			
+		}else
+			echo "Failed";
+
+		
+		
+	}
+	
     /**
      * Displays a single Deck model.
      * @param integer $id

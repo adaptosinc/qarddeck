@@ -513,8 +513,18 @@ $this->title = 'Create Qard';
 		//once it is saved load the same here, either load the modal again
         //or append it to the deck list and make it selectable		
 		}
-		function selectDeck(deck){
+		function addToDeck(deck){
 			var deck_id = $(deck).attr('id');
+			var qard_id = $('#qard_id').val()||0;
+			$.ajax({
+				url : '<?=Url::to(['deck/add-qard'], true)?>',
+				type : 'POST',
+				data : {'qard_id':qard_id,'deck_id':deck_id},
+				success : function(response){
+					console.log(response);
+					//load the a new create page with a deckid included request
+				}				
+			});
 			console.log(deck_id);
 		}
 		function setBGColor(elem){
