@@ -594,10 +594,11 @@ $this->title = 'Create Qard';
 		var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
 		setHeightBlock(this,scrollHeight);
 	});
+	
 	/*
 	 * Double click to edit the block again
 	 */
-	$(document).delegate('.add-block > div', "dblclick", function(event) {
+	$(document).on("dblclick",'.add-block > div', function(event) {
 
 		if ($(this).attr("id") !== 'working_div') {
 
@@ -746,7 +747,7 @@ $this->title = 'Create Qard';
 		 * to make text as bold
 		 */
 		$('#text_bold').click(function() {
-			document.execCommand('bold', false, null);
+			document.execCommand('bold', false, null);			
 			$('.working_div').focus();
 			return false;
 		});
@@ -853,7 +854,7 @@ $this->title = 'Create Qard';
             $('.link_options').show();
             $(".drop-file  , .file_options").hide();
         });  */
-        $('#cmn-toggle-5').on('change', function() {
+        $('#cmn-toggle-5').delegate('change', function() {
             console.log($(this).val());
         });
 		/**** End of Link Block operations ******/
