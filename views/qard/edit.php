@@ -93,7 +93,7 @@ $this->title = 'Edit Qard';
 					echo '<li><div class="add-block">'
                             .$deck_qard->qard->qard_image_url.                
                           '</div>
-                          <h4>'.$deck_qard->qard->title.'</h4></li>';
+                          <h4><img src="'.$deck_qard->qard->title.'" /></h4></li>';
 					//echo $deck_qard->qard->getQardHtml();
 				}
 				echo '<li><img src="images/add-grey.png" alt=""></li>
