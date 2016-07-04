@@ -150,5 +150,5 @@ class Deck extends \yii\db\ActiveRecord
 		
 		
 		return $html;
-	}
+	}	
 }

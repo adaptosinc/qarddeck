@@ -450,7 +450,7 @@ $this->title = 'Create Qard';
 				</h4>
 			</div>
 			<div class="modal-body"></div>
-			<div class="grid">
+			<div class="grid-container">
 
 			</div>
 		</div>
@@ -508,23 +508,55 @@ $this->title = 'Create Qard';
             }
         }
 		//DECK FUNCTIONS
-		function saveDeck(deck){
-		    console.log("Handle the saving here");
-			  formData = new FormData($(deck)[0]);
-			  formData.append( 'file', 'sample' );
-				$.ajax({
-					url : '<?=Url::to(['deck/create-ajax'], true)?>',
-					type : 'POST',
-					data : formData,
-					processData: false, 
-					contentType: false ,
-					success : function(response){
-						console.log(response);
-						    //once it is saved load the same here, either load the modal again
-							//or append it to the deck list and make it selectable	
-					}				
-				});	
+		
+		function readURL(input) {
+
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+
+				reader.onload = function (e) {
+				 $("#ajaxDeckPreview").html('<img id="previewImg" height="100px" width="100px" src="'+e.target.result+'"></img>');		
+				}
+
+				reader.readAsDataURL(input.files[0]);
+			}
 		}
+
+		$("body").on('change','#deck-bg_image',function(){	
+			$("#deck-bg_image").css('min-height','20px'); 
+			readURL(this);	 
+		});
+		
+		function saveDeck(deck){
+			 console.log("Handle the saving here");		
+			 					var len = $(".grid").length;
+					console.log(len);
+					
+			 var formData = new FormData($(deck)[0]);
+				$.ajax( {
+				  url: '<?=Url::to(['deck/create-ajax'], true)?>',
+				  type: 'POST',
+				  data: formData,
+				  processData: false,
+				  contentType: false,
+				  success:function(data){
+					  
+					var json = $.parseJSON(data);
+					var img =json.url;
+					var t=json.title; 
+					
+					//var html='';
+				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="/qarddeck/web/images/qards_icon.png" alt="">20</div> <div class="col-sm-8 col-md-8"> <button class="btn btn-grey"><img src="/qarddeck/web/images/preview_icon.png" alt="">Preview</button> </div></div></div>';
+
+					
+					$(".grid").append(html);
+					$("#ajaxDeckPreview").html(''); // Clear the preview..	
+					$('form[name="ajaxDeck"]')[0].reset();	
+ 			  	  }				  
+				}); 				
+
+		}
+ 
 		function addToDeck(deck){
 			var deck_id = $(deck).attr('id');
 			var qard_id = $('#qard_id').val()||0;

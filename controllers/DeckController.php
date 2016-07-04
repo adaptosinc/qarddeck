@@ -70,6 +70,7 @@ class DeckController extends Controller
 	
     /**
      * Lists all Deck of logged in user.
+	 * @param intger $page
      * @return mixed
      */
 	public function actionMyDecks($page=null)
@@ -88,6 +89,12 @@ class DeckController extends Controller
 			return $feed;		
 		}
 	}
+	
+	/**
+	 * Deck feed function
+	 * @param integer $offset,$limit
+	 * @return html
+	 */	
 	public function getDecksfeed($offset,$limit){
 		$feed = '';
 		$Query = new Query;
@@ -108,9 +115,10 @@ class DeckController extends Controller
 		}
 		return	$feed;		
 	}
+	
 	/**
 	 * Deck selection screen for add-to-deck 
-	 * 
+	 * @return html
 	 */
 	public function actionSelectDeck(){
 		
@@ -136,10 +144,12 @@ class DeckController extends Controller
 		//add new form
 		$html .= '<div class="grid-item">
 					<div id="add_new_deck">
-						<form enctype= "multipart/form-data" onSubmit="saveDeck(this);return false;">
+						<form onSubmit="saveDeck(this);return false;" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
 						<input type="file" id="deck-bg_image" class="class" name="bg_image" />
+						<div id="ajaxDeckPreview"></div>
 						<input type="text" name="title" placeholder="Title of Deck"/>
-						<button type="submit" class="btn btn-success">Add Deck</button>
+						<button class="btn btn-success">Add Deck</button>
+						
 						</form>
 					</div>
 				</div>';
@@ -147,9 +157,8 @@ class DeckController extends Controller
 		
 		return $html; 
 	}
-	public function actionCreateAjax(){
-		print_r($_POST);die;
-	}
+
+
 	/**
 	 * Add qard to a Deck
 	 * @param integer $deck_id,$qard_id
@@ -219,7 +228,45 @@ class DeckController extends Controller
             ]);
         }
     }
-
+	
+	/**
+	 * Add a new deck from select deck pop up
+	 * @param null
+	 * @return Json
+	 */	 
+	public function actionCreateAjax(){
+		  
+		  $uploadFile = UploadedFile::getInstanceByName('bg_image');
+		  $directory = \Yii::getAlias('@app/web/uploads') . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;
+		
+			if ($uploadFile) {
+				$uid = uniqid(time(), true);
+				$fileName = $uid . '.' . $uploadFile->extension;
+				$filePath = $directory . $fileName;		
+				$path = '../uploads/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
+				
+				if ($uploadFile->saveAs($filePath)){
+				  $title = Yii::$app->request->post()['title'];		
+				  $model = new Deck();				
+				  $model->user_id = Yii::$app->user->getId();//uid
+				  $model->title = $title;//title				  
+				  $model->bg_image = $model->cover_image=$path; //image
+				  $model->save();				  
+					
+					return Json::encode([					
+							'title'=> $title,
+							"url" => $path								
+					]);
+				}
+			} 
+ 
+	 }
+	 
+	/**
+	 * Upload file corresponding  to the cover image of a deck
+	 * @param null
+	 * @return Json
+	 */		 
 	public function actionSetCoverImage(){
 		$imageFile = UploadedFile::getInstanceByName('Deck[bg_image]');
 		$directory = \Yii::getAlias('@app/web/img/temp') . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;
@@ -246,6 +293,7 @@ class DeckController extends Controller
 		}
 		return '';		
 	}
+	
     /**
      * Updates an existing Deck model.
      * If update is successful, the browser will be redirected to the 'view' page.
