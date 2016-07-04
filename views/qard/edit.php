@@ -86,17 +86,17 @@ $this->title = 'Edit Qard';
 								<ul class="nav navbar-nav">
 									<li>
 									<h4>Deck title goes here</h4>
-									<h4><img src="images/refresh.png" alt=""><img src="" alt=""></h4>                                        
+									<h4><img src="'.\Yii::$app->homeUrl.'images/refresh.png" alt=""><img src="" alt=""></h4>                                        
 									</li>';
 				foreach($deck_qards as $deck_qard){
 					//prepare the deck feed here
-					echo '<li><div class="add-block">'
-                            .$deck_qard->qard->qard_image_url.                
-                          '</div>
-                          <h4><img src="'.$deck_qard->qard->title.'" /></h4></li>';
+					echo '<li><div class="add-block"><img src="'.\Yii::$app->homeUrl.'uploads/qards/'
+                            .$deck_qard->qard->qard_id.                
+                          '.png" /></div>
+                          <h4>'.$deck_qard->qard->title.'</h4></li>';
 					//echo $deck_qard->qard->getQardHtml();
 				}
-				echo '<li><img src="images/add-grey.png" alt=""></li>
+				echo '<li><img src="'.\Yii::$app->homeUrl.'images/add-grey.png" alt=""></li>
 						<li><i class="fa fa-eye"></i><button class="btn btn-default">Preview Deck</button></li>
 					  </ul>
 			</div>
