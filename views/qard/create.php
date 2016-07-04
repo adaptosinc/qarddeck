@@ -556,7 +556,11 @@ $this->title = 'Create Qard';
  
 		function addToDeck(deck){
 			var deck_id = $(deck).attr('id');
-			var qard_id = $('#qard_id').val()||0;
+			var qard_id = $('#qard_id').val()||0; 
+			if(qard_id == 0){
+				alert("Please add a block");
+				return;
+			}
 			$.ajax({
 				url : '<?=Url::to(['deck/add-qard'], true)?>',
 				type : 'POST',

@@ -98,7 +98,7 @@ ul.pull-right li {
 .desktop-view ul.nav.navbar-nav {
     width: 100%;
     text-align: center;
-    margin: 60px 0;
+    /*margin: 60px 0; */
 }
 .desktop-view ul.nav.navbar-nav li {
     float: none;

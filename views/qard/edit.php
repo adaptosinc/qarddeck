@@ -85,7 +85,7 @@ $this->title = 'Edit Qard';
 							<div class="">
 								<ul class="nav navbar-nav">
 									<li>
-									<h4>Deck title goes here</h4>
+									<h4>'.$qard_deck->deck->title.'</h4>
 									<h4><img src="'.\Yii::$app->homeUrl.'images/refresh.png" alt=""><img src="" alt=""></h4>                                        
 									</li>';
 				foreach($deck_qards as $deck_qard){
