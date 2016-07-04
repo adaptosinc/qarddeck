@@ -1001,7 +1001,7 @@ div#add_new_deck input[type="file"] {
     -webkit-appearance: none;
     -webkit-box-sizing: border-box;
     z-index: 1;
-    min-height: 130px;
+    min-height: 130px; 
     border-radius: 10px;
 }
 
@@ -1723,4 +1723,9 @@ p.post-date {
 #cardconsumetabs ul.nav-tabs li.active .image-close {
     display: block;
     padding: 5px;
+}
+
+/* create deck preview img style@kishan*/
+#previewImg{
+	padding:4px;	
 }

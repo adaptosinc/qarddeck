@@ -136,10 +136,12 @@ class DeckController extends Controller
 		//add new form
 		$html .= '<div class="grid-item">
 					<div id="add_new_deck">
-						<form onSubmit="saveDeck(this);return false;">
-						<input type="file" id="deck-bg_image" class="class" name="Deck[bg_image]" value="null.png" accept="image/*" data-url="/qarddeck/web/deck/set-cover-image">
+						<form onSubmit="saveDeck(this);return false;" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
+						<input type="file" id="deck-bg_image" class="class" name="bg_image" />
+						<div id="ajaxDeckPreview"></div>
 						<input type="text" name="title" placeholder="Title of Deck"/>
-						<button type="submit" class="btn btn-success">Add Deck</button>
+						<button class="btn btn-success">Add Deck</button>
+						
 						</form>
 					</div>
 				</div>';
@@ -148,6 +150,7 @@ class DeckController extends Controller
 		return $html; 
 	}
 	
+	 	
 	/**
 	 * Add qard to a Deck
 	 * @param integer $deck_id,$qard_id
@@ -217,7 +220,37 @@ class DeckController extends Controller
             ]);
         }
     }
-
+	 
+	 public function actionCreateAjax(){
+		 //deck/create-ajax		 
+	
+		  
+		  $uploadFile = UploadedFile::getInstanceByName('bg_image');
+		  $directory = \Yii::getAlias('@app/web/uploads') . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;
+		
+			if ($uploadFile) {
+				$uid = uniqid(time(), true);
+				$fileName = $uid . '.' . $uploadFile->extension;
+				$filePath = $directory . $fileName;		
+				$path = '../uploads/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
+				
+				if ($uploadFile->saveAs($filePath)){
+				  $title = Yii::$app->request->post()['title'];		
+				  $model = new Deck();				
+				  $model->user_id = Yii::$app->user->getId();//uid
+				  $model->title = $title;//title				  
+				  $model->bg_image = $model->cover_image=$path; //image
+				  $model->save();				  
+					
+					return Json::encode([					
+							'title'=> $title,
+							"url" => $path								
+					]);
+				}
+			} 
+ 
+	 }
+	 
 	public function actionSetCoverImage(){
 		$imageFile = UploadedFile::getInstanceByName('Deck[bg_image]');
 		$directory = \Yii::getAlias('@app/web/img/temp') . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;
