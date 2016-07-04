@@ -23,6 +23,10 @@ class SignIn extends Widget
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 			if(isset(Yii::$app->session['qard']) && Yii::$app->session['qard'] != '' ){
 				\Yii::$app->controller->redirect(['qard/publish']);
+				exit;
+			}
+			if(isset(Yii::$app->session['ref-url']) && Yii::$app->session['ref-url'] != ''){
+				\Yii::$app->controller->redirect(Yii::$app->session['ref-url']);
 			}
 			else
 				\Yii::$app->controller->goBack();

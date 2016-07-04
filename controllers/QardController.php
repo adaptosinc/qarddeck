@@ -13,6 +13,7 @@ use yii\filters\AccessControl;
 use yii\db\Query;
 use yii\db\Command;
 use yii\db\Connection;
+use lib\GrabzItClient;
 /**
  * QardController implements the CRUD actions for Qard model.
  */
@@ -252,6 +253,7 @@ class QardController extends Controller
 			return $this->redirect(['site/index']);
 		$model->status = 1;
 		$model->user_id = \Yii::$app->user->id;
+		$model->qard_image_url = $this->generateQardImage($id);
 		if($model->save(false)){
 			//generate the qard image here
 			unset(\Yii::$app->session['qard']);
@@ -689,5 +691,21 @@ class QardController extends Controller
      }}
            }
            
-     
+    public function generateQardImage($qard_id){
+	
+		include("lib/GrabzItClient.class.php");
+		$grabzIt = new GrabzItClient("ZjllZWY5MDQzODY0NDg3YjliMjYwYTI0NDU1NzgwNzc=", "Kj9PPz8mez8/JksSPyQ/Pzs/PyU/P28/Pyg/CD8OPz8=");
+		
+		// To take a image screenshot		//$grabzIt->SetImageOptions("http://wordpressmonks.com/works/qarddeck/web/qard/create?theme_id=2",null,-1,-1,null,null,'jpg',0,'add-block'); 	
+		/* $grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id=54', $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard54', $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); */
+		
+		$grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800);
+		$directory = \Yii::$app->basePath."/web/uploads/qards";
+
+		$filepath = $directory."/".$qard_id.".png";
+		$grabzIt->SaveTo($filepath);
+		
+		return $filepath;
+	} 
+	
 }

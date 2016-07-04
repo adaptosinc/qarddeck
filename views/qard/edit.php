@@ -17,6 +17,14 @@ $this->title = 'Edit Qard';
             r.className = r.className.replace(/(^|\s)no-js(\s|$)/, "$1js$2")
         })(document, window, 0);
     </script>
+	<style>
+	.qard-bottom{
+		display: none;
+	}
+	.grid-item { 
+		overflow : hidden;
+	}
+	</style>
 <!--for tags-->
     <link href="<?= Yii::$app->request->baseUrl?>/css/select2.css" rel="stylesheet">
     <!--<link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
@@ -46,18 +54,60 @@ $this->title = 'Edit Qard';
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
-		<button id="add_to_deck" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" class="add-deck">Add to Deck</button>
+		<div class="row">
+				<nav class="deck navbar col-sm-1 col-md-1">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#decknavbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+				</nav>
+				<span class="col-sm-6 col-md-6">
+					<button id="add_to_deck" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" class="add-deck">Add to Deck</button>
+					<!--<button class="btn btn-default">Remove Qard From Deck</button>-->
+				</span>
+		</div> 
+		
 		</br>
-        <div class="row">
-			<?php 
+		<div class="row">
+		<?php 
 			$qard_deck = $model->qardDecks;
 			if($qard_deck && $qard_deck->deck_id){
 				$deck_id = $qard_deck->deck_id;
-				echo "Deck ID".$deck_id;
+			//	echo "Deck ID".$deck_id;
+				//get all the qards for this deck now
+				$deck_title = $qard_deck->deck->title;				
+				$deck_qards = $qard_deck->deck->qardDecks;
+				echo '<div id="decknavbar" class="newdeck navbar-collapse collapse"> <!--DEcks -->
+							<div class="">
+								<ul class="nav navbar-nav">
+									<li>
+									<h4>Deck title goes here</h4>
+									<h4><img src="images/refresh.png" alt=""><img src="" alt=""></h4>                                        
+									</li>';
+				foreach($deck_qards as $deck_qard){
+					//prepare the deck feed here
+					echo '<li><div class="add-block">'
+                            .$deck_qard->qard->getQardHtml().                
+                          '</div>
+                          <h4>How to Create Qard</h4></li>';
+					//echo $deck_qard->qard->getQardHtml();
+				}
+				echo '<li><img src="images/add-grey.png" alt=""></li>
+						<li><i class="fa fa-eye"></i><button class="btn btn-default">Preview Deck</button></li>
+					  </ul>
+			</div>
+		</div>';
 			}
 			
-			?>
-            <div class="col-sm-4 col-md-4">
+		?>
+
+			
+			<div class="col-sm-10 col-md-10">
+            <div class="col-sm-5 col-md-5">
                 <div id="add-block" class="qard-div add-block" style="overflow:hidden">
                     <?php
 						if(isset($model->qard_id)){
@@ -150,7 +200,7 @@ $this->title = 'Edit Qard';
                         <h4 class="add-another" onclick="add_block(event)" style="display:block">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
                 </div>
             </div>
-            <div class="col-sm-8 col-md-8">
+            <div class="col-sm-7 col-md-7">
                 <div id="cardtabs">
 
                     <!-- Nav tabs -->
@@ -465,6 +515,7 @@ $this->title = 'Edit Qard';
 						</div>
 						<?php /* Style card Ends Here */ ?>
                     </div>
+					</div>
 
                 </div>
 

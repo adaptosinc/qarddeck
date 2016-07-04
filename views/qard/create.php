@@ -510,8 +510,20 @@ $this->title = 'Create Qard';
 		//DECK FUNCTIONS
 		function saveDeck(deck){
 		    console.log("Handle the saving here");
-		//once it is saved load the same here, either load the modal again
-        //or append it to the deck list and make it selectable		
+			  formData = new FormData($(deck)[0]);
+			  formData.append( 'file', 'sample' );
+				$.ajax({
+					url : '<?=Url::to(['deck/create-ajax'], true)?>',
+					type : 'POST',
+					data : formData,
+					processData: false, 
+					contentType: false ,
+					success : function(response){
+						console.log(response);
+						    //once it is saved load the same here, either load the modal again
+							//or append it to the deck list and make it selectable	
+					}				
+				});	
 		}
 		function addToDeck(deck){
 			var deck_id = $(deck).attr('id');

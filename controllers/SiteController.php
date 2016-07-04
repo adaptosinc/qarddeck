@@ -77,6 +77,8 @@ class SiteController extends Controller
         return $this->render('login', [
             'model' => $model,
         ]); */
+		$ref = Yii::$app->request->referrer;
+		\Yii::$app->session['ref-url'] = $ref;
 		return $this->redirect('index?login=true');
     }
     public function actionLogout()

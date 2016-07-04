@@ -136,8 +136,8 @@ class DeckController extends Controller
 		//add new form
 		$html .= '<div class="grid-item">
 					<div id="add_new_deck">
-						<form onSubmit="saveDeck(this);return false;">
-						<input type="file" id="deck-bg_image" class="class" name="Deck[bg_image]" value="null.png" accept="image/*" data-url="/qarddeck/web/deck/set-cover-image">
+						<form enctype= "multipart/form-data" onSubmit="saveDeck(this);return false;">
+						<input type="file" id="deck-bg_image" class="class" name="bg_image" />
 						<input type="text" name="title" placeholder="Title of Deck"/>
 						<button type="submit" class="btn btn-success">Add Deck</button>
 						</form>
@@ -147,7 +147,9 @@ class DeckController extends Controller
 		
 		return $html; 
 	}
-	
+	public function actionCreateAjax(){
+		print_r($_POST);die;
+	}
 	/**
 	 * Add qard to a Deck
 	 * @param integer $deck_id,$qard_id

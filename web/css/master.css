@@ -286,7 +286,83 @@ button.qard {
     border: 2px solid #8d8d8d;    
 }
 
+/* new deck */
+.overall-elements {
+    display: block;
+    width: 100%;
+    float: left;
+    background: #ccc;
+    border-radius: 20px;
+    padding: 10px;
+}
+.overall-elements .form-group {
+    margin-bottom: 0;
+}
+.overall-elements .form-control {
+    background: transparent;
+    color: #fff;
+    height: 25px;    
+}
+.overall-elements .form-control:focus {
+    border-bottom: 1px solid #fff !Important;
+}
+.text-preview {
+    display: block;
+    width: 100%;
+    height: 300px;
+}
+#cardtabs ul.nav.nav-tabs li button.btn.btn-default {
+    border: 2px solid #ff741b;
+}
+#cardtabs ul.nav.nav-tabs li:nth-child(5) {
+    border-top: 1px solid #ccc;
+}
+#cardtabs ul.nav.nav-tabs li:nth-child(6) {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+.overall-elements input::-webkit-input-placeholder {
+    color: #fff !important;
+}
+.newdeck.navbar-collapse.collapse.in {
+    position: relative;
+    width: 16%;
+    display: inline-block;
+    left: 0;
+    background: #f1f1f1;
+    min-height: 900px;
+    height: auto !important;
+    float: left;
+}
 
+nav.deck.navbar button.navbar-toggle .icon-bar {
+    display: block;
+}
+nav.deck.navbar button.navbar-toggle.collapsed {
+    transform: rotate(0deg);
+}
+nav.deck.navbar button.navbar-toggle {
+    transform: rotate(90deg);
+}
+div#decknavbar .add-block {
+    min-height: 200px;
+}
+div#decknavbar i {
+    margin-right: 5px;
+    color: #ccc;
+    font-size: 25px;
+}
+div#decknavbar button.btn-default {
+    color: #ff741b;
+    font-weight: bold;
+}
+nav.deck.navbar button.navbar-toggle .icon-bar {
+    background: #ff741b;
+}
+#cardblock ul.on-off li {
+    float: left;
+    padding: 0px 10px;
+}
 
 /* ==================================
     signup with email modal
