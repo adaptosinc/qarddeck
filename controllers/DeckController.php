@@ -122,7 +122,7 @@ class DeckController extends Controller
 	 */
 	public function actionSelectDeck(){
 		
-		$decks = Deck::find()->where(['user_id'=>Yii::$app->user->id])->all();
+		$decks = Deck::find()->where(['user_id'=>Yii::$app->user->id])->orderBy('created_at DESC')->all();
 		$html = '<div class="grid">';
 		foreach($decks as $deck){
 			//make html $html.='';

@@ -528,10 +528,7 @@ $this->title = 'Create Qard';
 		});
 		
 		function saveDeck(deck){
-			 console.log("Handle the saving here");		
-			 					var len = $(".grid").length;
-					console.log(len);
-					
+			 console.log("Handle the saving here");							
 			 var formData = new FormData($(deck)[0]);
 				$.ajax( {
 				  url: '<?=Url::to(['deck/create-ajax'], true)?>',
@@ -549,7 +546,7 @@ $this->title = 'Create Qard';
 				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="/qarddeck/web/images/qards_icon.png" alt="">20</div> <div class="col-sm-8 col-md-8"> <button class="btn btn-grey"><img src="/qarddeck/web/images/preview_icon.png" alt="">Preview</button> </div></div></div>';
 
 					
-					$(".grid").append(html);
+					$(".grid").prepend(html);
 					$("#ajaxDeckPreview").html(''); // Clear the preview..	
 					$('form[name="ajaxDeck"]')[0].reset();	
  			  	  }				  
