@@ -429,7 +429,7 @@
 						return;
 					}
 						
-					$("#working_div .bgimg-block").css("background-position","left "+imgLeft+"px top "+imgTop+"px");
+					$("#working_div .bgimg-block").css("background-position","right "+imgLeft+"px bottom "+imgTop+"px");
 					
 					_self._ghost();
 				},
