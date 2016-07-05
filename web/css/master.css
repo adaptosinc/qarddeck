@@ -598,7 +598,7 @@ button[name="preview"] {
     /*background: url(../images/deck-thumb.png) no-repeat;*/
     /*background-color: blanchedalmond; */
     min-height: 37.5px;
-    /*background-size: cover;*/
+    background-size: cover;
     overflow: hidden;
 }
 #working_div .bgoverlay-block {

@@ -429,7 +429,7 @@
 						return;
 					}
 						
-					$("#working_div .bgimg-block").css("background-position","right "+imgLeft+"px bottom "+imgTop+"px");
+					//$("#working_div .bgimg-block").css("background-position","right "+imgLeft+"px bottom "+imgTop+"px");
 					
 					_self._ghost();
 				},
@@ -503,6 +503,8 @@
 					newTop				= $(element).outerHeight() - newHeight;
 				}
 			}
+			image.css({width: newWidth, height: newHeight, top: newTop, left: newLeft })
+			_self._ghost();
 			var total_background_size = parseInt(newTop) + parseInt(newLeft);
 			var background_size = total_background_size/2;
 			background_size = Math.abs(background_size);
@@ -512,15 +514,24 @@
 			if(background_size < 100){
 				background_size = 100;
 			}
+					var el_width = "385px";
+					var el_height = $("#working_div .bgimg-block").height();
+					console.log("el_width:"+el_width);
+					console.log("el_height:"+el_height);
+					console.log("newLeft:"+newLeft);
+					console.log("newTop:"+newTop);
+					newTop =  parseInt(el_height)-parseInt(newTop);
+					newLeft =  parseInt(el_width) -parseInt(newLeft) ;
+					
 			if(newLeft == 0 && newTop == 0){
+				console.log(newLeft);
 						return;
 			}
-			$("#working_div .bgimg-block").css("background-size",newLeft+" "+ newTop);
-			$("#working_div .bgimg-block").css("background-position","left "+newLeft+"px top "+newTop+"px");
+			//$("#working_div .bgimg-block").css("background-size",newLeft+"px "+ newTop+"px");
+			//$("#working_div .bgimg-block").css("background-position","left "+newLeft+"px top "+newTop+"px");
 			//background-size: 126%;
 			//background-position: left -574px top -247px;
-			image.css({width: newWidth, height: newHeight, top: newTop, left: newLeft })
-			_self._ghost();
+
 			
 
 		},

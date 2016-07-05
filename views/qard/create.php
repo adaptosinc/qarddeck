@@ -1012,9 +1012,18 @@ $this->title = 'Create Qard';
                 value: div_bgcolor
             });
             var div_bgimage = $("#working_div .bgimg-block").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+			//console.log(div_bgimage);
+			//return;
             data.push({
                 name: 'div_bgimage',
                 value: div_bgimage
+            });
+			//size is not getting applied right now
+			var div_bgimage_size = $("#working_div .bgimg-block").css("background-size");
+			var div_bgimage_position = $("#working_div .bgimg-block").css("background-position")||'null';
+            data.push({
+                name: 'div_bgimage_position',
+                value: div_bgimage_position
             });
 /*             var div_bg_color = $("#working_div .bgimg-block").css("background-color");
             data.push({
@@ -1188,12 +1197,19 @@ $this->title = 'Create Qard';
 			if (typeof div_bgimage === 'undefined') {
 				var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 			}
-			console.log(div_bgimage);
-			return;
+            var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+			//console.log(div_bgimage);
+			//return;
 			data.push({
 				name: 'div_bgimage',
 				value: div_bgimage
 			});
+			
+			var div_bgimage_position = $(this).css("background-position")||'null';
+            data.push({
+                name: 'div_bgimage_position',
+                value: div_bgimage_position
+            });
 			//getting height of div
 			var height = parseInt($(this).find(".current_blk").attr('data-height')) * 37.5;
 			data.push({
@@ -1352,7 +1368,10 @@ $this->title = 'Create Qard';
 					// if stored data contain image then true
 					var img = '';
 					if (data.link_image) {
+						
 						img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+/* 						if(data.div_bgimage_position != "null")
+							img = img+'background-position:'+data.div_bgimage_position+';' */
 					}
 					//creating parent block or img-block
 					var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
@@ -1364,7 +1383,7 @@ $this->title = 'Create Qard';
 					/* Added by Dency */
 					/* Image is added to the current block without adding a newblock */
 					if(new_block == false){
-						alert("new_block:"+new_block);
+						//alert("new_block:"+new_block);
 						$("#working_div").html(qard + theme + new_div);
 						 return;
 					}
