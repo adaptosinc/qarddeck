@@ -66,7 +66,19 @@ $this->title = 'Edit Qard';
 				</div>
 				</nav>
 				<span class="col-sm-6 col-md-6">
-					<button id="add_to_deck" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" class="add-deck">Add to Deck</button>
+				<?php 
+					$qard_deck = $model->qardDecks;
+					if($qard_deck && $qard_deck->deck_id){
+						echo '<button id="add_to_deck" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" class="add-deck">Change Deck</button>';						
+						echo '<button id="remove_from_deck" href="'.\Yii::$app->request->baseUrl.'/deck/remove-qard" class="add-deck">Remove from Deck</button>';
+					}
+
+					else
+						echo '<button id="add_to_deck" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" class="add-deck">Add to Deck</button>';	
+						
+					
+				?>
+
 					<!--<button class="btn btn-default">Remove Qard From Deck</button>-->
 				</span>
 		</div> 
@@ -90,10 +102,13 @@ $this->title = 'Edit Qard';
 									</li>';
 				foreach($deck_qards as $deck_qard){
 					//prepare the deck feed here
-					echo '<li><div class="add-block"><img src="'.\Yii::$app->homeUrl.'uploads/qards/'
-                            .$deck_qard->qard->qard_id.                
-                          '.png" /></div>
-                          <h4>'.$deck_qard->qard->title.'</h4></li>';
+					if(isset($deck_qard->qard)){
+						echo '<li><div class="add-block"><img width="100%" height="100%" src="'.\Yii::$app->homeUrl.'uploads/qards/'
+								.$deck_qard->qard->qard_id.                
+							  '.png" /></div>
+							  <h4>'.$deck_qard->qard->title.'</h4></li>';						
+					}
+
 					//echo $deck_qard->qard->getQardHtml();
 				}
 				echo '<li><img src="'.\Yii::$app->homeUrl.'images/add-grey.png" alt=""></li>
@@ -651,7 +666,52 @@ $this->title = 'Edit Qard';
 			$("#working_div .bgimg-block").css('background-color', color);
 			$("#working_div .bgimg-block").attr('data-bgcolor-id',$(elem).attr('data-bgcolor-id'));
 		}
+		
+		function saveDeck(deck){
+			 console.log("Handle the saving here");							
+			 var formData = new FormData($(deck)[0]);
+				$.ajax( {
+				  url: '<?=Url::to(['deck/create-ajax'], true)?>',
+				  type: 'POST',
+				  data: formData,
+				  processData: false,
+				  contentType: false,
+				  success:function(data){
+					  
+					var json = $.parseJSON(data);
+					var img =json.url;
+					var t=json.title; 
+					
+					//var html='';
+				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="/qarddeck/web/images/qards_icon.png" alt="">20</div> <div class="col-sm-8 col-md-8"> <button class="btn btn-grey"><img src="/qarddeck/web/images/preview_icon.png" alt="">Preview</button> </div></div></div>';
 
+					$('#add_to_deck').trigger('click');
+					//$(".grid").prepend(html);
+					//$("#ajaxDeckPreview").html(''); // Clear the preview..	
+					//$('form[name="ajaxDeck"]')[0].reset();	
+ 			  	  }				  
+				}); 				
+
+		}
+ 
+		function addToDeck(deck){
+			var deck_id = $(deck).attr('id');
+			var qard_id = $('#qard_id').val()||0; 
+			if(qard_id == 0){
+				alert("Please add a block");
+				return;
+			}
+			$.ajax({
+				url : '<?=Url::to(['deck/add-qard'], true)?>',
+				type : 'POST',
+				data : {'qard_id':qard_id,'deck_id':deck_id},
+				success : function(response){
+					console.log(response);
+					//load the a new create page with a deckid included request
+				}				
+			});
+			console.log(deck_id);
+		}
     </script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
 

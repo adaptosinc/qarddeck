@@ -420,9 +420,10 @@ nav.deck.navbar button.navbar-toggle .icon-bar {
     color: orange;
     border-radius: 3px;	
 	position: relative;
-    display: block;
+    display: inline-block;
     padding: 10px 15px;
 	background-color : transparent;
+	margin-right: 4px;
 }
 
 .add-block {
@@ -597,7 +598,7 @@ button[name="preview"] {
     /*background: url(../images/deck-thumb.png) no-repeat;*/
     /*background-color: blanchedalmond; */
     min-height: 37.5px;
-    background-size: cover;
+    /*background-size: cover;*/
     overflow: hidden;
 }
 #working_div .bgoverlay-block {

@@ -32,7 +32,7 @@ class QardController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['publish','activity'],
+                'only' => ['publish','activity','edit'],
                 'rules' => [
 /*                  [
                         'allow' => true,
@@ -41,7 +41,7 @@ class QardController extends Controller
                     ], */
                     [
                         'allow' => true,
-                        'actions' => ['publish','activity'],
+                        'actions' => ['publish','activity','edit'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -107,7 +107,7 @@ class QardController extends Controller
 		$this->layout = "plain";
 		$model = $this->findModel($id);
 		$single = true;
-		$modelFeed = $model->getQardHtml($single);	
+		$modelFeed = $model->getQardHtmlSingle();	
 		//print_r($modelFeed);die;
         return $this->render('view', [
             'model' => $modelFeed,

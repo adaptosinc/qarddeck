@@ -47,8 +47,13 @@ $this->title = 'Create Qard';
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
+		<?php 
+		if(!\Yii::$app->user->isGuest){
+		
+		?>
 		<button id="add_to_deck" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" class="add-deck">Add to Deck</button>
 		</br>
+		<?php } ?>
         <div class="row">
 
             <div class="col-sm-4 col-md-4">
@@ -83,7 +88,7 @@ $this->title = 'Create Qard';
                                 </div>
                             </div>
                         </div>
-                        <h4 class="add-another" onclick="add_block(event)" style="display:block">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
+                        <h4 class="add-another" onclick="add_block(event,true)" style="display:block">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
                 </div>
             </div>
             <div class="col-sm-8 col-md-8">
@@ -464,11 +469,13 @@ $this->title = 'Create Qard';
 		 e.preventDefault();
 		 console.log($(this).attr('href'));
 		 var qard_id = $('#qard_id').val(); 
-/* 		 if(typeof qard_id == 'undefined' || qard_id == '' || qard_id == 0)
+		 if(typeof qard_id == 'undefined' || qard_id == '' || qard_id == 0)
 		 {
-			 alert('You need to create atleast one block');
-			 return;
-		 } */
+			 //alert('You need to create atleast one block');
+			 $('#working_div .current_blk').text('Add your content here');
+			 $('.add-another').trigger('click');
+			// return;
+		 }
 		 $('#deck-style').modal('show').find('.modal-body').load($(this).attr('href'));
 	   });	   
 	});");
@@ -557,10 +564,6 @@ $this->title = 'Create Qard';
 		function addToDeck(deck){
 			var deck_id = $(deck).attr('id');
 			var qard_id = $('#qard_id').val()||0; 
-			if(qard_id == 0){
-				alert("Please add a block");
-				return;
-			}
 			$.ajax({
 				url : '<?=Url::to(['deck/add-qard'], true)?>',
 				type : 'POST',
@@ -970,7 +973,7 @@ $this->title = 'Create Qard';
 			$("#working_div .bgoverlay-block").css("height", h);
 			console.log(offset);
 	}
-	function add_block(event){
+	function add_block(event,new_block){
 		//save block
             var data = $("#image_upload").serializeArray();
             // getting opacity for image-block div
@@ -1109,7 +1112,8 @@ $this->title = 'Create Qard';
                 name: 'data_style_qard',
                 value: data_style_qard
             });	
-			commanAjaxFun(data, 'add_block');
+			//var new_block = true;
+			commanAjaxFun(data, 'add_block',new_block);
 			//create another working block(div)
                                 //$("#working_div").remove();
 /* 			var nextBlockPriority = getNextBlockPriority();
@@ -1184,6 +1188,8 @@ $this->title = 'Create Qard';
 			if (typeof div_bgimage === 'undefined') {
 				var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 			}
+			console.log(div_bgimage);
+			return;
 			data.push({
 				name: 'div_bgimage',
 				value: div_bgimage
@@ -1286,8 +1292,8 @@ $this->title = 'Create Qard';
 			//
 			//	    console.log(data);
 			//	    return false;
-
-			commanAjaxFun(data, 'save_block');
+			var new_block = true;
+			commanAjaxFun(data, 'save_block',new_block);
 
 
 		});
@@ -1318,7 +1324,8 @@ $this->title = 'Create Qard';
 		});
 		return ++blk_pri;
 	}
-	function commanAjaxFun(postData, callFrom) {
+
+	function commanAjaxFun(postData, callFrom, new_block) {
 
 		//	console.log(postData);return false;
 		$.ajax({
@@ -1353,7 +1360,17 @@ $this->title = 'Create Qard';
 					new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' + data.div_opacity + ';height:' + data.height + 'px;">';
 					//creating main block or text block
 					new_div += '<div data-height="' + (data.height / 37.5) + '" style="height:' + data.height + 'px;" data-block_id="' + data.block_id + '" data-theme_id="' + data.theme_id + '" data-block_priority="' + data.block_priority + '" class="text-block current_blk">' + data.text + '</div></div></div>';
-
+					
+					/* Added by Dency */
+					/* Image is added to the current block without adding a newblock */
+					if(new_block == false){
+						alert("new_block:"+new_block);
+						$("#working_div").html(qard + theme + new_div);
+						 return;
+					}
+					/*****************/
+					
+					$("#working_div").css("background-color","red");
 					//adding before working block
 					$("#working_div").before(qard + theme + new_div);
 

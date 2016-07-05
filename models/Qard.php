@@ -203,11 +203,11 @@ class Qard extends \yii\db\ActiveRecord
 			}	
 	
 	}
-	public function getQardHtml1(){
+	public function getQardHtmlSingle(){
 		
-		$str = '<div class="col-sm-4 col-md-4 grid-item" >
-				<div>
-					<div>';
+		$str = '<div class="grid-item">
+				<div class="qard-content" id="qard'.$this->qard_id.'" style="border: 5px solid #fff;">
+				<div id="add-block'.$this->qard_id.'" class="qard-div add-block">';
 			$blocks = $this->blocks;
 			if(isset($blocks) && !empty($blocks)){
 			//	print_R($blocks);die;
@@ -226,21 +226,26 @@ class Qard extends \yii\db\ActiveRecord
 								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 								$img_block_style .= 'background-size: cover;';
 						}
-							
-						//$img_block_style .= 'min-height:'.$theme['height'].'px;';
+						if($theme['div_bgcolor'] != '')
+							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
+						$img_block_style .= 'height:'.$theme['height'].'px;';
 						//$img_block_style .= 'height:auto;';
 						
 					//overlay block styles
 						$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
-						$overlay_block_style .= 'background-color:'.$theme['div_bgcolor'].';';
-						//$overlay_block_style .= 'min-height:'.$theme['height'].'px;';
+						if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
+							$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
+						$overlay_block_style .= 'height:'.$theme['height'].'px;';
 						//$overlay_block_style .='height:auto;';
 						
-						//$text_block_style .= 'min-height:'.$theme['height'].'px;';
+						$text_block_style .= 'height:'.$theme['height'].'px;';
 						$text_block_style .='overflow:hidden;';
+						//$text_block_style .='height:auto;';
 				}
+				if(!isset($theme['data_style_qard']))
+					$theme['data_style_qard'] = "line";
 				///////////////////////////
-				$str .= '<div class="bgimg-block" style="'.$img_block_style.'" >
+				$str .= '<div class="bgimg-block '.$theme['data_style_qard'].'" style="'.$img_block_style.'" >
 				<div class="bgoverlay-block" style="'.$overlay_block_style.'">
 				<div class="text-block" style="'.$text_block_style.'">';
 				$str .= $block->text;
@@ -249,25 +254,10 @@ class Qard extends \yii\db\ActiveRecord
 			}	
 		$str .= '		</div>
 				</div>
-			<div class="qard-bottom">
-				<ul class="qard-tags">
-					<li class="pull-left">#tag#tag#tag</li>
-					<li class="pull-right">x days ago</li>
-				</ul>
-				<h4>Author Full name</h4>
-				<ul class="social-list">
-					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/heart.png" alt=""><br />500</a></li>
-					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/comment-dark.png" alt=""><br />500</a></li>
-					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/certify.png" alt=""><br />500</a></li>
-					<li><a href=""><img src="'.\Yii::$app->homeUrl.'images/share.png" alt=""><br />500</a></li>
-				</ul>
-			</div>
 			</div>';	
 				
 		return $str;
 		
-	}		
-	else
-		return '';
+			}	
 	}
 }

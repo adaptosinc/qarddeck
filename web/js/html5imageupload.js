@@ -291,6 +291,7 @@
 			var _self		= this;
 			var options		= this.options; 
 			var element		= this.element;
+		//	var element		= $('#working_div');
 		    _self.drag		= false;
 			
 			var img 		= new Image;
@@ -345,6 +346,8 @@
 
     			//place the images
     			$(element).append($('<div class="cropWrapper"></div>').append($(_self.image)));
+				//console.log(_self.image[0].currentSrc);
+				$("#working_div .bgimg-block").css("background-image","url("+_self.image[0].currentSrc+")");
     			if (!empty(_self.imageGhost)) {
     				$(element).append(_self.imageGhost);
     			}
@@ -414,6 +417,20 @@
 						top:	imgTop,
 						left:	imgLeft
 					})
+					var el_width = "385px";
+					var el_height = $("#working_div .bgimg-block").height();
+					console.log("el_width:"+el_width);
+					console.log("el_height:"+el_height);
+					console.log("imgLeft:"+imgLeft);
+					console.log("imgTop:"+imgTop);
+					imgTop =  parseInt(el_height)-parseInt(imgTop);
+					imgLeft =  parseInt(el_width) -parseInt(imgLeft) ;
+					if(imgLeft == 0 && imgTop == 0){
+						return;
+					}
+						
+					$("#working_div .bgimg-block").css("background-position","left "+imgLeft+"px top "+imgTop+"px");
+					
 					_self._ghost();
 				},
 				'dragend mouseup touchend': function() {
@@ -486,6 +503,22 @@
 					newTop				= $(element).outerHeight() - newHeight;
 				}
 			}
+			var total_background_size = parseInt(newTop) + parseInt(newLeft);
+			var background_size = total_background_size/2;
+			background_size = Math.abs(background_size);
+			if(background_size > 300){
+				background_size = 300;
+			}
+			if(background_size < 100){
+				background_size = 100;
+			}
+			if(newLeft == 0 && newTop == 0){
+						return;
+			}
+			$("#working_div .bgimg-block").css("background-size",newLeft+" "+ newTop);
+			$("#working_div .bgimg-block").css("background-position","left "+newLeft+"px top "+newTop+"px");
+			//background-size: 126%;
+			//background-position: left -574px top -247px;
 			image.css({width: newWidth, height: newHeight, top: newTop, left: newLeft })
 			_self._ghost();
 			
@@ -634,6 +667,11 @@
 					$(input).after($('<input type="text" name="' + $(input).attr('name') + '_values" class="final" />').val(json));
 				}
 			}
+			var total_background_size = parseInt(finalTop) + parseInt(finalLeft);
+			var background_size = total_background_size/2;
+			background_size = Math.abs(background_size);
+			$("#working_div .bgimg-block").css("background-size",background_size+"%");
+			$("#working_div .bgimg-block").css("background-position","left "+finalLeft+"px top "+finalTop+"px");
 		},
 		_ajax: function(obj) {
 			var _self				= this;
@@ -943,7 +981,8 @@
 						
 						e.preventDefault();
 						_self.imageCrop(); 
-						setTimeout("add_block();",1000);
+						console.log("image addded");
+						setTimeout("add_block(true,false);",1000);
 //						setInterval(function(){add_block();},1000);
 					}
 				}));
