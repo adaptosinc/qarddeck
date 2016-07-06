@@ -70,7 +70,7 @@ $this->title = 'Edit Qard';
 					$qard_deck = $model->qardDecks;
 					if($qard_deck && $qard_deck->deck_id){
 						echo '<button id="add_to_deck" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" class="add-deck">Change Deck</button>';						
-						echo '<button id="remove_from_deck" href="'.\Yii::$app->request->baseUrl.'/deck/remove-qard" class="add-deck">Remove from Deck</button>';
+						echo '<button id="remove_from_deck" onClick="removeFromDeck()" class="add-deck">Remove from Deck</button>';
 					}
 
 					else
@@ -639,27 +639,7 @@ $this->title = 'Edit Qard';
             } else {
                 s.style.display = "none";
             }
-        }
-		//DECK FUNCTIONS
-		function saveDeck(deck){
-		    console.log("Handle the saving here");
-		//once it is saved load the same here, either load the modal again
-        //or append it to the deck list and make it selectable		
-		}
-		function addToDeck(deck){
-			var deck_id = $(deck).attr('id');
-			var qard_id = $('#qard_id').val()||0;
-			$.ajax({
-				url : '<?=Url::to(['deck/add-qard'], true)?>',
-				type : 'POST',
-				data : {'qard_id':qard_id,'deck_id':deck_id},
-				success : function(response){
-					console.log(response);
-					//load the a new create page with a deckid included request
-				}				
-			});
-			console.log(deck_id);
-		}
+        }	
 		function setBGColor(elem){
 			color = $(elem).attr('data-color');
 			$('#bg_color').val(color);
@@ -707,10 +687,31 @@ $this->title = 'Edit Qard';
 				data : {'qard_id':qard_id,'deck_id':deck_id},
 				success : function(response){
 					console.log(response);
+					var red_url = "<?=Url::to(['qard/edit'], true)?>";
+					red_url = red_url+"?id="+qard_id;
+					console.log(red_url);
+					window.location.replace(red_url);
 					//load the a new create page with a deckid included request
 				}				
 			});
 			console.log(deck_id);
+		}
+		function removeFromDeck(){
+			var qard_id = $('#qard_id').val()||0;
+			$.ajax({
+				url : '<?=Url::to(['deck/remove-qard'], true)?>',
+				type : 'POST',
+				data : {'qard_id':qard_id},
+				success : function(response){
+					console.log(response);
+					//load the a new create page with a deckid included request
+					var red_url = "<?=Url::to(['qard/edit'], true)?>";
+					red_url = red_url+"?id="+qard_id;
+					console.log(red_url);
+					window.location.replace(red_url);
+				}				
+			});
+			//console.log(deck_id);
 		}
     </script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>

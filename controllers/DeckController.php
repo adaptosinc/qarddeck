@@ -169,19 +169,34 @@ class DeckController extends Controller
 		$qard_id = Yii::$app->request->post()['qard_id'];
 		$deck_id = Yii::$app->request->post()['deck_id'];
 		
-			$model = new QardDeck();
-			$model->qard_id = $qard_id;
-			$model->deck_id = $deck_id;
+		//since a qard can only for one deck at a time
+		//delete all other mappings before you add one
+		$existing_model = QardDeck::find()->where(['qard_id'=>$qard_id])->one();
+		//print_r($existing_model);die;
+		if(isset($existing_model))
+			QardDeck::findOne($existing_model->qd_id)->delete();		
+		$model = new QardDeck();
+		$model->qard_id = $qard_id;
+		$model->deck_id = $deck_id;
 		if($qard_id != 0 && $deck_id != 0 ){
 			$model->save();	
 				echo "Success";			
-		}else
-			echo "Failed";
-
-		
-		
+		}
+		else
+				echo "Failed";		
 	}
-	
+	/**
+	 * Remove qard from Deck
+	 * @return  boolean
+	 */
+	public function actionRemoveQard(){
+		$qard_id = Yii::$app->request->post()['qard_id'];
+		$existing_model = QardDeck::find()->where(['qard_id'=>$qard_id])->one();
+		//print_r($existing_model);die;
+		if(isset($existing_model))
+			QardDeck::findOne($existing_model->qd_id)->delete();
+		return true;
+	}
     /**
      * Displays a single Deck model.
      * @param integer $id

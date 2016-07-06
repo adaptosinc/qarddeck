@@ -60,7 +60,7 @@ $this->title = 'Create Qard';
                 <div id="add-block" class="qard-div add-block" style="overflow:hidden">
                     <?php
 						if(isset($model['qard_id'])){
-							echo '<input type="hidden" name="qard_id" value="'.$model['qard_id'].'">';
+							echo '<input type="text" name="qard_id" value="'.$model['qard_id'].'">';
 						}
 					?>
         <input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
@@ -571,6 +571,11 @@ $this->title = 'Create Qard';
 				success : function(response){
 					console.log(response);
 					//load the a new create page with a deckid included request
+					var red_url = "<?=Url::to(['qard/edit'], true)?>";
+					red_url = red_url+"?id="+qard_id;
+					console.log(red_url);
+					window.location.replace(red_url);
+					
 				}				
 			});
 			console.log(deck_id);
@@ -1362,7 +1367,7 @@ $this->title = 'Create Qard';
 					var theme = '';
 					//if qard is editing
 					if (!$("#qard_id").attr("value")) {
-						qard = '<input id="qard_id" type="hidden" value="' + data.qard_id + '">';
+						qard = '<input id="qard_id" type="text" value="' + data.qard_id + '">';
 						$('#qardid-link').attr("href","<?=Yii::$app->request->baseUrl?>/theme/select-theme/?q_id="+ data.qard_id +"");
 					}
 					// if stored data contain image then true
@@ -1384,7 +1389,8 @@ $this->title = 'Create Qard';
 					/* Image is added to the current block without adding a newblock */
 					if(new_block == false){
 						//alert("new_block:"+new_block);
-						$("#working_div").html(qard + theme + new_div);
+						$("#working_div").before(qard);
+						$("#working_div").html(theme + new_div);
 						 return;
 					}
 					/*****************/
