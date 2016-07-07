@@ -212,7 +212,7 @@ $this->title = 'Edit Qard';
                                 </div>
                             </div>
                         </div> -->
-                        <h4 class="add-another" onclick="add_block(event)" style="display:block">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
+                        <h4 class="add-another" onclick="add_block(event,true)" style="display:block">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
                 </div>
             </div>
             <div class="col-sm-7 col-md-7">
@@ -1104,7 +1104,7 @@ $this->title = 'Edit Qard';
 			$("#working_div .bgoverlay-block").css("height", h);
 			console.log(offset);
 	}
-	function add_block(event){
+	function add_block(event,new_block){
 		//save block
             var data = $("#image_upload").serializeArray();
             // getting opacity for image-block div
@@ -1146,6 +1146,13 @@ $this->title = 'Edit Qard';
             data.push({
                 name: 'div_bgimage',
                 value: div_bgimage
+            });
+			//size is not getting applied right now
+			var div_bgimage_size = $("#working_div .bgimg-block").css("background-size");
+			var div_bgimage_position = $("#working_div .bgimg-block").css("background-position")||'null';
+            data.push({
+                name: 'div_bgimage_position',
+                value: div_bgimage_position
             });
 /*             var div_bg_color = $("#working_div .bgimg-block").css("background-color");
             data.push({
@@ -1242,7 +1249,7 @@ $this->title = 'Edit Qard';
                 value: data_style_qard
             });	
 						
-			commanAjaxFun(data, 'add_block');
+			commanAjaxFun(data, 'add_block',new_block);
 			//create another working block(div)
                                 //$("#working_div").remove();
 /* 			var nextBlockPriority = getNextBlockPriority();
@@ -1313,6 +1320,7 @@ $this->title = 'Edit Qard';
 
 			//if it contains background as image then true
 			var div_bgimage = $(this).css("background-image");
+			console.log(div_bgimage);
 			if (typeof div_bgimage === 'undefined') {
 				var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 			}
@@ -1320,6 +1328,11 @@ $this->title = 'Edit Qard';
 				name: 'div_bgimage',
 				value: div_bgimage
 			});
+			var div_bgimage_position = $(this).css("background-position")||'null';
+            data.push({
+                name: 'div_bgimage_position',
+                value: div_bgimage_position
+            });
 			//getting height of div
 			var height = parseInt($(this).find(".current_blk").attr('data-height')) * 37.5;
 			data.push({
@@ -1416,8 +1429,8 @@ $this->title = 'Edit Qard';
 			//
 			//	    console.log(data);
 			//	    return false;
-
-			commanAjaxFun(data, 'save_block');
+			var new_block = true;
+			commanAjaxFun(data, 'save_block',new_block);
 
 
 		});
@@ -1448,7 +1461,7 @@ $this->title = 'Edit Qard';
 		});
 		return ++blk_pri;
 	}
-	function commanAjaxFun(postData, callFrom) {
+	function commanAjaxFun(postData, callFrom, new_block) {
 
 		//	console.log(postData);return false;
 		$.ajax({
@@ -1467,6 +1480,7 @@ $this->title = 'Edit Qard';
 					//	       checkHeight();
 					var qard = '';
 					var theme = '';
+					console.log($("#qard_id").val());
 					//if qard is editing
 					if ($("#qard_id").val()=='') {
 						alert($("#qard_id").val());
@@ -1483,7 +1497,17 @@ $this->title = 'Edit Qard';
 					new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' + data.div_opacity + ';height:' + data.height + 'px;">';
 					//creating main block or text block
 					new_div += '<div data-height="' + (data.height / 37.5) + '" style="height:' + data.height + 'px;" data-block_id="' + data.block_id + '" data-theme_id="' + data.theme_id + '" data-block_priority="' + data.block_priority + '" class="text-block current_blk">' + data.text + '</div></div></div>';
-
+					
+					/* Added by Dency */
+					/* Image is added to the current block without adding a newblock */
+					if(new_block == false){
+						//alert("new_block:"+new_block);
+						$("#working_div").before(qard);
+						$("#working_div").html(theme + new_div);
+						$("#reset_image").trigger("click");
+						 return;
+					}
+					/*****************/
 					//adding before working block
 					$("#working_div").before(qard + theme + new_div);
 
@@ -1515,7 +1539,7 @@ $this->title = 'Edit Qard';
 				else {
 				$("#" + data.blk_id).find(".current_blk").attr("data-block_id", data.block_id);
 				$("#" + data.blk_id).find(".current_blk").attr("data-theme_id", data.theme_id);
-
+//console.log(data.qard_id);
 				var url = '<?=Url::to(['qard/publish'], true);?>';
 				window.location.replace(url);
 				$("#wait").hide();

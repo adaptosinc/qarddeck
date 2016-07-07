@@ -1348,7 +1348,23 @@ $this->title = 'Create Qard';
 
 	function commanAjaxFun(postData, callFrom, new_block) {
 
-		//	console.log(postData);return false;
+		//console.log(postData);return;
+/* 		if(!new_block && callFrom=="add_block"){ //request for add_image
+			postData.push({
+                name: 'is_image',
+                value: true				
+			});
+			postData.push({
+                name: 'handle_image',
+                value: true				
+			});	
+		}else{
+			postData.push({
+                name: 'is_image',
+                value: false				
+			});			
+		}
+ */
 		$.ajax({
 			url: "<?=Url::to(['block/create'], true)?>",
 			type: "POST",
@@ -1367,7 +1383,7 @@ $this->title = 'Create Qard';
 					var theme = '';
 					//if qard is editing
 					if (!$("#qard_id").attr("value")) {
-						qard = '<input id="qard_id" type="text" value="' + data.qard_id + '">';
+						qard = '<input id="qard_id" type="hidden" value="' + data.qard_id + '">';
 						$('#qardid-link').attr("href","<?=Yii::$app->request->baseUrl?>/theme/select-theme/?q_id="+ data.qard_id +"");
 					}
 					// if stored data contain image then true
@@ -1391,6 +1407,7 @@ $this->title = 'Create Qard';
 						//alert("new_block:"+new_block);
 						$("#working_div").before(qard);
 						$("#working_div").html(theme + new_div);
+						$("#reset_image").trigger("click");
 						 return;
 					}
 					/*****************/

@@ -325,7 +325,7 @@ class BlockController extends Controller
 	}else {
 	    $block=new Block();
 	}
-	
+	$is_true=true;
 	$block->qard_id=$qard_id;
 	$block->theme_id=$theme_id;
 	// 0 for temp, 1 form active , 2 delete, 3 for template
@@ -336,7 +336,7 @@ class BlockController extends Controller
 	$block->block_priority=$post['block_priority'];
 	
 	
-	$is_true=false;
+	
 	//for text
 	if(!empty($post['text'])){
 	    $block->text=$post['text'];
