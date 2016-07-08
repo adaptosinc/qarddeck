@@ -890,6 +890,7 @@ ul.comment-tags li.pull-right{
 }
 .qard-content:hover .qard-share {
     display: block;
+	text-align: center;
 }
 .qard-share h4 {
     margin-top: 50%;
@@ -950,9 +951,350 @@ ul.comment-tags li.pull-right{
     display: inline-block;
     width: 100%;
 }
-
 /* ============================
  *     Deck Details
+ * ========================== */
+.deck-header.fixed {
+    position: fixed;
+    top: 0;
+    background: #fff;
+    z-index: 70;
+    width:100%;
+}
+.deck-header.fixed .user-details h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+}
+.deck-header.fixed .user-details {
+    border-right: 0;
+}
+.deck-header.fixed .deck-list {
+    float: left;
+    width:auto;
+    padding: 0;
+}
+.deck-header.fixed button.qard {
+    margin-left:20px;
+}
+.deck-header.fixed .col-sm-2.col-md-2 img {
+    max-width: 100%;
+}
+.deck-header.fixed .right-block ul.deck-list span {
+    display: inline-block;
+    margin-left: 10px;
+    font-weight: bold;
+    color: #ccc;
+}
+span.deck-count {
+    border-left: 1px solid #ccc;
+    padding: 10px;
+    margin: 0 10px;
+}
+section.main-deck {
+    display: block;
+    float: left;
+    width: 100%;
+}
+section.main-deck .profile-header {
+    padding: 15px;
+}
+section.main-deck .profile-header img{
+    margin-right: 10px;   
+}
+section.main-deck ul li .btn-grey {
+    border-radius: 20px;
+}
+section.main-deck li{
+    margin-top: 10px !Important;
+}
+.left_nav {
+    padding: 15px;
+}
+.right_nav {
+    text-align: right;
+    padding: 15px;
+}
+.right_nav img {
+    margin-left: 10px;
+}
+#deck-style .modal-dialog {
+    width: 80%;
+    background: #fafafa;
+    border-radius: 40px;
+    padding: 40px;
+}
+#deck-style {
+    background: rgba(58, 57, 57, 0.85);
+}
+#deck-style h4.modal-title {
+    text-align: left;
+    font-weight: 300;
+}
+#deck-style button.close {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgb(70, 83, 96);
+    color: #fff;
+}
+#deck-style button.close span {
+    margin-top: -5px;
+    display: block;
+}
+#deck-style .grid {
+    column-count: 4;
+    column-gap: 40px;
+    -moz-column-count: 4;
+    -moz-column-gap: 40px;
+}
+#deck-style .grid-item .btn-grey {
+    border-radius: 20px;
+}
+#deck-style .grid-item .btn-grey img {
+    width: 25px;
+    height: 15px;
+}
+section.main-deck .profile-header ul.view-list li {
+    border-right: 0;
+    padding: 0 15px;
+}
+section.main-deck .profile-header ul.view-list li.edit-info {
+    margin: 0 !Important;
+    border-right: 1px solid #ccc !important;
+}
+
+.deck-details ul.pull-right li, .deck-manage ul.pull-right li {
+    padding: 10px 15px;
+}
+.deck-content {
+    width: 100%;
+    display: block;
+    float: left;
+    padding: 10px;
+}
+
+.deck-content h2 {
+    font-weight: 300;
+    font-style: italic;
+}
+.deck-content .preview-tab {
+    text-align: center;
+}
+li.help-link {
+    border-right: 0 !Important;
+}
+ul.share-icons li {
+    float: none;
+}
+ul.share-icons li a {
+    text-decoration: none;
+}
+.view-details {
+    clear: both;
+    float: right !important;
+    margin-right: 40px;
+    margin-top: -80px;
+}
+.deck-details  {
+    display: block;
+    float: left;
+    width: 100%;
+}
+.deck-details .deck-header {
+    padding: 20px 0;
+    box-shadow: 0 5px 5px -5px #000;    
+}
+.deck-details .deck-header ul.deck-list li {
+    margin: 0 10px;
+}
+.deck-details .deck-header ul.deck-list li {
+    width: auto;
+    height: auto;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    float: left;
+}
+.deck-details .deck-header ul.deck-list li a{
+    width: 40px;
+    height: 40px;
+    background: #f1f1f1;
+    border-radius: 50%;
+    padding: 10px;
+    float: left;
+}
+.right-block ul.deck-list {
+    width: 100%;
+    display: inline-block;
+    padding: 10px 0;
+    margin: 0;
+}
+.deck-details .user-details {
+    border-right: 1px solid #ccc;
+}
+.deck-details .right-block {
+    padding: 0 20px;
+}
+.right-block ul.deck-list span {
+    display: block;
+    text-align: center;
+    padding: 10px 0 0 0;
+    clear: both;
+}
+.right-block .user-info {
+    padding: 10px 0;
+}
+.right-block .user-info strong {
+    display: inline-block;
+    margin-left: 10px;
+    font-weight: 300;
+    
+}
+.right-block .user-info span {
+    color:#ccc;
+}
+.deck-details .deckgrid {
+    column-count: 3;
+    column-gap: 40px;
+    -moz-column-count: 3;
+    -moz-column-gap: 40px;
+}
+.deck-details .deckgrid-item {
+    margin-bottom: 40px;
+}
+.deck-preview h2 {
+    font-weight: 300;
+    font-style: italic;
+}
+
+
+/* Deck Manage */
+
+.deck-manage input {
+    border: 0;
+    border-bottom: 1px solid #eaeaea;
+}
+section.manage-deck {
+    display: block;
+    float: left;
+    width: 100%;
+    padding: 40px;
+}
+section.manage-deck textarea {
+    min-height: 150px;
+    resize: none;
+}
+.deckgrid {
+    column-count: 4;
+    column-gap: 20px;
+    -moz-column-count: 4;
+    -moz-column-gap: 20px;
+    padding: 40px 0;
+}
+.deckgrid-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.deck-header ul.deck-list li {
+    width: 40px;
+    height: 40px;
+    background: #f1f1f1;
+    border-radius: 50%;
+    padding: 10px;
+    float: left;
+}
+.deck-header ul.deck-tags li{
+    float: left;
+}
+.deck-header ul li img {
+    max-width: 100%;
+    width: 20px;
+    height: 20px;
+}
+.deck-header h3 {
+    font-weight: 300;
+    font-style: italic;
+}
+
+.deck-manage .dropzone {
+    min-height: 100px;
+    max-height: 100px;
+    padding: 10px 30px;
+    border-radius: 10px;
+}
+.deck-manage .qard-content {
+    min-height: 200px;
+}
+.deck-manage .qard-bottom {
+    box-shadow: none;
+    border: 0;
+    text-align: center;
+    padding: 10px;
+}
+.deck-manage .qard-bottom h4 {
+    color: #8E8F8E;
+}
+.deck-manage .popular-qards .col-sm-9.col-md-9 .row {
+    margin: 20px 0;
+}
+.qard-manage .qard-content {
+    border: 5px solid #fff;
+    box-shadow: none;
+    color: #eaeaea;
+    vertical-align: middle;
+    text-align: center;
+    padding: 10px;
+    min-height: 600px;
+    background: #f1f1f1;
+    border-radius: 0;
+}
+.manage-deck .qard-share ul li {
+    width: 40px;
+    height: 40px;
+    background: #f1f1f1;
+    border-radius: 50%;
+    margin: 10px;
+    padding: 10px;
+}
+.manage-deck .qard-share ul li.danger {
+    background: red;
+}
+.manage-deck .qard-share ul li.warning {
+    background: rgb(13, 183, 187);
+}
+.deckgrid-item .qard-content {
+    min-height: 300px;
+	position: relative;
+}
+.deckgrid-item .qard-content img {
+    max-width: 100%;
+    max-height: 100%;
+}
+.manage-deck .deckgrid-item .qard-content {
+    min-height: 300px;
+}
+.grid-img {
+    max-height: 150px;
+    overflow: hidden;
+    max-width: 100%;
+    min-height: 150px;
+}
+.grid-content h4 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 27px;
+}
+.add-qard {
+    text-align: center;
+    padding: 40px 0;
+}
+
+
+/* ============================
+ *     Deck Details old
  * ========================== */
 
 .deck-details ul.pull-right li, .deck-manage ul.pull-right li {

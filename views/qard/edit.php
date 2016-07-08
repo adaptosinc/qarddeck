@@ -1267,6 +1267,16 @@ $this->title = 'Edit Qard';
 
 	}
 	function addSaveCard() {
+		console.log("save here");
+		var total_data_height = 0;
+		$('.current_blk').each(function(obj) {
+			console.log($(this).attr("data-height"));
+			total_data_height = parseInt($(this).attr("data-height"))+parseInt(total_data_height);
+		});
+		if(total_data_height != 16){
+			alert("Ouch, please fill the qard!");
+			return;
+		}
 		$("#wait").show();
 		// if storing image
 		var data = $("#image_upload").serializeArray();

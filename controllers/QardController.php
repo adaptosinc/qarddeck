@@ -694,17 +694,16 @@ class QardController extends Controller
     public function generateQardImage($qard_id){
 	
 		include("lib/GrabzItClient.class.php");
-		$grabzIt = new GrabzItClient("ZjllZWY5MDQzODY0NDg3YjliMjYwYTI0NDU1NzgwNzc=", "Kj9PPz8mez8/JksSPyQ/Pzs/PyU/P28/Pyg/CD8OPz8=");
+		$grabzIt = new GrabzItClient("NWFkMzlhNTExMGVmNDQ2MzkxZjIxZTA4ZDVhYjQxZTc=", "Jn0kaWU/QD8MFGNOaw8/Gmg/Pz8/BT8SMj8hHj8/U2Y=");
 		
 		// To take a image screenshot		//$grabzIt->SetImageOptions("http://wordpressmonks.com/works/qarddeck/web/qard/create?theme_id=2",null,-1,-1,null,null,'jpg',0,'add-block'); 	
-		/* $grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id=54', $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard54', $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); */
+		 $grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard'.$qard_id, $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); 
 		
-		$grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800);
+		//$grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800);
 		$directory = \Yii::$app->basePath."/web/uploads/qards";
 
 		$filepath = $directory."/".$qard_id.".png";
 		$grabzIt->SaveTo($filepath);
-		
 		return $filepath;
 	} 
 	

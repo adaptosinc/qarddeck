@@ -208,7 +208,49 @@ class DeckController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+    /**
+     * Displays a single Deck model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionManage($id)
+    {
+        $model = $this->findModel($id);
+		$model->cover_image = $model->bg_image;
+		$tags = Tag::find()->all();
 
+        if (Yii::$app->request->post()) {
+			$model->title = Yii::$app->request->post()['title'];
+			$model->description = Yii::$app->request->post()['description'];
+			if($model->save()){
+				if(isset(Yii::$app->request->post()['tags'])){
+					//delete all tags first
+					$command = \Yii::$app->db->createCommand()->delete('deck_tags', [
+						'deck_id' => $model->deck_id,
+					]);
+					$command->execute();
+					//then update
+					$tags = Yii::$app->request->post()['tags'];
+					foreach($tags as $tag){
+						$command = \Yii::$app->db->createCommand()->insert('deck_tags', [
+							'deck_id' => $model->deck_id,
+							'tag_id'=> $tag,
+						]);
+						$command->execute();					
+					}
+				
+				}				
+			}
+            //return $this->redirect(['view', 'id' => $model->deck_id]);
+			return "Success";
+        } else {
+        return $this->render('manage', [
+            'model' =>  $model,
+			'tags' => $tags
+        ]);
+        }
+
+    }
     /**
      * Creates a new Deck model.
      * If creation is successful, the browser will be redirected to the 'view' page.
