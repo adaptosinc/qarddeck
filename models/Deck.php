@@ -128,25 +128,18 @@ class Deck extends \yii\db\ActiveRecord
 	 */
 	public function getDeckHtml()
 	{
-		$html = '<div class="grid-item"><div class="deck-content" id="deck_'.$this->deck_id.'">';
+		$html = '<div class="grid-item"><div class="qard-content qard5"><div class="bgimg-block style-block" id="deck_'.$this->deck_id.'">';
 		$html .= '<img src="'.$this->bg_image.'" />';
-		$html .= '</div>';
+		$html .= '</div></div>';
 		//deck bottom
 		$html .= '
-		<div class="qard-bottom">
-			<h2>'.$this->title.'</h2>
-			<ul class="qard-tags">
-				<li class="pull-left">'.$this->getTagsHtml().'</li>
-				<li class="pull-right">x days ago</li>
-			</ul>
-			<p>'.$this->userProfile->fullname.'</p>
-			<ul class="social-list">
-				<li><a act-id="100" act-type="like"><img src="/works/qarddeck/web/images/heart.png" alt=""><br>500</a></li>
-				<li><a act-id="100" act-type="comment"><img src="/works/qarddeck/web/images/comment-dark.png" alt=""><br>500</a></li>
-				<li><a act-id="100" act-type="bookmark"><img src="/works/qarddeck/web/images/certify.png" alt=""><br>500</a></li>
-				<li><a act-id="100" act-type="share"><img src="/works/qarddeck/web/images/share.png" alt=""><br>500</a></li>
-			</ul>
-		</div></div>';
+				<div class="qard-bottom">
+					<ul class="qard-tags">
+					<li class="pull-left"><img src="'.$this->userProfile->profile_photo.'" alt="" width="15px" height="15px" style="border-radius:50%;">'.$this->userProfile->fullname.'</li>
+					<li class="pull-right">3 days ago</li>
+				</ul>
+				<h3>'.$this->title.'</h3>
+				</div></div>';
 		
 		
 		return $html;

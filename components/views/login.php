@@ -15,15 +15,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin(); ?>
 
         <?= $form->field($model, 'username', [
-			'template' => "{input}\n{hint}\n{error}"
-		])->textInput(['class' => 'form-control','placeholder'=>'Username']) ?>
+			'template' => "{label}\n<img src='".\Yii::$app->homeUrl."images/user_icon.png' alt='' class='col-sm-2 col-md-2 img-responsive'>{input}\n{hint}\n{error}"
+		])->textInput(['class' => 'col-sm-10 col-md-10','placeholder'=>'Username']) ?>
 
         <?= $form->field($model, 'password', [
-			'template' => "{input}\n{hint}\n{error}"
-		])->passwordInput(['class' => 'form-control','placeholder'=>'Password']) ?>
+			'template' => "{label}\n<img src='".\Yii::$app->homeUrl."images/lock_icon.png' alt='' class='col-sm-2 col-md-2 img-responsive'>{input}\n{hint}\n{error}"
+		])->passwordInput(['class' => 'col-sm-10 col-md-10','placeholder'=>'Password']) ?>
 		
         <div class="form-group">
-                <?= Html::submitButton('Sign In', ['class' => 'btn btn-lg btn-default']) ?>
+                <?= Html::submitButton('Sign In', ['class' => 'btn btn-lg qard']) ?>
         </div>
   
     <?php ActiveForm::end(); ?>

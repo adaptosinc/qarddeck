@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Qard;
 use app\models\Theme;
+use app\models\Deck;
 use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -53,16 +54,33 @@ class QardController extends Controller
      * Lists all Qard models.
      * @return mixed
      */
-    public function actionIndex($page=null){ 
+    public function actionIndex($page=null,$type=null){ 
+		if(!$type)
+			$type = 'both';
 		$limit = 5;
 		if(!$page)
 			$page = 0;
 		$offset = $page*$limit;
-		$feed = $this->getQardsfeed($offset,$limit);
+		$qards = $this->getQardsfeed($offset,$limit,$type);
 		//	print_r($feed);die;
+		$decks =  $this->getDecksfeed($offset,2);
+		if($type == 'both'){
+			//joining the dec+qard array
+			array_splice($qards, count($qards), 0, $decks);
+			shuffle($qards);			
+		}
+		if($type == 'decks'){
+			$qards = $decks;
+		}
+			//print_r($qards);die;
+		$feed = '';
+		foreach($qards as $html){
+			$feed .= $html;
+		}
 		if(!$page || $page == 0){
 			return $this->render('qard_stream',[
 				'feed' => $feed,
+				'type' => $type
 			]);		
 		}
 		else{
@@ -76,8 +94,8 @@ class QardController extends Controller
      * @param integer $offset and $limit
      * @return html
      */
-    public function getQardsfeed($offset,$limit){
-		$feed = '';
+    public function getQardsfeed($offset,$limit,$type){
+		$feed = [];
 		$Query = new Query;
 		$Query->select(['*'])
 			->from('qard')
@@ -90,13 +108,37 @@ class QardController extends Controller
 		//get html feed
 		foreach($qards as $qard){
 			$model = Qard::findOne([$qard['qard_id']]);
-			$modelFeed = $model->getQardHtml();
+			$modelFeed = $model->getQardHtml($type);
 			if( $modelFeed != '')
-				$feed .= $modelFeed;
+				$feed []= $modelFeed;
 		}
 		return	$feed;
 	}
-	
+	/**
+	 * Deck feed function
+	 * @param integer $offset,$limit
+	 * @return html
+	 */	
+	public function getDecksfeed($offset,$limit){
+		$feed = [];
+		$Query = new Query;
+		$Query->select(['*'])
+			->from('deck')
+			->where(['user_id'=>\Yii::$app->user->id])
+			->limit($limit)
+			->offset($offset)
+			->orderBy(['created_at' => SORT_DESC]);	
+		$command = $Query->createCommand();
+		$decks = $command->queryAll();
+		//get html feed
+		foreach($decks as $deck){
+			$model = Deck::findOne([$deck['deck_id']]);
+			$modelFeed = $model->getDeckHtml();
+			if( $modelFeed != '')
+				$feed []= $modelFeed;
+		}
+		return $feed;		
+	}	
     /**
      * Displays a single Qard model.
      * @param integer $id

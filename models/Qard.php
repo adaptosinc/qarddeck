@@ -75,7 +75,13 @@ class Qard extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserProfile()
+    {
+        return $this->hasOne(UserProfile::className(), ['user_id' => 'user_id']);
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -132,11 +138,11 @@ class Qard extends \yii\db\ActiveRecord
         return $this->hasMany(QardTags::className(), ['qard_id' => 'qard_id']);
     }
 	
-	public function getQardHtml($single=null){
+	public function getQardHtml($type=null){
 		
 		$str = '<div class="grid-item">
-				<div class="qard-content" id="qard'.$this->qard_id.'" style="border: 5px solid #fff;">
-				<div id="add-block'.$this->qard_id.'" class="qard-div add-block">';
+				<div class="qard-content" id="qard'.$this->qard_id.'">
+				<div id="add-block'.$this->qard_id.'" class="qard-div ">';
 			$blocks = $this->blocks;
 			if(isset($blocks) && !empty($blocks)){
 			//	print_R($blocks);die;
@@ -181,22 +187,27 @@ class Qard extends \yii\db\ActiveRecord
 				$str .= '</div></div></div>';
 
 			}	
-		$str .= '		</div>
+		$str .= '</div>
+					<div class="qard-overlay">
+						<div class="qard-share">
+							<h4><button class="btn btn-warning">View Qard</button></h4>
+							<ul>
+								<li><img src="'.Yii::$app->homeUrl.'images/comments_icon.png" alt=""><span>20</span></li>
+								<li><img src="'.Yii::$app->homeUrl.'images/share_icon.png" alt=""><span>20</span></li>
+								<li><img src="'.Yii::$app->homeUrl.'images/bookmark_icon.png" alt=""><span>20</span></li>
+								<li><img src="'.Yii::$app->homeUrl.'images/heart_icon.png" alt=""><span>20</span></li>
+							</ul>
+						</div>
+					</div>
 				</div>
-			<div class="qard-bottom">
-				<ul class="qard-tags">
-					<li class="pull-left">#tag#tag#tag</li>
-					<li class="pull-right">x days ago</li>
+				<div class="qard-bottom">
+					<ul class="qard-tags">
+					<li class="pull-left"><img src="'.$this->userProfile->profile_photo.'" alt="" width="15px" height="15px" style="border-radius:50%;">'.$this->userProfile->fullname.'</li>
+					<li class="pull-right">3 days ago</li>
 				</ul>
-				<h4>Author Full name</h4>
-				<ul class="social-list">
-					<li><a act-id="'.$this->qard_id.'" act-type="like"><img src="'.\Yii::$app->homeUrl.'images/heart.png" alt=""><br />500</a></li>
-					<li><a act-id="'.$this->qard_id.'" act-type="comment"><img src="'.\Yii::$app->homeUrl.'images/comment-dark.png" alt=""><br />500</a></li>
-					<li><a act-id="'.$this->qard_id.'" act-type="bookmark"><img src="'.\Yii::$app->homeUrl.'images/certify.png" alt=""><br />500</a></li>
-					<li><a act-id="'.$this->qard_id.'" act-type="share"><img src="'.\Yii::$app->homeUrl.'images/share.png" alt=""><br />500</a></li>
-				</ul>
-			</div>
-			</div>';	
+				<h3>'.$this->title.'</h3>
+				</div>
+				</div>';	
 				
 		return $str;
 		
