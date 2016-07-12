@@ -121,7 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
 								</div>
 								
 								<div class="form-group">
-									<?= Html::submitButton($model->isNewRecord ? 'Save' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+									<?= Html::submitButton( 'Save' , ['class' =>  'btn btn-lg qard']) ?>
 								</div>
 
 								<?php ActiveForm::end(); ?>							

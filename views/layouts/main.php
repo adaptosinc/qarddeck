@@ -75,12 +75,12 @@ AppAsset::register($this);
 					  <ul class="dropdown-menu" aria-labelledby="dLabel">
 									<li>
 										<div class="col-sm-3 col-md-3 col-md-offset-2">
-										   <a href="<?=\Yii::$app->homeUrl?>/qard/create"> <img src="<?=\Yii::$app->homeUrl?>images/newqard.png" alt="">
+										   <a href="<?=\Yii::$app->homeUrl?>qard/create"> <img src="<?=\Yii::$app->homeUrl?>images/newqard.png" alt="">
 											<h3>Create New Qard</h3></a>
 										</div>
 										<div class="col-sm-3 col-md-3 col-md-offset-1">
-											<img src="<?=\Yii::$app->homeUrl?>images/newdeck.png" alt="">
-											<h3>Create New Deck</h3>
+											<a href="<?=\Yii::$app->homeUrl?>deck/create"><img src="<?=\Yii::$app->homeUrl?>images/newdeck.png" alt="">
+											<h3>Create New Deck</h3></a>
 										</div>                                                
 									</li>
 					  </ul>
@@ -89,7 +89,7 @@ AppAsset::register($this);
 				
 				<li class="qard tootip" data-title="Qard Stream">
 					<span class="arrow-up"></span>
-					<button class="btn btn-default qard" onclick="location.href='qard-stream.html';"><img src="<?=\Yii::$app->homeUrl?>images/qard-stream_icon.png" alt=""></button>
+					<button class="btn btn-default qard" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/index';"><img src="<?=\Yii::$app->homeUrl?>images/qard-stream_icon.png" alt=""></button>
 				</li>                        
 				<li class="menu_icon">
 					<nav class="navbar">

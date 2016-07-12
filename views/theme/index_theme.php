@@ -5,25 +5,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-	<section class="home-main content">
-		
+	<section class="theme-main content">
 		<div class="action-qard">
+			<button class="btn btn-default pull-left" onclick="location.href='template.html';"><i class="fa fa-chevron-left"></i>&nbsp;Back to Templates</button>
+			<button class="btn btn-default pull-left" onClick="window.location = '<?php echo \Yii::$app->homeUrl?>/theme/create';"><i class="fa fa-chevron-left"></i>&nbsp;Create Theme</button>
+			<h2>Select a Theme</h2>
+        </div>		
+		<!--<div class="action-qard">
 			<button class="btn btn-warning">Back to Templates</button>
 			<button class="btn btn-default qard" onClick="window.location = '<?php echo \Yii::$app->homeUrl?>/theme/create';">Create a New Theme</button>                        
-		</div>
+		</div>-->
 		<div class="themes-list">        <!-- qard list -->
-		<div class="container">
-			<div class="row">
+
+			<div class="grid row">
 			<?php
 			if(!isset($_REQUEST['q_id'])){
 				$_REQUEST['q_id']='';
 			}
 			foreach($models as $model){
 				$theme_properties = unserialize($model->theme_properties);
-				echo '<div class="qard-bg col-sm-2 col-md-2" id="'.$model->theme_id.'" data-qid="'.$_REQUEST['q_id'].'">     <!-- qard -->
-						<div class="qard-top">
-							<h4>'.$model->theme_name.'</h4>
-						</div>
+				echo '<div class="grid-item qard-bg" id="'.$model->theme_id.'" data-qid="'.$_REQUEST['q_id'].'">     <!-- qard -->
 						<div class="qard-content">
 							<div class="themebg1">
 								<div class="bgcolor" style="background:'.$theme_properties['theme_color_1'].'"></div>
@@ -41,6 +42,9 @@ $this->params['breadcrumbs'][] = $this->title;
 								<div class="bgcolor" style="background:'.$theme_properties['theme_color_5'].'"></div>
 							</div>                                      
 						</div>
+						<div class="qard-top">
+							<h4>'.$model->theme_name.'</h4>
+						</div>
 					';
 				if(\Yii::$app->user->id && \Yii::$app->user->identity->role == 'admin')
 					echo '<button class="btn btn-default edit_theme" onClick="window.location = \''. \Yii::$app->homeUrl.'/theme/update?id='.$model->theme_id.'\';">Edit Theme</button>';
@@ -48,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				
 			}?>
 			</div>
-		</div>
+		
      <!-- row  -->
 		</div>      <!-- template list -->
 		<h4 style="margin-top: 30px;">Select a Theme</h4>
@@ -64,4 +68,13 @@ $this->params['breadcrumbs'][] = $this->title;
 			window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+id;
 		}
 	});
+
+	$(document).ready(function(){
+		$('.themes-list .qard-content').hover(function(){
+			$('.qard-content').removeClass('active');
+			$(this).addClass('active');
+		});               
+	});
+
+
 	</script>

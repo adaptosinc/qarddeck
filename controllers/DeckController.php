@@ -277,7 +277,7 @@ class DeckController extends Controller
 				
 				}				
 			}
-            return $this->redirect(['my-decks']);
+            return $this->redirect(['manage','id'=>$model->deck_id]);
         } else {
             return $this->render('create_deck', [
                 'model' => $model,
