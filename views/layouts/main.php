@@ -75,7 +75,7 @@ AppAsset::register($this);
 					  <ul class="dropdown-menu" aria-labelledby="dLabel">
 									<li>
 										<div class="col-sm-3 col-md-3 col-md-offset-2">
-										   <a href="template.html"> <img src="images/newqard.png" alt="">
+										   <a href="<?=\Yii::$app->homeUrl?>/qard/create"> <img src="images/newqard.png" alt="">
 											<h3>Create New Qard</h3></a>
 										</div>
 										<div class="col-sm-3 col-md-3 col-md-offset-1">

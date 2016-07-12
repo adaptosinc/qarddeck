@@ -279,7 +279,7 @@ class DeckController extends Controller
 			}
             return $this->redirect(['my-decks']);
         } else {
-            return $this->render('create', [
+            return $this->render('create_deck', [
                 'model' => $model,
 				'tags' => $tags,
             ]);
