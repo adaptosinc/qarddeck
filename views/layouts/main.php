@@ -61,25 +61,25 @@ AppAsset::register($this);
 					<input type="text" name="search" class="form-control" placeholder="Search QardDeck">
 				</div>
 				<div class="search_icon">
-					<img src="images/search_icon.png" alt="">
+					<img src="<?=\Yii::$app->homeUrl?>images/search_icon.png" alt="">
 				</div>
 			</div>
 			<ul class="col-sm-3 col-md-3 pull-right">
 				<li class="addnew">
 					<div class="dropdown">
 					  <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<img src="images/plus_icon.png" alt="" class="menu-add">
+						<img src="<?=\Yii::$app->homeUrl?>images/plus_icon.png" alt="" class="menu-add">
 						<!--<img src="images/close.png" alt="" class="menu-close">--><span class="menu-close"><i class="fa fa-times-thin"></i></span>
 					  </a>
 					
 					  <ul class="dropdown-menu" aria-labelledby="dLabel">
 									<li>
 										<div class="col-sm-3 col-md-3 col-md-offset-2">
-										   <a href="<?=\Yii::$app->homeUrl?>/qard/create"> <img src="images/newqard.png" alt="">
+										   <a href="<?=\Yii::$app->homeUrl?>/qard/create"> <img src="<?=\Yii::$app->homeUrl?>images/newqard.png" alt="">
 											<h3>Create New Qard</h3></a>
 										</div>
 										<div class="col-sm-3 col-md-3 col-md-offset-1">
-											<img src="images/newdeck.png" alt="">
+											<img src="<?=\Yii::$app->homeUrl?>images/newdeck.png" alt="">
 											<h3>Create New Deck</h3>
 										</div>                                                
 									</li>
@@ -89,7 +89,7 @@ AppAsset::register($this);
 				
 				<li class="qard tootip" data-title="Qard Stream">
 					<span class="arrow-up"></span>
-					<button class="btn btn-default qard" onclick="location.href='qard-stream.html';"><img src="images/qard-stream_icon.png" alt=""></button>
+					<button class="btn btn-default qard" onclick="location.href='qard-stream.html';"><img src="<?=\Yii::$app->homeUrl?>images/qard-stream_icon.png" alt=""></button>
 				</li>                        
 				<li class="menu_icon">
 					<nav class="navbar">

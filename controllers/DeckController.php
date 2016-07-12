@@ -336,12 +336,13 @@ class DeckController extends Controller
 			$filePath = $directory . $fileName;
 			if ($imageFile->saveAs($filePath)) {
 				$path = '../img/temp/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
+				$thmbnail = stripslashes($path);
 				return Json::encode([
 					'files' => [[
 						'name' => $fileName,
 						'size' => $imageFile->size,
 						"url" => $path,
-						"thumbnailUrl" => $path,
+						"thumbnailUrl" => $thmbnail,
 						"deleteUrl" => 'image-delete?name=' . $fileName,
 						"deleteType" => "POST"
 					]]

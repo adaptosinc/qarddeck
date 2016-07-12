@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					<div class="col-sm-8 col-md-8">
 						<div class="row">
 
-							<div class="col-sm-4 col-md-4">
+							<div class="deck-img-pre col-sm-4 col-md-4">
 								<?php $form = ActiveForm::begin([
 									'id' => 'deck-form',
 									]); ?>
@@ -41,9 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
 																thumbnailUrl = dat.files[0].thumbnailUrl;
 																console.log(thumbnailUrl);
 																var html = "<img width=200px height=200px src="+thumbnailUrl+" />";
-																$("#preview").html(html);
+																//$("#preview").html(html);
+																$(".deck-img-pre").css("background","#f1f1f1 url("+thumbnailUrl+")")
+																$(".deck-img-pre").css("background-size", "cover");
 																$("#deck-cover_image").val(thumbnailUrl);
-																$("#deck-bg_image").css("min-height","20px");
+																//$("#deck-bg_image").css("min-height","20px");
 															}',
 										'fileuploadfail' => 'function(e, data) {
 																console.log(e);
@@ -51,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
 															}',
 									],
 								]);?>
+								<p>click to select file</p>
 								<div id="preview">
 								</div>
 								<?php ActiveForm::end(); ?>	

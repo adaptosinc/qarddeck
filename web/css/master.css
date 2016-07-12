@@ -2638,10 +2638,15 @@ section.manage-deck textarea {
     color: #a7a0a0;
 }
 .deck-img-pre.col-sm-4.col-md-4 {
-    background: #f1f1f1;
+    background: #f1f1f1 url(../images/image_icon_lg.png);
     text-align: center;
     color: #9c9a9a;
     text-transform: capitalize;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    min-height: 200px;
+    background-size: 150px;
+    background-position: 50px 50px;
 }
 .deck-img-pre.col-sm-4.col-md-4 p {
     margin: 10px 0;
@@ -2650,6 +2655,20 @@ section.manage-deck textarea {
     width: 120px;
     margin: 40px 0 20px 0;
 }
+form#deck-form span.btn.btn-success {
+	opacity:0;
+}
+form#deck-form span.btn.btn-success.fileinput-button input[type="file"] {
+    height: 100%;
+    width: 100%;
+    min-height: 150px;
+}
+span.btn.btn-success.fileinput-button {
+    background: transparent;
+    color: #333;
+    border: 0;
+}
+
 .deck-header ul.deck-list li {
     width: 40px;
     height: 40px;
