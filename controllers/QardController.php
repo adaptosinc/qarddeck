@@ -124,7 +124,6 @@ class QardController extends Controller
 		$Query = new Query;
 		$Query->select(['*'])
 			->from('deck')
-			->where(['user_id'=>\Yii::$app->user->id])
 			->limit($limit)
 			->offset($offset)
 			->orderBy(['created_at' => SORT_DESC]);	
