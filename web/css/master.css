@@ -1459,9 +1459,6 @@ header ul.pull-right button.btn {
 .main-profile input[type="password"] {
     color: #7e7f8c;
 }
-.main-profile input[type="password"]::-webkit-input-placeholder, .email-signin input[type="password"]::-webkit-input-placeholder {
-    font-size: 60px;
-}
 .main-profile span.pull-right {
     color: #7e7f8c;
     font-style: italic;
