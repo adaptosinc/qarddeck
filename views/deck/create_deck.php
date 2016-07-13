@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
 								<div class="form-group">
 								<?= $form->field($model, 'description', [
 										'template' => "{input}\n{hint}\n{error}"
-									])->textArea(['rows' => '6','class'=>'form-control','placeholder'=>'Tell us what this Deck is about']) ?>
+									])->textArea(['rows' => '3','class'=>'form-control','placeholder'=>'Tell us what this Deck is about']) ?>
 								</div>
 
 								<div class="form-group">	

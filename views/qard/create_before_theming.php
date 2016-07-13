@@ -47,52 +47,39 @@ $this->title = 'Create Qard';
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
+		<?php 
+		if(!\Yii::$app->user->isGuest){
 		
-				<div class="row">
-
-                        <div class="col-sm-6 col-md-6">
-                            <h2>
-                                <input type="text" name="qard_title" id="qard_title" placeholder="Enter a Title for this Qard">
-                            </h2>                            
-                        </div>
-                        <div class="col-sm-6 col-md-6">
-                            <ul class="pull-right">
-							<?php 
-								if(!\Yii::$app->user->isGuest){
-						
-							?>
-                                <li><button class="btn btn-default" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck">Add to Deck</button></li>
-							<?php } ?>	
-                                <li><button class="btn qard" data-toggle="modal" data-target="#qard-style">Qard Style</button></li>
-                            </ul>
-                        </div>                        
-				</div>
+		?>
+		<button id="add_to_deck" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" class="add-deck">Add to Deck</button>
+		</br>
+		<?php } ?>
         <div class="row">
 
-            <div class="col-sm-3 col-md-3 add-block">
-                <div id="add-block" class="qard-div add-block-qard" style="overflow:hidden">
-						<?php
+            <div class="col-sm-4 col-md-4">
+                <div id="add-block" class="qard-div add-block" style="overflow:hidden">
+                    <?php
 						if(isset($model['qard_id'])){
 							echo '<input type="text" name="qard_id" value="'.$model['qard_id'].'">';
 						}
-						?>
-						<input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
+					?>
+        <input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
 		
-						<?php 
-						//get theme properties
-						$theme_properties = unserialize($theme['theme_properties']);
-						//print_r($theme_properties);
-						?>
+		<?php 
+		//get theme properties
+		$theme_properties = unserialize($theme['theme_properties']);
+		//print_r($theme_properties);
+		?>
                         <!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
-						<div class="bgoverlay-block" style="height:75px;">
-						<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
-						</div>                                
-						</div>
-						<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: #0055cc" style="height:150px;">
-						<div class="bgoverlay-block" style="height:150px;">
-						<div class="text-block current_blk" data-height="4" style="height:150px;"></div>                                    
-						</div>                                
-						</div>-->
+		    <div class="bgoverlay-block" style="height:75px;">
+			<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
+		    </div>                                
+		</div>
+		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: #0055cc" style="height:150px;">
+		    <div class="bgoverlay-block" style="height:150px;">
+			<div class="text-block current_blk" data-height="4" style="height:150px;"></div>                                    
+		    </div>                                
+		</div>-->
 
                         <div id="working_div" class="working_div block active">
                             <div id="blk_1" class="bgimg-block parent_current_blk">
@@ -101,110 +88,98 @@ $this->title = 'Create Qard';
                                 </div>
                             </div>
                         </div>
-                        <h5 class="add-another" onclick="add_block(event,true)"><i class="fa fa-plus"></i>Add another block </h5>
+                        <h4 class="add-another" onclick="add_block(event,true)" style="display:block">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
                 </div>
             </div>
-            <div class="col-sm-9 col-md-9">
+            <div class="col-sm-8 col-md-8">
                 <div id="cardtabs">
 
                     <!-- Nav tabs -->
-                    <ul class="nav nav-tabs col-sm-1 col-md-1" role="tablist">
-					
-                        <li role="presentation" class="active"><a href="#cardblock" aria-controls="cardblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/text_icon.png" alt="" class="dark" style="width:15px;margin:0 auto;"><img src="<?=Yii::$app->homeUrl?>images/text_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
-						
-                        <li role="presentation"><a href="#linkblock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/link_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
-						
-                        <li role="presentation"><a id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/image_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
-						
-                        <li role="presentation"><a href="#paintblock" aria-controls="paintblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/video_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/video_icon_light.png" class="light" alt=""></a></li>
-						
-						<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" class="dark" alt="" style="width:15px;margin:0px auto;"><img src="<?=Yii::$app->homeUrl?>images/file_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
-						
-                        <li role="presentation"><a href="#copyblock" aria-controls="copyblock" role="tab" data-toggle="tab"><hr class="divider"></hr><img src="<?=Yii::$app->homeUrl?>images/duplicate_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/duplicate_icon_light.png" class="light" alt=""></a></li>
-
-						
-                        <li role="presentation" id="deleteblock"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/delete_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/delete_icon_light.png" class="light" alt=""></a></li>
-						
+                    <ul class="nav nav-tabs col-sm-2 col-md-2" role="tablist">
+                        <li role="presentation" class="active"><a href="#cardblock" aria-controls="cardblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/txt.png" alt=""></a></li>
+                        <!--<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/file.png" alt=""></a></li>-->
+                        <li role="presentation"><a href="#linkblock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/link.png" alt=""></a></li>
+                        <li role="presentation"><a id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/img.png" alt=""></a></li>
+                        <li role="presentation"><a href="#paintblock" aria-controls="paintblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/paint.png" alt=""></a></li>
+                        <li role="presentation"><a href="#copyblock" aria-controls="copyblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/copy.png" alt=""></a></li>
+                        <li role="presentation" id="deleteblock"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/delete.png" alt=""></a></li>
 						<li role="presentation"><a id="styleblock_tab" href="#styleblock" aria-controls="styleblock" role="tab" data-toggle="tab">Style Card</a></li>
-						
                     </ul>
                     <!--added by vijay-->
 
 
                     <!-- Tab panes -->
-                    <div class="tab-content col-sm-11 col-md-11">
-					<!-- Start of header-->
-						<div class="cardblock-header">
-							<h4>Edit Block</h4>
-							<ul class="editable-elements">
-								<li class="size-element">
-									<label>Text Size</label>
-									<select id="text_size" class="form-control">
-										<option value="3">Small</option>
-										<option value="5">Medium</option>
-										<option value="8">Large</option>
-									</select>
-								</li>
-								<li id="text_bold"><a href="#"><i class="fa fa-bold"></i></a></li>
-								<li id="text_italic"><a href="#"><i class="fa fa-italic"></i></li>
-								<li id="text_underline"><a href="#"><i class="fa fa-underline"></i></a></li>
-								<li>
-									<div class="dropdown">
-									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-										<img src="<?=Yii::$app->homeUrl?>images/icon-left.png" alt="">
-										<span class="caret"></span>
-									  </button>										
-									  <ul class="dropdown-menu" id="alignment_select" aria-labelledby="dropdownMenu2">
-										<li><a href="#" data-align="justifyLeft"><i class="fa fa-align-left"></i></a></li>
-										<li><a href="#" data-align="justifyRight"><i class="fa fa-align-right"></i></a></li>
-										<li><a href="#" data-align="justifyCenter"><i class="fa fa-align-center"></i></a></li>
-										<li><a href="#" data-align="justifyFull"><i class="fa fa-align-justify"></i></a></li>
-									  </ul>
-									</div>                                                        
-								</li>
-								<li><a href="#"><img src="<?=Yii::$app->homeUrl?>images/type-align-top_icon.png" alt="" style="padding: 5px;"></a><span class="caret"></span></li>
-								<li><a href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
-								<li class="color-elements">
-									<label>Text Color</label>
-									<div class="dropdown">
-									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									  </button>
-									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
-										<li><a href="#" class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>;display: block;height: 20px;width: 20px;padding: 0px;border-radius: 2px" data-fontcolor-id="dark_text_color" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></a></li>
-										<li><a href="#" class="color" style="background:<?php echo $theme_properties['light_text_color'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="light_text_color" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);"></a></li>
-									  </ul>
-									</div>
-								</li>
-								<li class="color-elements">
-									<label>Block Color</label>
-									<div class="dropdown">
-									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									  </button>
-									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_1'] ?>" data-bgcolor-id="theme_color_1" data-color="<?php echo $theme_properties['theme_color_1'] ?>" onclick="setBGColor(this);"></li>
-                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_2'] ?>" data-bgcolor-id="theme_color_2" data-color="<?php echo $theme_properties['theme_color_2'] ?>" onclick="setBGColor(this);"></li>
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_3'] ?>" data-bgcolor-id="theme_color_3" data-color="<?php echo $theme_properties['theme_color_3'] ?>" onclick="setBGColor(this);"></li>
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_4'] ?>" data-bgcolor-id="theme_color_4" data-color="<?php echo $theme_properties['theme_color_4'] ?>" onclick="setBGColor(this);"></li>
-										
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_5'] ?>" data-bgcolor-id="theme_color_5" data-color="<?php echo $theme_properties['theme_color_5'] ?>" onclick="setBGColor(this);"></li>
-									  </ul>
-									</div>
-								</li>                                                                                            
-							</ul>
-						</div> <!-- End of header-->
-						<div role="tabpanel" class="tab-pane active" id="cardblock">
-							<div id="descfield">
-								<h4>Add Extra text <span class="trash pull-right"><i class="fa fa-trash"></i>&nbsp;Remove Extra Text</span></h4>
-								<input type="text" name="extra-text" placeholder="Enter an optional text" class="form-control">
-								<ul class="editable-elements">
-									<li><a href="#"><i class="fa fa-bold"></i></a></li>
-									<li><a href="#"><i class="fa fa-italic"></i></li>
-									<li><a href="#"><i class="fa fa-underline"></i></a></li>
-									<li><a href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
-								</ul>
-								<textarea name="desc" placeholder="Enter The Text"></textarea>
-							</div>
-						</div>
+                    <div class="tab-content col-sm-10 col-md-10">
+                        <div role="tabpanel" class="tab-pane active" id="cardblock">
+                            <fieldset class="wysihtml5-toolbar">
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <select id="text_size">
+				<option> 1</option>
+				<option> 2</option>
+				<option> 3</option>
+				<option> 4</option>
+				<option> 5</option>
+				<option> 6</option>
+				<option> 7</option>
+				<option> 8</option>
+			    </select>
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <ul class="text-elements">
+                                        <li id="text_bold"><a href="#">B</a></li>
+                                        <li id="text_italic"><a href="#"><i>I</a></i>
+                                        </li>
+                                        <li id="text_underline" class="underline" tabindex="-1" title="CTRL+U" data-wysihtml5-command="underline" href="javascript:;" unselectable="on"><a href="#">U</a></li>
+                                    </ul>
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <ul class="align-elements">
+                                        <li><img src="<?=Yii::$app->request->baseUrl?>/images/icon-left.png" alt=""> <select id="text_align">
+					    <option value="justifyLeft">left</option>
+					    <option value="justifyRight">right</option>
+					    <option value="justifyCenter">center</option>
+					    <option  value="justifyFull">justify</option>
+					</select></li>
+                                        <li id="text_color">
+                                            <div class="dropdown">
+                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><img src="<?=Yii::$app->request->baseUrl?>/images/fonts.png" alt="" >	
+    <span class="caret"></span>
+  </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                    <a href="#" class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>;display: inline-block;height: 25px;width: 25px;" data-fontcolor-id="dark_text_color" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></a>
+                                                    <a href="#" class="color" style="background:<?php echo $theme_properties['light_text_color'];?>;display: inline-block;height: 25px;width: 25px;" data-fontcolor-id="light_text_color" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);"></a>
+                                                </ul>
+                                            </div>
+                                            </li>
+                                            <li id="text_indent"><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/leftalign.png" alt=""></a></li>
+                                    </ul>
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <select id="text_family">
+				<option value="Roboto"> Roboto</option>
+				<option value="Inconsolata"> Inconsolata</option>
+				<option value="monospace"> monospace</option>
+			    </select>
+                                </div>
+                                <ul class="on-off pull-left">
+                                    <li>
+                                        <div class="switch">
+                                            <input id="cmn-toggle-1" name="is_extra_text" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                            <label for="cmn-toggle-1" onclick="showtext()"></label>
+                                        </div> <span>Extra Text</span>
+                                    </li>
+                                    <li>
+                                        <div class="switch">
+                                            <input id="cmn-toggle-2" name="is_title" value="1" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                            <label for="cmn-toggle-2"></label>
+                                        </div> <span>Make Qard Title</span>
+                                    </li>
+                                </ul>
+                            </fieldset>
+                            <div id="descfield" class="working_div" style="display: none;">
+                                <div name="desc" id="extra_text" class="cur_blk " placeholder="Enter The Text" contenteditable="true"></div>
+                            </div>
+                        </div>
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
                             <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
@@ -244,82 +219,107 @@ $this->title = 'Create Qard';
                                 </li>
                             </ul>
                         </div>
-						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
-							<div class="form-group" id="showlinkUrl">
-								<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
-								<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
-							</div>
-							<h3><center>or...</center></h3>
-							<div class="form-group" id="embedCode">
-								<input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
-							</div>
-							<ul class="on-off pull-right link_options" style="display:none">
-								<li>
-									<div class="switch">
-										<input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
-										<label for="cmn-toggle-4"></label>
-									</div> <span>Display Link</span>
-								</li>
-								<li>
-									<div class="switch">
-										<input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox">
-										<label for="cmn-toggle-5"></label>
-									</div> <span>Display Preview</span>
-								</li>
-								<li>
-									<div class="switch">
-										<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
-										<label for="cmn-toggle-6"></label>
-									</div> <span>Open in New Tab</span>
-								</li>
-								<li><a href="#"><img id="url_reset_link" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
-							</ul>
-                        </div>
-						
-						<div role="tabpanel" class="tab-pane" id="fileblock">
-							<h4 id="reflink" >Add File<span class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove File</span></h4>
-                            
-							<form method="post" action="" id="qard-url-upload" enctype="multipart/form-data" novalidate class="box">
-								<div class="add-new-file">
-									<div class="drop-file form-group" id="drop-file-bg">
-										<img src="<?=Yii::$app->request->baseUrl?>/images/browse_light.png" alt="">
-										<h3>Drop files/click to Browse</h3>
-									</div>
-									<div class="fileSwitch">
-										<input id="qard-url-upload-click" name="image" class="hidden" type="file">
-										<div class="box__input">
-											<input type="file" name="files[]" id="file" class="box__file hidden" data-multiple-caption="{count} files selected" multiple />
-										</div>
-									</div>								
-									<div class="drop-file form-group" id="drop-file">
-										<img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
-										<h3 id="fileTitle">FileName.psd</h3>
-									</div>
-									<div class="fileSwitch">
-										<input id="qard-url-upload-click" name="image" class="hidden" type="file">
-										<div class="box__input">
-											<input type="file" name="files[]" id="file" class="box__file hidden" data-multiple-caption="{count} files selected" multiple />
-										</div>
-									</div>
-								</div>
-								
-								<div class="form-group toggle-btn">
-									<div class="col-sm-6 col-md-6 on-off">
-											<div class="switch">
-												<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
-												<label for="cmn-toggle-7" class="victim"></label>
-											</div>  <span>Open in New Tab</span> 
-									</div>                                      
-								</div>
+                            <fieldset>
+                                <form method="post" action="" id="qard-url-upload" enctype="multipart/form-data" novalidate class="box">
 
-								<div class="form-group extra-content" id="drop-image">
-									<input type="text" name="filename" class="filename fileName col-sm-5 col-md-5" placeholder="Enter Title">
-									<input type="text" name="desc" class="col-sm-5 col-md-5 col-md-offset-1 desc" placeholder="Add a description">
-								</div>
-							</form>	
+                                    <div id="link_div"></div>
+                                    
+                                    <div class="drop-file form-group" id="drop-file">
+                                        <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
+
+                                        <h2 id="extErr">Only PDF,DOC,DOCX TYPES ARE ALLOWED</h2>
+                                        <h3>Drop files/click to Browse</h3></div>
+
+                                    <div class="drop-image form-group" id="drop-image" style="min-height:0px!important;">
+                                        <div id="showFilePreview"></div>
+                                        <img id="dispIcon" class="imgCenter">
+                                        <span id="showFile">
+                                                        <input type="text" name="filename" class="filename form-control fileName" placeholder="File Name">
+                                                        <textarea name="desc" class="form-control desc" placeholder="Description"></textarea>
+                                                </span>
+                                    </div>
+                                    <div class="fileSwitch">
+                                        <input id="qard-url-upload-click" name="image" class="hidden" type="file">
+                                        <div class="box__input">
+
+                                            <input type="file" name="files[]" id="file" class="box__file hidden" data-multiple-caption="{count} files selected" multiple />
+                                            <!--			<label for="file"><strong>Choose a file</strong><span class="box__dragndrop"> or drag it here</span>.</label>-->
+                                            <!--			<button type="submit" class="box__button">Upload</button>-->
+                                        </div>
+                                        <h3><center>or...</center></h3>
+                                        <div class="form-group" id="showlinkUrl">
+                                            <input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
+                                            <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
+                                        </div>
+										<h3><center>or...</center></h3>
+                                        <div class="form-group" id="embedCode">
+                                            <input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
+                                        </div>
+                                        <!--<div class="form-group link_options" style="display:none">
+                                                <div class="col-sm-4 col-md-4 on-off">
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <label for="cmn-toggle-4"></label>
+                                                    </div>  <span>Display Link</span>                                                  
+                                                </div>
+                                                <div class="col-sm-4 col-md-4 on-off">
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox" onClick="showUrlPreview()">
+                                                        <label for="cmn-toggle-5"></label>
+                                                    </div>  <span>Display Preview</span>                                                  
+                                                </div>
+                                                <div class="col-sm-4 col-md-4 on-off">
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <label for="cmn-toggle-6"></label>
+                                                    </div>  <span>Open in New Tab</span>                                                  
+                                                </div>
+                                            </div>-->
+                                        <ul class="on-off pull-right link_options" style="display:none">
+                                            <li>
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                    <label for="cmn-toggle-4"></label>
+                                                </div> <span>Display Link</span>
+                                            </li>
+                                            <li>
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                    <label for="cmn-toggle-5"></label>
+                                                </div> <span>Display Preview</span>
+                                            </li>
+                                            <li>
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                    <label for="cmn-toggle-6"></label>
+                                                </div> <span>Open in New Tab</span>
+                                            </li>
+                                            <li><a href="#"><img id="url_reset_link" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
+                                        </ul>
+                                    </div>
+                                    <ul class="on-off pull-right file_options">
+                                        <li>
+                                            <div class="switch">
+                                                <input id="cmn-toggle-7"  class="dispFileName cmn-toggle cmn-toggle-round" type="checkbox">
+                                                <label for="cmn-toggle-7"></label>
+                                            </div> <span>Display File Name</span>
+                                        </li>
+                                        <li>
+                                            <div class="switch linkSwitch">
+                                                <input id="cmn-toggle-8" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                <label for="cmn-toggle-8"></label>
+                                            </div> <span>Open Link in New Tab</span>
+                                        </li>
+                                        <li><a href="#"><img id="reflink" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
+                                    </ul>
+                            </fieldset>
+                            </form>
+                            </fieldset>
+
+
+
                         </div>
-						
                         <div role="tabpanel" class="tab-pane" id="paintblock">
                             <fieldset>
                                 <div class="form-group col-sm-6 col-md-6">
@@ -330,7 +330,12 @@ $this->title = 'Create Qard';
                                     <h4>Block Background Color</h4>
                                     <input type="text" name="blk_color" id="bg_color" class="form-control" placeholder="Background color (#0000)">
 									<ul>
-                                        ##taken							
+                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_1'] ?>" data-bgcolor-id="theme_color_1" data-color="<?php echo $theme_properties['theme_color_1'] ?>" onclick="setBGColor(this);"></li>
+                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_2'] ?>" data-bgcolor-id="theme_color_2" data-color="<?php echo $theme_properties['theme_color_2'] ?>" onclick="setBGColor(this);"></li>
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_3'] ?>" data-bgcolor-id="theme_color_3" data-color="<?php echo $theme_properties['theme_color_3'] ?>" onclick="setBGColor(this);"></li>
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_4'] ?>" data-bgcolor-id="theme_color_4" data-color="<?php echo $theme_properties['theme_color_4'] ?>" onclick="setBGColor(this);"></li>
+										
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_5'] ?>" data-bgcolor-id="theme_color_5" data-color="<?php echo $theme_properties['theme_color_5'] ?>" onclick="setBGColor(this);"></li>							
 									</ul>
                                 </div>
 
@@ -407,25 +412,32 @@ $this->title = 'Create Qard';
 
             </div>
         </div>
-		<div class="bottom-card row">
-			<div class="col-sm-3 col-md-3">
-				<div class="col-sm-12 col-md-12">
-					<select class="js-example-basic-multiple form-control" id="tags" name="tags[]" multiple="multiple">
-					<?php foreach($tags as $tag){
-					echo '<option value="'.$tag->tag_id.'">'.$tag->name.'</option>';
-					}?>
-					</select>
-					<p>Seperate tags using commas</p>
-				</div>                                    
-			</div>
-			<div class="col-sm-8 col-md-8 col-md-offset-1">
-				<ul class="help-list"> 
-					<li class="help-link"><a href=""><img src="<?=Yii::$app->homeUrl?>images/need-help_icon.png" width="30px" height="30px" style="margin-right:5px;" alt="">Need Help?</a></li>
-					<li class="pull-right"><button class="btn btn-warning" name="preview" onclick="addSaveCard(event)">Preview Card</button></li>
-					<!--<li><button class="btn btn-warning" name="preview">Save</button></li>-->
-				</ul>
-			</div>
-		</div> 
+        <div class="bottom-card row">
+            <div class="col-sm-8 col-md-8">
+                <div class="col-sm-6 col-md-6">
+                    <input type="text" name="qard_title" id="qard_title" class="form-control" placeholder="Qard Title">
+                </div>
+                <div class="col-sm-6 col-md-6">
+                    <!--			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">-->
+
+            <select class="js-example-basic-multiple form-control" id="tags" name="tags[]" multiple="multiple">
+			    <?php foreach($tags as $tag){
+				echo '<option value="'.$tag->tag_id.'">'.$tag->name.'</option>';
+			    }?>
+			</select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <ul class="help-list">
+                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/help.png" alt=""></a></li>
+                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/eye.png" alt=""></a></li>
+                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/comment.png" alt=""></a></li>
+                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/icon-paint.png" alt=""></a></li>
+                    <li><button class="btn btn-sm btn-default" name="preview" id="qard_preview">Preview</button></li>
+                    <li onclick="addSaveCard(event)"><button class="btn btn-sm btn-default" name="preview">Save</button></li>
+                </ul>
+            </div>
+        </div>
     </section>
     <!-- block_error popup -->
 	<?php
@@ -574,7 +586,7 @@ $this->title = 'Create Qard';
 			$("#working_div .bgimg-block").attr('data-bgcolor-id',$(elem).attr('data-bgcolor-id'));
 			$("#working_div .bgimg-block").css('background-color', color);
 		}
-          
+             
     </script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
 
@@ -648,7 +660,7 @@ $this->title = 'Create Qard';
 	/*
 	 * Double click to edit the block again
 	 */
-	$(document).delegate('.add-block-qard > div', "dblclick", function(event) {
+	$(document).delegate('.add-block > div', "dblclick", function(event) {
 
 		if ($(this).attr("id") !== 'working_div') {
 
@@ -819,25 +831,14 @@ $this->title = 'Create Qard';
 			$('.working_div').focus();
 			return false;
 		});
-		
 		/*
 		 * to justify text
 		 */
 		$('#text_align').change(function() {
 			document.execCommand($(this).val(), false, null);
-			console.log($(this).val());
 			$('.working_div').focus();
 			return false;
 		});
-		//replaced by this
-		$("#alignment_select li a").click(function(){
-		  //console.log($(this).attr("data-align"));
-		  	document.execCommand($(this).attr("data-align"), false, null);
-			console.log($(this).val());
-			$('.working_div').focus();
-			return false;
-		}); 
-		
 		/*
 		 * to change the size of the text
 		 */
@@ -875,7 +876,7 @@ $this->title = 'Create Qard';
 		});
 
 	
- 
+
 		/********************/
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -1332,7 +1333,7 @@ $this->title = 'Create Qard';
 	}
 	function getNextBlockId() {
 		var blk_id = 0;
-		$(".add-block-qard div").each(function() {
+		$(".add-block div").each(function() {
 			var attr = $(this).attr('id');
 			if (typeof attr !== typeof undefined && attr !== false && attr.search("_")) {
 				new_blk_id = attr.split('_');
@@ -1345,7 +1346,7 @@ $this->title = 'Create Qard';
 	}		
 	function getNextBlockPriority() {
 		var blk_pri = 0;
-		$(".add-block-qard .parent_current_blk").each(function() {
+		$(".add-block .parent_current_blk").each(function() {
 			var attr = $(this).find(".current_blk").attr('data-block_priority');
 			if (typeof attr !== typeof undefined) {
 
@@ -1499,9 +1500,24 @@ $this->title = 'Create Qard';
                     console.log(data);
                     if (data.type == 'PDF' || data.type == 'pdf') {
                         <!--ADDED BY DENCY -->
+                        $(".file_options").show();
+                        $(".link_options").hide();
+                        <!------------------->
+                        $("#drop-file").hide();
+                        $("#drop-image").show();
+                        // $(".fileName").val(response.code);
+                        $(".fileSwitch").hide();
                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');
                     }
                     if (data.type == 'DOC' || data.type == 'DOCX') {
+                        <!--ADDED BY DENCY -->
+                        $(".file_options").show();
+                        $(".link_options").hide();
+                        <!------------------->
+                        $("#drop-file").hide();
+                        $("#drop-image").show();
+                        // $(".fileName").val(response.code);
+                        $(".fileSwitch").hide();
                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
                     }
                     //$('.working_div div').html(data);
@@ -1511,13 +1527,20 @@ $this->title = 'Create Qard';
 						if(displayCheck==1){
 							
 						}else{
-							$("#working_div .current_blk").html(data.work_space_text);
-							adjustHeight();
+						$("#working_div .current_blk").html(data.work_space_text);
+						adjustHeight();
+                        $("#drop-file  , .file_options").hide();
+                        //show link options
+                        $(".link_options").show();
 						}
                         $('#link_div').html(data.preview_html);
 						
                     }
                     else {
+                        //hide file options
+                        $("#drop-file  , .file_options").hide();
+                        //show link options
+                        $(".link_options").show();
                         $('#link_div').html(data);
                     }
                     //var title = $('input[name=url_title]').val();
@@ -1600,7 +1623,7 @@ $this->title = 'Create Qard';
 		/** File upload functions **/
         //ADDED BY NANDHINI
 
-        $(".dispFileName").on('click', function(e) {
+           $(".dispFileName").on('click', function(e) {
            if($('.dispFileName').is(':checked')){
                var fileName = $(".fileName").val();   
                setLink($(this),fileName,2);
@@ -1613,16 +1636,16 @@ $this->title = 'Create Qard';
         function setLink(elem,fileName,id){     
             var click = 'showFilePrev("'+fileName+'")';
             if(id!=3 && id!=1){
-                  var span = 'Add Your Description Here!<br><span class="icon-mark pull-right" onclick='+click+'>'+fileName+'<img src="<?=Yii::$app->homeUrl?>images/file_icon.png" alt=""></span>';
-				  //'<span class="icon-mark pull-right" onclick="+click+"><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" alt=""></span>';
+                  var span = "Add Your Description Here!<br><span style='height: 24px;width: 25px;'>"+fileName+"<img onclick="+click+" style='height: 24px;width: 25px;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>"; 
               }else{
-                  var span = 'Add Your Description Here!<br><span class="icon-mark pull-right" onclick='+click+'><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" alt=""></span>';   
+                  var span = "<span>Add Your Description Here!<br><img onclick="+click+" style='height: 24px;width: 25px;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";    
             }               
             $("#working_div .current_blk").html(span);
-		}
-        //$("#showFile").hide();
+	}
+        $("#showFile").hide();
         $('.drop-file').on('click', function(e) {
             $('#qard-url-upload-click').trigger('click');
+
             return false;
             //  $('#qard-url-upload').click();             
         });     
@@ -1651,11 +1674,15 @@ $this->title = 'Create Qard';
                     //data: form_data,
                     type: 'post',
                     success: function(response) {
+                        $("#dispIcon").show();
+                        $(".drop-file").hide();
+                        $(".drop-image").show();
+                        $("#showFile").show();
                         $(".fileName").val(response.code);
-						$(".victim").html('');
-						$("#fileTitle").html(response.code);
+                        $(".fileSwitch").hide();
                         setLink($(this),response.code,1);
-
+                        // console.log(response);
+                        //count++;
                     }
                 });
             } else {
@@ -1667,15 +1694,20 @@ $this->title = 'Create Qard';
             }
         });
         $('#reflink').click(function(e) {
-/*             $("#dispIcon").hide();
+
+            // location.reload();
+            // $(".drop-file").show();
+            //   $(".drop-image").hide();
+            //  $(".fileSwitch").show();   
+            //         $(".fileSwitch").show();
+
+            $("#dispIcon").hide();
             $(".drop-file , .drop-image , .file_options").show();
             $(".fileSwitch").show();
             $("input[id=link_url]").val('');
             $('input[id=qard-url-upload-click]').val('');
             $("#showFile").hide();
-            $("#showFilePreview").empty(); */
-			$("#qard-url-upload").trigger('reset');
-			$("#fileTitle").html('FileName.psd');
+            $("#showFilePreview").empty();
         });		
 		/*** End of file upload functions **/
 		/** Dragging functions **/
@@ -1873,12 +1905,12 @@ $this->title = 'Create Qard';
                         //console.log($("#qard-url-upload").serializeArray());
                         
                         var ajaxData = new FormData($('#qard-url-upload').get(0));
-						
                         var fileType;
                         if (droppedFiles) {
                             $.each(droppedFiles, function(i, file) {
                                 fileType = file.name;
-                                ajaxData.append($('#qard-url-upload input[type=text]').attr('name'), file);
+                                ajaxData.append($('#qard-url-upload input').attr('name'), file);
+
                             });
                         }
                         //console.log(ajaxData);
@@ -1907,14 +1939,17 @@ $this->title = 'Create Qard';
                                     $('#qard-url-upload').removeClass('is-uploading');
                                 },
                                 success: function(data) {
+                                    console.log(data);
+                                    $("#dispIcon").show();
+                                    $("#showFile").show();
+                                    $(".drop-file").hide();
+                                    $(".drop-image").show();
                                     setLink($(this),data.code,1);
                                     $(".fileName").val(data.code);
-									$(".victim").html(''); //poor label
-									$("#fileTitle").html(data.code); //for image area
+                                    $(".fileSwitch").hide();
                                 },
-                                error: function(data) {
-
-                                    alert("Error! Please try again");
+                                error: function() {
+                                    alert("already");
                                     // Log the error, show an alert, whatever works for you
                                 }
                             });

@@ -890,13 +890,55 @@ span.trash i {
     display: inline-block;
     width: 100%;
 }
+form#qard-url-upload {
+    display: inline-block;
+    width: 100%;
+}
 .drop-file {
     text-align: center;
     line-height: 50px;
+    height: 300px;
+    background-color: #eeeeee;
+    text-align: center;
+    position: relative;
+    border: 1px solid #dddddd;
+	cursor:pointer;
+	color:#fff;
+}
+#drop-file h3 {
+	color:#000;
+}
+#drop-file-bg h3 {
+	color:#fff;
 }
 .drop-file h3 {
     line-height: 70px;
+	font-size:18px;
+	color:#000;
 }
+#fileblock .drop-file img {
+    width: 50px;
+    margin-top: 10%;
+}
+#drop-file-bg {
+	display:none;
+}
+.add-new-file:hover #drop-file-bg {
+    display: block;
+    position: absolute;
+    background: #465360;
+    opacity: 0.8;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 88888;
+}
+.add-new-file {
+    position: relative;
+}
+
+
 
 /* toggle switch */
 .switch {
@@ -1832,8 +1874,9 @@ ul.comment-tags li.pull-right{
     min-height: auto;
 }
 span.icon-mark.pull-right img {
-    width: 15px;
-    margin-right: 10px;
+    width: 15px !important;
+    margin-right: 10px !important;
+	display : block;
 }
 .qard-content.qard2 .style-block {
     box-shadow: 0px 5px 10px 0px #777777;
@@ -2679,7 +2722,9 @@ span.title-count img {
 
 
 /* Deck Manage */
-
+.sidebar-qard .qard-content {
+    padding: 0 !important;
+}
 .deck-manage input {
     border: 0;
     border-bottom: 1px solid #eaeaea;
