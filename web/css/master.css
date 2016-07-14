@@ -1086,7 +1086,7 @@ li.help-link a {
     padding: 10px;
 }
 */
-.text-block *{
+.text-block span{
     font-size: 12px;
     padding-right: 10px;
 	padding-left: 10px;
