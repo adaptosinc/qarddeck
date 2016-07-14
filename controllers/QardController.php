@@ -592,10 +592,10 @@ class QardController extends Controller
 		//Youtube code
 		if (strpos($src, 'youtube') !== false) {
 			$videoid = str_replace("https://www.youtube.com/embed/",'',$src);
-			$video_link = '<div id="qardContent"><div class="embed_title">'.$title.'</div><div class="embed_content"><input type="hidden" id="embedHide" value="'.$src.'"/><p>https://youtu.be/'.$videoid.'</p><div onclick="embedCode(this)" contenteditable="false"><i class="fa fa-youtube-play fa-2x"></i></div></div></div>';
+			$video_link = $title.'https://youtu.be/'.$videoid.'<span class="icon-mark pull-right" id="embedHide" data-value="'.$src.'" onclick="embedCode(this);"><img src="'.Yii::$app->homeUrl.'images/image_icon.png" alt=""></span>';
 		}else{
 			$videoid = str_replace("https://player.vimeo.com/video/",'',$src);
-			$video_link = '<div id="qardContent"><div class="embed_title">'.$title.'</div><div class="embed_content"><input type="hidden" id="embedHide" value="'.$src.'"/><p>https://vimeo.com/'.$videoid.'</p><div onclick="embedCode(this)" contenteditable="false"><i class="fa fa-youtube-play fa-2x"></i></div></div></div>';
+			$video_link = $title.'https://vimeo.com/'.$videoid.'<span class="icon-mark pull-right" id="embedHide" data-value="'.$src.'" onclick="embedCode(this);"><img src="'.Yii::$app->homeUrl.'images/image_icon.png" alt=""></span>';
 		}
 		$video_array['video_img'] = $video_link;
 		$video_array['iframelink'] = $embed_code;

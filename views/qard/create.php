@@ -97,7 +97,7 @@ $this->title = 'Create Qard';
                         <div id="working_div" class="working_div block active">
                             <div id="blk_1" class="bgimg-block parent_current_blk">
                                 <div class="bgoverlay-block">
-                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off" data-block_priority="1" style="overflow:hidden"></div>
+                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off" data-block_priority="1" style="overflow:hidden;margin:10px"></div>
                                 </div>
                             </div>
                         </div>
@@ -246,37 +246,53 @@ $this->title = 'Create Qard';
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
-							<div class="form-group" id="showlinkUrl">
-								<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
-								<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
-							</div>
-							<h3><center>or...</center></h3>
-							<div class="form-group" id="embedCode">
-								<input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
-							</div>
-							<ul class="on-off pull-right link_options" style="display:none">
-								<li>
-									<div class="switch">
-										<input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
-										<label for="cmn-toggle-4"></label>
-									</div> <span>Display Link</span>
-								</li>
-								<li>
-									<div class="switch">
-										<input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox">
-										<label for="cmn-toggle-5"></label>
-									</div> <span>Display Preview</span>
-								</li>
-								<li>
-									<div class="switch">
-										<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
-										<label for="cmn-toggle-6"></label>
-									</div> <span>Open in New Tab</span>
-								</li>
-								<li><a href="#"><img id="url_reset_link" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
+							<ul class="nav nav-tabs" role="tablist">
+								<li role="presentation" class="active"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
+								<li role="presentation"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>
+								<li class="pull-right"><span class="trash pull-right" id="url_reset_link"><i class="fa fa-trash"></i>&nbsp;Remove Url/Embed Code</span></li>                                        
 							</ul>
-                        </div>
-						
+							<h4>&nbsp;</h4>
+							<div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="paste">
+									<div class="form-group" id="showlinkUrl">
+										<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
+										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
+									</div>
+									<div id="link_div">
+										<div class="preview-image">                                       
+										</div>  
+									</div>	
+									<div class="form-group toggle-btn">
+										<div class="col-sm-4 col-md-4 on-off">
+											<div class="switch">
+												<input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+												<label for="cmn-toggle-4"></label>
+											</div>  <span>Display URL</span>                                                  
+										</div>                                            
+										<div class="col-sm-4 col-md-4 on-off">
+											<div class="switch">
+												<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+												<label for="cmn-toggle-6"></label>
+											</div>  <span>Open Link in New Tab</span>                                                 
+										</div>
+									</div>
+									<div class="form-group extra-content">
+										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
+										<input type="text" name="url-desc" class="col-sm-5 col-md-5 col-md-offset-1" placeholder="Add a description">
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="embed">
+									<div class="form-group" id="embedCode">
+										<input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
+									</div>
+									<div id="embed_div">
+										<div class="preview-image">                                       
+										</div>  
+									</div>	
+								</div>  
+
+							</div>
+						</div>
 						<div role="tabpanel" class="tab-pane" id="fileblock">
 							<h4 id="reflink" >Add File<span class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove File</span></h4>
                             
@@ -1486,7 +1502,7 @@ $this->title = 'Create Qard';
 		*/
         function callUrl(urlField,displayCheck) {
             console.log($(urlField).val());
-			$('#link_div').hide();
+			//$('#link_div').hide();
             var preview_url = $(urlField).val();
             var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
             $.ajax({
@@ -1509,11 +1525,14 @@ $this->title = 'Create Qard';
                     //$('.working_div div').html(data);
 					if (data.type == 'web_page') {
 						//added by kavitha
-						$('#link_div').show();
+						//$('#link_div').show();
 						if(displayCheck==1){
 							
 						}else{
-							$("#working_div .current_blk").html(data.work_space_text);
+							$("#working_div .current_blk").focus();
+							document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
+							var work_space_text  = '<span style="color: <?php echo $theme_properties["dark_text_color"];?>;">'+data.work_space_text+'</span></br>';
+							$("#working_div .current_blk").html(work_space_text);
 							adjustHeight();
 						}
                         $('#link_div').html(data.preview_html);
@@ -1584,15 +1603,14 @@ $this->title = 'Create Qard';
 			var displayCheck = 1;
 			callUrl(checkit,displayCheck);
 			$('.nav-tabs a[href="#linkblock"]').tab('show');
-			$('#link_div').show();
 			return false;
 		}
 		/**********************************/
         $('#url_reset_link').on('click', function() {
-            $('#link_div').empty();
-            $(".drop-file , .drop-image , .file_options").show();
+            $('#link_div').html("<div class='preview-image'></div>");
+			 $('#embed_div').html("<div class='preview-image'></div>");
             $("input[id=link_url]").val('');
-            $(".link_options").hide();
+			$("input[id=embed_code]").val('');
         });
 
         $('#qard_preview').on('click', function() {
@@ -1673,13 +1691,6 @@ $this->title = 'Create Qard';
             }
         });
         $('#reflink').click(function(e) {
-/*             $("#dispIcon").hide();
-            $(".drop-file , .drop-image , .file_options").show();
-            $(".fileSwitch").show();
-            $("input[id=link_url]").val('');
-            $('input[id=qard-url-upload-click]').val('');
-            $("#showFile").hide();
-            $("#showFilePreview").empty(); */
 			$("#qard-url-upload").trigger('reset');
 			$("#fileTitle").html('FileName.psd');
         });		
@@ -1730,7 +1741,7 @@ $this->title = 'Create Qard';
             callEmbedUrl(this);
         });
 		function callEmbedUrl(videoUrl){
-			$('#link_div').hide();
+			//$('#link_div').hide();
             var embedd_preview_url = $(videoUrl).val();
             var get_embed_url = "<?=Url::to(['qard/embed-url'], true);?>";
             $.ajax({
@@ -1744,15 +1755,19 @@ $this->title = 'Create Qard';
 					data = $.parseJSON(data);
                     console.log(data);
 					$("#drop-file  , .file_options").hide();
-					$("#working_div .current_blk").html(data.video_img);
+					/*added by dency */
+							$("#working_div .current_blk").focus();
+							document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
+							var video_img  = '<span style="color: <?php echo $theme_properties["dark_text_color"];?>;">'+data.video_img+'</span></br>';
+					/****************/
+					$("#working_div .current_blk").html(video_img);
 					adjustHeight();
-					$('#link_div').html(data.iframelink);
-					$('#link_div').show();
+					$('#embed_div').html(data.iframelink);
                 }
             });
 		}
 		function calldisplayEmbedUrl(videoUrl){
-			$('#link_div').hide();
+			//$('#link_div').hide();
             var embedd_preview_url = $(videoUrl).val();
             var get_embed_url = "<?=Url::to(['qard/embeddisplay-url'], true);?>";
             $.ajax({
