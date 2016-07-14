@@ -827,7 +827,7 @@ ul.align-elements li {
     float: left;
 }
 
-#descfield, #imgblock, #linkblock, #videoblock, #fileblock {
+#descfield, #imgblock, #linkblock, #videoblock, #fileblock,#paintblock {
     padding: 20px;
 }
 #linkblock h4 button, #videoblock h4 button{
