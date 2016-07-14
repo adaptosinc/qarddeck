@@ -2,7 +2,7 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
-$this->title = $profile->firstname;
+
 $this->params['breadcrumbs'][] = ['label' => 'Edit Profile', 'url' => ['profile']];
 $this->params['breadcrumbs'][] = 'Edit';
 ?>      
