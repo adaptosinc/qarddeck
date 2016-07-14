@@ -55,7 +55,17 @@ $this->title = 'Create Qard';
                                 <input type="text" name="qard_title" id="qard_title" placeholder="Enter a Title for this Qard">
                             </h2>                            
                         </div>
-                        <div class="col-sm-6 col-md-6">
+				</div>
+				</br>
+				<div class="row">
+						<div class="col-sm-8 col-md-8" style="padding: 0;">
+							<select class="js-example-basic-multiple form-control" id="tags" name="tags[]" multiple="multiple" placeholder="Add some tags">
+							<?php foreach($tags as $tag){
+							echo '<option value="'.$tag->tag_id.'">'.$tag->name.'</option>';
+							}?>
+							</select>
+						</div>  
+                        <div class="col-sm-4 col-md-4">
                             <ul class="pull-right">
 							<?php 
 								if(!\Yii::$app->user->isGuest){
@@ -65,7 +75,7 @@ $this->title = 'Create Qard';
 							<?php } ?>	
                                 <li><button class="btn qard" data-toggle="modal" data-target="#qard-style">Qard Style</button></li>
                             </ul>
-                        </div>                        
+                        </div>   						
 				</div>
         <div class="row">
 
@@ -425,14 +435,7 @@ $this->title = 'Create Qard';
         </div>
 		<div class="bottom-card row">
 			<div class="col-sm-3 col-md-3">
-				<div class="col-sm-12 col-md-12">
-					<select class="js-example-basic-multiple form-control" id="tags" name="tags[]" multiple="multiple">
-					<?php foreach($tags as $tag){
-					echo '<option value="'.$tag->tag_id.'">'.$tag->name.'</option>';
-					}?>
-					</select>
-					<p>Seperate tags using commas</p>
-				</div>                                    
+                                  
 			</div>
 			<div class="col-sm-8 col-md-8 col-md-offset-1">
 				<ul class="help-list"> 
@@ -465,6 +468,124 @@ $this->title = 'Create Qard';
 		</div>
 	</div>
 </div>
+<!-- Qard style pop up -->
+	<!-- Modal -->
+	<div class="modal fade" id="qard-style" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
+		  </div>
+		  <div class="modal-body">
+			<h4 class="modal-title">Theme : Qard Deck</h4>
+			<div class="themes-list">        <!-- qard list -->
+				<div class="row">
+					<div class="qard-bg col-sm-2 col-md-2">     <!-- qard -->
+						<div class="qard-content">
+							<div class="themebg1">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg2">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg3">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg4">
+								<div class="bgcolor"></div>
+							</div>                                     
+						</div>                             
+					</div>
+					<div class="candy-bg col-sm-2 col-md-2">     <!-- qard -->                            
+						<div class="qard-content">
+							<div class="themebg1">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg2">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg3">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg4">
+								<div class="bgcolor"></div>
+							</div>
+						</div>                              
+					</div>
+					<div class="cool-bg col-sm-2 col-md-2">     <!-- qard -->                           
+						<div class="qard-content">
+							<div class="themebg1">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg2">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg3">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg4">
+								<div class="bgcolor"></div>
+							</div>                                  
+						</div>                                
+					</div>
+					<div class="cool-bg col-sm-2 col-md-2">     <!-- qard -->                            
+						<div class="qard-content">
+							<div class="themebg1">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg2">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg3">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg4">
+								<div class="bgcolor"></div>
+							</div>                                    
+						</div>                                
+					</div>
+					<div class="cool-bg col-sm-2 col-md-2">     <!-- qard -->                           
+						<div class="qard-content">
+							<div class="themebg1">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg2">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg3">
+								<div class="bgcolor"></div>
+							</div>
+							<div class="themebg4">
+								<div class="bgcolor"></div>
+							</div>                                     
+						</div>                               
+					</div>                                
+				</div>      <!-- row  -->
+		  </div>
+				<h4 class="modal-title">Block Style : Flat</h4>
+				<div class="row">
+					<div class="flat col-sm-3 col-md-3">
+						<img src="images/block-style_flat.png" alt="">
+					</div>
+					<div class="gap col-sm-3 col-md-3">
+						<img src="images/block-style_gap.png" alt="">
+					</div>
+					<div class="shadow col-sm-3 col-md-3">
+						<img src="images/block-style_shadow.png" alt="">
+					</div>
+					<div class="line col-sm-3 col-md-3">
+						<img src="images/block-style_line.png" alt="">
+					</div>                                    
+				</div>  <!-- row -->                              
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-grey pull-left" data-dismiss="modal">CANCEL</button>
+			<button type="button" class="btn btn-warning pull-right" onclick="location.href='qard-check.html';">APPLY STYLE</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+<!-- Qard style pop up -->
 
 
 	<?php 
@@ -603,7 +724,9 @@ $this->title = 'Create Qard';
 	/**
 	  * Script re-written by Dency G B 
 	 **/
-	 $(".js-example-basic-multiple").select2();
+	 $(".js-example-basic-multiple").select2({
+		 placeholder: "Add some tags",
+	 });
 
 	/**** Handle the main work space ******/
 
