@@ -28,7 +28,7 @@ class ProfileWidget extends Widget
             
             $newProfile = Profile::find()->where(['user_id' => $id])->one();
 			$profile->profile_photo = \Yii::$app->homeUrl.$newProfile->temp_image; 			
-            $profile->validate();
+            //$profile->validate();
             if($profile->errors || $model->errors){
                     foreach($model->errors as $error){
                             \Yii::$app->getSession()->setFlash('profile_update_error', $error[0]);
@@ -51,7 +51,7 @@ class ProfileWidget extends Widget
                 $model->save(false);
             }	    
            // print_R($profile->errors);die;
-            $profile->save();    
+            $profile->save(false);    
             \Yii::$app->controller->goBack();
 
          } 

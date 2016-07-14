@@ -221,70 +221,35 @@ class UserController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionProfile($id){
-            
-        $model = User::find()->where(['id' => $id])->one();		// \Yii::$app->user->id] 
-        $profile = Profile::find()->where(['user_id' => $id])->one();	// \Yii::$app->user->id]
-		
-       // if ($model->load(Yii::$app->request->post()) && $profile->load(Yii::$app->request->post())) {		
-                if(Yii::$app->request->post()){		
-             
-                    $profile->firstname = Yii::$app->request->post('firstname');
-                    $profile->lastname = Yii::$app->request->post('lastname');
-                    $profile->short_description = Yii::$app->request->post('short_description');
-                     $profile->display_email = Yii::$app->request->post('display_email');
-                   // $profile->profile_photo = UploadedFile::getInstance($profile, 'profile_photo');
-                   /// $profile->profile_bg_image = UploadedFile::getInstance($profile, 'profile_bg_image');		
-                   // $prof_img_path =  $profile->profile_photo->baseName . '.' . $profile->profile_photo->extension;
-                  //  $background_img_path =  $profile->profile_bg_image->baseName . '.' .$profile->profile_bg_image->extension;
-                    $idToUpdate =  \Yii::$app->user->id;				
-            //if ($model->validate()) {       
-                   // $profile->profile_photo->saveAs('uploads/'.$profile->profile_photo->baseName . '.' . $profile->profile_photo->extension);
-                   // $profile->profile_bg_image->saveAs('uploads/'.$profile->profile_bg_image->baseName . '.' . $profile->profile_bg_image->extension);
-                    //$base_url = Yii::$app->baseUrl();
-                  //  $profile->profile_photo  = '/uploads/'.$prof_img_path;
-                   // $profile->profile_bg_image = '/uploads/'.$background_img_path;
-                    $model->save();
-                    $profile->save();
-            //}
-            //save both profile and user\
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            
-            return $this->render('profile', [
-				'model' => $model,
-				'profile' => $profile
-			]);
-		}
-		
+    public function actionProfile(){ 
+        return $this->render('profile');
 	}	
     /**
      * Uploads the Profile Picture
      * @return uploaded file name
      */    
-        public function actionPhoto(){
-
-            $idToUpdate =  \Yii::$app->user->id;
-            $profile = Profile::find()->where(['user_id' => $idToUpdate])->one();
-                if (Yii::$app->request->isAjax) {                
-                   $move = Yii::$app->basePath.'/web/uploads/';              
-                   $moveto = $move.$_FILES["file"]['name'];
-                   $_FILES["file"]['tmp_name'];
-                   $_FILES["file"]['size'];
-                   $_FILES['file']['error'];
-                        if(file_exists($move.$_FILES["file"]['name'])) {
-                             //chmod($move.$_FILES["file"]['name'],0755); //Change the file permissions if allowed
-                             unlink($move.$_FILES["file"]['name']); //remove the file
-                         }
-                   move_uploaded_file($_FILES['file']['tmp_name'], $move.$_FILES["file"]['name']);
-                   $prof_img_path =  $_FILES["file"]['name'];
-                   $profile->temp_image = "uploads/".$prof_img_path; 
-                   $profile->save(false);
-                   \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                    return [
-                        'code' => $_FILES["file"]['name'],
-                    ];
-               }  
+    public function actionPhoto(){
+		$idToUpdate =  \Yii::$app->user->id;
+		$profile = Profile::find()->where(['user_id' => $idToUpdate])->one();
+		if (Yii::$app->request->isAjax) {                
+		   $move = Yii::$app->basePath.'/web/uploads/';              
+		   $moveto = $move.$_FILES["file"]['name'];
+		   $_FILES["file"]['tmp_name'];
+		   $_FILES["file"]['size'];
+		   $_FILES['file']['error'];
+				if(file_exists($move.$_FILES["file"]['name'])) {
+					 //chmod($move.$_FILES["file"]['name'],0755); //Change the file permissions if allowed
+					 unlink($move.$_FILES["file"]['name']); //remove the file
+				 }
+		   move_uploaded_file($_FILES['file']['tmp_name'], $move.$_FILES["file"]['name']);
+		   $prof_img_path =  $_FILES["file"]['name'];
+		   $profile->temp_image = "uploads/".$prof_img_path; 
+		   $profile->save(false);
+		   \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+			return [
+				'code' => $_FILES["file"]['name'],
+			];
+	   }  
 	}	
         
     /**

@@ -1454,7 +1454,8 @@ header ul.pull-right button.btn {
     min-height: 100px;
     resize: none;
 }
-.main-profile .col-sm-4.col-md-4 {
+/* .main-profile .col-sm-4.col-md-4{ */
+.main-profile form>.col-sm-4.col-md-4 {
     border: 1px solid #eaeaea;
     background: #fafafa;
     padding: 0 40px 40px 40px;
@@ -1544,7 +1545,7 @@ ul.profile-title li.tootip:hover:after {
 }
 .profile-content span {
     position: relative;
-    top: -17px;
+   /* top: -17px; */
     font-size: 13px;
 }
 .update {
