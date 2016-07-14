@@ -479,102 +479,54 @@ $this->title = 'Create Qard';
 		  <div class="modal-body">
 			<h4 class="modal-title">Theme : Qard Deck</h4>
 			<div class="themes-list">        <!-- qard list -->
-				<div class="row">
-					<div class="qard-bg col-sm-2 col-md-2">     <!-- qard -->
+				<div class="grid row">
+				<?php 
+				use app\models\Theme;
+				$themes = Theme::find()->where(['theme_type'=>1])->all();
+					foreach($themes as $theme){
+						$theme_properties = unserialize($theme->theme_properties);
+						echo '<div class="grid-item qard-bg" id="'.$theme->theme_id.'" >     <!-- qard -->
 						<div class="qard-content">
 							<div class="themebg1">
-								<div class="bgcolor"></div>
+								<div class="bgcolor" style="background:'.$theme_properties['theme_color_1'].'"></div>
 							</div>
 							<div class="themebg2">
-								<div class="bgcolor"></div>
+								<div class="bgcolor" style="background:'.$theme_properties['theme_color_2'].'"></div>
 							</div>
 							<div class="themebg3">
-								<div class="bgcolor"></div>
+								<div class="bgcolor" style="background:'.$theme_properties['theme_color_3'].'"></div>
 							</div>
 							<div class="themebg4">
-								<div class="bgcolor"></div>
-							</div>                                     
-						</div>                             
-					</div>
-					<div class="candy-bg col-sm-2 col-md-2">     <!-- qard -->                            
-						<div class="qard-content">
-							<div class="themebg1">
-								<div class="bgcolor"></div>
+								<div class="bgcolor" style="background:'.$theme_properties['theme_color_4'].'"></div>
 							</div>
-							<div class="themebg2">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg3">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg4">
-								<div class="bgcolor"></div>
-							</div>
-						</div>                              
-					</div>
-					<div class="cool-bg col-sm-2 col-md-2">     <!-- qard -->                           
-						<div class="qard-content">
-							<div class="themebg1">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg2">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg3">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg4">
-								<div class="bgcolor"></div>
-							</div>                                  
-						</div>                                
-					</div>
-					<div class="cool-bg col-sm-2 col-md-2">     <!-- qard -->                            
-						<div class="qard-content">
-							<div class="themebg1">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg2">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg3">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg4">
-								<div class="bgcolor"></div>
-							</div>                                    
-						</div>                                
-					</div>
-					<div class="cool-bg col-sm-2 col-md-2">     <!-- qard -->                           
-						<div class="qard-content">
-							<div class="themebg1">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg2">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg3">
-								<div class="bgcolor"></div>
-							</div>
-							<div class="themebg4">
-								<div class="bgcolor"></div>
-							</div>                                     
-						</div>                               
-					</div>                                
+							<div class="themebg5">
+								<div class="bgcolor" style="background:'.$theme_properties['theme_color_5'].'"></div>
+							</div>                                      
+						</div>
+						<div class="qard-top">
+							<h4>'.$theme->theme_name.'</h4>
+						</div>
+						';
+						echo "</div>";
+				
+					}				
+				?>
+                                
 				</div>      <!-- row  -->
-		  </div>
+			</div>
 				<h4 class="modal-title">Block Style : Flat</h4>
 				<div class="row">
 					<div class="flat col-sm-3 col-md-3">
-						<img src="images/block-style_flat.png" alt="">
+						<img src="<?=Yii::$app->homeUrl?>images/block-style_flat.png" alt="">
 					</div>
 					<div class="gap col-sm-3 col-md-3">
-						<img src="images/block-style_gap.png" alt="">
+						<img src="<?=Yii::$app->homeUrl?>images/block-style_gap.png" alt="">
 					</div>
 					<div class="shadow col-sm-3 col-md-3">
-						<img src="images/block-style_shadow.png" alt="">
+						<img src="<?=Yii::$app->homeUrl?>images/block-style_shadow.png" alt="">
 					</div>
 					<div class="line col-sm-3 col-md-3">
-						<img src="images/block-style_line.png" alt="">
+						<img src="<?=Yii::$app->homeUrl?>images/block-style_line.png" alt="">
 					</div>                                    
 				</div>  <!-- row -->                              
 		  </div>
@@ -625,6 +577,15 @@ $this->title = 'Create Qard';
     <!-- /.modal -->
 
     <script type="text/javascript">
+	$('#qard-style .themes-list .qard-content').click(function(){
+		$('.qard-content').removeClass('active');
+		$(this).addClass('active');
+	});
+	$('#qard-style .block-list .col-sm-3.col-md-3').click(function(){
+		$('.col-sm-3.col-md-3').removeClass('active');
+		$(this).addClass('active');
+	});
+	
 	$("#working_div .current_blk").focus();
 	document.execCommand('styleWithCSS', false, true);
     document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
