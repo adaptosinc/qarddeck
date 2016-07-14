@@ -1460,6 +1460,8 @@ $this->title = 'Create Qard';
 				window.location.replace(url);
 				$("#wait").hide();
 				}
+				$("#working_div .current_blk").focus();
+				document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
 				//removing uneccessary created working block
 				$("#add-block div").each(function() {
 				if ($(this).attr('id') === "working_div" && $(this).html() === "") {
@@ -1617,8 +1619,12 @@ $this->title = 'Create Qard';
 				  //'<span class="icon-mark pull-right" onclick="+click+"><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" alt=""></span>';
               }else{
                   var span = 'Add Your Description Here!<br><span class="icon-mark pull-right" onclick='+click+'><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" alt=""></span>';   
-            }               
+            }             
+			$("#working_div .current_blk").focus();
+			document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
+			span = '<span style="color: <?php echo $theme_properties["dark_text_color"];?>;">'+span+'</span></br>'
             $("#working_div .current_blk").html(span);
+			adjustHeight();
 		}
         //$("#showFile").hide();
         $('.drop-file').on('click', function(e) {
