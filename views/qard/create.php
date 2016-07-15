@@ -268,7 +268,7 @@ $this->title = 'Create Qard';
 										<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
 										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
 									</div>
-									<div id="link_div">
+									<div id="link_div" style="padding-bottom: 10px;">
 										<div class="preview-image">                                       
 										</div>  
 									</div>	
