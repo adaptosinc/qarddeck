@@ -479,7 +479,7 @@ $this->title = 'Create Qard';
 		  <div class="modal-body">
 			<h4 class="modal-title">Theme : Qard Deck</h4>
 			<div class="themes-list">        <!-- qard list -->
-				<div class="grid row">
+				<div class="grid row" id="themeorder">
 				<?php 
 				use app\models\Theme;
 				$themes = Theme::find()->where(['theme_type'=>1])->all();
@@ -515,24 +515,24 @@ $this->title = 'Create Qard';
 				</div>      <!-- row  -->
 			</div>
 				<h4 class="modal-title">Block Style : Flat</h4>
-				<div class="row">
-					<div class="flat col-sm-3 col-md-3">
+				<div class="row block-list">
+					<div class="qrd-pattern col-sm-3 col-md-3" id="flat">
 						<img src="<?=Yii::$app->homeUrl?>images/block-style_flat.png" alt="">
 					</div>
-					<div class="gap col-sm-3 col-md-3">
+					<div class="qrd-pattern col-sm-3 col-md-3" id="gap">
 						<img src="<?=Yii::$app->homeUrl?>images/block-style_gap.png" alt="">
 					</div>
-					<div class="shadow col-sm-3 col-md-3">
+					<div class="qrd-pattern col-sm-3 col-md-3" id="shadow">
 						<img src="<?=Yii::$app->homeUrl?>images/block-style_shadow.png" alt="">
 					</div>
-					<div class="line col-sm-3 col-md-3">
+					<div class=" qrd-pattern col-sm-3 col-md-3" id="line">
 						<img src="<?=Yii::$app->homeUrl?>images/block-style_line.png" alt="">
 					</div>                                    
 				</div>  <!-- row -->                              
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-grey pull-left" data-dismiss="modal">CANCEL</button>
-			<button type="button" class="btn btn-warning pull-right" onclick="location.href='qard-check.html';">APPLY STYLE</button>
+			<button type="button" class="btn btn-warning pull-right" id="qrdstyle-link" data-theme="<?=$_REQUEST['theme_id']?>" data-pattern="flat">APPLY STYLE</button>
 		  </div>
 		</div>
 	  </div>
@@ -577,13 +577,11 @@ $this->title = 'Create Qard';
     <!-- /.modal -->
 
     <script type="text/javascript">
-	$('#qard-style .themes-list .qard-content').click(function(){
+	$('#qard-style #themeorder .qard-content').click(function(){
 		$('.qard-content').removeClass('active');
 		$(this).addClass('active');
-	});
-	$('#qard-style .block-list .col-sm-3.col-md-3').click(function(){
-		$('.col-sm-3.col-md-3').removeClass('active');
-		$(this).addClass('active');
+		var themeid = $(this).parent().attr('id');
+		$('#qrdstyle-link').attr('data-theme',themeid);
 	});
 	
 	$("#working_div .current_blk").focus();
@@ -1808,19 +1806,21 @@ $this->title = 'Create Qard';
 		//Embedd Video ends
 		
 		// Styling Card script starts
-		$('.qard-content').click(function(){
-			var styleCard = $(this).parent();
-			if(styleCard.hasClass( "line" )){
+		$('.qrd-pattern').click(function(){
+			$('.qrd-pattern').removeClass('active');
+			$(this).addClass('active');
+			var styleCard = $(this).attr('id');
+			if(styleCard =="line"){
 				$('.bgimg-block').addClass('line');
 				$('.bgimg-block').removeClass('flat gap shadow');
 				$('.bgimg-block').attr('data-style-qard','line');
 			}
-			else if(styleCard.hasClass( "gap" )){
+			else if(styleCard=="gap"){
 				$('.bgimg-block').addClass('gap');
 				$('.bgimg-block').removeClass('flat line shadow');
 				$('.bgimg-block').attr('data-style-qard','gap');
 			}
-			else if(styleCard.hasClass( "shadow" )){
+			else if(styleCard=="shadow" ){
 				$('.bgimg-block').addClass('shadow');
 				$('.bgimg-block').removeClass('flat line gap');
 				$('.bgimg-block').attr('data-style-qard','shadow');
@@ -1829,7 +1829,7 @@ $this->title = 'Create Qard';
 				$('.bgimg-block').removeClass('gap line shadow');
 				$('.bgimg-block').attr('data-style-qard','flat');
 			}
-		});
+		}); 
 		$('.embedBlock').click(function(){
 			$('a[href="#paste"]').parent().removeClass('active');
 			$('a[href="#embed"]').parent().addClass('active');
@@ -1842,7 +1842,19 @@ $this->title = 'Create Qard';
 			$('#paste').addClass('active');
 			$('#embed').removeClass('active');
 		});
-		
+		$('#qrdstyle-link').click(function(e){
+			e.preventDefault();
+			//check total height
+			
+			$("h5[class=add-another]").trigger("click");
+			var theme_id = $(this).attr('data-theme');
+			var q_id = $('#qard_id').val();
+			if(q_id){
+				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
+			}else{
+				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
+			}
+		});
 		// Styling Card script Ends
 	/***************************/
         </script>

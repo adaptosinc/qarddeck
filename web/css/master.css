@@ -2452,6 +2452,22 @@ section.template-main.content .action-qard h2 {
     top: 0;
     padding: 200px 0;
 }
+#themeorder {
+    padding: 0px;
+}
+#themeorder .grid-item {
+   margin-bottom: 20px;
+}
+#themeorder h4 {
+    font-family: "Roboto";
+    font-size: 14px;
+}
+#qard-style .block-list .col-sm-3.col-md-3.active img {
+    border: 5px solid #3a4046;
+}
+#qard-style .themes-list .qard-content.active {
+    border: 5px solid #3a4046;
+}
 .carousel-control.left, .carousel-control.right {
     background-image: none;
 }
@@ -3676,13 +3692,13 @@ section.theme-main.content .btn-default {
     min-height: 50px;
     background: antiquewhite;
 }
-.gap .block-style {
+.gap .block-style,.bgimg-block.gap {
     margin-bottom: 5px;
 }
-.line .block-style {
+.line .block-style,.bgimg-block.line  {
     border-bottom: 1px solid #ccc;
 }
-.shadow .block-style {
+.shadow .block-style,.bgimg-block.shadow {
     box-shadow: 0px 0px 40px #676666;
 }
 
