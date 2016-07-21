@@ -850,7 +850,7 @@ ul.align-elements li {
     display: block;
     width: 100%;
     float: left;
-    margin: 20px 0;
+    margin: 10px 0;
 }
 .extra-content input {
     background: #fff;
@@ -1035,7 +1035,7 @@ li.help-link a {
     font-weight: bold;
 }
 
-#descfield textarea {
+/* #descfield textarea {
     min-height: 200px;
     width: 100%;
     padding: 20px;
@@ -1043,6 +1043,20 @@ li.help-link a {
     border: 1px solid #ccc;
     border-radius: 3px;
     resize: none;    
+} */
+
+#extra_text {
+    min-height: 200px;
+    width: 100%;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    resize: none;    
+}
+#extrafield{
+    padding: 20px;
+    margin-top: 20px;
 }
 .dropzone .tools {
     z-index: 14 !important;
@@ -1086,11 +1100,16 @@ li.help-link a {
     padding: 10px;
 }
 */
-.text-block span{
+/* .text-block span{
     font-size: 12px;
     padding-right: 10px;
 	padding-left: 10px;
 	display: block;
+	line-height: 1.42857; 
+
+} */
+.text-block {
+    padding: 10px !important;
 }
 section.create-card button {
     text-transform: uppercase;
@@ -2117,7 +2136,7 @@ ul.help-list li {
     border-right: 0 !Important;
 }
 li.changes-txt {
-    color: #ccc;
+    color: #b3aeae;
     margin-top: 10px !important;
 }
 li.tags-list {
@@ -2134,9 +2153,7 @@ li.tags-list {
 .comment-txt h5 {
     margin-bottom: 0;
 }
-.comment-txt {
-    margin-left: 10px;
-}
+
 .preview-tab {
     min-height: 600px;
     border: 1px solid #ccc;
@@ -2157,6 +2174,7 @@ li.tags-list {
 .active-preview-content a {
     color: #333;
     text-decoration: underline;
+    font-weight: 800;
 }
 
 /* share tab */

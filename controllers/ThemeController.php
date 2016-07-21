@@ -133,17 +133,17 @@ class ThemeController extends Controller
 	
         if ($model->load(Yii::$app->request->post())) {
 			$theme_properties = [
-				'theme_color_1' => $model->theme_color_1,
-				'theme_color_2' => $model->theme_color_2,
-				'theme_color_3' => $model->theme_color_3,
-				'theme_color_4' => $model->theme_color_4,
-				'theme_color_5' => $model->theme_color_5,
-				'light_text_color' => $model->light_text_color,
-				'dark_text_color' => $model->dark_text_color,
-				'light_link_color' => $model->light_link_color,
-				'dark_link_color' => $model->dark_link_color,
+				'theme_color_1' => '#'.$model->theme_color_1,
+				'theme_color_2' => '#'.$model->theme_color_2,
+				'theme_color_3' => '#'.$model->theme_color_3,
+				'theme_color_4' => '#'.$model->theme_color_4,
+				'theme_color_5' => '#'.$model->theme_color_5,
+				'light_text_color' => '#'.$model->light_text_color,
+				'dark_text_color' => '#'.$model->dark_text_color,
+				'light_link_color' => '#'.$model->light_link_color,
+				'dark_link_color' => '#'.$model->dark_link_color,
 				'overlay_opacity' => $model->overlay_opacity,
-				'overlay_color' => $model->overlay_color,
+				'overlay_color' => '#'.$model->overlay_color,
 				'block_background_color' => $model->block_background_color,		
 			];
 			$model->theme_type = 1; //for qard

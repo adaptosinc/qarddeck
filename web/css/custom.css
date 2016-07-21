@@ -27,12 +27,12 @@ and open the template in the editor.
 
 /* for extra text */
 
-#extra_text {
+/* #extra_text {
     border: 1px solid;
     height: 400px;
     min-height: 400px;
     background-color: #dbd3d3; 
-}
+} */
 .bgimg-block {
 	/*border-bottom: 1px solid #ccc;*/
 }
@@ -66,7 +66,7 @@ and open the template in the editor.
     max-height:600px;
     width: 307px;
     word-wrap: break-word;
-    padding: 0 !important;
+    /* padding: 0 !important; */
     margin:  0 !important;
     
     border:.1px solid #000;

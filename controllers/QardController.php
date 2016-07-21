@@ -509,7 +509,7 @@ class QardController extends Controller
 			//$title = explode('.',$title);
 			/******************************/
 			//FORMAT THE OUTPUT IN JSON
-			$link_icon = '<p><div id="previewLink" contenteditable="false" onclick = "displayLink(this);" data-url="'.$url.'"><input type="hidden" value="'.$url.'" id="hiddenUrl"/><img src="'.Yii::$app->request->baseUrl.'/images/link-trans.png" alt=""></div></p>';
+			$link_icon = '<p><div id="previewLink" contenteditable="false" onclick = "displayLink(this);" data-url="'.$url.'"><span class="icon-mark pull-right"><img src="'.Yii::$app->request->baseUrl.'/images/link_icon.png" alt=""></span></div></p>';
 			$output_array['preview_html'] = $preview_html;
 			$output_array['work_space_text'] ='<div id="qardContent">'. substr($title,0,150).'...'.$link_icon.'</div>';//link_icon with onclik function
 			$output_array['type'] = 'web_page';

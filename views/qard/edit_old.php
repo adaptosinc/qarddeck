@@ -2,11 +2,11 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use app\models\QardTags;
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
-$this->title = 'Create Qard';
+$this->title = 'Edit Qard';
 ?>
-
     <!-- requiered for tag -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400" />
 
@@ -17,6 +17,14 @@ $this->title = 'Create Qard';
             r.className = r.className.replace(/(^|\s)no-js(\s|$)/, "$1js$2")
         })(document, window, 0);
     </script>
+	<style>
+	.qard-bottom{
+		display: none;
+	}
+	.grid-item { 
+		overflow : hidden;
+	}
+	</style>
 <!--for tags-->
     <link href="<?= Yii::$app->request->baseUrl?>/css/select2.css" rel="stylesheet">
     <!--<link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
@@ -44,185 +52,284 @@ $this->title = 'Create Qard';
     <!-- requiered for drop down of an image -->
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
 
-
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
-		
-				<div class="row">
+		<div class="row">
 
-                        <div class="col-sm-6 col-md-6">
-                            <h2>
-                                <input type="text" name="qard_title" id="qard_title" placeholder="Enter a Title for this Qard">
-                            </h2>                            
-                        </div>
+				<div class="col-sm-6 col-md-6">
+					<h2>
+						<input type="text" name="qard_title" id="qard_title" value="<?php echo $model->title;?>" placeholder="Enter a Title for this Qard">
+					</h2>                            
 				</div>
+		</div>
 				</br>
 				<div class="row">
-						<div class="col-sm-8 col-md-8" style="padding: 0;">
+						<div class="col-sm-6 col-md-6" style="padding: 0;">
 							<select class="js-example-basic-multiple form-control" id="tags" name="tags[]" multiple="multiple" placeholder="Add some tags">
-							<?php foreach($tags as $tag){
-							echo '<option value="'.$tag->tag_id.'">'.$tag->name.'</option>';
-							}?>
+							<?php 		
+								$selected_tags = [];
+								$saved_tags = QardTags::find()->where(['qard_id'=>$model->qard_id])->all();
+								foreach($saved_tags as $saved_tag){
+									$selected_tags[$saved_tag->tag_id] = $saved_tag->tag_id;
+								}
+								//print_r($selected_tags);exit;
+								foreach($tags as $tag){
+									if(array_key_exists($tag->tag_id,$selected_tags))
+										echo '<option value="'.$tag->tag_id.'" selected>'.$tag->name.'</option>';
+									else
+										echo '<option value="'.$tag->tag_id.'">'.$tag->name.'</option>';
+								}
+							?>
 							</select>
 						</div>  
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-6 col-md-6">
                             <ul class="pull-right">
 							<?php 
-								if(!\Yii::$app->user->isGuest){
-						
+								$qard_deck = $model->qardDecks;
+								if($qard_deck && $qard_deck->deck_id){
+									echo '<li><button id="add_to_deck" class="btn btn-default" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" >Change Deck</button></li>';						
+									echo '<li><button id="remove_from_deck" onClick="removeFromDeck()" class="btn btn-default">Remove From Deck</button></li>';
+								}
+
+								else
+									echo '<li><button class="btn btn-default" id="add_to_deck" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" >Add to Deck</button></li>';	
+									
+								
 							?>
-                                <li><button id="add_to_deck" class="btn btn-default" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck">Add to Deck</button></li>
-							<?php } ?>	
                                 <li><button class="btn qard" data-toggle="modal" data-target="#qard-style">Qard Style</button></li>
                             </ul>
                         </div>   						
 				</div>
-        <div class="row">
 
-            <div class="col-sm-3 col-md-3 add-block">
-                <div id="add-block" class="qard-div add-block-qard" style="overflow:hidden">
-						<?php
-						if(isset($model['qard_id'])){
-							echo '<input type="text" name="qard_id" value="'.$model['qard_id'].'">';
-						}
-						?>
-						<input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
 		
-						<?php 
-						//get theme properties
-						$theme_properties = unserialize($theme['theme_properties']);
-						//print_r($theme_properties);
-						?>
-                        <!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
-						<div class="bgoverlay-block" style="height:75px;">
-						<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
-						</div>                                
-						</div>
-						<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: #0055cc" style="height:150px;">
-						<div class="bgoverlay-block" style="height:150px;">
-						<div class="text-block current_blk" data-height="4" style="height:150px;"></div>                                    
-						</div>                                
-						</div>-->
+		</br>
+		<div class="row">
+		<?php 
+/* 			$qard_deck = $model->qardDecks;
+			if($qard_deck && $qard_deck->deck_id){
+				$deck_id = $qard_deck->deck_id;
+			//	echo "Deck ID".$deck_id;
+				//get all the qards for this deck now
+				$deck_title = $qard_deck->deck->title;				
+				$deck_qards = $qard_deck->deck->qardDecks;
+				echo '<div id="decknavbar" class="newdeck navbar-collapse collapse"> <!--DEcks -->
+							<div class="">
+								<ul class="nav navbar-nav">
+									<li>
+									<h4>'.$qard_deck->deck->title.'</h4>
+									<h4><img src="'.\Yii::$app->homeUrl.'images/refresh.png" alt=""><img src="" alt=""></h4>                                        
+									</li>';
+				foreach($deck_qards as $deck_qard){
+					//prepare the deck feed here
+					if(isset($deck_qard->qard)){
+						echo '<li><div class="add-block"><img width="100%" height="100%" src="'.\Yii::$app->homeUrl.'uploads/qards/'
+								.$deck_qard->qard->qard_id.                
+							  '.png" /></div>
+							  <h4>'.$deck_qard->qard->title.'</h4></li>';						
+					}
 
-                        <div id="working_div" class="working_div block active">
+					//echo $deck_qard->qard->getQardHtml();
+				}
+				echo '<li><img src="'.\Yii::$app->homeUrl.'images/add-grey.png" alt=""></li>
+						<li><i class="fa fa-eye"></i><button class="btn btn-default">Preview Deck</button></li>
+					  </ul>
+			</div>
+		</div>';
+			} */
+			
+		?>
+
+			
+			<div class="col-sm-10 col-md-10">
+            <div class="col-sm-5 col-md-5">
+                <div id="add-block" class="qard-div add-block" style="overflow:hidden">
+                    <?php
+						if(isset($model->qard_id)){
+							echo '<input type="hidden" id="qard_id" name="qard_id" value="'.$model->qard_id.'">';
+						}
+					?>
+					<input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
+		
+					<?php 
+					//get theme properties
+					$theme_properties = unserialize($theme['theme_properties']);
+					//print_r($theme_properties);
+					$blocks = $model->blocks;
+					$str = '';
+					$i = 1;
+					foreach($blocks as $block){
+						////get the inline styles///						
+						$img_block_style = '';
+						$overlay_block_style = '';
+						$text_block_style = '';
+						$theme = $block->theme->theme_properties;
+						$theme = unserialize($theme);
+						$height_in_BU = $theme['height']/37.5;
+						if(isset($theme)){
+							//img block styles
+								$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
+								if($block->link_image != ''){
+										
+										$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
+										$img_block_style .= 'background-size: cover;';
+								}
+								if($switch_theme){
+									//echo $theme['data_bgcolor_id'];
+									if(isset($theme['data_bgcolor_id']) && $theme['data_bgcolor_id'] != '0' ){
+										$property = $theme['data_bgcolor_id'];
+										$bg_colour = $theme_properties[$property];
+									}else{
+										$property = 'theme_color_2';
+										$bg_colour = $theme_properties[$property];
+									}
+											
+									$img_block_style .= 'background-color:'.$bg_colour.';';	
+								}else{
+									if($theme['div_bgcolor'] != '')
+										$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';									
+								}	
+								$img_block_style .= 'height:'.$theme['height'].'px;';
+								//$img_block_style .= 'height:auto;';
+								
+							//overlay block styles
+								$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
+								if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
+									$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
+								$overlay_block_style .= 'height:'.$theme['height'].'px;';
+								//$overlay_block_style .='height:auto;';
+								
+								$text_block_style .= 'height:'.$theme['height'].'px;';
+								$text_block_style .='overflow:hidden;';
+								//$text_block_style .='height:auto;';
+						}
+						///////////////////////////
+					if(!isset($theme['data_style_qard']))
+						$theme['data_style_qard'] = "line";
+					if($i == 1)
+						$str .= '<div id="working_div" class="working_div block active">';
+						
+						$str .= '<div id="blk_'.$i.'" data-style-qard="'.$theme['data_style_qard'].'" data-bgcolor-id="'.$theme['data_bgcolor_id'].'" class="bgimg-block parent_current_blk ui-resizable '.$theme['data_style_qard'].'" style="'.$img_block_style.'" >
+						<div class="bgoverlay-block" style="'.$overlay_block_style.'">';
+					if($i == 1)
+						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk working_div" contenteditable="true" unselectable="off" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="overflow:hidden" style="'.$text_block_style.'">';
+					else
+						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="'.$text_block_style.'">';
+						$str .= $block->text;
+						$str .= '</div>';
+						
+						$str .= '</div></div>';	
+						if($i == 1)
+							$str .= '</div>';
+						$i = $i+1;;
+					}
+					echo $str;
+					?>
+<!--                         <div id="working_div" class="working_div block active">
                             <div id="blk_1" class="bgimg-block parent_current_blk">
                                 <div class="bgoverlay-block">
-                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off" data-block_priority="1" style="overflow:hidden;margin:10px"></div>
+                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off" data-block_priority="1" style="overflow:hidden"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+                        <h4 class="add-another" onclick="add_block(event,true)" style="display:block">Add another block <span><img src="<?=Yii::$app->request->baseUrl?>/images/add.png" alt="add"></span></h4>
                 </div>
-				<h5 class="add-another" onclick="add_block(event,true)"><i class="fa fa-plus"></i>Add another block </h5>
             </div>
-            <div class="col-sm-9 col-md-9">
+            <div class="col-sm-7 col-md-7">
                 <div id="cardtabs">
 
                     <!-- Nav tabs -->
-                    <ul class="nav nav-tabs col-sm-1 col-md-1" role="tablist">
-					
-                        <li role="presentation" class="active"><a href="#cardblock" aria-controls="cardblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/text_icon.png" alt="" class="dark" style="width:15px;margin:0 auto;"><img src="<?=Yii::$app->homeUrl?>images/text_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
-						
-                        <li role="presentation"><a href="#linkblock" class="pasteBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/link_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
-						
-                        <li role="presentation"><a id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/image_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
-						
-                        <li role="presentation"><a href="#linkblock" class="embedBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/video_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/video_icon_light.png" class="light" alt=""></a></li>
-						
-						<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" class="dark" alt="" style="width:15px;margin:0px auto;"><img src="<?=Yii::$app->homeUrl?>images/file_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
-						
-                        <li role="presentation"><a href="#copyblock" aria-controls="copyblock" role="tab" data-toggle="tab"><hr class="divider"></hr><img src="<?=Yii::$app->homeUrl?>images/duplicate_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/duplicate_icon_light.png" class="light" alt=""></a></li>
-
-						
-                        <li role="presentation" id="deleteblock"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/delete_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/delete_icon_light.png" class="light" alt=""></a></li>
-						
-						
+                    <ul class="nav nav-tabs col-sm-2 col-md-2" role="tablist">
+                        <li role="presentation" class="active"><a href="#cardblock" aria-controls="cardblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/txt.png" alt=""></a></li>
+                        <!--<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/file.png" alt=""></a></li>-->
+                        <li role="presentation"><a href="#linkblock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/link.png" alt=""></a></li>
+                        <li role="presentation"><a id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/img.png" alt=""></a></li>
+                        <li role="presentation"><a href="#paintblock" aria-controls="paintblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/paint.png" alt=""></a></li>
+                        <li role="presentation"><a href="#copyblock" aria-controls="copyblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/copy.png" alt=""></a></li>
+                        <li role="presentation" id="deleteblock"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->request->baseUrl?>/images/delete.png" alt=""></a></li>
+						<li role="presentation"><a id="styleblock_tab" href="#styleblock" aria-controls="styleblock" role="tab" data-toggle="tab">Style Card</a></li>
                     </ul>
                     <!--added by vijay-->
 
 
                     <!-- Tab panes -->
-                    <div class="tab-content col-sm-11 col-md-11">
-					<!-- Start of header-->
-						<div class="cardblock-header">
-							<h4>Edit Block</h4>
-							<ul class="editable-elements">
-								<li class="size-element">
-									<label>Text Size</label>
-									<select id="text_size" class="form-control">
-										<option value="3">Small</option>
-										<option value="5">Medium</option>
-										<option value="8">Large</option>
+                    <div class="tab-content col-sm-10 col-md-10">
+                        <div role="tabpanel" class="tab-pane active" id="cardblock">
+                            <fieldset class="wysihtml5-toolbar">
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <select id="text_size">
+				<option> 1</option>
+				<option> 2</option>
+				<option> 3</option>
+				<option> 4</option>
+				<option> 5</option>
+				<option> 6</option>
+				<option> 7</option>
+				<option> 8</option>
+			    </select>
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <ul class="text-elements">
+                                        <li id="text_bold"><a href="#">B</a></li>
+                                        <li id="text_italic"><a href="#"><i>I</a></i>
+                                        </li>
+                                        <li id="text_underline" class="underline" tabindex="-1" title="CTRL+U" data-wysihtml5-command="underline" href="javascript:;" unselectable="on"><a href="#">U</a></li>
+                                    </ul>
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <ul class="align-elements">
+                                        <li><img src="<?=Yii::$app->request->baseUrl?>/images/icon-left.png" alt=""> <select id="text_align">
+					    <option value="justifyLeft">left</option>
+					    <option value="justifyRight">right</option>
+					    <option value="justifyCenter">center</option>
+					    <option  value="justifyFull">justify</option>
+					</select></li>
+                                        <li id="text_color">
+                                            <div class="dropdown">
+                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><img src="<?=Yii::$app->request->baseUrl?>/images/fonts.png" alt="" >	
+    <span class="caret"></span>
+  </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                    <a href="#" class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>;display: inline-block;height: 25px;width: 25px;" data-fontcolor-id="dark_text_color" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></a>
+                                                    <a href="#" class="color" style="background:<?php echo $theme_properties['light_text_color'];?>;display: inline-block;height: 25px;width: 25px;" data-fontcolor-id="light_text_color" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);"></a>
+                                                </ul>
+                                            </div>
+                                            </li>
+                                            <li id="text_indent"><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/leftalign.png" alt=""></a></li>
+                                    </ul>
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <select id="text_family">
+										<option value="Roboto"> Roboto</option>
+										<option value="Inconsolata"> Inconsolata</option>
+										<option value="monospace"> monospace</option>
 									</select>
-								</li>
-								<li id="text_bold"><a href="#"><i class="fa fa-bold"></i></a></li>
-								<li id="text_italic"><a href="#"><i class="fa fa-italic"></i></li>
-								<li id="text_underline"><a href="#"><i class="fa fa-underline"></i></a></li>
-								<li>
-									<div class="dropdown">
-									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-										<img src="<?=Yii::$app->homeUrl?>images/icon-left.png" alt="">
-										<span class="caret"></span>
-									  </button>										
-									  <ul class="dropdown-menu" id="alignment_select" aria-labelledby="dropdownMenu2">
-										<li><a href="#" data-align="justifyLeft"><i class="fa fa-align-left"></i></a></li>
-										<li><a href="#" data-align="justifyRight"><i class="fa fa-align-right"></i></a></li>
-										<li><a href="#" data-align="justifyCenter"><i class="fa fa-align-center"></i></a></li>
-										<li><a href="#" data-align="justifyFull"><i class="fa fa-align-justify"></i></a></li>
-									  </ul>
-									</div>                                                        
-								</li>
-								<li><a href="#"><img src="<?=Yii::$app->homeUrl?>images/type-align-top_icon.png" alt="" style="padding: 5px;"></a><span class="caret"></span></li>
-								<li><a href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
-								<li class="color-elements">
-									<label>Text Color</label>
-									<div class="dropdown">
-									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									  </button>
-									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
-										<li><a href="#" class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>;display: block;height: 20px;width: 20px;padding: 0px;border-radius: 2px" data-fontcolor-id="dark_text_color" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></a></li>
-										<li><a href="#" class="color" style="background:<?php echo $theme_properties['light_text_color'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="light_text_color" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);"></a></li>
-									  </ul>
-									</div>
-								</li>
-								<li class="color-elements">
-									<label>Block Color</label>
-									<div class="dropdown">
-									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									  </button>
-									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_1'] ?>" data-bgcolor-id="theme_color_1" data-color="<?php echo $theme_properties['theme_color_1'] ?>" onclick="setBGColor(this);"></li>
-                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_2'] ?>" data-bgcolor-id="theme_color_2" data-color="<?php echo $theme_properties['theme_color_2'] ?>" onclick="setBGColor(this);"></li>
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_3'] ?>" data-bgcolor-id="theme_color_3" data-color="<?php echo $theme_properties['theme_color_3'] ?>" onclick="setBGColor(this);"></li>
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_4'] ?>" data-bgcolor-id="theme_color_4" data-color="<?php echo $theme_properties['theme_color_4'] ?>" onclick="setBGColor(this);"></li>
-										
-										<li class="color" style="background:<?php echo $theme_properties['theme_color_5'] ?>" data-bgcolor-id="theme_color_5" data-color="<?php echo $theme_properties['theme_color_5'] ?>" onclick="setBGColor(this);"></li>
-									  </ul>
-									</div>
-								</li>                                                                                            
-							</ul>
-						</div> <!-- End of header-->
-						<div role="tabpanel" class="tab-pane active" id="cardblock">
-							<div id="descfield">
-								<h4>Add Extra text <span class="trash pull-right"><i class="fa fa-trash"></i>&nbsp;Remove Extra Text</span></h4>
-								<input type="text" name="extra-text" placeholder="Enter an optional text" class="form-control">
-								<ul class="editable-elements">
-									<li id="text_area_bold"><a href="#"><i class="fa fa-bold"></i></a></li>
-									<li id="text_area_italics"><a href="#"><i class="fa fa-italic"></i></li>
-									<li id="text_area_underline"><a href="#"><i class="fa fa-underline"></i></a></li>
-									<li><a href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
-								</ul>
-							</div>
-							<div id="extrafield">
-								<div id="extra_text" name="desc" placeholder="Enter The Text" contenteditable="true"></div>
-							</div>
-						</div>
+                                </div>
+                                <ul class="on-off pull-left">
+                                    <li>
+                                        <div class="switch">
+                                            <input id="cmn-toggle-1" name="is_extra_text" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                            <label for="cmn-toggle-1" onclick="showtext()"></label>
+                                        </div> <span>Extra Text</span>
+                                    </li>
+                                    <li>
+                                        <div class="switch">
+                                            <input id="cmn-toggle-2" name="is_title" value="1" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                            <label for="cmn-toggle-2"></label>
+                                        </div> <span>Make Qard Title</span>
+                                    </li>
+                                </ul>
+                            </fieldset>
+                            <div id="descfield" class="working_div" style="display: none;">
+                                <div name="desc" id="extra_text" class="cur_blk " placeholder="Enter The Text" contenteditable="true"></div>
+                            </div>
+                        </div>
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
                             <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
 
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
-                                    <div class="dropzone" data-originalsize="false" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;">
+                                    <div class="dropzone" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;">
                                         <input type="text" name="vijay" value="hello">
                                         <input type="file" name="thumb" required="required" />
                                     </div>
@@ -247,106 +354,114 @@ $this->title = 'Create Qard';
                                 </div>
                             </div>
                             <ul class="on-off pull-right">
-                                <li id="file_id">
-                                    <div class="switch" >
+                                <li>
+                                    <div class="switch">
                                         <input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
                                         <label for="cmn-toggle-3"></label>
                                     </div> <span>Display as Background Image</span>
                                 </li>
                             </ul>
                         </div>
-						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
-							<ul class="nav nav-tabs" role="tablist">
-								<li role="presentation" class="active"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
-								<li role="presentation"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>
-								<li class="pull-right"><span class="trash pull-right" id="url_reset_link"><i class="fa fa-trash"></i>&nbsp;Remove Url/Embed Code</span></li>                                        
-							</ul>
-							<h4>&nbsp;</h4>
-							<div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="paste">
-									<div class="form-group" id="showlinkUrl">
-										<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
-										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
-									</div>
-									<div id="link_div" style="padding-bottom: 10px;">
-										<div class="preview-image">                                       
-										</div>  
-									</div>	
-									<div class="form-group toggle-btn">
-										<div class="col-sm-4 col-md-4 on-off">
-											<div class="switch">
-												<input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
-												<label for="cmn-toggle-4"></label>
-											</div>  <span>Display URL</span>                                                  
-										</div>                                            
-										<div class="col-sm-4 col-md-4 on-off">
-											<div class="switch">
-												<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
-												<label for="cmn-toggle-6"></label>
-											</div>  <span>Open Link in New Tab</span>                                                 
-										</div>
-									</div>
-									<div class="form-group extra-content">
-										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
-										<input type="text" name="url-desc" class="col-sm-5 col-md-5 col-md-offset-1" placeholder="Add a description">
-									</div>
-								</div>
-								<div role="tabpanel" class="tab-pane" id="embed">
-									<div class="form-group" id="embedCode">
-										<input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
-									</div>
-									<div id="embed_div">
-										<div class="preview-image">                                       
-										</div>  
-									</div>	
-								</div>  
+                            <fieldset>
+                                <form method="post" action="" id="qard-url-upload" enctype="multipart/form-data" novalidate class="box">
 
-							</div>
-						</div>
-						<div role="tabpanel" class="tab-pane" id="fileblock">
-							<h4 id="reflink" >Add File<span class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove File</span></h4>
-                            
-							<form method="post" action="" id="qard-url-upload" enctype="multipart/form-data" novalidate class="box">
-								<div class="add-new-file">
-									<div class="drop-file form-group" id="drop-file-bg">
-										<img src="<?=Yii::$app->request->baseUrl?>/images/browse_light.png" alt="">
-										<h3>Drop files/click to Browse</h3>
-									</div>
-									<div class="fileSwitch">
-										<input id="qard-url-upload-click" name="image" class="hidden" type="file">
-										<div class="box__input">
-											<input type="file" name="files[]" id="file" class="box__file hidden" data-multiple-caption="{count} files selected" multiple />
-										</div>
-									</div>								
-									<div class="drop-file form-group" id="drop-file">
-										<img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
-										<h3 id="fileTitle">FileName.psd</h3>
-									</div>
-									<div class="fileSwitch">
-										<input id="qard-url-upload-click" name="image" class="hidden" type="file">
-										<div class="box__input">
-											<input type="file" name="files[]" id="file" class="box__file hidden" data-multiple-caption="{count} files selected" multiple />
-										</div>
-									</div>
-								</div>
-								
-								<div class="form-group toggle-btn">
-									<div class="col-sm-6 col-md-6 on-off">
-											<div class="switch">
-												<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
-												<label for="cmn-toggle-7" class="victim"></label>
-											</div>  <span>Open in New Tab</span> 
-									</div>                                      
-								</div>
+                                    <div id="link_div"></div>
+                                    <div class="drop-file form-group" id="drop-file">
+                                        <img src="<?=Yii::$app->request->baseUrl?>/images/browse.png" alt="">
 
-								<div class="form-group extra-content" id="drop-image">
-									<input type="text" name="filename" class="filename fileName col-sm-5 col-md-5" placeholder="Enter Title">
-									<input type="text" name="desc" class="col-sm-5 col-md-5 col-md-offset-1 desc" placeholder="Add a description">
-								</div>
-							</form>	
+                                        <h2 id="extErr">Only PDF,DOC,DOCX TYPES ARE ALLOWED</h2>
+                                        <h3>Drop files/click to Browse</h3></div>
+
+                                    <div class="drop-image form-group" id="drop-image" style="min-height:0px!important;">
+                                        <div id="showFilePreview"></div>
+                                        <img id="dispIcon" class="imgCenter">
+                                        <span id="showFile">
+                                                        <input type="text" name="filename" class="filename form-control fileName" placeholder="File Name">
+                                                        <textarea name="desc" class="form-control desc" placeholder="Description"></textarea>
+                                                </span>
+                                    </div>
+                                    <div class="fileSwitch">
+                                        <input id="qard-url-upload-click" name="image" class="hidden" type="file">
+                                        <div class="box__input">
+
+                                            <input type="file" name="files[]" id="file" class="box__file hidden" data-multiple-caption="{count} files selected" multiple />
+                                            <!--			<label for="file"><strong>Choose a file</strong><span class="box__dragndrop"> or drag it here</span>.</label>-->
+                                            <!--			<button type="submit" class="box__button">Upload</button>-->
+                                        </div>
+                                        <h3><center>or...</center></h3>
+                                        <div class="form-group" id="showlinkUrl">
+                                            <input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
+                                            <p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
+                                        </div>
+										<h3><center>or...</center></h3>
+                                        <div class="form-group" id="embedCode">
+                                            <input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
+                                        </div>
+                                        <!--<div class="form-group link_options" style="display:none">
+                                                <div class="col-sm-4 col-md-4 on-off">
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <label for="cmn-toggle-4"></label>
+                                                    </div>  <span>Display Link</span>                                                  
+                                                </div>
+                                                <div class="col-sm-4 col-md-4 on-off">
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox" onClick="showUrlPreview()">
+                                                        <label for="cmn-toggle-5"></label>
+                                                    </div>  <span>Display Preview</span>                                                  
+                                                </div>
+                                                <div class="col-sm-4 col-md-4 on-off">
+                                                    <div class="switch">
+                                                        <input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                        <label for="cmn-toggle-6"></label>
+                                                    </div>  <span>Open in New Tab</span>                                                  
+                                                </div>
+                                            </div>-->
+                                        <ul class="on-off pull-right link_options" style="display:none">
+                                            <li>
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                    <label for="cmn-toggle-4"></label>
+                                                </div> <span>Display Link</span>
+                                            </li>
+                                            <li>
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                    <label for="cmn-toggle-5"></label>
+                                                </div> <span>Display Preview</span>
+                                            </li>
+                                            <li>
+                                                <div class="switch">
+                                                    <input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                    <label for="cmn-toggle-6"></label>
+                                                </div> <span>Open in New Tab</span>
+                                            </li>
+                                            <li><a href="#"><img id="url_reset_link" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
+                                        </ul>
+                                    </div>
+                                    <ul class="on-off pull-right file_options">
+                                        <li>
+                                            <div class="switch">
+                                                <input id="cmn-toggle-7"  class="dispFileName cmn-toggle cmn-toggle-round" type="checkbox">
+                                                <label for="cmn-toggle-7"></label>
+                                            </div> <span>Display File Name</span>
+                                        </li>
+                                        <li>
+                                            <div class="switch linkSwitch">
+                                                <input id="cmn-toggle-8" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                                <label for="cmn-toggle-8"></label>
+                                            </div> <span>Open Link in New Tab</span>
+                                        </li>
+                                        <li><a href="#"><img id="reflink" src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
+                                    </ul>
+                            </fieldset>
+                            </form>
+                            </fieldset>
+
+
+
                         </div>
-						
                         <div role="tabpanel" class="tab-pane" id="paintblock">
                             <fieldset>
                                 <div class="form-group col-sm-6 col-md-6">
@@ -357,7 +472,12 @@ $this->title = 'Create Qard';
                                     <h4>Block Background Color</h4>
                                     <input type="text" name="blk_color" id="bg_color" class="form-control" placeholder="Background color (#0000)">
 									<ul>
-                                        ##taken							
+                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_1'] ?>" data-bgcolor-id="theme_color_1" data-color="<?php echo $theme_properties['theme_color_1'] ?>" onclick="setBGColor(this);"></li>
+                                        <li class="color" style="background:<?php echo $theme_properties['theme_color_2'] ?>" data-bgcolor-id="theme_color_2" data-color="<?php echo $theme_properties['theme_color_2'] ?>" onclick="setBGColor(this);"></li>
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_3'] ?>" data-bgcolor-id="theme_color_3" data-color="<?php echo $theme_properties['theme_color_3'] ?>" onclick="setBGColor(this);"></li>
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_4'] ?>" data-bgcolor-id="theme_color_4" data-color="<?php echo $theme_properties['theme_color_4'] ?>" onclick="setBGColor(this);"></li>
+										
+										<li class="color" style="background:<?php echo $theme_properties['theme_color_5'] ?>" data-bgcolor-id="theme_color_5" data-color="<?php echo $theme_properties['theme_color_5'] ?>" onclick="setBGColor(this);"></li>							
 									</ul>
                                 </div>
 
@@ -421,7 +541,7 @@ $this->title = 'Create Qard';
                                             </ul>
                                         </div>
                                         <div class="col-sm-6 col-md-6">
-                                            <button class="btn btn-default"><a id="qardid-link" href="<?=Yii::$app->request->baseUrl?>/theme/select-theme">Change Theme</a></button>
+                                            <button class="btn btn-default"><a href="<?=Yii::$app->request->baseUrl?>/theme/select-theme?q_id=<?=$model->qard_id?>">Change Theme</a></button>
                                         </div>                                        
                                     </div>
                                 </div>
@@ -429,31 +549,49 @@ $this->title = 'Create Qard';
 						</div>
 						<?php /* Style card Ends Here */ ?>
                     </div>
+					</div>
 
                 </div>
 
             </div>
         </div>
-		<div class="bottom-card row">
-			<div class="col-sm-3 col-md-3">
-                                  
-			</div>
-			<div class="col-sm-8 col-md-8 col-md-offset-1">
-				<ul class="help-list"> 
-					<li class="help-link"><a href=""><img src="<?=Yii::$app->homeUrl?>images/need-help_icon.png" width="30px" height="30px" style="margin-right:5px;" alt="">Need Help?</a></li>
-					<li class="pull-right"><button class="btn btn-warning" name="preview" onclick="addSaveCard(event)">Preview Card</button></li>
-					<!--<li><button class="btn btn-warning" name="preview">Save</button></li>-->
-				</ul>
-			</div>
-		</div> 
+        <div class="bottom-card row">
+            <div class="col-sm-8 col-md-8">
+
+                <div class="col-sm-6 col-md-6">
+                    <!--			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">-->
+
+                <select class="js-example-basic-multiple form-control" id="tags" name="tags[]" multiple="multiple">
+					<?php 		
+						$selected_tags = [];
+						$saved_tags = QardTags::find()->where(['qard_id'=>$model->qard_id])->all();
+						foreach($saved_tags as $saved_tag){
+							$selected_tags[$saved_tag->tag_id] = $saved_tag->tag_id;
+						}
+						//print_r($selected_tags);exit;
+						foreach($tags as $tag){
+							if(array_key_exists($tag->tag_id,$selected_tags))
+								echo '<option value="'.$tag->tag_id.'" selected>'.$tag->name.'</option>';
+							else
+								echo '<option value="'.$tag->tag_id.'">'.$tag->name.'</option>';
+						}
+					?>
+				</select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <ul class="help-list">
+                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/help.png" alt=""></a></li>
+                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/eye.png" alt=""></a></li>
+                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/comment.png" alt=""></a></li>
+                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/icon-paint.png" alt=""></a></li>
+                    <li><button class="btn btn-sm btn-default" name="preview" id="qard_preview">Preview</button></li>
+                    <li onclick="addSaveCard(event)"><button class="btn btn-sm btn-default" name="preview">Save</button></li>
+                </ul>
+            </div>
+        </div>
     </section>
     <!-- block_error popup -->
-	<?php
-/* 		yii\bootstrap\Modal::begin([
-		'id' =>'deck-style'
-		]);
-		yii\bootstrap\Modal::end(); */
-	?>
 <div id="deck-style" class="fade modal in" role="dialog" tabindex="-1">
 	<div class="modal-dialog ">
 		<div class="modal-content">
@@ -463,82 +601,12 @@ $this->title = 'Create Qard';
 				</h4>
 			</div>
 			<div class="modal-body"></div>
-			<div class="grid-container">
+			<div class="grid">
 
 			</div>
 		</div>
 	</div>
 </div>
-<!-- Qard style pop up -->
-	<!-- Modal -->
-	<div class="modal fade" id="qard-style" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
-		  </div>
-		  <div class="modal-body">
-			<h4 class="modal-title">Theme : Qard Deck</h4>
-			<div class="themes-list">        <!-- qard list -->
-				<div class="grid row" id="themeorder">
-				<?php 
-				use app\models\Theme;
-				$themes = Theme::find()->where(['theme_type'=>1])->all();
-					foreach($themes as $theme){
-						$all_theme_properties = unserialize($theme->theme_properties);
-						echo '<div class="grid-item qard-bg" id="'.$theme->theme_id.'" >     <!-- qard -->
-						<div class="qard-content">
-							<div class="themebg1">
-								<div class="bgcolor" style="background:'.$all_theme_properties['theme_color_1'].'"></div>
-							</div>
-							<div class="themebg2">
-								<div class="bgcolor" style="background:'.$all_theme_properties['theme_color_2'].'"></div>
-							</div>
-							<div class="themebg3">
-								<div class="bgcolor" style="background:'.$all_theme_properties['theme_color_3'].'"></div>
-							</div>
-							<div class="themebg4">
-								<div class="bgcolor" style="background:'.$all_theme_properties['theme_color_4'].'"></div>
-							</div>
-							<div class="themebg5">
-								<div class="bgcolor" style="background:'.$all_theme_properties['theme_color_5'].'"></div>
-							</div>                                      
-						</div>
-						<div class="qard-top">
-							<h4>'.$theme->theme_name.'</h4>
-						</div>
-						';
-						echo "</div>";
-				
-					}				
-				?>
-                                
-				</div>      <!-- row  -->
-			</div>
-				<h4 class="modal-title">Block Style : Flat</h4>
-				<div class="row block-list">
-					<div class="qrd-pattern col-sm-3 col-md-3" id="flat">
-						<img src="<?=Yii::$app->homeUrl?>images/block-style_flat.png" alt="">
-					</div>
-					<div class="qrd-pattern col-sm-3 col-md-3" id="gap">
-						<img src="<?=Yii::$app->homeUrl?>images/block-style_gap.png" alt="">
-					</div>
-					<div class="qrd-pattern col-sm-3 col-md-3" id="shadow">
-						<img src="<?=Yii::$app->homeUrl?>images/block-style_shadow.png" alt="">
-					</div>
-					<div class=" qrd-pattern col-sm-3 col-md-3" id="line">
-						<img src="<?=Yii::$app->homeUrl?>images/block-style_line.png" alt="">
-					</div>                                    
-				</div>  <!-- row -->                              
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-grey pull-left" data-dismiss="modal">CANCEL</button>
-			<button type="button" class="btn btn-warning pull-right" id="qrdstyle-link" data-theme="<?=$_REQUEST['theme_id']?>" data-pattern="flat">APPLY STYLE</button>
-		  </div>
-		</div>
-	  </div>
-	</div>
-<!-- Qard style pop up -->
 
 
 	<?php 
@@ -547,13 +615,11 @@ $this->title = 'Create Qard';
 		 e.preventDefault();
 		 console.log($(this).attr('href'));
 		 var qard_id = $('#qard_id').val(); 
-		 if(typeof qard_id == 'undefined' || qard_id == '' || qard_id == 0)
+/* 		 if(typeof qard_id == 'undefined' || qard_id == '' || qard_id == 0)
 		 {
-			 //alert('You need to create atleast one block');
-			 $('#working_div .current_blk').text('Add your content here');
-			 $('.add-another').trigger('click');
-			// return;
-		 }
+			 alert('You need to create atleast one block');
+			 return;
+		 } */
 		 $('#deck-style').modal('show').find('.modal-body').load($(this).attr('href'));
 	   });	   
 	});");
@@ -578,17 +644,9 @@ $this->title = 'Create Qard';
     <!-- /.modal -->
 
     <script type="text/javascript">
-	$('#qard-style #themeorder .qard-content').click(function(){
-		$('.qard-content').removeClass('active');
-		$(this).addClass('active');
-		var themeid = $(this).parent().attr('id');
-		$('#qrdstyle-link').attr('data-theme',themeid);
-	});
-	
 	$("#working_div .current_blk").focus();
 	document.execCommand('styleWithCSS', false, true);
     document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
-	
         function showtext() {
             //code
             var s = document.getElementById('descfield');
@@ -598,22 +656,13 @@ $this->title = 'Create Qard';
             } else {
                 s.style.display = "none";
             }
-        }
-		//DECK FUNCTIONS
-		
-		function readURL(input) {
-			if (input.files && input.files[0]) {
-				var reader = new FileReader();
-				reader.onload = function (e) {
-				 $("#ajaxDeckPreview").html('<img id="previewImg" height="100px" width="100px" src="'+e.target.result+'"></img>');		
-				}
-				reader.readAsDataURL(input.files[0]);
-			}
+        }	
+		function setBGColor(elem){
+			color = $(elem).attr('data-color');
+			$('#bg_color').val(color);
+			$("#working_div .bgimg-block").css('background-color', color);
+			$("#working_div .bgimg-block").attr('data-bgcolor-id',$(elem).attr('data-bgcolor-id'));
 		}
-		$("body").on('change','#deck-bg_image',function(){	
-			$("#deck-bg_image").css('min-height','20px'); 
-			readURL(this);	 
-		});
 		
 		function saveDeck(deck){
 			 console.log("Handle the saving here");							
@@ -632,21 +681,44 @@ $this->title = 'Create Qard';
 					
 					//var html='';
 				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="/qarddeck/web/images/qards_icon.png" alt="">20</div> <div class="col-sm-8 col-md-8"> <button class="btn btn-grey"><img src="/qarddeck/web/images/preview_icon.png" alt="">Preview</button> </div></div></div>';
+
 					$('#add_to_deck').trigger('click');
 					//$(".grid").prepend(html);
 					//$("#ajaxDeckPreview").html(''); // Clear the preview..	
 					//$('form[name="ajaxDeck"]')[0].reset();	
  			  	  }				  
 				}); 				
+
 		}
  
 		function addToDeck(deck){
 			var deck_id = $(deck).attr('id');
 			var qard_id = $('#qard_id').val()||0; 
+			if(qard_id == 0){
+				alert("Please add a block");
+				return;
+			}
 			$.ajax({
 				url : '<?=Url::to(['deck/add-qard'], true)?>',
 				type : 'POST',
 				data : {'qard_id':qard_id,'deck_id':deck_id},
+				success : function(response){
+					console.log(response);
+					var red_url = "<?=Url::to(['qard/edit'], true)?>";
+					red_url = red_url+"?id="+qard_id;
+					console.log(red_url);
+					window.location.replace(red_url);
+					//load the a new create page with a deckid included request
+				}				
+			});
+			console.log(deck_id);
+		}
+		function removeFromDeck(){
+			var qard_id = $('#qard_id').val()||0;
+			$.ajax({
+				url : '<?=Url::to(['deck/remove-qard'], true)?>',
+				type : 'POST',
+				data : {'qard_id':qard_id},
 				success : function(response){
 					console.log(response);
 					//load the a new create page with a deckid included request
@@ -654,18 +726,10 @@ $this->title = 'Create Qard';
 					red_url = red_url+"?id="+qard_id;
 					console.log(red_url);
 					window.location.replace(red_url);
-					
 				}				
 			});
-			console.log(deck_id);
+			//console.log(deck_id);
 		}
-		function setBGColor(elem){
-			color = $(elem).attr('data-color');
-			$('#bg_color').val(color);
-			$("#working_div .bgimg-block").attr('data-bgcolor-id',$(elem).attr('data-bgcolor-id'));
-			$("#working_div .bgimg-block").css('background-color', color);
-		}
-         
     </script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
 
@@ -678,53 +742,14 @@ $this->title = 'Create Qard';
 	/**
 	  * Script re-written by Dency G B 
 	 **/
-	 $(".js-example-basic-multiple").select2({
-		 placeholder: "Add some tags",
-	 });
+	$(".js-example-basic-multiple").select2();
+	//$(".js-example-basic-multiple").select2().select2('val',1);
 	/**** Handle the main work space ******/
+
 /* 	$(document).delegate("#working_div .current_blk", "hover", function(event) {	
 	
 	}); */
-	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {		
-		//select color and apply span
-		if (event.type === "input") {
-			focusWorkspace();
-		}
-		if(event.type === "paste"){
-			event.preventDefault();
-			// get text representation of clipboard
-			
-			//console.log(event.originalEvent.clipboardData);
-			if (event.clipboardData || event.originalEvent.clipboardData) {
-				content = (event.originalEvent || event).clipboardData.getData('text/plain');
-
-				document.execCommand('insertText', false, content);
-			}
-			else if (window.clipboardData) {
-				content = window.clipboardData.getData('Text');
-
-				document.selection.createRange().pasteHTML(content);
-			}   
-
-			//$(this).find( "span" ).contents().unwrap();
-			//$(this).find( "p" ).contents().unwrap();
-			//$(this).find( "div" ).contents().unwrap();
-			//focusWorkspace();
-			//$(this).html($(this).text());
-			//$(this).contents().wrap('<span>');
-
-	
-		}
-		
-  /*  if (event.keyCode === 8) {
-			$(this).find( "span" ).contents().unwrap();
-			$(this).find( "p" ).contents().unwrap();
-			$(this).find( "div" ).contents().unwrap();
-			focusWorkspace();
-			$(this).html($(this).text());
-			$(this).contents().wrap('<span>');
-    } */
-		
+	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize", function(event) {		
 		/*
 		 * calculate the total height of the qard
 		*/
@@ -743,7 +768,7 @@ $this->title = 'Create Qard';
 		}else{
 			$('.add-another').show();
 		}
-
+		
 		/*
 		 *if qard is complete,preveny anything other than backspace and delete
 		 *and remove the last input or last child
@@ -754,6 +779,7 @@ $this->title = 'Create Qard';
 			var last = $(this).children(':last-child');
 			var html = $(last).html();
 			$(last).remove();
+
 		}
  		if ($(this).attr("data-resized")=='true') {
 			var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
@@ -774,23 +800,13 @@ $this->title = 'Create Qard';
 		var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
 		setHeightBlock(this,scrollHeight);
 	});
-/* 	document.querySelector('[contenteditable=true]')
-	  .addEventListener('DOMNodeInserted', function(event) {
-		if (event.target.tagName == 'SPAN') {
-		  event.target.outerHTML = event.target.innerHTML;
-		}
-	  }); */
-	function focusWorkspace(){
-			$("#working_div .current_blk").focus();
-			document.execCommand('styleWithCSS', false, true);
-			document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
-		
-	}
 	/*
 	 * Double click to edit the block again
 	 */
-	$(document).delegate('.add-block-qard > div', "dblclick", function(event) {
+	$(document).delegate('.add-block > div', "dblclick", function(event) {
+
 		if ($(this).attr("id") !== 'working_div') {
+
 			$('#working_div .current_blk').removeAttr("unselectable");
 			$("#working_div .current_blk").removeAttr("contenteditable");
 			$("#working_div .current_blk").removeClass("working_div");
@@ -812,6 +828,7 @@ $this->title = 'Create Qard';
 		
 				if ($(this).find("div").hasClass("drag") === false) {
 					$(this).find(".bgoverlay-block").after('<div class="drag"><i class="fa fa-arrows"></i></div>');
+
 				}
 				$(this).resizable({ 
 					handles: "s",
@@ -859,14 +876,11 @@ $this->title = 'Create Qard';
 					data: postData,
 					dataType: "json",
 					success: function(data) {
-						$("#working_div .current_blk").focus();
-						document.execCommand('styleWithCSS', false, true);
-						document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
+						console.log(data);
+
 					},
 					error: function(data) {
-						$("#working_div .current_blk").focus();
-						document.execCommand('styleWithCSS', false, true);
-						document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
+						console.log(data);
 					}
 				});
 			}
@@ -882,9 +896,11 @@ $this->title = 'Create Qard';
 		
 		/** DELETE BLOCK **/
             // for deleting the block
+
 		$(document).delegate("#deleteblock", "click", function() {
 			var block_id = $("#working_div .current_blk").attr("data-block_id");
 			if (typeof block_id !== 'undefined') {
+
 				$.ajax({
 					url: "<?=Url::to(['block/delete-block'], true)?>",
 					type: "POST",
@@ -893,8 +909,11 @@ $this->title = 'Create Qard';
 						'block_id': block_id
 					},
 					success: function(data) {
+
 						$("#working_div").remove();
+
 						if ($("#add-block").find(".parent_current_blk")) {
+
 							$("#add-block .parent_current_blk").last().wrap('<div  id="working_div" class="working_div active"></div>');
 							$("#add-block .parent_current_blk").last().find(".current_blk").addClass("working_div");
 							$("#add-block .parent_current_blk").last().find(".current_blk").attr("unselectable", 'off');
@@ -907,10 +926,12 @@ $this->title = 'Create Qard';
 						} else {
 							var new_div = '<div id="blk_' + getNextBlockId() + '" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off"></div></div></div>';
 							$("#working_div").html(new_div);
+
 						}
 					},
 					error: function(data) {
 						alert("unable to delete plz try again later!...")
+
 					}
 				});
 			} else {
@@ -926,6 +947,7 @@ $this->title = 'Create Qard';
 		
 		/** Text operations **/
 		$('.working_div').children('div').focus();
+
 		/*
 		 * to make text as bold
 		 */
@@ -934,6 +956,7 @@ $this->title = 'Create Qard';
 			$('.working_div').focus();
 			return false;
 		});
+
 		/*
 		 * to make text as italic
 		 */
@@ -942,6 +965,7 @@ $this->title = 'Create Qard';
 			$('.working_div').focus();
 			return false;
 		});
+
 		/*
 		 * to make undeline on text
 		 */
@@ -950,25 +974,14 @@ $this->title = 'Create Qard';
 			$('.working_div').focus();
 			return false;
 		});
-		
 		/*
 		 * to justify text
 		 */
 		$('#text_align').change(function() {
 			document.execCommand($(this).val(), false, null);
-			console.log($(this).val());
 			$('.working_div').focus();
 			return false;
 		});
-		//replaced by this
-		$("#alignment_select li a").click(function(){
-		  //console.log($(this).attr("data-align"));
-		  	document.execCommand($(this).attr("data-align"), false, null);
-			console.log($(this).val());
-			$('.working_div').focus();
-			return false;
-		}); 
-		
 		/*
 		 * to change the size of the text
 		 */
@@ -1004,30 +1017,15 @@ $this->title = 'Create Qard';
 			$('.working_div').children().focus();
 			return false;
 		});
+
 	
- 
+
 		/********************/
-		/** Extra Text Functions **/
-		
-		$('#text_area_bold').click(function() {
-			$("#extra_text").focus();
-			document.execCommand('bold', false, null);
-			return false;
-		});
-		$('#text_area_italics').click(function() {
-			$("#extra_text").focus();
-			document.execCommand('italic', false, null);
-			return false;
-		});
-		$('#text_area_underline').click(function() {
-			$("#extra_text").focus();
-			document.execCommand('underline', false, null);
-			return false;
-		});
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**** Link Block operations ******/
         $('input[id=link_url]').on('change', function() {
+
             callUrl(this,0);
         });
         $('body').on('change', $('input[name=url_title]', 'textarea[name=url_content]'), function() {
@@ -1053,6 +1051,7 @@ $this->title = 'Create Qard';
                     "<div class='col-sm-9 col-md-9' id='title_desc_url'><div class='url-content'><h4><input name='url_title' type='text' class='form-control' value='" + title + "'></h4>" +
                     "<div class='url-text'><p><textarea name='url_content' class='form-control'>" + content + "</textarea></p>" +
                     "</div></div></div></div>";
+
             }
             $('#link_div').empty();
             //$('#link_div').html(html);
@@ -1065,11 +1064,10 @@ $this->title = 'Create Qard';
         });
 		/**** End of Link Block operations ******/
 		
+
 		
 		/** Image block operations **/
-		$('.dropzone').html5imageupload({
-			ghost: false,
-		});
+		$('.dropzone').html5imageupload();
 		$(document).delegate("#reset_image", "click", function() {
 			$(".dropzone .btn-cancel").trigger("click");
 		});
@@ -1132,6 +1130,7 @@ $this->title = 'Create Qard';
                 name: 'image_opacity',
                 value: image_opacity
             });
+
             var div_opacity = parseFloat($("#working_div .bgoverlay-block").css("opacity"));
             data.push({
                 name: 'div_opacity',
@@ -1147,6 +1146,7 @@ $this->title = 'Create Qard';
 				name: 'div_overlaycolor',
 				value: div_overlaycolor
 			});	
+
 /*             var div_bgcolor = $("#working_div .bgoverlay-block").css("background-color");
             data.push({
                 name: 'div_bgcolor',
@@ -1160,8 +1160,6 @@ $this->title = 'Create Qard';
                 value: div_bgcolor
             });
             var div_bgimage = $("#working_div .bgimg-block").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-			//console.log(div_bgimage);
-			//return;
             data.push({
                 name: 'div_bgimage',
                 value: div_bgimage
@@ -1178,21 +1176,25 @@ $this->title = 'Create Qard';
                 name: 'div_bg_color',
                 value: div_bg_color
             }); */
+
             var height = parseInt($("#working_div .current_blk").attr("data-height")) * 37.5;
             data.push({
                 name: 'height',
                 value: height
             });
+
             var text = $("#working_div .current_blk").html() || 0;
             data.push({
                 name: 'text',
                 value: text
             });
+
             var extra_text = $("#extra_text").html() || 0;
             data.push({
                 name: 'extra_text',
                 value: extra_text
             });
+
             var block_id = $("#working_div .current_blk").attr("data-block_id") || 0;
             data.push({
                 name: 'block_id',
@@ -1208,39 +1210,43 @@ $this->title = 'Create Qard';
                 name: 'theme_id',
                 value: theme_id 
             });
+
             var qard_id = $("#qard_id").val() || 0;
             data.push({
                 name: 'qard_id',
                 value: qard_id
             });
+
             var qard_title = $("#qard_title").val() || 0;
             data.push({
                 name: 'qard_title',
                 value: qard_title
             });
-            
+
             var tags = $("#tags").val();            
             data.push({
                 name: 'tags',
                 value: tags
             });
+
             var is_title = $("[name='is_title']:checked").val() || 0;
             data.push({
                 name: 'is_title',
                 value: is_title
             });
+
             var blk_id = $("#working_div .parent_current_blk").attr("id");
             data.push({
                 name: 'blk_id',
                 value: blk_id
             });
+
             // check whether theme is already preasent for qard or not
             var block_priority = $("#working_div .current_blk").attr("data-block_priority") || 0;
             data.push({
                 name: 'block_priority',
                 value: block_priority
             });		
-			
 			//addded data bgcolor id and font color id
 			var data_bgcolor_id = $("#working_div .bgimg-block").attr("data-bgcolor-id") || 0;
             data.push({
@@ -1259,7 +1265,7 @@ $this->title = 'Create Qard';
                 name: 'data_style_qard',
                 value: data_style_qard
             });	
-			//var new_block = true;
+						
 			commanAjaxFun(data, 'add_block',new_block);
 			//create another working block(div)
                                 //$("#working_div").remove();
@@ -1267,17 +1273,17 @@ $this->title = 'Create Qard';
 			$("#working_div .parent_current_blk").unwrap();
 			var new_div = '<div  id="working_div" class="working_div active"><div id="blk_' + getNextBlockId() + '" class="bgimg-block parent_current_blk"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off" data-block_priority="' + nextBlockPriority + '"></div></div></div></div>';
 			$("#add-block .parent_current_blk:last").after(new_div); */
+
          $("#dispIcon").hide();
             $(".drop-file , .drop-image , .file_options").show();
             $(".fileSwitch").show();
             $("input[id=link_url]").val('');
-			$("input[id=embed_code]").val('');
             $('input[id=qard-url-upload-click]').val('');
             $("#showFile").hide();
             $("#showFilePreview").empty();
+
 	}
 	function addSaveCard() {
-		//calculate the total height
 		console.log("save here");
 		var total_data_height = 0;
 		$('.current_blk').each(function(obj) {
@@ -1288,7 +1294,6 @@ $this->title = 'Create Qard';
 			alert("Ouch, please fill the qard!");
 			return;
 		}
-		
 		$("#wait").show();
 		// if storing image
 		var data = $("#image_upload").serializeArray();
@@ -1308,6 +1313,7 @@ $this->title = 'Create Qard';
 			value: qard_theme_id 
 		});
 		$("#add-block .parent_current_blk").each(function(obj,index) {
+
 			// getting opacity for image-block div
 			var image_opacity = parseFloat($(this).css("opacity") || 0);
 			data.push({
@@ -1320,6 +1326,7 @@ $this->title = 'Create Qard';
 				name: 'div_opacity',
 				value: div_opacity
 			});
+
 			//overlay color
 			var div_overlaycolor = $(this).find(".bgoverlay-block").css("background-color");
 			if(typeof div_overlaycolor === 'undefined') {
@@ -1337,19 +1344,17 @@ $this->title = 'Create Qard';
 				name: 'div_bgcolor',
 				value: div_bgcolor
 			});
+
 			//if it contains background as image then true
 			var div_bgimage = $(this).css("background-image");
+			console.log(div_bgimage);
 			if (typeof div_bgimage === 'undefined') {
 				var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 			}
-            var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-			//console.log(div_bgimage);
-			//return;
 			data.push({
 				name: 'div_bgimage',
 				value: div_bgimage
 			});
-			
 			var div_bgimage_position = $(this).css("background-position")||'null';
             data.push({
                 name: 'div_bgimage_position',
@@ -1405,11 +1410,13 @@ $this->title = 'Create Qard';
                 name: 'tags',
                 value: tags
             });
+
 			var qard_title = $("#qard_title").val() || 0;
 			data.push({
 				name: 'qard_title',
 				value: qard_title
 			});
+
 			//if block contains title for block then true
 			var is_title = $("[name='is_title']:checked").val() || 0;
 			data.push({
@@ -1433,15 +1440,15 @@ $this->title = 'Create Qard';
                 name: 'data_fontcolor_id',
                 value: data_fontcolor_id
             });	
-			//add block style
 			// add the block style also
 			var data_style_qard = $(this).attr('data-style-qard') || 'line';
             data.push({
                 name: 'data_style_qard',
                 value: data_style_qard
             });	
-			
+						
 			$(this).addClass("delete_blk");
+
 			//	    if(typeof $(this).find(".current_blk").html() == typeof undefined && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
 			//		alert("please enter block or image to save");
 			//		return false;
@@ -1451,11 +1458,13 @@ $this->title = 'Create Qard';
 			//	    return false;
 			var new_block = true;
 			commanAjaxFun(data, 'save_block',new_block);
+
+
 		});
 	}
 	function getNextBlockId() {
 		var blk_id = 0;
-		$(".add-block-qard div").each(function() {
+		$(".add-block div").each(function() {
 			var attr = $(this).attr('id');
 			if (typeof attr !== typeof undefined && attr !== false && attr.search("_")) {
 				new_blk_id = attr.split('_');
@@ -1468,9 +1477,10 @@ $this->title = 'Create Qard';
 	}		
 	function getNextBlockPriority() {
 		var blk_pri = 0;
-		$(".add-block-qard .parent_current_blk").each(function() {
+		$(".add-block .parent_current_blk").each(function() {
 			var attr = $(this).find(".current_blk").attr('data-block_priority');
 			if (typeof attr !== typeof undefined) {
+
 				if (blk_pri < parseInt(attr)) {
 					blk_pri = parseInt(attr);
 				}
@@ -1479,23 +1489,8 @@ $this->title = 'Create Qard';
 		return ++blk_pri;
 	}
 	function commanAjaxFun(postData, callFrom, new_block) {
-		//console.log(postData);return;
-/* 		if(!new_block && callFrom=="add_block"){ //request for add_image
-			postData.push({
-                name: 'is_image',
-                value: true				
-			});
-			postData.push({
-                name: 'handle_image',
-                value: true				
-			});	
-		}else{
-			postData.push({
-                name: 'is_image',
-                value: false				
-			});			
-		}
- */
+
+		//	console.log(postData);return false;
 		$.ajax({
 			url: "<?=Url::to(['block/create'], true)?>",
 			type: "POST",
@@ -1503,27 +1498,28 @@ $this->title = 'Create Qard';
 			dataType: "json",
 			async: false,
 			success: function(data) {
+
+
 				if (callFrom === "add_block") {
+
 					$("#wait").hide();
 					//var total_height = totalHeight();
 					//	       checkHeight();
 					var qard = '';
 					var theme = '';
+					console.log($("#qard_id").val());
 					//if qard is editing
-					if (!$("#qard_id").attr("value")) {
+					if ($("#qard_id").val()=='') {
+						alert($("#qard_id").val());
 						qard = '<input id="qard_id" type="hidden" value="' + data.qard_id + '">';
-						$('#qardid-link').attr("href","<?=Yii::$app->request->baseUrl?>/theme/select-theme/?q_id="+ data.qard_id +"");
 					}
 					// if stored data contain image then true
 					var img = '';
 					if (data.link_image) {
-						
 						img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
-/* 						if(data.div_bgimage_position != "null")
-							img = img+'background-position:'+data.div_bgimage_position+';' */
 					}
 					//creating parent block or img-block
-					var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
+					var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'"  style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
 					//creating overlay-block or middel block
 					new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' + data.div_opacity + ';height:' + data.height + 'px;">';
 					//creating main block or text block
@@ -1539,10 +1535,9 @@ $this->title = 'Create Qard';
 						 return;
 					}
 					/*****************/
-					
-					$("#working_div").css("background-color","red");
 					//adding before working block
 					$("#working_div").before(qard + theme + new_div);
+
 					var checkForNew = true;
 					//checking whether block is editing or adding new block
 					if (data.edit_block) {
@@ -1560,6 +1555,7 @@ $this->title = 'Create Qard';
 							}
 						});
 					}
+
 					if (checkForNew) {
 						    var nextBlockPriority = getNextBlockPriority();
 							$("#working_div").remove();
@@ -1570,18 +1566,18 @@ $this->title = 'Create Qard';
 				else {
 				$("#" + data.blk_id).find(".current_blk").attr("data-block_id", data.block_id);
 				$("#" + data.blk_id).find(".current_blk").attr("data-theme_id", data.theme_id);
+//console.log(data.qard_id);
 				var url = '<?=Url::to(['qard/publish'], true);?>';
 				window.location.replace(url);
 				$("#wait").hide();
 				}
-				$("#working_div .current_blk").focus();
-				document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
 				//removing uneccessary created working block
 				$("#add-block div").each(function() {
 				if ($(this).attr('id') === "working_div" && $(this).html() === "") {
 					$("#working_div").remove();
 				}
 				});
+
 				//remove image after stored in db
 				$(".dropzone .btn-del").trigger("click");                    
 				$("#url_reset_link").trigger("click");
@@ -1599,7 +1595,7 @@ $this->title = 'Create Qard';
 		*/
         function callUrl(urlField,displayCheck) {
             console.log($(urlField).val());
-			//$('#link_div').hide();
+			$('#link_div').hide();
             var preview_url = $(urlField).val();
             var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
             $.ajax({
@@ -1614,39 +1610,61 @@ $this->title = 'Create Qard';
                     console.log(data);
                     if (data.type == 'PDF' || data.type == 'pdf') {
                         <!--ADDED BY DENCY -->
+                        $(".file_options").show();
+                        $(".link_options").hide();
+                        <!------------------->
+                        $("#drop-file").hide();
+                        $("#drop-image").show();
+                        // $(".fileName").val(response.code);
+                        $(".fileSwitch").hide();
                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');
                     }
                     if (data.type == 'DOC' || data.type == 'DOCX') {
+                        <!--ADDED BY DENCY -->
+                        $(".file_options").show();
+                        $(".link_options").hide();
+                        <!------------------->
+                        $("#drop-file").hide();
+                        $("#drop-image").show();
+                        // $(".fileName").val(response.code);
+                        $(".fileSwitch").hide();
                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
                     }
                     //$('.working_div div').html(data);
 					if (data.type == 'web_page') {
 						//added by kavitha
-						//$('#link_div').show();
+						$('#link_div').show();
 						if(displayCheck==1){
 							
 						}else{
-							$("#working_div .current_blk").focus();
-							document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
-							var work_space_text  = '<span style="color: <?php echo $theme_properties["dark_text_color"];?>;">'+data.work_space_text+'</span></br>';
-							$("#working_div .current_blk").html(work_space_text);
-							adjustHeight();
+						$("#working_div .current_blk").html(data.work_space_text);
+						adjustHeight();
+                        $("#drop-file  , .file_options").hide();
+                        //show link options
+                        $(".link_options").show();
 						}
                         $('#link_div').html(data.preview_html);
 						
                     }
                     else {
+                        //hide file options
+                        $("#drop-file  , .file_options").hide();
+                        //show link options
+                        $(".link_options").show();
                         $('#link_div').html(data);
                     }
                     //var title = $('input[name=url_title]').val();
                     //var link = '<h4 class="url-content"><a href="'+preview_url+'">'+title+'</a></h4>'
                     //$('.working_div div').html(link);
+
                     //showUrlPreview();
 					if(displayCheck!=1){
 						adjustHeight();
 					}
+
                     //showUrlPreview();
                     //setHeightBlock('', '');
+
                 }
             });
         }
@@ -1697,21 +1715,25 @@ $this->title = 'Create Qard';
 			var displayCheck = 1;
 			callUrl(checkit,displayCheck);
 			$('.nav-tabs a[href="#linkblock"]').tab('show');
+			$('#link_div').show();
 			return false;
 		}
 		/**********************************/
         $('#url_reset_link').on('click', function() {
-            $('#link_div').html("<div class='preview-image'></div>");
-			 $('#embed_div').html("<div class='preview-image'></div>");
+            $('#link_div').empty();
+            $(".drop-file , .drop-image , .file_options").show();
             $("input[id=link_url]").val('');
-			$("input[id=embed_code]").val('');
+            $(".link_options").hide();
         });
+
         $('#qard_preview').on('click', function() {
+
         });
 		/* end of link block functions */
 		/** File upload functions **/
         //ADDED BY NANDHINI
-        $(".dispFileName").on('click', function(e) {
+
+           $(".dispFileName").on('click', function(e) {
            if($('.dispFileName').is(':checked')){
                var fileName = $(".fileName").val();   
                setLink($(this),fileName,2);
@@ -1720,27 +1742,24 @@ $this->title = 'Create Qard';
                setLink($(this),fileName,3); 
            }
         });
+
         function setLink(elem,fileName,id){     
             var click = 'showFilePrev("'+fileName+'")';
             if(id!=3 && id!=1){
-                  var span = 'Add Your Description Here!<br><span class="icon-mark pull-right" onclick='+click+'>'+fileName+'<img src="<?=Yii::$app->homeUrl?>images/file_icon.png" alt=""></span>';
-				  //'<span class="icon-mark pull-right" onclick="+click+"><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" alt=""></span>';
+                  var span = "Add Your Description Here!<br><span style='height: 24px;width: 25px;'>"+fileName+"<img onclick="+click+" style='height: 24px;width: 25px;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>"; 
               }else{
-                  var span = 'Add Your Description Here!<br><span class="icon-mark pull-right" onclick='+click+'><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" alt=""></span>';   
-            }             
-			$("#working_div .current_blk").focus();
-			document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
-			span = '<span style="color: <?php echo $theme_properties["dark_text_color"];?>;">'+span+'</span></br>'
+                  var span = "<span>Add Your Description Here!<br><img onclick="+click+" style='height: 24px;width: 25px;' src='<?= Yii::$app->request->baseUrl?>/images/docfile.png'/></span>";    
+            }               
             $("#working_div .current_blk").html(span);
-			adjustHeight();
-		}
-        //$("#showFile").hide();
+	}
+        $("#showFile").hide();
         $('.drop-file').on('click', function(e) {
             $('#qard-url-upload-click').trigger('click');
+
             return false;
             //  $('#qard-url-upload').click();             
         });     
-        $('input[id=qard-url-upload-click]').on('change',function(e) {
+        $('input[id=qard-url-upload-click]').change(function(e) {
             // $('#profile-image-upload').click();
             var file_data = $('#qard-url-upload-click').prop('files')[0];
             var form_data = new FormData();
@@ -1754,21 +1773,25 @@ $this->title = 'Create Qard';
                 }
                 if (ext == "docx" || ext == "doc") {
                     $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
+
                 }
-                var csrfToken = $('meta[name="csrf-token"]').attr("content");
                 $.ajax({
                     url: "<?=Url::to(['qard/simple'], true)?>",
                     cache: false,
                     contentType: false,
                     processData: false,
                     data: form_data,
-                    //data: form_data,
                     type: 'post',
                     success: function(response) {
+                        $("#dispIcon").show();
+                        $(".drop-file").hide();
+                        $(".drop-image").show();
+                        $("#showFile").show();
                         $(".fileName").val(response.code);
-						$(".victim").html('');
-						$("#fileTitle").html(response.code);
+                        $(".fileSwitch").hide();
                         setLink($(this),response.code,1);
+                        // console.log(response);
+                        //count++;
                     }
                 });
             } else {
@@ -1780,8 +1803,20 @@ $this->title = 'Create Qard';
             }
         });
         $('#reflink').click(function(e) {
-			$("#qard-url-upload").trigger('reset');
-			$("#fileTitle").html('FileName.psd');
+
+            // location.reload();
+            // $(".drop-file").show();
+            //   $(".drop-image").hide();
+            //  $(".fileSwitch").show();   
+            //         $(".fileSwitch").show();
+
+            $("#dispIcon").hide();
+            $(".drop-file , .drop-image , .file_options").show();
+            $(".fileSwitch").show();
+            $("input[id=link_url]").val('');
+            $('input[id=qard-url-upload-click]').val('');
+            $("#showFile").hide();
+            $("#showFilePreview").empty();
         });		
 		/*** End of file upload functions **/
 		/** Dragging functions **/
@@ -1813,21 +1848,23 @@ $this->title = 'Create Qard';
           
                 }
                 if (ext == "doc" || ext == 'docx') {
+
+
                     var test = "<?= Yii::$app->request->baseUrl?>/uploads/docs/"+fileName;
+
                       var object = '<iframe style="width:600px;height:500px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
                         
-                    object += "</object>";      
-					$("#showFilePreview").html(object); $("#showFilePreview").hide();
+                    object += "</object>";       $("#showFilePreview").html(object); $("#showFilePreview").hide();
                       console.log(object);
                }
          
-          }
+          }  
 		//Embedd Video Starts
 		$('input[id=embed_code]').on('change', function() {
             callEmbedUrl(this);
         });
 		function callEmbedUrl(videoUrl){
-			//$('#link_div').hide();
+			$('#link_div').hide();
             var embedd_preview_url = $(videoUrl).val();
             var get_embed_url = "<?=Url::to(['qard/embed-url'], true);?>";
             $.ajax({
@@ -1841,19 +1878,15 @@ $this->title = 'Create Qard';
 					data = $.parseJSON(data);
                     console.log(data);
 					$("#drop-file  , .file_options").hide();
-					/*added by dency */
-							$("#working_div .current_blk").focus();
-							document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
-							var video_img  = '<span style="color: <?php echo $theme_properties["dark_text_color"];?>;">'+data.video_img+'</span></br>';
-					/****************/
-					$("#working_div .current_blk").html(video_img);
+					$("#working_div .current_blk").html(data.video_img);
 					adjustHeight();
-					$('#embed_div').html(data.iframelink);
+					$('#link_div').html(data.iframelink);
+					$('#link_div').show();
                 }
             });
 		}
 		function calldisplayEmbedUrl(videoUrl){
-			//$('#link_div').hide();
+			$('#link_div').hide();
             var embedd_preview_url = $(videoUrl).val();
             var get_embed_url = "<?=Url::to(['qard/embeddisplay-url'], true);?>";
             $.ajax({
@@ -1881,21 +1914,19 @@ $this->title = 'Create Qard';
 		//Embedd Video ends
 		
 		// Styling Card script starts
-		$('.qrd-pattern').click(function(){
-			$('.qrd-pattern').removeClass('active');
-			$(this).addClass('active');
-			var styleCard = $(this).attr('id');
-			if(styleCard =="line"){
+		$('.qard-content').click(function(){
+			var styleCard = $(this).parent();
+			if(styleCard.hasClass( "line" )){
 				$('.bgimg-block').addClass('line');
 				$('.bgimg-block').removeClass('flat gap shadow');
 				$('.bgimg-block').attr('data-style-qard','line');
 			}
-			else if(styleCard=="gap"){
+			else if(styleCard.hasClass( "gap" )){
 				$('.bgimg-block').addClass('gap');
 				$('.bgimg-block').removeClass('flat line shadow');
 				$('.bgimg-block').attr('data-style-qard','gap');
 			}
-			else if(styleCard=="shadow" ){
+			else if(styleCard.hasClass( "shadow" )){
 				$('.bgimg-block').addClass('shadow');
 				$('.bgimg-block').removeClass('flat line gap');
 				$('.bgimg-block').attr('data-style-qard','shadow');
@@ -1904,35 +1935,12 @@ $this->title = 'Create Qard';
 				$('.bgimg-block').removeClass('gap line shadow');
 				$('.bgimg-block').attr('data-style-qard','flat');
 			}
-		}); 
-		$('.embedBlock').click(function(){
-			$('a[href="#paste"]').parent().removeClass('active');
-			$('a[href="#embed"]').parent().addClass('active');
-			$('#paste').removeClass('active');
-			$('#embed').addClass('active');
-		});
-		$('.pasteBlock').click(function(){
-			$('a[href="#paste"]').parent().addClass('active');
-			$('a[href="#embed"]').parent().removeClass('active');
-			$('#paste').addClass('active');
-			$('#embed').removeClass('active');
-		});
-		$('#qrdstyle-link').click(function(e){
-			e.preventDefault();
-			//check total height
-			
-			$("h5[class=add-another]").trigger("click");
-			var theme_id = $(this).attr('data-theme');
-			var q_id = $('#qard_id').val();
-			if(q_id){
-				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
-			}else{
-				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
-			}
 		});
 		// Styling Card script Ends
+		
 	/***************************/
         </script>
+        
     <script>
         'use strict';
         (function(document, window, index) {
@@ -1941,6 +1949,8 @@ $this->title = 'Create Qard';
                 var div = document.createElement('div');
                 return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
             }();
+
+
             // applying the effect for every form
             var forms = document.querySelectorAll('.box');
             Array.prototype.forEach.call(forms, function(form) {
@@ -1952,26 +1962,347 @@ $this->title = 'Create Qard';
                     showFiles = function(files) {
                         label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
                     },
-                    triggerFormSubmit = function() { return false;
+                    triggerFormSubmit = function() {
                         var event = document.createEvent('HTMLEvents');
                         event.initEvent('submit', true, false);
                         form.dispatchEvent(event);
                     };
+
                 // letting the server side to know we are going to make an Ajax request
                 var ajaxFlag = document.createElement('input');
                 ajaxFlag.setAttribute('type', 'hidden');
                 ajaxFlag.setAttribute('name', 'ajax');
                 ajaxFlag.setAttribute('value', 1);
                 form.appendChild(ajaxFlag);
+
                 // automatically submit the form on file select
                 input.addEventListener('change', function(e) {
-  
                     showFiles(e.target.files);
                     triggerFormSubmit();
                 });
+
+                // drag&drop files if the feature is available
+                if (isAdvancedUpload) {
+
+                    form.classList.add('has-advanced-upload'); // letting the CSS part to know drag&drop is supported by the browser
+
+                    ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(function(event) {
+                        form.addEventListener(event, function(e) {
+                            // preventing the unwanted behaviours
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    });
+                    ['dragover', 'dragenter'].forEach(function(event) {
+                        form.addEventListener(event, function() {
+                            form.classList.add('is-dragover');
+                        });
+                    });
+                    ['dragleave', 'dragend', 'drop'].forEach(function(event) {
+                        form.addEventListener(event, function() {
+                            form.classList.remove('is-dragover');
+                        });
+                    });
+                    form.addEventListener('drop', function(e) {
+                        console.log("adv drop");
+                        droppedFiles = e.dataTransfer.files; // the files that were dropped
+                        showFiles(droppedFiles);
+
+
+                        triggerFormSubmit();
+
+                    });
+                }
+
+
+                // if the form was submitted
+                form.addEventListener('submit', function(e) {
+
+                    // preventing the duplicate submissions if the current one is in progress
+                    if (form.classList.contains('is-uploading')) return false;
+
+                    form.classList.add('is-uploading');
+                    form.classList.remove('is-error');
+
+                    if (isAdvancedUpload) // ajax file upload for modern browsers
+                    {
+                        e.preventDefault();
+
+                        // gathering the form data
+                        var ajaxData = new FormData(form);
+                        if (droppedFiles) {
+                            console.log("insid");
+                            Array.prototype.forEach.call(droppedFiles, function(file) {
+                                ajaxData.append(input.getAttribute('name'), file);
+                            });
+                        }
+
+                        // ajax request
+                        var ajax = new XMLHttpRequest();
+                        ajax.open(form.getAttribute('method'), form.getAttribute('action'), true);
+
+                        ajax.onload = function() {
+                            form.classList.remove('is-uploading');
+                            if (ajax.status >= 200 && ajax.status < 400) {
+                                var data = JSON.parse(ajax.responseText);
+                                form.classList.add(data.success == true ? 'is-success' : 'is-error');
+                                if (!data.success) errorMsg.textContent = data.error;
+                            }
+
+                        }
+
+                        ajax.onerror = function() {
+                            form.classList.remove('is-uploading');
+                            alert('Error. Please, try again!');
+                        }
+
+                        ajax.send(ajaxData);
+                    } else // fallback Ajax solution upload for older browsers
+                    {
+                        var iframeName = 'uploadiframe' + new Date().getTime(),
+                            iframe = document.createElement('iframe');
+
+                        $iframe = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
+
+                        iframe.setAttribute('name', iframeName);
+                        iframe.style.display = 'none';
+
+                        document.body.appendChild(iframe);
+                        form.setAttribute('target', iframeName);
+
+                        iframe.addEventListener('load', function() {
+                            var data = JSON.parse(iframe.contentDocument.body.innerHTML);
+                            form.classList.remove('is-uploading')
+                            form.classList.add(data.success == true ? 'is-success' : 'is-error')
+                            form.removeAttribute('target');
+                            if (!data.success) errorMsg.textContent = data.error;
+                            iframe.parentNode.removeChild(iframe);
+                        });
+                    }
+                });
+
+                // restart the form if has a state of error/success
+                Array.prototype.forEach.call(restart, function(entry) {
+                    entry.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        form.classList.remove('is-error', 'is-success');
+                        input.click();
+                    });
+                });
+
+                // Firefox focus bug fix for file input
+                input.addEventListener('focus', function() {
+                    input.classList.add('has-focus');
+                });
+                input.addEventListener('blur', function() {
+                    input.classList.remove('has-focus');
+                });
+
+            });
+        }(document, window, 0));
+    </script>
+    <script>
+        'use strict';
+
+        ;
+        (function($, window, document, undefined) {
+            // feature detection for drag&drop upload
+
+            var isAdvancedUpload = function() {
+                var div = document.createElement('div');
+                return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
+            }();
+
+
+            // applying the effect for every form
+
+            $('.box').each(function() {
+                var $form = $(this),
+                    $input = $form.find('input[type="file"]'),
+                    $label = $form.find('label'),
+                    $errorMsg = $form.find('.box__error span'),
+                    $restart = $form.find('.box__restart'),
+                    droppedFiles = false,
+                    showFiles = function(files) {
+                        //					$label.text( files.length > 1 ? ( $input.attr( 'data-multiple-caption' ) || '' ).replace( '{count}', files.length ) : files[ 0 ].name );
+                    };
+
+                // letting the server side to know we are going to make an Ajax request
+                $form.append('<input type="hidden" name="ajax" value="1" />');
+
+                // automatically submit the form on file select
+                $input.on('change', function(e) {
+                    showFiles(e.target.files);
+
+
+                    $form.trigger('submit');
+
+
+                });
+
+
+                // drag&drop files if the feature is available
+                if (isAdvancedUpload) {
+                    $form
+                        .addClass('has-advanced-upload') // letting the CSS part to know drag&drop is supported by the browser
+                        .on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+                            // preventing the unwanted behaviours
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                        })
+                        .on('dragover dragenter', function() //
+                            {
+                                $form.addClass('is-dragover');
+                            })
+                        .on('dragleave dragend drop', function() {
+                            $form.removeClass('is-dragover');
+                        })
+                        .on('drop', function(e) {
+                            droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
+
+                            console.log(droppedFiles);
+                            showFiles(droppedFiles);
+
+
+                            $form.trigger('submit'); // automatically submit the form on file drop
+
+
+                        });
+                }
+
+
+                // if the form was submitted
+
+                $form.on('submit', function(e) {
+                    // preventing the duplicate submissions if the current one is in progress
+                    if ($form.hasClass('is-uploading')) return false;
+
+                    $form.addClass('is-uploading').removeClass('is-error');
+
+                    if (isAdvancedUpload) // ajax file upload for modern browsers
+                    {
+                        e.preventDefault();
+
+                        // gathering the form data
+                        var ajaxData = new FormData($form.get(0));
+
+                        console.log(ajaxData);
+                        if (droppedFiles) {
+                            $.each(droppedFiles, function(i, file) {
+                                ajaxData.append($input.attr('name'), file);
+                            });
+                        }
+
+                        // ajax request
+                        $.ajax({
+                            url: $form.attr('action'),
+                            type: $form.attr('method'),
+                            data: ajaxData,
+                            dataType: 'json',
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            complete: function() {
+                                $form.removeClass('is-uploading');
+                            },
+                            success: function(data) {
+                                $form.addClass(data.success == true ? 'is-success' : 'is-error');
+                                if (!data.success) $errorMsg.text(data.error);
+                            },
+                            error: function() {
+                                //alert( 'Error. Please, contact the webmaster!' );
+                            }
+                        });
+                    } else // fallback Ajax solution upload for older browsers
+                    {
+                        var iframeName = 'uploadiframe' + new Date().getTime(),
+                            $iframe = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
+
+                        $('body').append($iframe);
+                        $form.attr('target', iframeName);
+
+                        $iframe.one('load', function() {
+                            var data = $.parseJSON($iframe.contents().find('body').text());
+                            $form.removeClass('is-uploading').addClass(data.success == true ? 'is-success' : 'is-error').removeAttr('target');
+                            if (!data.success) $errorMsg.text(data.error);
+                            $iframe.remove();
+                        });
+                    }
+                });
+
+
+                // restart the form if has a state of error/success
+
+                $restart.on('click', function(e) {
+                    e.preventDefault();
+                    $form.removeClass('is-error is-success');
+                    $input.trigger('click');
+                });
+
+                // Firefox focus bug fix for file input
+                $input
+                    .on('focus', function() {
+                        $input.addClass('has-focus');
+                    })
+                    .on('blur', function() {
+                        $input.removeClass('has-focus');
+                    });
+            });
+
+        })(jQuery, window, document);
+    </script>
+
+    <script>
+        'use strict';
+
+        ;
+        (function(document, window, index) {
+            // feature detection for drag&drop upload
+            var isAdvancedUpload = function() {
+                var div = document.createElement('div');
+                return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
+            }();
+
+
+            // applying the effect for every form
+            var forms = document.querySelectorAll('.box');
+            Array.prototype.forEach.call(forms, function(form) {
+                var input = form.querySelector('input[type="file"]'),
+                    label = form.querySelector('label'),
+                    errorMsg = form.querySelector('.box__error span'),
+                    restart = form.querySelectorAll('.box__restart'),
+                    droppedFiles = false,
+                    showFiles = function(files) {
+                        label.textContent = files.length > 1 ? (input.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
+                    },
+                    triggerFormSubmit = function() {
+                        var event = document.createEvent('HTMLEvents');
+                        event.initEvent('submit', true, false);
+                        form.dispatchEvent(event);
+                    };
+
+                // letting the server side to know we are going to make an Ajax request
+                var ajaxFlag = document.createElement('input');
+                ajaxFlag.setAttribute('type', 'hidden');
+                ajaxFlag.setAttribute('name', 'ajax');
+                ajaxFlag.setAttribute('value', 1);
+                form.appendChild(ajaxFlag);
+
+                // automatically submit the form on file select
+                input.addEventListener('change', function(e) {
+                    showFiles(e.target.files);
+
+
+                    triggerFormSubmit();
+
+
+                });
+
                 // drag&drop files if the feature is available
                 if (isAdvancedUpload) {
                     form.classList.add('has-advanced-upload'); // letting the CSS part to know drag&drop is supported by the browser
+
                     ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(function(event) {
                         form.addEventListener(event, function(e) {
                             // preventing the unwanted behaviours
@@ -1994,18 +2325,22 @@ $this->title = 'Create Qard';
                         showFiles(droppedFiles);
                         //            var file_data = $('#qard-url-upload').prop('files')[0];   
                         //console.log($("#qard-url-upload").serializeArray());
-                        
+
+
+
+
                         var ajaxData = new FormData($('#qard-url-upload').get(0));
-						
                         var fileType;
                         if (droppedFiles) {
                             $.each(droppedFiles, function(i, file) {
                                 fileType = file.name;
-                                ajaxData.append($('#qard-url-upload input[type=text]').attr('name'), file);
+                                ajaxData.append($('#qard-url-upload input').attr('name'), file);
+
                             });
                         }
                         //console.log(ajaxData);
                         //return false;
+
                         var ext = fileType.split('.').pop();
                         if (ext == "pdf" || ext == "docx" || ext == "doc") {
                             $("#extErr").hide();
@@ -2015,6 +2350,7 @@ $this->title = 'Create Qard';
                             }
                             if (ext == "docx" || ext == "doc") {
                                 $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
+
                             }
                             $.ajax({
                                 url: "<?=Url::to(['qard/url'], true)?>",
@@ -2025,16 +2361,21 @@ $this->title = 'Create Qard';
                                 contentType: false,
                                 processData: false,
                                 complete: function() {
+
                                     $('#qard-url-upload').removeClass('is-uploading');
                                 },
                                 success: function(data) {
+                                    console.log(data);
+                                    $("#dispIcon").show();
+                                    $("#showFile").show();
+                                    $(".drop-file").hide();
+                                    $(".drop-image").show();
                                     setLink($(this),data.code,1);
                                     $(".fileName").val(data.code);
-									$(".victim").html(''); //poor label
-									$("#fileTitle").html(data.code); //for image area
+                                    $(".fileSwitch").hide();
                                 },
-                                error: function(data) {
-                                    alert("Error! Please try again");
+                                error: function() {
+                                    alert("already");
                                     // Log the error, show an alert, whatever works for you
                                 }
                             });
@@ -2057,9 +2398,10 @@ $this->title = 'Create Qard';
                             }
                             if (ext == "docx" || ext == "doc") {
                                 $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
+
                             }
                             $.ajax({
-                                url: "< ?=Url::to(['qard/url'], true)?>",
+                                url: "<?=Url::to(['qard/url'], true)?>",
                                 cache: false,
                                 contentType: false,
                                 processData: false,
@@ -2076,19 +2418,26 @@ $this->title = 'Create Qard';
                                 }
                             });
                         }
+
+
                         //					triggerFormSubmit();
+
                     });
                 }
+
+
                 // if the form was submitted
                 form.addEventListener('submit', function(e) {
-                
                     // preventing the duplicate submissions if the current one is in progress
                     if (form.classList.contains('is-uploading')) return false;
+
                     form.classList.add('is-uploading');
                     form.classList.remove('is-error');
+
                     if (isAdvancedUpload) // ajax file upload for modern browsers
                     {
                         e.preventDefault();
+
                         // gathering the form data
                         var ajaxData = new FormData(form);
                         if (droppedFiles) {
@@ -2096,31 +2445,39 @@ $this->title = 'Create Qard';
                                 ajaxData.append(input.getAttribute('name'), file);
                             });
                         }
+
                         // ajax request
                         var ajax = new XMLHttpRequest();
                         ajax.open(form.getAttribute('method'), form.getAttribute('action'), true);
+
                         ajax.onload = function() {
                             form.classList.remove('is-uploading');
                             if (ajax.status >= 200 && ajax.status < 400) {
                                 var data = JSON.parse(ajax.responseText);
                                 form.classList.add(data.success == true ? 'is-success' : 'is-error');
                                 if (!data.success) errorMsg.textContent = data.error;
-                            } //else //alert('Error. Please, contact the webmaster!');
+                            } else alert('Error. Please, contact the webmaster!');
                         }
+
                         ajax.onerror = function() {
                             form.classList.remove('is-uploading');
                             alert('Error. Please, try again!');
                         }
+
                         ajax.send(ajaxData);
                     } else // fallback Ajax solution upload for older browsers
                     {
                         var iframeName = 'uploadiframe' + new Date().getTime(),
                             iframe = document.createElement('iframe');
+
                         $iframe = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
+
                         iframe.setAttribute('name', iframeName);
                         iframe.style.display = 'none';
+
                         document.body.appendChild(iframe);
                         form.setAttribute('target', iframeName);
+
                         iframe.addEventListener('load', function() {
                             var data = JSON.parse(iframe.contentDocument.body.innerHTML);
                             form.classList.remove('is-uploading')
@@ -2131,6 +2488,7 @@ $this->title = 'Create Qard';
                         });
                     }
                 });
+
                 // restart the form if has a state of error/success
                 Array.prototype.forEach.call(restart, function(entry) {
                     entry.addEventListener('click', function(e) {
@@ -2139,6 +2497,7 @@ $this->title = 'Create Qard';
                         input.click();
                     });
                 });
+
                 // Firefox focus bug fix for file input
                 input.addEventListener('focus', function() {
                     input.classList.add('has-focus');
@@ -2146,6 +2505,7 @@ $this->title = 'Create Qard';
                 input.addEventListener('blur', function() {
                     input.classList.remove('has-focus');
                 });
+
             });
         }(document, window, 0));
     </script>

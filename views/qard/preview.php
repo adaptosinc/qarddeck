@@ -43,26 +43,48 @@ $this->title = 'Preview Qard';
     <!-- requiered for drop down of an image -->
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
 
-    <section class="create-card">
-        <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
-		<button style="margin-left: 350px;" class="btn btn-default qard" ><a href="<?=Url::to(['qard/edit','id'=>$model->qard_id], true)?>">Edit</a></button>
+    <section class="consume-card save">
+
+		<div class="row">
+			<div class="col-sm-8 col-md-8">
+				<h3><span class="pull-left"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button></span><?=$model->title?></h3>
+				<div class="bottom-card col-sm-12 col-md-12">
+					<ul>
+						<li>
+							   <div class="comment-img">
+								   <img src="<?=$model->userProfile->profile_photo?>" alt="">
+							   </div>
+							   <div class="comment-txt">
+								   <h5><strong><?=$model->userProfile->fullname?></strong></h5>
+								   <p class="post-date">3 days ago</p>
+							   </div>
+						</li>
+						<?php 
+							$qard_tags = $model->qardTags;
+							foreach($qard_tags as $qard_tag){
+								echo "<li class='tags-list'>#".$qard_tag->tag->name.'</li>';
+							}		
+						?>
+					</ul>
+				</div>                             
+			</div>
+			<div class="col-sm-4 col-md-4">
+				<ul class="pull-right">
+					<li><button class="btn btn-default">Add to Deck</button></li>
+				</ul>
+			</div>                        
+		</div>
         <div class="row">
 
-            <div class="col-sm-4 col-md-4">
-                
-                    <?php
-		if(isset($model['qard_id'])){
-		    echo '<input type="hidden" name="qard_id" value="'.$model['qard_id'].'">';
-		}
-		?>
-        <input type="hidden" name="theme_id" value="<?=$theme['theme_id']?>">
+        <div class="add-block col-sm-3 col-md-3" id="qard<?=$model->qard_id?>" >
+
 		
 		<?php 
 		//get theme properties
 		$theme_properties = unserialize($theme['theme_properties']);
 		//print_r($theme);die;
 		?>
-                        <!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
+         <!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
 		    <div class="bgoverlay-block" style="height:75px;">
 			<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
 		    </div>                                
@@ -75,9 +97,7 @@ $this->title = 'Preview Qard';
 
 		<?php 		
 		
-		$str = '
-				<div class="qard-content" id="qard'.$model->qard_id.'" >
-				<div id="add-block'.$model->qard_id.'" class="add-block">';
+		$str = '<div id="add-block'.$model->qard_id.'" class="qard-content">';
 
 			if(isset($blocks) && !empty($blocks)){
 			//	print_R($blocks);die;
@@ -123,51 +143,169 @@ $this->title = 'Preview Qard';
 
 			}	}
 		$str .= '		</div>
-				</div>
-			<div class="qard-bottom">
-				<ul class="qard-tags">
-					<li class="pull-left">#tag#tag#tag</li>
-					<li class="pull-right">x days ago</li>
-				</ul>
-				<h4>Author Full name</h4>
-				<ul class="social-list">
-					<li><a act-id="'.$model->qard_id.'" act-type="like"><img src="'.\Yii::$app->homeUrl.'images/heart.png" alt=""><br />500</a></li>
-					<li><a act-id="'.$model->qard_id.'" act-type="comment"><img src="'.\Yii::$app->homeUrl.'images/comment-dark.png" alt=""><br />500</a></li>
-					<li><a act-id="'.$model->qard_id.'" act-type="bookmark"><img src="'.\Yii::$app->homeUrl.'images/certify.png" alt=""><br />500</a></li>
-					<li><a act-id="'.$model->qard_id.'" act-type="share"><img src="'.\Yii::$app->homeUrl.'images/share.png" alt=""><br />500</a></li>
-				</ul>
-			</div>
 			';	
 			echo $str;
 			?>
                
             </div>
-		<div class="col-sm-8 col-md-8" id="preview" style="border: 1px solid #eaeaea;height:500px"> <iframe src="https://player.vimeo.com/video/171427463" width="870" height="700" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>
+	<div class="col-sm-9 col-md-9">
+		<div id="cardtabs">
+	
+	  <!-- Nav tabs -->
+	  <ul class="nav nav-tabs col-sm-1 col-md-1" role="tablist">
+		<li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab"><img class="image-default" src="<?=Yii::$app->homeUrl;?>images/comments_icon.png" alt=""> <img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>                                
+		<li role="presentation"><a href="#shareblock" aria-controls="shareblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/share_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>                                
+		<li role="presentation" class="tootip" data-title="Qard was added to your bookmarks"><span class="arrow-left"></span><a href="#bookmarkblock" aria-controls="bookmarkblock" role="tab" data-toggle="tab" aria-expanded="true"><img src="<?=Yii::$app->homeUrl;?>images/bookmark_icon.png" class="image-default" alt="" style="width:15px;margin:0 auto;"><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/bookmark_icon_light.png" alt=""></a></li>                              
+		<li role="presentation" class="tootip" data-title="Qard was added to your favourites"><span class="arrow-left"></span><a href="#favblock" aria-controls="favblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/heart_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/heart_icon_light.png" alt=""></a></li>
+		<!--<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/pop-up_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>-->
+	  </ul>
+	
+	  <!-- Tab panes -->
+	<div class="col-sm-11 col-md-11">
+		<div id="preview-tab" class="preview-tab" style="display: block;">
+			<div class="bookmark-content">
+				<img src="<?=Yii::$app->homeUrl;?>images/demo_icon.png" alt="">
+				<h4>Explore the Qard Blocks by clicking the links on the qard</h4>
+			</div>                                      
+			<div class="active-text-preview" style="display: none;">        <!-- extra text preview block -->
+				<h4>Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<div class="active-preview-content">
+					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. </p>
+				</div>
+			</div>
+			<div class="active-video-preview" style="display: none;">           <!-- video preview block -->
+				<h4>Watch the video here<span class="pull-right"><quote id="#video_url">http://youtube.com/ahsdgu</quote><i class="fa fa-times-thin"></i></span></h4>
+				<hr class="divider">
+				<div class="active-preview-content">
+					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.. <a href="">more</a> </p>
+					<div id="video_frame"><iframe height="315" src="https://www.youtube.com/embed/cqNmVJk7Zyg" frameborder="0" allowfullscreen=""></iframe></div>
+				</div>
+			</div>
+			<div class="active-link-preview" style="display: none;">        <!-- link preview block -->
+				<h4>Dribble <span class="pull-right"><quote>http://youtube.com/ahsdgu</quote><i class="fa fa-times-thin"></i></span></h4>
+				<hr class="divider">
+				<div class="active-preview-content">
+					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. </p>
+					<iframe height="315" src="https://www.youtube.com/embed/cqNmVJk7Zyg" frameborder="0" allowfullscreen=""></iframe>
+				</div>
+			</div>
+			<div class="active-file-preview" style="display: none;">            <!-- file preview block -->
+				<h4 id="file_title">FileName.zip <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<hr class="divider">
+				<div class="active-preview-content">
+					
+						<p id="file_desc">This is a description of file</p>
+						<div id="file_controls">
+							<div class="file-download">
+								<img  src="<?=Yii::$app->homeUrl;?>images/download_icon.png" alt="" >                                                
+							</div>
+							<button id="file_image" class="bnt qard">Download File</button>
+						</div>
+						<div id="pdf_area"></div>
+				</div>
+			</div>
+			<div class="active-image-preview" style="display: none;">       <!-- image preview block -->
+				<h4>Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<hr class="divider">
+				<div class="active-preview-content">
+					<h4>Caption comes Here</h4>
+					<div class="image-show">
+						<img src="<?=Yii::$app->homeUrl;?>images/98.png" alt="">
+					</div>
+				</div>
+			</div>                                    
+		</div>                                 
+		<div class="tab-content" style="display: none;">                               
+		  <div role="tabpanel" class="tab-pane active" id="comments">
+			  <div class="cardblock-header">
+				  <h4>Comments(12) <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				  <h4 class="comment-input"><input type="text" name="comment-input" class="col-sm-10 col-md-10" placeholder="Share what you're thinking..."><button class="btn qard col-sm-2 col-md-2">POST</button></h4>
+			  </div>
+				  <ul class="comment-list">
+					  <li>
+						  <div class="comment-img col-sm-1 col-md-1">
+							  <img src="<?=Yii::$app->homeUrl;?>images/deck-thumb.png" alt="">
+						  </div>
+						  <div class="comment-txt col-sm-11 col-md-11">
+							  <p><strong>Tim Hatherly-Greene</strong>Tim Hatherley-Greene The following tips on creating a direct mail advertising campaign have been street-tested and will bring you huge returns in a short period of time.</p>
+							  <p class="post-date">3 days ago</p>
+						  </div>
+					  </li>
+					  <li>
+							 <div class="comment-img col-sm-1 col-md-1">
+								 <img src="<?=Yii::$app->homeUrl;?>images/deck-thumb.png" alt="">
+							 </div>
+							 <div class="comment-txt col-sm-11 col-md-11">
+								 <p><strong>Tim Hatherly-Greene</strong>Tim Hatherley-Greene The following tips on creating a direct mail advertising campaign have been street-tested and will bring you huge returns in a short period of time.</p>
+								 <p class="post-date">3 days ago</p>
+							 </div>
+					  </li>
+					  <li>
+							 <div class="comment-img col-sm-1 col-md-1">
+								 <img src="<?=Yii::$app->homeUrl;?>images/deck-thumb.png" alt="">
+							 </div>
+							 <div class="comment-txt col-sm-11 col-md-11">
+								 <p><strong>Tim Hatherly-Greene</strong>Tim Hatherley-Greene The following tips on creating a direct mail advertising campaign have been street-tested and will bring you huge returns in a short period of time.</p>
+								 <p class="post-date">3 days ago</p>
+							 </div>
+					  </li>                                         
+				  </ul>                                    
+		  </div>
+		  <div role="tabpanel" class="tab-pane" id="fileblock">
+				<div class="fallback">
+				  <input name="file" type="file" multiple="">
+				</div>
+				  <ul class="on-off pull-right">
+					  <li>
+						  <div class="switch">
+							  <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+							  <label for="cmn-toggle-4"></label>
+						  </div>  <span>Open file in new tab</span>                                          
+					  </li>                                      
+				  </ul>                                     
+		  </div>
+
+		  <div role="tabpanel" class="tab-pane" id="shareblock">                                                                  
+			  <div class="cardblock-header">
+				  <h4>Share <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>                                        
+			  </div>
+			  <div class="share-input">
+				<h4>Share the link below in social media, in email, or whatever.</h4>
+				<h4 class="share-input"><input type="text" name="share-input" class="col-sm-10 col-md-10" placeholder="http://www.google.com"><button class="btn qard col-sm-2 col-md-2">COPY LINK</button></h4>
+				<div class="quick-share">
+					<h4>Quick Share</h4>
+					<ul>
+						<li><a href=""><i class="fa fa-facebook"></i></a></li>
+						<li><a href=""><i class="fa fa-twitter"></i></a></li>
+						<li><a href=""><i class="fa fa-linkedin"></i></a></li>
+					</ul>
+				</div>
+			  </div>
+		  </div>
+
+		  <div role="tabpanel" class="tab-pane" id="copyblock">
+			  <div class="review-qard row">
+				  <div class="img-preview col-sm-3 col-md-3">
+					  <img src="<?=Yii::$app->homeUrl;?>images/Qard_Image.jpg" alt="">
+				  </div>
+				  <div class="col-sm-9 col-md-9">
+					  <div class="url-content">
+						  <h4>Title of Content</h4>
+						  <div class="url-text">
+							  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. </p>
+						  </div>
+					  </div>                                            
+				  </div>
+			  </div>                                    
+		  </div>
+		  <div role="tabpanel" class="tab-pane" id="deleteblock">.</div>
+		</div>
+	  
+	  </div>
+	</div>
+</div>
         </div>
-        <!--<div class="bottom-card row">
-            <div class="col-sm-8 col-md-8">
-                <div class="col-sm-6 col-md-6">
-                    <input type="text" name="qard_title" id="qard_title" class="form-control" placeholder="Qard Title">
-                </div>
-                <div class="col-sm-6 col-md-6">
-                    <!--			<input type="text" name="tags" id="tags" class="form-control" placeholder="Qard Tags" data-role="tagsinput">-->
 
-                     <!--<select class="js-example-basic-multiple form-control" id="tags" name="tags" multiple="multiple">
-
-			</select>
-                </div>
-            </div>
-            <div class="col-sm-4 col-md-4">
-                <ul class="help-list">
-                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/help.png" alt=""></a></li>
-                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/eye.png" alt=""></a></li>
-                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/comment.png" alt=""></a></li>
-                    <li><a href=""><img src="<?=Yii::$app->request->baseUrl?>/images/icon-paint.png" alt=""></a></li>
-                    <li><button class="btn btn-sm btn-default" name="preview" id="qard_preview">Preview</button></li>
-                    <li onclick="addSaveCard(event)"><button class="btn btn-sm btn-default" name="preview">Save</button></li>
-                </ul>
-            </div>
-        </div>-->
     </section>
     <!-- block_error popup -->
 
@@ -191,9 +329,23 @@ $this->title = 'Preview Qard';
     <!-- /.modal -->
 
     <script type="text/javascript">
-	$("#working_div .current_blk").focus();
-	document.execCommand('styleWithCSS', false, true);
-    document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
+        $(document).ready(function(){
+            var avalue = "active";
+            if($('ul.nav.nav-tabs li').hasClass(avalue) === false) {
+                $('.preview-tab').css('display','block');
+                $('.tab-content').css('display','none');
+            }
+            $('ul.nav.nav-tabs li').click(function(){
+                $('.preview-tab').css('display','none');
+                $('.tab-content').css('display','block');            
+            });
+        });
+	
+		$('#cardtabs a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+		});
+
         function showtext() {
             //code
             var s = document.getElementById('descfield');
@@ -221,11 +373,11 @@ $this->title = 'Preview Qard';
 	
 		/** link preview **/
 		function displayLink(identifier){
-			var dataurl = $(identifier).data('url');
+			var dataurl = $(identifier).attr('data-url');
 			var checkit = $(identifier).find('#hiddenUrl');
 			var displayCheck = 1;
 			callUrl(checkit,displayCheck);
-			$('#preview').show();
+			$('#preview-tab').show();
 			return false;
 		}
 		/*
@@ -255,7 +407,7 @@ $this->title = 'Preview Qard';
                         $("#drop-image").show();
                         // $(".fileName").val(response.code);
                         $(".fileSwitch").hide();
-                        $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');
+                        $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/<?=Yii::$app->homeUrl;?>images/pdf.png');
                     }
                     if (data.type == 'DOC' || data.type == 'DOCX') {
                         <!--ADDED BY DENCY -->
@@ -266,7 +418,7 @@ $this->title = 'Preview Qard';
                         $("#drop-image").show();
                         // $(".fileName").val(response.code);
                         $(".fileSwitch").hide();
-                        $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/doc.png');
+                        $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/<?=Yii::$app->homeUrl;?>images/doc.png');
                     }
                     //$('.working_div div').html(data);
 					if (data.type == 'web_page') {
@@ -281,7 +433,7 @@ $this->title = 'Preview Qard';
                         //show link options
                         $(".link_options").show();
 						}
-                        $('#preview').html(data.preview_html);
+                        $('#preview-tab').html(data.preview_html);
 						
                     }
                     else {
@@ -289,7 +441,7 @@ $this->title = 'Preview Qard';
                         $("#drop-file  , .file_options").hide();
                         //show link options
                         $(".link_options").show();
-                        $('#preview').html(data);
+                        $('#preview-tab').html(data);
                     }
                     //var title = $('input[name=url_title]').val();
                     //var link = '<h4 class="url-content"><a href="'+preview_url+'">'+title+'</a></h4>'
@@ -309,32 +461,57 @@ $this->title = 'Preview Qard';
 		/** File preview **/
          function showFilePrev(fileName){
 
+			hideAll('active-file-preview');
+			$('.active-preview-content').show();
+			$('#file_title').html(fileName);
+			$('#file_image').attr("file-name",fileName);
+			$('#file_controls').show();
+			$('#pdf_area').hide();
+          }  
+		$('#file_image').on("click",function(e){
+			console.log("changed");
+			downloadFile(e,$(this).attr("file-name"));
+		});
+		  function downloadFile(e,fileName){
             var ext = fileName.split('.').pop();
             if (ext == "pdf" ) {
-				var object = "<span id='spanob'><object id='obj' data=\"../uploads/docs/"+fileName+"\" type=\"application/pdf\" width=\"100%\" height=\"700px\">";
-				object += "</object>";       
-				$("#preview").html(object);          
+				var object = "<span id='spanob'><object id='obj' data=\"../uploads/docs/"+fileName+"\" type=\"application/pdf\" width=\"100%\" height=\"600px\">";
+				object += "</object>";  
+				$('#file_controls').hide();
+				$('#pdf_area').show();
+				$("#pdf_area").html(object);   			
                 }
             if (ext == "doc" || ext == 'docx') {
+				$("#pdf_area").html('');
 				var test = "<?= Yii::$app->request->baseUrl?>/uploads/docs/"+fileName;
-
-				var object = '<iframe style="width:100%;height:700px;" class="doc" src="'+test+'" &embedded=true"></iframe>';  
-					
-				object += "</object>";       
-				$("#preview").html(object); 
-				console.log(object);
-               }
-         
-          }  
+				e.preventDefault();  //stop the browser from following
+				window.location.href = test;	
+               }			  
+		  }
 		/** Embed code preview **/
 		function embedCode(videoLink){
-			var eUrl = $(videoLink).siblings('input[id=embedHide]').val();
+			var eUrl = $(videoLink).attr('data-value');
 			console.log(eUrl);
-			var html = '<iframe src="'+eUrl+'" width="100%" height="700" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+			var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 			//calldisplayEmbedUrl(eUrl);
-			$('#preview').html(html);
+		
+			hideAll('active-video-preview');
+			$('.active-preview-content').show();
+			$('#video_frame').html(html);
+			$('#video_url').html(eUrl);
 		}
 		/** End of dragging function **/
-		
+		function hideAll(except){
+			$('.tab-content').hide();
+			$('.active-text-preview').hide();
+			$('.bookmark-content').hide();
+			$('.active-video-preview').hide();
+			$('.active-preview-content').hide();
+			$('.active-link-preview').hide();
+			$('.active-file-preview').hide();
+			$('.active-image-preview').hide();
+			$("#preview-tab").show();
+			$('.'+except).show();
+		}
 	/***************************/
 	</script>
