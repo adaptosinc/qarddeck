@@ -168,9 +168,9 @@ $this->title = 'Preview Qard';
 				<h4>Explore the Qard Blocks by clicking the links on the qard</h4>
 			</div>                                      
 			<div class="active-text-preview" style="display: none;">        <!-- extra text preview block -->
-				<h4>Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
-				<div class="active-preview-content">
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. </p>
+				<h4><div id="extra_text_title"></div><span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<div class="active-preview-content" id="extra_text_content">
+					<p></p>
 				</div>
 			</div>
 			<div class="active-video-preview" style="display: none;">           <!-- video preview block -->
@@ -499,6 +499,23 @@ $this->title = 'Preview Qard';
 			$('.active-preview-content').show();
 			$('#video_frame').html(html);
 			$('#video_url').html(eUrl);
+		}
+		/** For extra text **/
+		function showExtraText(elem){
+			//active-text-preview
+			hideAll('active-text-preview');
+			$('.active-preview-content').show();			
+			$.ajax({
+				url : "<?=Url::to(['block/get-text'], true)?>",
+				type: "GET",
+				data: { 'block_id': $(elem).attr('block_id') },
+				success: function(data){
+					data = $.parseJSON(data);
+					$("#extra_text_content").html(data.extra_text);
+					$("#extra_text_title").html(data.title);
+
+				}
+			});			
 		}
 		/** End of dragging function **/
 		function hideAll(except){

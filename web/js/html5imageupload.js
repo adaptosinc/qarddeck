@@ -346,8 +346,26 @@
 
     			//place the images
     			$(element).append($('<div class="cropWrapper"></div>').append($(_self.image)));
+ 				$(element).bind("mousewheel DOMMouseScroll MozMousePixelScroll",function(e){
+					e.stopImmediatePropagation();
+					e.stopPropagation();
+					e.preventDefault();
+					if(e.originalEvent.wheelDelta > 0 || e.originalEvent.detail > 0) {					
+						setTimeout(function(){ 
+							_self.imageZoom(-20); 
+						},1);		
+						if (_self.options.onAfterZoomImage) _self.options.onAfterZoomImage.call(_self,_self);
+					}
+					else{
+						setTimeout(function(){ 
+							_self.imageZoom(20); 
+						},1);	
+						if (_self.options.onAfterZoomImage) _self.options.onAfterZoomImage.call(_self,_self);
+
+					}					
+				}); 
 				//console.log(_self.image[0].currentSrc);
-				$("#working_div .bgimg-block").css("background-image","url("+_self.image[0].currentSrc+")");
+				//$("#working_div .bgimg-block").css("background-image","url("+_self.image[0].currentSrc+")");
     			if (!empty(_self.imageGhost)) {
     				$(element).append(_self.imageGhost);
     			}
@@ -731,7 +749,7 @@
 			var image			= _self.image;
 			var element			= _self.element;
 			
-			$(image).css({width: image.data('useWidth'), height: image.data('useHeight'), top: image.data('top'), left: image.data('left')})
+			$(image).css({width: 'auto', height: '100%', top: '0px', left: '25%'})
 			_self._ghost();
 			
 			if (_self.options.onAfterResetImage) _self.options.onAfterResetImage.call(_self,_self);
@@ -915,7 +933,7 @@
 			var options			= _self.options;
 			
 			//zoomin button
-			if (options.buttonZoomin != false) {
+/* 			if (options.buttonZoomin != false) {
 				$(tools).append($(_self.button.zoomin).on({
 					'touchstart mousedown': function(e) { 
 						e.preventDefault();
@@ -928,12 +946,13 @@
 						window.clearInterval(_self.interval);
 						if (_self.options.onAfterZoomImage) _self.options.onAfterZoomImage.call(_self,_self);
 					}
+
 				}));
-			}
+			} */
 			
 			//zoomreset button (set the image to the "original" size, same size as when selecting the image
 			if (options.buttonZoomreset != false) {
-				$(tools).append($(_self.button.zoomreset).on({
+				$('#file_id').html($(_self.button.zoomreset).on({
 					'touchstart click': function(e) {
 						e.preventDefault();
 						_self.imageReset();
@@ -942,7 +961,7 @@
 			}
 			
 			//zoomout button
-			if (options.buttonZoomout != false) {
+/* 			if (options.buttonZoomout != false) {
 				$(tools).append($(_self.button.zoomout).on({
 					'touchstart mousedown': function(e) { 
 						e.preventDefault();
@@ -956,7 +975,7 @@
 						if (_self.options.onAfterZoomImage) _self.options.onAfterZoomImage.call(_self,_self);
 					}
 				}));
-			}
+			} */
 			
 /*			if (options.buttonRotateccw != false) {
 				$(tools).append($(_self.button.rotateccw).on({
@@ -998,8 +1017,8 @@
 					}
 				}));
 			}
-			
 			$(element).append($(tools));
+			//$('#file_id').html($(tools));
 			
 		},
 		_clearTimers: function() {

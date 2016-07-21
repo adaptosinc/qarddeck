@@ -1038,6 +1038,11 @@ $this->title = 'Create Qard';
 				success: function(data){
 					console.log(data.link_data);
 					data = $.parseJSON(data);
+					var html = $("#working_div .current_blk").html();
+					if(html == ''){
+						var new_html = "This is a text lnik for your reference";
+						$("#working_div .current_blk").html(new_html);
+					}
 					$("#working_div .current_blk").append(data.link_data);
 					$("#working_div .current_blk").attr("contenteditable","true");
 
@@ -1047,8 +1052,18 @@ $this->title = 'Create Qard';
 			//save extra text
 			//put the icon and functio to the block
 		});
-		function showExtraText(){
-			
+		function showExtraText(elem){
+			$.ajax({
+				url : "<?=Url::to(['block/get-text'], true)?>",
+				type: "GET",
+				data: { 'block_id': $(elem).attr('block_id') },
+				success: function(data){
+					data = $.parseJSON(data);
+					$("#extra_text").html(data.extra_text);
+					$("input[name=extra-text]").val(data.title);
+
+				}
+			});			
 		}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	

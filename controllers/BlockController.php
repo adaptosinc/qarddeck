@@ -142,7 +142,15 @@ class BlockController extends Controller
 		$data['status'] = false;
 		return json_encode($data);
     }
-    
+    public function actionGetText($block_id){
+		$block = $this->findModel($block_id);
+		$data = [];
+		if($block){
+				$data['extra_text'] = $block->extra_text;
+				$data['title'] = $block->extra_text_title;				
+		}
+		return json_encode($data);
+	}
     /**
      * Updates an existing Block model.
      * If update is successful, the browser will be redirected to the 'view' page.
