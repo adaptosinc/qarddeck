@@ -209,7 +209,7 @@ $this->title = 'Create Qard';
 									<li id="text_area_bold"><a href="#"><i class="fa fa-bold"></i></a></li>
 									<li id="text_area_italics"><a href="#"><i class="fa fa-italic"></i></li>
 									<li id="text_area_underline"><a href="#"><i class="fa fa-underline"></i></a></li>
-									<li><a href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
+									<li><a id="extra_text_link" href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
 								</ul>
 							</div>
 							<div id="extrafield">
@@ -1024,6 +1024,32 @@ $this->title = 'Create Qard';
 			document.execCommand('underline', false, null);
 			return false;
 		});
+		$('#extra_text_link').click(function(){
+			//check selected block first
+			//setTimeout("add_block(true,false);",1000);
+			add_block(true,false);
+			$.ajax({
+				url : "<?=Url::to(['block/add-text'], true)?>",
+				type: "POST",
+				data: { 'extra_text':$("#extra_text").html(),
+						'block_id':$("#working_div .current_blk").attr('data-block_id'),
+						'title' : $("input[name=extra-text]").val(),
+					  },
+				success: function(data){
+					console.log(data.link_data);
+					data = $.parseJSON(data);
+					$("#working_div .current_blk").append(data.link_data);
+					$("#working_div .current_blk").attr("contenteditable","true");
+
+				}
+			});
+			
+			//save extra text
+			//put the icon and functio to the block
+		});
+		function showExtraText(){
+			
+		}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**** Link Block operations ******/
