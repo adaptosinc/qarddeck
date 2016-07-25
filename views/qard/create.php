@@ -179,8 +179,11 @@ $this->title = 'Create Qard';
 									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 									  </button>
 									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
-										<li><a href="#" class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>;display: block;height: 20px;width: 20px;padding: 0px;border-radius: 2px" data-fontcolor-id="dark_text_color" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></a></li>
-										<li><a href="#" class="color" style="background:<?php echo $theme_properties['light_text_color'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="light_text_color" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);"></a></li>
+										<li><a href="#" class="color" style="background:<?php echo $theme_properties['theme_color_1'];?>;display: block;height: 20px;width: 20px;padding: 0px;border-radius: 2px" data-fontcolor-id="theme_color_1" data-color="<?php echo $theme_properties['theme_color_1'];?>" onClick="setForeColor(this);"></a></li>
+										<li><a href="#" class="color" style="background:<?php echo $theme_properties['theme_color_2'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="theme_color_2" data-color="<?php echo $theme_properties['theme_color_2'];?>"  onClick="setForeColor(this);"></a></li>
+										<li><a href="#" class="color" style="background:<?php echo $theme_properties['theme_color_3'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="theme_color_3" data-color="<?php echo $theme_properties['theme_color_3'];?>"  onClick="setForeColor(this);"></a></li>
+										<li><a href="#" class="color" style="background:<?php echo $theme_properties['theme_color_4'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="theme_color_4" data-color="<?php echo $theme_properties['theme_color_4'];?>"  onClick="setForeColor(this);"></a></li>
+										<li><a href="#" class="color" style="background:<?php echo $theme_properties['theme_color_5'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="theme_color_5" data-color="<?php echo $theme_properties['theme_color_5'];?>"  onClick="setForeColor(this);"></a></li>
 									  </ul>
 									</div>
 								</li>
@@ -777,7 +780,7 @@ $this->title = 'Create Qard';
 		var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
 		setHeightBlock(this,scrollHeight);
 	});
-/* 	document.querySelector('[contenteditable=true]')
+	/* 	document.querySelector('[contenteditable=true]')
 	  .addEventListener('DOMNodeInserted', function(event) {
 		if (event.target.tagName == 'SPAN') {
 		  event.target.outerHTML = event.target.innerHTML;
@@ -785,8 +788,8 @@ $this->title = 'Create Qard';
 	  }); */
 	function focusWorkspace(){
 			$("#working_div .current_blk").focus();
-			document.execCommand('styleWithCSS', false, true);
-			document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
+			//document.execCommand('styleWithCSS', false, true);
+			//document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
 		
 	}
 	/*
@@ -1123,12 +1126,23 @@ $this->title = 'Create Qard';
 				if($("input[id=link_url]").val() != '')
 				{
 					var str = '<span id="show_url_span">'+$("input[id=link_url]").val()+'</span>';
-					console.log(str);
-					$("#working_div .current_blk").find('#previewLink').prepend(str);					
+					$("#working_div .current_blk").find('#previewLink').prepend(str);		
+					$("#previewLink").attr("data-showurl","true");						
 				}
 			}else{
 				if($("#working_div .current_blk").find('#show_url_span').length != 0 && $("input[id=link_url]").val() != '')
 					$('#show_url_span').remove();
+				$("#previewLink").attr("data-showurl","false");	
+			}
+        });
+        $('#cmn-toggle-6').on('change', function() {
+			if($(this).prop('checked')){
+				if($("input[id=link_url]").val() != '')
+				{
+					$("#previewLink").attr("data-open","new");				
+				}
+			}else{
+				$("#previewLink").attr("data-open","same");	
 			}
         });
 		/**** End of Link Block operations ******/
@@ -1686,7 +1700,8 @@ $this->title = 'Create Qard';
 							adjustHeight();
 						}
                         $('#link_div').html(data.preview_html);
-						
+						//add here
+						$('#cmn-toggle-6').prop("checked",true).trigger("change");
                     }
                     else {
                         $('#link_div').html(data);
@@ -1748,6 +1763,12 @@ $this->title = 'Create Qard';
 			var dataurl = $(identifier).attr('data-url');
 			$('.nav-tabs a[href="#linkblock"]').tab('show');
 			$('input[id=link_url]').val(dataurl);
+			var dataopen = $(identifier).attr('data-open');
+			var datashowurl = $(identifier).attr('data-showurl');
+			if(datashowurl == "true")
+				$('#cmn-toggle-4').prop("checked",true);
+			if(dataopen == "new")
+				$('#cmn-toggle-6').prop("checked",true);
 			return false;
 		}
 		/**********************************/
@@ -1757,6 +1778,7 @@ $this->title = 'Create Qard';
             $("input[id=link_url]").val('');
 			$("input[id=embed_code]").val('');
 			$('#cmn-toggle-4').prop("checked",false);
+			$('#cmn-toggle-6').prop("checked",false);
         });
         $('#qard_preview').on('click', function() {
         });

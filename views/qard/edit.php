@@ -306,12 +306,14 @@ $this->title = 'Edit Qard';
 								<h4>Add Extra text <span class="trash pull-right"><i class="fa fa-trash"></i>&nbsp;Remove Extra Text</span></h4>
 								<input type="text" name="extra-text" placeholder="Enter an optional text" class="form-control">
 								<ul class="editable-elements">
-									<li><a href="#"><i class="fa fa-bold"></i></a></li>
-									<li><a href="#"><i class="fa fa-italic"></i></li>
-									<li><a href="#"><i class="fa fa-underline"></i></a></li>
-									<li><a href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
+									<li id="text_area_bold"><a href="#"><i class="fa fa-bold"></i></a></li>
+									<li id="text_area_italics"><a href="#"><i class="fa fa-italic"></i></li>
+									<li id="text_area_underline"><a href="#"><i class="fa fa-underline"></i></a></li>
+									<li><a id="extra_text_link" href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
 								</ul>
-								<textarea name="desc" placeholder="Enter The Text"></textarea>
+							</div>
+							<div id="extrafield">
+								<div id="extra_text" name="desc" placeholder="Enter The Text" contenteditable="true"></div>
 							</div>
 						</div>
 
@@ -666,7 +668,7 @@ $this->title = 'Edit Qard';
     </div>
     <!-- /.modal -->
 
-    <script type="text/javascript">
+     <script type="text/javascript">
 	$('#qard-style #themeorder .qard-content').click(function(){
 		$('.qard-content').removeClass('active');
 		$(this).addClass('active');
@@ -754,7 +756,7 @@ $this->title = 'Edit Qard';
 			$("#working_div .bgimg-block").attr('data-bgcolor-id',$(elem).attr('data-bgcolor-id'));
 			$("#working_div .bgimg-block").css('background-color', color);
 		}
-          
+         
     </script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
 
@@ -771,10 +773,49 @@ $this->title = 'Edit Qard';
 		 placeholder: "Add some tags",
 	 });
 	/**** Handle the main work space ******/
-/* 	$(document).delegate("#working_div .current_blk", "hover", function(event) {	
+	/* 	
+	  MAIN FUNCTION
+	 */
+	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {		
+		//select color and apply span
+		if (event.type === "input") {
+			focusWorkspace();
+		}
+		if(event.type === "paste"){
+			event.preventDefault();
+			// get text representation of clipboard
+			
+			//console.log(event.originalEvent.clipboardData);
+			if (event.clipboardData || event.originalEvent.clipboardData) {
+				content = (event.originalEvent || event).clipboardData.getData('text/plain');
+
+				document.execCommand('insertText', false, content);
+			}
+			else if (window.clipboardData) {
+				content = window.clipboardData.getData('Text');
+
+				document.selection.createRange().pasteHTML(content);
+			}   
+
+			//$(this).find( "span" ).contents().unwrap();
+			//$(this).find( "p" ).contents().unwrap();
+			//$(this).find( "div" ).contents().unwrap();
+			//focusWorkspace();
+			//$(this).html($(this).text());
+			//$(this).contents().wrap('<span>');
+
 	
-	}); */
-	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize", function(event) {		
+		}
+		
+  /*  if (event.keyCode === 8) {
+			$(this).find( "span" ).contents().unwrap();
+			$(this).find( "p" ).contents().unwrap();
+			$(this).find( "div" ).contents().unwrap();
+			focusWorkspace();
+			$(this).html($(this).text());
+			$(this).contents().wrap('<span>');
+    } */
+		
 		/*
 		 * calculate the total height of the qard
 		*/
@@ -793,7 +834,7 @@ $this->title = 'Edit Qard';
 		}else{
 			$('.add-another').show();
 		}
-		
+
 		/*
 		 *if qard is complete,preveny anything other than backspace and delete
 		 *and remove the last input or last child
@@ -803,7 +844,10 @@ $this->title = 'Edit Qard';
 			console.log('stopped');
 			var last = $(this).children(':last-child');
 			var html = $(last).html();
+			$('#extra_text').html(html);
+			//pass this to extra text and remove from here
 			$(last).remove();
+			$('#extra_text').focus();
 		}
  		if ($(this).attr("data-resized")=='true') {
 			var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
@@ -824,6 +868,18 @@ $this->title = 'Edit Qard';
 		var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
 		setHeightBlock(this,scrollHeight);
 	});
+/* 	document.querySelector('[contenteditable=true]')
+	  .addEventListener('DOMNodeInserted', function(event) {
+		if (event.target.tagName == 'SPAN') {
+		  event.target.outerHTML = event.target.innerHTML;
+		}
+	  }); */
+	function focusWorkspace(){
+			$("#working_div .current_blk").focus();
+			document.execCommand('styleWithCSS', false, true);
+			document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
+		
+	}
 	/*
 	 * Double click to edit the block again
 	 */
@@ -897,10 +953,14 @@ $this->title = 'Edit Qard';
 					data: postData,
 					dataType: "json",
 					success: function(data) {
-						console.log(data);
+						$("#working_div .current_blk").focus();
+						document.execCommand('styleWithCSS', false, true);
+						document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
 					},
 					error: function(data) {
-						console.log(data);
+						$("#working_div .current_blk").focus();
+						document.execCommand('styleWithCSS', false, true);
+						document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
 					}
 				});
 			}
@@ -1041,6 +1101,79 @@ $this->title = 'Edit Qard';
 	
  
 		/********************/
+		/** Extra Text Functions **/
+		
+		$('#text_area_bold').click(function() {
+			$("#extra_text").focus();
+			document.execCommand('bold', false, null);
+			return false;
+		});
+		$('#text_area_italics').click(function() {
+			$("#extra_text").focus();
+			document.execCommand('italic', false, null);
+			return false;
+		});
+		$('#text_area_underline').click(function() {
+			$("#extra_text").focus();
+			document.execCommand('underline', false, null);
+			return false;
+		});
+		$('#extra_text_link').click(function(){
+
+			//check selected block first
+			//setTimeout("add_block(true,false);",1000);
+			add_block(true,false);
+			$.ajax({
+				url : "<?=Url::to(['block/add-text'], true)?>",
+				type: "POST",
+				data: { 'extra_text':$("#extra_text").html(),
+						'block_id':$("#working_div .current_blk").attr('data-block_id'),
+						'title' : $("input[name=extra-text]").val(),
+					  },
+				success: function(data){
+					console.log(data.link_data);
+					data = $.parseJSON(data);
+					var html = $("#working_div .current_blk").html();
+					if(html == ''){
+						var new_html = "This is a text lnik for your reference";
+						$("#working_div .current_blk").html(new_html);
+					}
+					$("#working_div .current_blk").append(data.link_data);
+					$("#working_div .current_blk").attr("contenteditable","true");
+
+				}
+			});
+			
+			//save extra text
+			//put the icon and functio to the block
+		});
+		$("#extra_text").on("paste",function(event){
+			event.preventDefault();
+				if (event.clipboardData || event.originalEvent.clipboardData) {
+					content = (event.originalEvent || event).clipboardData.getData('text/plain');
+
+					document.execCommand('insertText', false, content);
+				}
+				else if (window.clipboardData) {
+					content = window.clipboardData.getData('Text');
+
+					document.selection.createRange().pasteHTML(content);
+				} 		
+		});
+ 
+		function showExtraText(elem){
+			$.ajax({
+				url : "<?=Url::to(['block/get-text'], true)?>",
+				type: "GET",
+				data: { 'block_id': $(elem).attr('block_id') },
+				success: function(data){
+					data = $.parseJSON(data);
+					$("#extra_text").html(data.extra_text);
+					$("input[name=extra-text]").val(data.title);
+
+				}
+			});			
+		}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**** Link Block operations ******/
@@ -1077,14 +1210,26 @@ $this->title = 'Edit Qard';
             $('.link_options').show();
             $(".drop-file  , .file_options").hide();
         });  */
-        $('#cmn-toggle-5').on('change', function() {
-            console.log($(this).val());
+        $('#cmn-toggle-4').on('change', function() {
+			if($(this).prop('checked')){
+				if($("input[id=link_url]").val() != '')
+				{
+					var str = '<span id="show_url_span">'+$("input[id=link_url]").val()+'</span>';
+					console.log(str);
+					$("#working_div .current_blk").find('#previewLink').prepend(str);					
+				}
+			}else{
+				if($("#working_div .current_blk").find('#show_url_span').length != 0 && $("input[id=link_url]").val() != '')
+					$('#show_url_span').remove();
+			}
         });
 		/**** End of Link Block operations ******/
 		
 		
 		/** Image block operations **/
-		$('.dropzone').html5imageupload();
+		$('.dropzone').html5imageupload({
+			ghost: false,
+		});
 		$(document).delegate("#reset_image", "click", function() {
 			$(".dropzone .btn-cancel").trigger("click");
 		});
@@ -1276,6 +1421,7 @@ $this->title = 'Edit Qard';
             });	
 			//var new_block = true;
 			commanAjaxFun(data, 'add_block',new_block);
+			$("#working_div .current_blk").attr("contenteditable","true");
 			//create another working block(div)
                                 //$("#working_div").remove();
 /* 			var nextBlockPriority = getNextBlockPriority();
@@ -1495,22 +1641,6 @@ $this->title = 'Edit Qard';
 	}
 	function commanAjaxFun(postData, callFrom, new_block) {
 		//console.log(postData);return;
-/* 		if(!new_block && callFrom=="add_block"){ //request for add_image
-			postData.push({
-                name: 'is_image',
-                value: true				
-			});
-			postData.push({
-                name: 'handle_image',
-                value: true				
-			});	
-		}else{
-			postData.push({
-                name: 'is_image',
-                value: false				
-			});			
-		}
- */
 		$.ajax({
 			url: "<?=Url::to(['block/create'], true)?>",
 			type: "POST",
@@ -1524,8 +1654,6 @@ $this->title = 'Edit Qard';
 					//	       checkHeight();
 					var qard = '';
 					var theme = '';
-					console.log($("#qard_id").val());
-					//return;
 					//if qard is editing
 					if (!$("#qard_id").attr("value")) {
 						qard = '<input id="qard_id" type="hidden" value="' + data.qard_id + '">';
@@ -1709,19 +1837,18 @@ $this->title = 'Edit Qard';
 		 * Click on link icon to see the content
 		**/
 		function displayLink(identifier){
-			var dataurl = $(identifier).data('url');
-			var checkit = $(identifier).find('#hiddenUrl');
-			var displayCheck = 1;
-			callUrl(checkit,displayCheck);
+			var dataurl = $(identifier).attr('data-url');
 			$('.nav-tabs a[href="#linkblock"]').tab('show');
+			$('input[id=link_url]').val(dataurl);
 			return false;
 		}
 		/**********************************/
         $('#url_reset_link').on('click', function() {
             $('#link_div').html("<div class='preview-image'></div>");
-			 $('#embed_div').html("<div class='preview-image'></div>");
+			$('#embed_div').html("<div class='preview-image'></div>");
             $("input[id=link_url]").val('');
 			$("input[id=embed_code]").val('');
+			$('#cmn-toggle-4').prop("checked",false);
         });
         $('#qard_preview').on('click', function() {
         });
@@ -2083,7 +2210,6 @@ $this->title = 'Edit Qard';
                                 data: form_data,
                                 type: 'post',
                                 success: function(response) {
-                                    alert("whic");
                                     $(".drop-file").hide();
                                     $(".drop-image").show();
                                     $(".fileName").val(response.code);

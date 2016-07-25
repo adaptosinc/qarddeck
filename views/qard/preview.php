@@ -186,7 +186,7 @@ $this->title = 'Preview Qard';
 				<hr class="divider">
 				<div class="active-preview-content">
 					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. </p>
-					<iframe height="315" src="https://www.youtube.com/embed/cqNmVJk7Zyg" frameborder="0" allowfullscreen=""></iframe>
+					<div id="url_data"><iframe height="315" src="https://www.youtube.com/embed/cqNmVJk7Zyg" frameborder="0" allowfullscreen=""></iframe></div>
 				</div>
 			</div>
 			<div class="active-file-preview" style="display: none;">            <!-- file preview block -->
@@ -374,9 +374,10 @@ $this->title = 'Preview Qard';
 		/** link preview **/
 		function displayLink(identifier){
 			var dataurl = $(identifier).attr('data-url');
+			console.log(dataurl);
 			var checkit = $(identifier).find('#hiddenUrl');
 			var displayCheck = 1;
-			callUrl(checkit,displayCheck);
+			callUrl(dataurl,displayCheck);
 			$('#preview-tab').show();
 			return false;
 		}
@@ -384,9 +385,9 @@ $this->title = 'Preview Qard';
 		* Link block functions
 		*/
         function callUrl(urlField,displayCheck) {
-            console.log($(urlField).val());
+            //console.log($(urlField).val());
 			
-            var preview_url = $(urlField).val();
+            var preview_url = urlField;
             var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
             $.ajax({
                 url: get_preview_url,
@@ -433,7 +434,7 @@ $this->title = 'Preview Qard';
                         //show link options
                         $(".link_options").show();
 						}
-                        $('#preview-tab').html(data.preview_html);
+                        var data_to_show = data.preview_html;
 						
                     }
                     else {
@@ -441,13 +442,13 @@ $this->title = 'Preview Qard';
                         $("#drop-file  , .file_options").hide();
                         //show link options
                         $(".link_options").show();
-                        $('#preview-tab').html(data);
+						var data_to_show = data;
+                        
                     }
-                    //var title = $('input[name=url_title]').val();
-                    //var link = '<h4 class="url-content"><a href="'+preview_url+'">'+title+'</a></h4>'
-                    //$('.working_div div').html(link);
+					hideAll('active-link-preview');
+					$('.active-preview-content').show();
+					$('#url_data').html(data_to_show);
 
-                    //showUrlPreview();
 					if(displayCheck!=1){
 						adjustHeight();
 					}
@@ -512,6 +513,7 @@ $this->title = 'Preview Qard';
 				success: function(data){
 					data = $.parseJSON(data);
 					$("#extra_text_content").html(data.extra_text);
+					console.log(data.extra_text);
 					$("#extra_text_title").html(data.title);
 
 				}

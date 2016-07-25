@@ -1111,6 +1111,9 @@ li.help-link a {
 .text-block {
     padding: 10px !important;
 }
+.text-block span{
+    display: block;
+}
 section.create-card button {
     text-transform: uppercase;
     min-width: 115px;    
