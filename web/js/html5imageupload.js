@@ -1012,6 +1012,7 @@
 						e.preventDefault();
 						_self.imageCrop(); 
 						console.log("image addded");
+						
 						setTimeout("add_block(true,false);",1000);
 //						setInterval(function(){add_block();},1000);
 					}

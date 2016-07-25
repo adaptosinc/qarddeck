@@ -1315,6 +1315,7 @@ $this->title = 'Create Qard';
             });	
 			//var new_block = true;
 			commanAjaxFun(data, 'add_block',new_block);
+			$("#working_div .current_blk").attr("contenteditable","true");
 			//create another working block(div)
                                 //$("#working_div").remove();
 /* 			var nextBlockPriority = getNextBlockPriority();
