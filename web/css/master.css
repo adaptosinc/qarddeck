@@ -1111,8 +1111,9 @@ li.help-link a {
 .text-block {
     padding: 10px !important;
 }
-.text-block span{
+span#show_url_span {
     display: block;
+    overflow: hidden;
 }
 section.create-card button {
     text-transform: uppercase;
@@ -1930,6 +1931,59 @@ span.icon-mark.pull-right img {
 /* ==================================
  *  Qard Consume
  *  =============================== */
+section.consume-card {
+    background: #f6f6f6;
+    display: block;
+    float: left;
+    width: 100%;     
+}
+section.consume-card .col-sm-10.col-md-10 {
+    padding: 0 40px;
+}
+section.consume-card .bottom-card {
+    padding: 40px;
+    display: block;
+    width: 100%;
+    float: left;    
+}
+section.consume-card .profile-header {
+    padding: 15px;
+    box-shadow: 0 6px 5px -6px #d8d8d8;
+    margin-bottom: 20px;
+}
+section.consume-card .profile-header ul.view-list li.edit-info img {
+    width: auto !Important;
+    margin-right: 10px;    
+}
+section.consume-card .profile-header ul.view-list li img {
+    width: 20px;
+}
+section.consume-card .profile-header ul.view-list li {
+    border-right: 0;
+    padding: 0 5px;
+}
+section.consume-card .profile-header ul.view-list li:nth-child(2) {
+    margin-top: 15px !Important;
+    margin-left: 20px;
+}
+section.consume-card .profile-header ul.view-list li:nth-child(2) img {
+    margin-right: 5px;
+}
+section.consume-card .profile-header li.preview-button button {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    color: #465360;
+}
+section.consume-card li {
+    margin-top: 10px !Important;
+}
+section.consume-card .profile-header ul.view-list li.edit-info {
+    margin: 0 !Important;
+    border-right: 1px solid #ccc !important;
+    padding-right: 20px;    
+}
 .image-close {
     display:none;
 }
@@ -1942,6 +1996,15 @@ span.icon-mark.pull-right img {
 #cardtabs ul.nav-tabs li.active .image-close {
     display: block;
     padding: 5px;
+}
+li.tootip.active a[aria-controls="bookmarkblock"] .image-close {
+    padding: 0 !important;
+    width: 15px;
+    margin-left: 5px;
+}
+li.tootip.active a[aria-controls="favblock"] .image-close {
+    padding: 0 !important;
+    margin-top: 2px;
 }
 #comments .cardblock-header {
     padding: 0;
@@ -1994,6 +2057,8 @@ section.consume-card .qard-bottom ul li.pull-right {
 .bottom-card .grid {
     column-count: 3;
     column-gap: 60px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 60px;    
     -moz-column-count: 3;
     -moz-column-gap: 60px;
 }
@@ -2051,13 +2116,81 @@ section.consume-card .preview-tab iframe {
 }
 .active-file-preview button {
     text-align: center;
-    margin: 0 auto;
-    display: block;
     text-transform: uppercase;
 }
 .active-image-preview .active-preview-content h4 {
     padding: 0;
 }
+.active-file-preview .active-preview-content {
+    text-align: center;
+}
+
+
+.newdeck.navbar-collapse.collapse.in {
+    position: relative;
+    width: 16%;
+    display: inline-block;
+    left: 0;
+    background: #e9e9e9;
+    min-height: 600px;
+    height: auto !important;
+    float: left;
+}
+.consume-card .col-sm-12.col-md-12 nav.deck.navbar .navbar-header {
+    margin-left: -25px;
+}
+.consume-card .col-sm-10.col-md-10 nav.deck.navbar .navbar-header {
+    margin-left: -55px;
+}
+nav.deck.navbar button.navbar-toggle .icon-bar {
+    display: block;
+    background: #fff;
+}
+nav.deck.navbar button.navbar-toggle.collapsed {
+    transform: rotate(90deg);
+    background: #fff;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;    
+    
+}
+nav.deck.navbar button.navbar-toggle {
+    transform: rotate(90deg);
+    background: #465360;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    padding: 10px 5px;    
+}
+#decknavbar .add-block {
+    min-height: 200px;
+    padding: 0;
+    border: 3px solid #fff;    
+}
+#decknavbar .add-block.active {
+    border: 5px solid;
+}
+#decknavbar i {
+    margin-right: 5px;
+    color: #ccc;
+    font-size: 25px;
+}
+#decknavbar button.btn-default {
+    color: #465360;
+    font-weight: bold;
+}
+nav.deck.navbar button.navbar-toggle.collapsed .icon-bar {
+    background: #465360;
+}
+#decknavbar ul.navbar-nav {
+    margin: 0;
+}
+#decknavbar ul.navbar-nav li {
+    width: 100%;
+    border: 0;
+}
+#decknavbar ul.navbar-nav li img {
+    max-width: 100%;
+}
+
 
 
 /* comment tab */
@@ -2190,8 +2323,9 @@ li.tags-list {
     text-align: center;
     padding: 40px;
 }
-.share-input h4, .bookmark-content h4 {
+.share-input h4, .bookmark-content h4, .bookmark-content-fav h4, .bookmark-content-bm h4 {
     font-weight: 400;
+    margin-top: 40px;
 }
 h4.share-input input {
     height: 36px;
@@ -2237,11 +2371,11 @@ h4.share-input input {
 }
 
 /* Bookmark tab */
-.bookmark-content {
+.bookmark-content, .bookmark-content-fav, .bookmark-content-bm {
     text-align: center;
     padding: 40px;
 }
-.bookmark-content img {
+.bookmark-content img, .bookmark-content-fav img, .bookmark-content-bm img {
     width: 300px;
     height: 300px;
 }

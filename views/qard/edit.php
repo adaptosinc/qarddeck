@@ -234,8 +234,6 @@ $this->title = 'Edit Qard';
 						
                         <li role="presentation" id="deleteblock"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/delete_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/delete_icon_light.png" class="light" alt=""></a></li>
 						
-						<li role="presentation"><a id="styleblock_tab" href="#styleblock" aria-controls="styleblock" role="tab" data-toggle="tab">Style Card</a></li>
-						
                     </ul>
                     <!--added by vijay-->
 
@@ -279,8 +277,11 @@ $this->title = 'Edit Qard';
 									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 									  </button>
 									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
-										<li><a href="#" class="color" style="background:<?php echo $theme_properties['dark_text_color'];?>;display: block;height: 20px;width: 20px;padding: 0px;border-radius: 2px" data-fontcolor-id="dark_text_color" data-color="<?php echo $theme_properties['dark_text_color'];?>" onClick="setForeColor(this);"></a></li>
-										<li><a href="#" class="color" style="background:<?php echo $theme_properties['light_text_color'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="light_text_color" data-color="<?php echo $theme_properties['light_text_color'];?>"  onClick="setForeColor(this);"></a></li>
+										<li><a href="#" class="color" style="background:<?php echo $theme_properties['theme_color_1'];?>;display: block;height: 20px;width: 20px;padding: 0px;border-radius: 2px" data-fontcolor-id="theme_color_1" data-color="<?php echo $theme_properties['theme_color_1'];?>" onClick="setForeColor(this);"></a></li>
+										<li><a href="#" class="color" style="background:<?php echo $theme_properties['theme_color_2'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="theme_color_2" data-color="<?php echo $theme_properties['theme_color_2'];?>"  onClick="setForeColor(this);"></a></li>
+										<li><a href="#" class="color" style="background:<?php echo $theme_properties['theme_color_3'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="theme_color_3" data-color="<?php echo $theme_properties['theme_color_3'];?>"  onClick="setForeColor(this);"></a></li>
+										<li><a href="#" class="color" style="background:<?php echo $theme_properties['theme_color_4'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="theme_color_4" data-color="<?php echo $theme_properties['theme_color_4'];?>"  onClick="setForeColor(this);"></a></li>
+										<li><a href="#" class="color" style="background:<?php echo $theme_properties['theme_color_5'];?>;display:block;height: 20px;width: 20px;padding:0px;border-radius: 2px" data-fontcolor-id="theme_color_5" data-color="<?php echo $theme_properties['theme_color_5'];?>"  onClick="setForeColor(this);"></a></li>
 									  </ul>
 									</div>
 								</li>
