@@ -1055,6 +1055,20 @@ $this->title = 'Create Qard';
 			//save extra text
 			//put the icon and functio to the block
 		});
+		$("#extra_text").on("paste",function(event){
+			event.preventDefault();
+				if (event.clipboardData || event.originalEvent.clipboardData) {
+					content = (event.originalEvent || event).clipboardData.getData('text/plain');
+
+					document.execCommand('insertText', false, content);
+				}
+				else if (window.clipboardData) {
+					content = window.clipboardData.getData('Text');
+
+					document.selection.createRange().pasteHTML(content);
+				} 		
+		});
+ 
 		function showExtraText(elem){
 			$.ajax({
 				url : "<?=Url::to(['block/get-text'], true)?>",
