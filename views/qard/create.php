@@ -276,7 +276,7 @@ $this->title = 'Create Qard';
 									<div class="form-group toggle-btn">
 										<div class="col-sm-4 col-md-4 on-off">
 											<div class="switch">
-												<input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+												<input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox" data-toggle="toggle">
 												<label for="cmn-toggle-4"></label>
 											</div>  <span>Display URL</span>                                                  
 										</div>                                            
@@ -682,9 +682,9 @@ $this->title = 'Create Qard';
 		 placeholder: "Add some tags",
 	 });
 	/**** Handle the main work space ******/
-/* 	$(document).delegate("#working_div .current_blk", "hover", function(event) {	
-	
-	}); */
+	/* 	
+	  MAIN FUNCTION
+	 */
 	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {		
 		//select color and apply span
 		if (event.type === "input") {
@@ -753,7 +753,10 @@ $this->title = 'Create Qard';
 			console.log('stopped');
 			var last = $(this).children(':last-child');
 			var html = $(last).html();
+			$('#extra_text').html(html);
+			//pass this to extra text and remove from here
 			$(last).remove();
+			$('#extra_text').focus();
 		}
  		if ($(this).attr("data-resized")=='true') {
 			var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
@@ -1101,8 +1104,18 @@ $this->title = 'Create Qard';
             $('.link_options').show();
             $(".drop-file  , .file_options").hide();
         });  */
-        $('#cmn-toggle-5').on('change', function() {
-            console.log($(this).val());
+        $('#cmn-toggle-4').on('change', function() {
+			if($(this).prop('checked')){
+				if($("input[id=link_url]").val() != '')
+				{
+					var str = '<span id="show_url_span">'+$("input[id=link_url]").val()+'</span>';
+					console.log(str);
+					$("#working_div .current_blk").find('#previewLink').prepend(str);					
+				}
+			}else{
+				if($('#show_url_span').length != 0)
+					$('#show_url_span').remove();
+			}
         });
 		/**** End of Link Block operations ******/
 		
@@ -1521,22 +1534,6 @@ $this->title = 'Create Qard';
 	}
 	function commanAjaxFun(postData, callFrom, new_block) {
 		//console.log(postData);return;
-/* 		if(!new_block && callFrom=="add_block"){ //request for add_image
-			postData.push({
-                name: 'is_image',
-                value: true				
-			});
-			postData.push({
-                name: 'handle_image',
-                value: true				
-			});	
-		}else{
-			postData.push({
-                name: 'is_image',
-                value: false				
-			});			
-		}
- */
 		$.ajax({
 			url: "<?=Url::to(['block/create'], true)?>",
 			type: "POST",
@@ -2107,7 +2104,6 @@ $this->title = 'Create Qard';
                                 data: form_data,
                                 type: 'post',
                                 success: function(response) {
-                                    alert("whic");
                                     $(".drop-file").hide();
                                     $(".drop-image").show();
                                     $(".fileName").val(response.code);
