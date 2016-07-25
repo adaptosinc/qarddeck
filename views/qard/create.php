@@ -1113,7 +1113,7 @@ $this->title = 'Create Qard';
 					$("#working_div .current_blk").find('#previewLink').prepend(str);					
 				}
 			}else{
-				if($('#show_url_span').length != 0)
+				if($("#working_div .current_blk").find('#show_url_span').length != 0 && $("input[id=link_url]").val() != '')
 					$('#show_url_span').remove();
 			}
         });
@@ -1730,19 +1730,18 @@ $this->title = 'Create Qard';
 		 * Click on link icon to see the content
 		**/
 		function displayLink(identifier){
-			var dataurl = $(identifier).data('url');
-			var checkit = $(identifier).find('#hiddenUrl');
-			var displayCheck = 1;
-			callUrl(checkit,displayCheck);
+			var dataurl = $(identifier).attr('data-url');
 			$('.nav-tabs a[href="#linkblock"]').tab('show');
+			$('input[id=link_url]').val(dataurl);
 			return false;
 		}
 		/**********************************/
         $('#url_reset_link').on('click', function() {
             $('#link_div').html("<div class='preview-image'></div>");
-			 $('#embed_div').html("<div class='preview-image'></div>");
+			$('#embed_div').html("<div class='preview-image'></div>");
             $("input[id=link_url]").val('');
 			$("input[id=embed_code]").val('');
+			$('#cmn-toggle-4').prop("checked",false);
         });
         $('#qard_preview').on('click', function() {
         });
