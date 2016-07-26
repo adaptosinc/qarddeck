@@ -61,9 +61,13 @@ class SignUp extends Widget
 					\Yii::$app->user->login($model, '3600*24*30');
 					if(isset(Yii::$app->session['qard']) && Yii::$app->session['qard'] != '' ){
 						\Yii::$app->controller->redirect(['qard/publish']);
+						return "";
 					}
-					else
-					\Yii::$app->controller->redirect(['site/index']);
+					else{
+						\Yii::$app->controller->redirect(['site/index']);
+						return "";
+					}
+					
 				}				
 				
 			}

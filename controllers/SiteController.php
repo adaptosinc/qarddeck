@@ -79,7 +79,7 @@ class SiteController extends Controller
         ]); */
 		$ref = Yii::$app->request->referrer;
 		\Yii::$app->session['ref-url'] = $ref;
-		return $this->redirect('index?login=true');
+		return $this->redirect(['user/register']);
     }
     public function actionLogout()
     {
@@ -137,7 +137,7 @@ class SiteController extends Controller
          return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
     }
     
-       public function actionUpload()
+    public function actionUpload()
     {
         $model = new UploadForm();
 

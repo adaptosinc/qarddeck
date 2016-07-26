@@ -1046,10 +1046,13 @@ $this->title = 'Create Qard';
 					data = $.parseJSON(data);
 					var html = $("#working_div .current_blk").html();
 					if(html == ''){
-						var new_html = "This is a text lnik for your reference";
+						var new_html = (data.extra_text).substring(0,30)+"...";
 						$("#working_div .current_blk").html(new_html);
 					}
-					$("#working_div .current_blk").append(data.link_data);
+					//see whether T icon is already there
+					var icon = $("#working_div .current_blk").find(".icon-mark").length;
+					if(icon == 0)
+						$("#working_div .current_blk").append(data.link_data);
 					$("#working_div .current_blk").attr("contenteditable","true");
 
 				}

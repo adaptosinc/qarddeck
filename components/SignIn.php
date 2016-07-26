@@ -21,16 +21,24 @@ class SignIn extends Widget
         $model = new LoginForm();	    
 		
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+			echo Yii::$app->session['qard'];
 			if(isset(Yii::$app->session['qard']) && Yii::$app->session['qard'] != '' ){
 				\Yii::$app->controller->redirect(['qard/publish']);
-				exit;
+				return "";
 			}
 			if(isset(Yii::$app->session['ref-url']) && Yii::$app->session['ref-url'] != ''){
 				\Yii::$app->controller->redirect(Yii::$app->session['ref-url']);
+				return "";
 			}
-			else
+			else{
 				\Yii::$app->controller->goBack();
+				return "";				
+			}
+
+
         }
+		else
+			
         return $this->render('login', [
             'model' => $model,
         ]);
