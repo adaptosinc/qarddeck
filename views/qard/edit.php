@@ -908,7 +908,7 @@ $this->title = 'Edit Qard';
 			} else {
 		
 				if ($(this).find("div").hasClass("drag") === false) {
-					$(this).find(".bgoverlay-block").after('<div class="drag"><i class="fa fa-arrows"></i></div>');
+					$(this).find(".bgoverlay-block").after('<div class="drag"></div>');
 				}
 				$(this).resizable({ 
 					handles: "s",
