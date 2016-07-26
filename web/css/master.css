@@ -1111,6 +1111,39 @@ li.help-link a {
 .text-block {
     padding: 8px !important;
 }
+
+.drag {
+    /*content: '\f256 \f07d';
+	content: url(../images/hamburger_icon.png);*/
+    font-size: 20px !important;
+    font-family: 'FontAwesome';
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: #fff;
+    width: 30px;
+    height: 40px;
+    text-align: center;
+    z-index: 7;
+    font-size: 24px;
+}
+.drag:after{
+	content: '\f256 \f07d';
+}
+/* .drag{
+	content: '\f256 \f07d';
+    font-size: 20px;
+    font-family: 'FontAwesome';
+    position: absolute;
+    top: 30px;
+    right: -40px;
+    background: #fff;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    z-index: 7;
+    font-size: 24px;
+} */
 span#show_url_span {
     display: block;
     overflow: hidden;
