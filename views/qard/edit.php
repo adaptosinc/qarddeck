@@ -187,7 +187,7 @@ $this->title = 'Edit Qard';
 					if($i == 1)
 						$str .= '<div id="working_div" class="working_div block active">';
 						
-						$str .= '<div id="blk_'.$i.'" data-style-qard="'.$theme['data_style_qard'].'" data-bgcolor-id="'.$theme['data_bgcolor_id'].'" class="bgimg-block parent_current_blk ui-resizable '.$theme['data_style_qard'].'" style="'.$img_block_style.'" >
+						$str .= '<div id="blk_'.$i.'" data-style-qard="'.$model['qard_style'].'" data-bgcolor-id="'.$theme['data_bgcolor_id'].'" class="bgimg-block parent_current_blk ui-resizable '.$model['qard_style'].'" style="'.$img_block_style.'" >
 						<div class="bgoverlay-block" style="'.$overlay_block_style.'">';
 					if($i == 1)
 						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk working_div" contenteditable="true" unselectable="off" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="overflow:hidden" style="'.$text_block_style.'">';
@@ -669,7 +669,7 @@ $this->title = 'Edit Qard';
     </div>
     <!-- /.modal -->
 
-     <script type="text/javascript">
+    <script type="text/javascript">
 	$('#qard-style #themeorder .qard-content').click(function(){
 		$('.qard-content').removeClass('active');
 		$(this).addClass('active');
@@ -869,7 +869,7 @@ $this->title = 'Edit Qard';
 		var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
 		setHeightBlock(this,scrollHeight);
 	});
-/* 	document.querySelector('[contenteditable=true]')
+	/* 	document.querySelector('[contenteditable=true]')
 	  .addEventListener('DOMNodeInserted', function(event) {
 		if (event.target.tagName == 'SPAN') {
 		  event.target.outerHTML = event.target.innerHTML;
@@ -877,8 +877,8 @@ $this->title = 'Edit Qard';
 	  }); */
 	function focusWorkspace(){
 			$("#working_div .current_blk").focus();
-			document.execCommand('styleWithCSS', false, true);
-			document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
+			//document.execCommand('styleWithCSS', false, true);
+			//document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
 		
 	}
 	/*
@@ -1120,7 +1120,6 @@ $this->title = 'Edit Qard';
 			return false;
 		});
 		$('#extra_text_link').click(function(){
-
 			//check selected block first
 			//setTimeout("add_block(true,false);",1000);
 			add_block(true,false);
@@ -1136,10 +1135,13 @@ $this->title = 'Edit Qard';
 					data = $.parseJSON(data);
 					var html = $("#working_div .current_blk").html();
 					if(html == ''){
-						var new_html = "This is a text lnik for your reference";
+						var new_html = (data.extra_text).substring(0,30)+"...";
 						$("#working_div .current_blk").html(new_html);
 					}
-					$("#working_div .current_blk").append(data.link_data);
+					//see whether T icon is already there
+					var icon = $("#working_div .current_blk").find(".icon-mark").length;
+					if(icon == 0)
+						$("#working_div .current_blk").append(data.link_data);
 					$("#working_div .current_blk").attr("contenteditable","true");
 
 				}
@@ -1216,12 +1218,23 @@ $this->title = 'Edit Qard';
 				if($("input[id=link_url]").val() != '')
 				{
 					var str = '<span id="show_url_span">'+$("input[id=link_url]").val()+'</span>';
-					console.log(str);
-					$("#working_div .current_blk").find('#previewLink').prepend(str);					
+					$("#working_div .current_blk").find('#previewLink').prepend(str);		
+					$("#previewLink").attr("data-showurl","true");						
 				}
 			}else{
 				if($("#working_div .current_blk").find('#show_url_span').length != 0 && $("input[id=link_url]").val() != '')
 					$('#show_url_span').remove();
+				$("#previewLink").attr("data-showurl","false");	
+			}
+        });
+        $('#cmn-toggle-6').on('change', function() {
+			if($(this).prop('checked')){
+				if($("input[id=link_url]").val() != '')
+				{
+					$("#previewLink").attr("data-open","new");				
+				}
+			}else{
+				$("#previewLink").attr("data-open","same");	
 			}
         });
 		/**** End of Link Block operations ******/
@@ -1446,10 +1459,10 @@ $this->title = 'Edit Qard';
 			console.log($(this).attr("data-height"));
 			total_data_height = parseInt($(this).attr("data-height"))+parseInt(total_data_height);
 		});
-		if(total_data_height != 16){
+/* 		if(total_data_height != 16){
 			alert("Ouch, please fill the qard!");
 			return;
-		}
+		} */
 		
 		$("#wait").show();
 		// if storing image
@@ -1779,7 +1792,8 @@ $this->title = 'Edit Qard';
 							adjustHeight();
 						}
                         $('#link_div').html(data.preview_html);
-						
+						//add here
+						$('#cmn-toggle-6').prop("checked",true).trigger("change");
                     }
                     else {
                         $('#link_div').html(data);
@@ -1841,6 +1855,12 @@ $this->title = 'Edit Qard';
 			var dataurl = $(identifier).attr('data-url');
 			$('.nav-tabs a[href="#linkblock"]').tab('show');
 			$('input[id=link_url]').val(dataurl);
+			var dataopen = $(identifier).attr('data-open');
+			var datashowurl = $(identifier).attr('data-showurl');
+			if(datashowurl == "true")
+				$('#cmn-toggle-4').prop("checked",true);
+			if(dataopen == "new")
+				$('#cmn-toggle-6').prop("checked",true);
 			return false;
 		}
 		/**********************************/
@@ -1850,6 +1870,7 @@ $this->title = 'Edit Qard';
             $("input[id=link_url]").val('');
 			$("input[id=embed_code]").val('');
 			$('#cmn-toggle-4').prop("checked",false);
+			$('#cmn-toggle-6').prop("checked",false);
         });
         $('#qard_preview').on('click', function() {
         });
@@ -2024,32 +2045,6 @@ $this->title = 'Edit Qard';
 			$('#embed_code').val($(videoLink).attr('data-content-url'));
 		}
 		//Embedd Video ends
-		
-		// Styling Card script starts
-		$('.qrd-pattern').click(function(){
-			$('.qrd-pattern').removeClass('active');
-			$(this).addClass('active');
-			var styleCard = $(this).attr('id');
-			if(styleCard =="line"){
-				$('.bgimg-block').addClass('line');
-				$('.bgimg-block').removeClass('flat gap shadow');
-				$('.bgimg-block').attr('data-style-qard','line');
-			}
-			else if(styleCard=="gap"){
-				$('.bgimg-block').addClass('gap');
-				$('.bgimg-block').removeClass('flat line shadow');
-				$('.bgimg-block').attr('data-style-qard','gap');
-			}
-			else if(styleCard=="shadow" ){
-				$('.bgimg-block').addClass('shadow');
-				$('.bgimg-block').removeClass('flat line gap');
-				$('.bgimg-block').attr('data-style-qard','shadow');
-			}else{
-				$('.bgimg-block').addClass('flat');
-				$('.bgimg-block').removeClass('gap line shadow');
-				$('.bgimg-block').attr('data-style-qard','flat');
-			}
-		}); 
 		$('.embedBlock').click(function(){
 			$('a[href="#paste"]').parent().removeClass('active');
 			$('a[href="#embed"]').parent().addClass('active');
@@ -2062,19 +2057,51 @@ $this->title = 'Edit Qard';
 			$('#paste').addClass('active');
 			$('#embed').removeClass('active');
 		});
+		
+		// Styling Card script starts
+		$('.qrd-pattern').click(function(){
+			$('.qrd-pattern').removeClass('active');
+			$(this).addClass('active');
+			var styleCard = $(this).attr('id');
+			//$('.bgimg-block').removeClass('flat gap shadow line');
+			//$('.bgimg-block').addClass(styleCard);
+			//$('.bgimg-block').attr('data-style-qard',styleCard);
+			
+			$('#qrdstyle-link').attr("data-pattern",styleCard);
+			//add_block(true,false);
+		}); 
+
 		$('#qrdstyle-link').click(function(e){
 			e.preventDefault();
-			//check total height
+			//check total height			
+			//$("h5[class=add-another]").trigger("click");
 			
-			$("h5[class=add-another]").trigger("click");
 			var theme_id = $(this).attr('data-theme');
 			var q_id = $('#qard_id').val();
+			var block_style = $(this).attr('data-pattern');
+			add_block(true,false);
+			//changeBlockStyle(block_style);
+
 			if(q_id){
-				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
+				$.ajax({
+					url :"<?=Url::to(['qard/change-style'], true);?>",
+					data: {"qard_style":block_style,"qard_id":q_id},
+					type: "GET",
+					success: function(){
+						window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
+					}
+				});
+				
 			}else{
 				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
 			}
 		});
+/* 		function changeBlockStyle(block_style){
+			var q_id = $('#qard_id').val();
+			if(q_id){
+
+			}
+		} */
 		// Styling Card script Ends
 	/***************************/
         </script>

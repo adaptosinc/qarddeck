@@ -111,8 +111,9 @@ $this->title = 'Create Qard';
                                 </div>
                             </div>
                         </div>
+						<h5 class="add-another" onclick="add_block(event,true)"><i class="fa fa-plus"></i>Add another block </h5>
                 </div>
-				<h5 class="add-another" onclick="add_block(event,true)"><i class="fa fa-plus"></i>Add another block </h5>
+				
             </div>
             <div class="col-sm-9 col-md-9">
                 <div id="cardtabs">
@@ -1370,10 +1371,10 @@ $this->title = 'Create Qard';
 			console.log($(this).attr("data-height"));
 			total_data_height = parseInt($(this).attr("data-height"))+parseInt(total_data_height);
 		});
-		if(total_data_height != 16){
+/* 		if(total_data_height != 16){
 			alert("Ouch, please fill the qard!");
 			return;
-		}
+		} */
 		
 		$("#wait").show();
 		// if storing image
@@ -1962,25 +1963,9 @@ $this->title = 'Create Qard';
 			$('.qrd-pattern').removeClass('active');
 			$(this).addClass('active');
 			var styleCard = $(this).attr('id');
-			if(styleCard =="line"){
-				$('.bgimg-block').addClass('line');
-				$('.bgimg-block').removeClass('flat gap shadow');
-				$('.bgimg-block').attr('data-style-qard','line');
-			}
-			else if(styleCard=="gap"){
-				$('.bgimg-block').addClass('gap');
-				$('.bgimg-block').removeClass('flat line shadow');
-				$('.bgimg-block').attr('data-style-qard','gap');
-			}
-			else if(styleCard=="shadow" ){
-				$('.bgimg-block').addClass('shadow');
-				$('.bgimg-block').removeClass('flat line gap');
-				$('.bgimg-block').attr('data-style-qard','shadow');
-			}else{
-				$('.bgimg-block').addClass('flat');
-				$('.bgimg-block').removeClass('gap line shadow');
-				$('.bgimg-block').attr('data-style-qard','flat');
-			}
+			$('.bgimg-block').removeClass('flat gap shadow line');
+			$('.bgimg-block').addClass(styleCard);
+			$('.bgimg-block').attr('data-style-qard',styleCard);
 		}); 
 		$('.embedBlock').click(function(){
 			$('a[href="#paste"]').parent().removeClass('active');

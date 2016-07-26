@@ -302,7 +302,14 @@ class QardController extends Controller
 		}
 			
 	} 
-
+	public function actionChangeStyle($qard_style, $qard_id){
+		$model = Qard::findOne($qard_id);
+		if($model){
+			$model->qard_style = $qard_style;
+			$model->save(false);
+		}
+		return true;
+	}
     /**
      * Updates an existing Qard model.
      * If update is successful, the browser will be redirected to the 'view' page.
