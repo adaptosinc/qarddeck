@@ -648,8 +648,10 @@ $this->title = 'Edit Qard';
 		 } */
 		 $('#deck-style').modal('show').find('.modal-body').load($(this).attr('href'));
 	   });	   
+	   adjustHeight();
 	});");
 	?>
+
     <div class="modal fade" tabindex="-1" id="Block_error" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
