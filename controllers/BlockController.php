@@ -128,7 +128,8 @@ class BlockController extends Controller
 		if(isset($data['block_id']) && $data['block_id'] != "undefined"){
 			$block = $this->findModel($data['block_id']);
 			if($block){
-				$block->extra_text = $data['extra_text'];
+				if($data['extra_text'] != 0)
+					$block->extra_text = $data['extra_text'];
 				$block->extra_text_title = $data['title'];
 				if($block->save(false)){
 					$data['status'] = true;
