@@ -44,7 +44,7 @@ $this->title = 'Preview Qard';
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
 
     <section class="consume-card save">
-
+        <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
 		<div class="row">
 			<div class="col-sm-8 col-md-8">
 				<h3><span class="pull-left"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button></span><?=$model->title?></h3>
@@ -305,7 +305,47 @@ $this->title = 'Preview Qard';
 	</div>
 </div>
         </div>
-
+			<div class="bottom-card row"> <!--bottom row starts -->
+				<div class="col-sm-8 col-md-8">
+				   
+				</div>
+				<div class="col-sm-4 col-md-4">
+					<ul class="help-list"> 
+						<li><button class="btn qard" name="preview">Save as Template</button></li>
+						<li><button class="btn btn-warning" name="share" id="share_qard">Share Qard</button></li>
+					</ul>
+				</div>
+				
+				<!-- Modal Share -->
+				<div class="modal fade" id="myModalshare" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+				  <div class="modal-dialog" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<h4 class="modal-title" id="myModalLabel">Awesome! Your Qard is live!</h4>
+					  </div>
+					  <div class="modal-body">
+						<img src="<?=Yii::$app->homeUrl?>images/success_icon.png" alt="">
+						<h4><?=Yii::$app->homeUrl?>qard/consume?qard_id=<?=$model->qard_id?></h4>
+						<p>Share this link on social media, email, or whatever.</p>
+						<button class="btn btn-warning" onClick="location.href='<?=Yii::$app->homeUrl?>qard/consume?qard_id=<?=$model->qard_id?>'">View Qard</button>
+						<div class="row">
+							<div class="col-sm-6 col-md-6">
+								<h4><a href="">Add to a Deck</a></h4>
+							</div>
+							<div class="col-sm-6 col-md-6">
+								<h4><a href="">Save as Template</a></h4>
+							</div>                                            
+						</div>
+					  </div>
+					  <div class="modal-footer">
+						<h4><i class="fa fa-plus"></i>Create Qard</h4>
+					  </div>
+					</div>
+				  </div>
+				</div>          <!-- Modal Share -->                            
+				
+			</div> <!--bottom row ends -->
     </section>
     <!-- block_error popup -->
 
@@ -340,7 +380,21 @@ $this->title = 'Preview Qard';
                 $('.tab-content').css('display','block');            
             });
         });
-	
+		$("#share_qard").click(function(e){
+			e.preventDefault();
+			//save to public status here
+			$("#wait").show();
+			$.ajax({
+				url : "<?=Url::to(['qard/publish'], true)?>",
+				type : "GET",
+				data : {'q_id' : '<?= $model->qard_id?>'},
+				success: function(response){
+						$("#wait").hide();
+						$('#myModalshare').modal('show');
+					
+				}
+			});			
+		});
 		$('#cardtabs a').click(function (e) {
 		  e.preventDefault();
 		  $(this).tab('show');

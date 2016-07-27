@@ -1709,6 +1709,9 @@ $this->title = 'Edit Qard';
 	}
 	function commanAjaxFun(postData, callFrom, new_block) {
 		//console.log(postData);return;
+		if (callFrom == "save_block") {
+			$("#wait").show();
+		}
 		$.ajax({
 			url: "<?=Url::to(['block/create'], true)?>",
 			type: "POST",
@@ -1717,7 +1720,7 @@ $this->title = 'Edit Qard';
 			async: false,
 			success: function(data) {
 				if (callFrom === "add_block") {
-					$("#wait").hide();
+					//$("#wait").hide();
 					//var total_height = totalHeight();
 					//	       checkHeight();
 					var qard = '';
@@ -1783,8 +1786,8 @@ $this->title = 'Edit Qard';
 				else {
 				$("#" + data.blk_id).find(".current_blk").attr("data-block_id", data.block_id);
 				$("#" + data.blk_id).find(".current_blk").attr("data-theme_id", data.theme_id);
-				var url = '<?=Url::to(['qard/publish'], true);?>';
-				window.location.replace(url);
+				var url = '<?=Url::to(['qard/preview-qard'], true);?>';
+				window.location.replace(url+"?qard_id="+data.qard_id);
 				$("#wait").hide();
 				}
 				$("#working_div .current_blk").focus();

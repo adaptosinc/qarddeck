@@ -284,8 +284,21 @@ class QardController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-	public function actionPublish(){
-		//if(!$id)
+	public function actionPublish($q_id=null){
+		
+		if($q_id){
+			//handle this as ajax request from share qard button, preview page
+			$model = Qard::findOne($q_id);
+			$model->status = 1;
+			$model->user_id = \Yii::$app->user->id;
+			$model->qard_image_url = $this->generateQardImage($q_id);
+			if($model->save(false)){
+				return true;
+			}else{
+				return false;
+			}
+			exit;
+		}
 			
 		$id = Yii::$app->session['qard'];
 		$model = Qard::findOne($id);
