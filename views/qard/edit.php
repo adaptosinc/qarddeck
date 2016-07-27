@@ -1717,7 +1717,7 @@ $this->title = 'Edit Qard';
 			type: "POST",
 			data: postData,
 			dataType: "json",
-			async: false,
+			async: true,
 			success: function(data) {
 				if (callFrom === "add_block") {
 					//$("#wait").hide();
