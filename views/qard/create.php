@@ -798,13 +798,13 @@ $this->title = 'Create Qard';
 	/***  **/
         /**** for drag the block ******/
 		$(document).delegate("#add-block .parent_current_blk", "mouseenter mouseleave", function(event) {
-			if (event.type === "mouseleave") {
-				$(this).find(".drag").remove();
-			} else {
+				if (event.type === "mouseleave") {
+					$(this).find(".drag").remove();
+				} else {
 		
-			if ($(this).find("div").hasClass("drag") === false) {
-				$(this).find(".bgoverlay-block").after('<div class="drag"></div>');
-			}
+				if ($(this).find("div").hasClass("drag") === false) {
+					$(this).find(".bgoverlay-block").after('<div class="drag"></div>');
+				}
 
 				$(this).resizable({ 
 					handles: "s",
@@ -813,12 +813,13 @@ $this->title = 'Create Qard';
 						$(this).trigger('dblclick');
 					},
 					resize: function(e, ui) {
-						//var resized height
 						var scrollHeight = Math.ceil(ui.size.height / 37.5);
 						//var initial height
 						var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight) / 37.5);
 						$(this).find(".current_blk").attr('data-init-height',initialHeight);
-						if(totalHeight == 16 ){
+						var total = totalHeight();
+						//console.log("total height:"+total);
+						if(total >= 16 ){
 							if(scrollHeight < initialHeight ){
 								adjustHeight();	
 							}else{
@@ -829,8 +830,6 @@ $this->title = 'Create Qard';
 							setHeightBlock($(this).find(".current_blk"),scrollHeight);
 							$(this).find(".current_blk").attr('data-resized','true');								
 						}
-
-
 					},
 					stop: function(e, ui) {
 						var scrollHeight = Math.ceil(ui.size.height / 37.5);
@@ -861,6 +860,14 @@ $this->title = 'Create Qard';
 			onDragStart: function($item, container, _super) {
 				if (!container.options.drop) $item.clone().insertAfter($item);
 				_super($item, container);
+			},
+			stop: function(){
+				totalBlocks = $("#add-block").find(".current_blk").length;
+				var max_allowed_position = parseInt(totalBlocks+2); 
+				console.log("Pos:"+$('.add-another').index());
+				if($('.add-another').index() !== max_allowed_position)
+					return false;
+				
 			},
 			update: function() {
 				var postData = getNSetOrderOfBlocks();

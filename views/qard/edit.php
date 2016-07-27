@@ -968,8 +968,19 @@ $this->title = 'Edit Qard';
 			group: 'no-drop',
 			handle: '.drag',
 			onDragStart: function($item, container, _super) {
+				
 				if (!container.options.drop) $item.clone().insertAfter($item);
 				_super($item, container);
+			},
+			stop: function(event, ui){
+				console.log(ui.item.attr("id"));
+				ui.item.trigger("dblclick");
+				totalBlocks = $("#add-block").find(".current_blk").length;
+				var max_allowed_position = parseInt(totalBlocks+2); 
+				console.log("Pos:"+$('.add-another').index());
+				if($('.add-another').index() !== max_allowed_position)
+					return false;
+				
 			},
 			update: function() {
 				var postData = getNSetOrderOfBlocks();
