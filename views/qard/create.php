@@ -865,7 +865,7 @@ $this->title = 'Create Qard';
 				ui.item.trigger("dblclick");
 				totalBlocks = $("#add-block").find(".current_blk").length;
 				var max_allowed_position = parseInt(totalBlocks+2); 
-				if($('.add-another').index() !== max_allowed_position)
+				if($('.add-another').length > 0 && $('.add-another').index() !== max_allowed_position)
 					return false;
 				
 			},
