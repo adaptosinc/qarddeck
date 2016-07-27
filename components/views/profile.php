@@ -94,7 +94,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 		    </div>         
 			<!-- public profile -->
 			<!-- Change Your Password and social account -->
-		    <?php if(\Yii::$app->user->identity->login_type == 'email'){  ?>
+		    <?php //if(\Yii::$app->user->identity->login_type == 'email'){  ?>
 			    <div class="col-sm-4 col-md-4">
 				    <h3 class="main-title">Change Your Password</h3>
 				    <div class="form-group">
@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 						</div>	
 					</div>
 			    </div>					  
-			<?php  } ?>
+			<?php  //} ?>
 		<!-- Change Your Password and social account -->
 	    </div>          <!-- row -->
 	    <div class="update col-md-9 col-md-offset-2">

@@ -106,13 +106,13 @@ AppAsset::register($this);
 						<div id="navbar" class="navbar-collapse collapse">
 							
 						  <ul class="nav navbar-nav">
-							<li class="active"><a href="#">Home</a></li>
-							<li><a href="#about">My Profile</a></li>
+							<li><a href="<?=\Yii::$app->homeUrl?>">Home</a></li>
+							<li><a href="<?=\Yii::$app->homeUrl?>/user/profile">My Profile</a></li>
 							<li><a href="#contact">Templates</a></li>
-							<li><a href="#contact">Getting Started</a></li>
-							<li><a href="#contact">QardStream</a></li>
-							<li><a href="#contact">About</a></li>
-							<li><a href="#contact">Contact Us</a></li>
+							<li><a href="<?=\Yii::$app->homeUrl?>">Getting Started</a></li>
+							<li><a href="<?=\Yii::$app->homeUrl?>/qard/index">QardStream</a></li>
+							<li><a href="<?=\Yii::$app->homeUrl?>">About</a></li>
+							<li><a href="<?=\Yii::$app->homeUrl?>">Contact Us</a></li>
 						  </ul>
 						</div><!--/.nav-collapse -->
 
