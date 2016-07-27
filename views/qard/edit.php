@@ -969,7 +969,7 @@ $this->title = 'Edit Qard';
 				_super($item, container);
 			},
 			stop: function(event, ui){
-				//ui.item.trigger("dblclick");
+				ui.item.trigger("dblclick");
 				totalBlocks = $("#add-block").find(".current_blk").length;
 				
 				if ($("#qard_id").length == 0)
