@@ -973,9 +973,9 @@ $this->title = 'Edit Qard';
 				totalBlocks = $("#add-block").find(".current_blk").length;
 				
 				if (!$("#qard_id").attr("value"))
-					var max_allowed_position = parseInt(totalBlocks+2); 
+					var max_allowed_position = parseInt(totalBlocks+1); 
 				else 
-					var max_allowed_position = parseInt(totalBlocks+3); 
+					var max_allowed_position = parseInt(totalBlocks+2); 
 				
 				var total = totalHeight();	
 				if( total < 16 && $('.add-another').index() !== max_allowed_position){
@@ -983,11 +983,7 @@ $this->title = 'Edit Qard';
 					
 					console.log("Dragging Not allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());
 					return false;	
-				}
-
-
-					
-				
+				}			
 			},
 			update: function() {
 				var postData = getNSetOrderOfBlocks();
