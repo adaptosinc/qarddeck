@@ -127,11 +127,14 @@ class BlockController extends Controller
 		$data = Yii::$app->request->post();
 		if(isset($data['block_id']) && $data['block_id'] != "undefined"){
 			$block = $this->findModel($data['block_id']);
-			if($block){
-				if($data['extra_text'] != 0)
-					$block->extra_text = $data['extra_text'];
+			//print_r($data['extra_text']);die;
+			if(isset($block)){
+
+				$block->extra_text = $data['extra_text'];
 				$block->extra_text_title = $data['title'];
+				
 				if($block->save(false)){
+					
 					$data['status'] = true;
 					$data['link_data'] = "<span block_id='".$block->block_id."' class='icon-mark pull-right' onclick='showExtraText(this);'><img src='".Yii::$app->homeUrl."images/text_icon.png' alt=''></span>";
 					return json_encode($data);
@@ -362,7 +365,7 @@ class BlockController extends Controller
 	//for text
 	if(!empty($post['text'])){
 	    $block->text=$post['text'];
-	    $block->extra_text=$post['extra_text'];
+/* 	    $block->extra_text=$post['extra_text']; */
 	    $is_true=true;
 	}
 	if(!empty($post['thumb_values'])){

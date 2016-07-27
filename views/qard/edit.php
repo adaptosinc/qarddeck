@@ -1157,6 +1157,7 @@ $this->title = 'Edit Qard';
 		$('#extra_text_link').click(function(){
 			//check selected block first
 			//setTimeout("add_block(true,false);",1000);
+			//console.log($("#working_div .current_blk").attr('data-block_id'));
 			add_block(true,false);
 			$.ajax({
 				url : "<?=Url::to(['block/add-text'], true)?>",
@@ -1166,18 +1167,27 @@ $this->title = 'Edit Qard';
 						'title' : $("input[name=extra-text]").val(),
 					  },
 				success: function(data){
-					console.log(data.link_data);
 					data = $.parseJSON(data);
-					var html = $("#working_div .current_blk").html();
-					if(html == ''){
-						var new_html = (data.extra_text).substring(0,30)+"...";
-						$("#working_div .current_blk").html(new_html);
+					if(data.status == true){
+						if(data.extra_text != ""){
+							var html = $("#working_div .current_blk").html();
+							if(html == ''){
+								var new_html = (data.extra_text).substring(0,30)+"...";
+								$("#working_div .current_blk").html(new_html);
+							}
+							//see whether T icon is already there
+							var icon = $("#working_div .current_blk").find(".icon-mark").length;
+							if(icon == 0)
+								$("#working_div .current_blk").append(data.link_data);
+							$("#working_div .current_blk").attr("contenteditable","true");								
+						}else{
+							$("#working_div .current_blk").find(".icon-mark").remove();
+						}
+					
 					}
-					//see whether T icon is already there
-					var icon = $("#working_div .current_blk").find(".icon-mark").length;
-					if(icon == 0)
-						$("#working_div .current_blk").append(data.link_data);
-					$("#working_div .current_blk").attr("contenteditable","true");
+					else{
+						alert("Error! Please try again later");
+					}	
 
 				}
 			});
