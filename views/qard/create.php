@@ -1615,7 +1615,7 @@ $this->title = 'Create Qard';
 			type: "POST",
 			data: postData,
 			dataType: "json",
-			async: true,
+			async: false,
 			success: function(data) {
 				if (callFrom === "add_block") {
 					//$("#wait").hide();
