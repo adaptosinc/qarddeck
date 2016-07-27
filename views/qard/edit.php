@@ -779,7 +779,7 @@ $this->title = 'Edit Qard';
 	/* 	
 	  MAIN FUNCTION
 	 */
-	$(document).delegate("#working_div .current_blk", "input blur keyup keydown paste", function(event) {		
+	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {		
 		//select color and apply span
 		if (event.type === "input") {
 			focusWorkspace();
@@ -917,11 +917,7 @@ $this->title = 'Edit Qard';
 						$(this).trigger('dblclick');
 					},
 					resize: function(e, ui) {
-/* 						var scrollHeight = Math.ceil(ui.size.height / 37.5);
-						var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight) / 37.5);
-						$(this).find(".current_blk").attr('data-init-height',initialHeight);
-						setHeightBlock($(this).find(".current_blk"),scrollHeight);
-						$(this).find(".current_blk").attr('data-resized','true');	 */
+
 						//var resized height
 						var scrollHeight = Math.ceil(ui.size.height / 37.5);
 						//var initial height
@@ -975,10 +971,22 @@ $this->title = 'Edit Qard';
 			stop: function(event, ui){
 				ui.item.trigger("dblclick");
 				totalBlocks = $("#add-block").find(".current_blk").length;
-				var max_allowed_position = parseInt(totalBlocks+2); 
+				
+				if (!$("#qard_id").attr("value"))
+					var max_allowed_position = parseInt(totalBlocks+2); 
+				else 
+					var max_allowed_position = parseInt(totalBlocks+3); 
+				
 				var total = totalHeight();	
-				if( total <= 16 && $('.add-another').index() !== max_allowed_position)
-					return false;
+				if( total < 16 && $('.add-another').index() !== max_allowed_position){
+				//if(total <= 16){
+					
+					console.log("Dragging Not allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());
+					return false;	
+				}
+
+
+					
 				
 			},
 			update: function() {
