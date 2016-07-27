@@ -861,10 +861,10 @@ $this->title = 'Create Qard';
 				if (!container.options.drop) $item.clone().insertAfter($item);
 				_super($item, container);
 			},
-			stop: function(){
+			stop: function(event, ui){
+				ui.item.trigger("dblclick");
 				totalBlocks = $("#add-block").find(".current_blk").length;
 				var max_allowed_position = parseInt(totalBlocks+2); 
-				console.log("Pos:"+$('.add-another').index());
 				if($('.add-another').index() !== max_allowed_position)
 					return false;
 				

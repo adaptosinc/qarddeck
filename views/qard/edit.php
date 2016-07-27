@@ -973,11 +973,9 @@ $this->title = 'Edit Qard';
 				_super($item, container);
 			},
 			stop: function(event, ui){
-				console.log(ui.item.attr("id"));
 				ui.item.trigger("dblclick");
 				totalBlocks = $("#add-block").find(".current_blk").length;
 				var max_allowed_position = parseInt(totalBlocks+2); 
-				console.log("Pos:"+$('.add-another').index());
 				if($('.add-another').index() !== max_allowed_position)
 					return false;
 				
