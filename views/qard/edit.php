@@ -106,7 +106,7 @@ $this->title = 'Edit Qard';
         <div class="row">
 
             <div class="col-sm-3 col-md-3 add-block">
-                <div id="add-block" class="qard-div add-block-qard" style="overflow:hidden">
+                <div id="add-block" class="qard-div add-block-qard" style="overflow:block">
 						<?php
 						if(isset($model['qard_id'])){
 							echo '<input type="hidden" id="qard_id" name="qard_id" value="'.$model['qard_id'].'">';
@@ -913,16 +913,22 @@ $this->title = 'Edit Qard';
 				$(this).resizable({ 
 					handles: "s",
 					delay: 200,
+					start: function( event, ui ) {
+						$(this).trigger('dblclick');
+					},
 					resize: function(e, ui) {
-						console.log(ui.size.height);
 						var scrollHeight = Math.ceil(ui.size.height / 37.5);
-						setHeightBlock($("#working_div .current_blk"),scrollHeight);
-						$("#working_div .current_blk").attr('data-resized','true');	
-						
-						//ui.size.height = Math.ceil(ui.size.height / 37.5);			
-				/* 		if (ui.size.width > (ui.originalSize.width + maxWidthOffset)) {
-							$(this).resizable('widget').trigger('mouseup');
-						} */
+						var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight) / 37.5);
+						$(this).find(".current_blk").attr('data-init-height',initialHeight);
+						setHeightBlock($(this).find(".current_blk"),scrollHeight);
+						$(this).find(".current_blk").attr('data-resized','true');	
+
+					},
+					stop: function(e, ui) {
+						var scrollHeight = Math.ceil(ui.size.height / 37.5);
+						var initialHeight = $(this).find(".current_blk").attr("data-init-height");
+						if(scrollHeight < initialHeight )
+							adjustHeight();						
 					}
 				});				
 			}
