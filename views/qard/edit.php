@@ -973,9 +973,9 @@ $this->title = 'Edit Qard';
 				totalBlocks = $("#add-block").find(".current_blk").length;
 				
 				if (!$("#qard_id").attr("value"))
-					var max_allowed_position = parseInt(totalBlocks+1); 
-				else 
 					var max_allowed_position = parseInt(totalBlocks+2); 
+				else 
+					var max_allowed_position = parseInt(totalBlocks+3); 
 				
 				var total = totalHeight();	
 				if( total < 16 && $('.add-another').index() !== max_allowed_position){
