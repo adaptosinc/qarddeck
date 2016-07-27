@@ -862,13 +862,13 @@ $this->title = 'Create Qard';
 				_super($item, container);
 			},
 			stop: function(event, ui){
-				ui.item.trigger("dblclick");
+				//ui.item.trigger("dblclick");
 				totalBlocks = $("#add-block").find(".current_blk").length;
 				
-				if (!$("#qard_id").attr("value"))
-					var max_allowed_position = parseInt(totalBlocks+2); 
+				if ($("#qard_id").length == 0)
+					var max_allowed_position = parseInt(totalBlocks+1); 
 				else 
-					var max_allowed_position = parseInt(totalBlocks+3); 
+					var max_allowed_position = parseInt(totalBlocks+2); 
 				
 				var total = totalHeight();	
 				if( total < 16 && $('.add-another').index() !== max_allowed_position){
