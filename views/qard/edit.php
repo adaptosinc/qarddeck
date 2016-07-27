@@ -976,6 +976,7 @@ $this->title = 'Edit Qard';
 				ui.item.trigger("dblclick");
 				totalBlocks = $("#add-block").find(".current_blk").length;
 				var max_allowed_position = parseInt(totalBlocks+2); 
+				var total = totalHeight();	
 				if( total <= 16 && $('.add-another').index() !== max_allowed_position)
 					return false;
 				
