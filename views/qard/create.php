@@ -711,26 +711,8 @@ $this->title = 'Create Qard';
 				content = window.clipboardData.getData('Text');
 
 				document.selection.createRange().pasteHTML(content);
-			}   
-
-			//$(this).find( "span" ).contents().unwrap();
-			//$(this).find( "p" ).contents().unwrap();
-			//$(this).find( "div" ).contents().unwrap();
-			//focusWorkspace();
-			//$(this).html($(this).text());
-			//$(this).contents().wrap('<span>');
-
-	
+			}   	
 		}
-		
-  /*  if (event.keyCode === 8) {
-			$(this).find( "span" ).contents().unwrap();
-			$(this).find( "p" ).contents().unwrap();
-			$(this).find( "div" ).contents().unwrap();
-			focusWorkspace();
-			$(this).html($(this).text());
-			$(this).contents().wrap('<span>');
-    } */
 		
 		/*
 		 * calculate the total height of the qard
@@ -831,11 +813,23 @@ $this->title = 'Create Qard';
 						$(this).trigger('dblclick');
 					},
 					resize: function(e, ui) {
+						//var resized height
 						var scrollHeight = Math.ceil(ui.size.height / 37.5);
+						//var initial height
 						var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight) / 37.5);
 						$(this).find(".current_blk").attr('data-init-height',initialHeight);
-						setHeightBlock($(this).find(".current_blk"),scrollHeight);
-						$(this).find(".current_blk").attr('data-resized','true');	
+						if(totalHeight == 16 ){
+							if(scrollHeight < initialHeight ){
+								adjustHeight();	
+							}else{
+								setHeightBlock($(this).find(".current_blk"),initialHeight);
+							}
+						}else{
+							//set height to the resized height
+							setHeightBlock($(this).find(".current_blk"),scrollHeight);
+							$(this).find(".current_blk").attr('data-resized','true');								
+						}
+
 
 					},
 					stop: function(e, ui) {
@@ -1208,6 +1202,15 @@ $this->title = 'Create Qard';
 		$(elem).css("height", 'auto');
 		var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight) / 37.5);
 		setHeightBlock(elem,scrollHeight);		
+	}
+	function totalHeight(){
+		var qard_height= 0;
+		$('.current_blk').each(function(i, obj) {
+			var block_height = $(obj).attr('data-height');
+			console.log('block-height:'+block_height);
+			qard_height =  parseInt(qard_height)+parseInt(block_height);
+		})
+		return qard_height;
 	}
 	function setHeightBlock(elem,offset){
 		//check total block height before that
