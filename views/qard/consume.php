@@ -66,6 +66,11 @@ $this->title = 'Preview Qard';
 				</div>
 			</div>                        
         </div>
+		<div class="row">
+			<div class="col-sm-8 col-md-8">
+				<h3><span class="pull-left"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button></span><?=$model->title?></h3>
+			</div>
+		</div>
 		<div id="decknavbar" class="newdeck navbar-collapse collapse" aria-expanded="false" style="height: 0px;">
 			<ul class="nav navbar-nav">
 			  <li>
