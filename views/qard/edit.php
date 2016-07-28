@@ -220,7 +220,7 @@ $this->title = 'Edit Qard';
                         <li role="presentation" id="deleteblock"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/delete_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/delete_icon_light.png" class="light" alt=""></a></li>
 						
                     </ul>
-                    <!--added by vijay-->
+                    <!---->
 
 
                     <!-- Tab panes -->
@@ -309,7 +309,6 @@ $this->title = 'Edit Qard';
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
                                     <div class="dropzone" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;">
-                                        <input type="text" name="vijay" value="hello">
                                         <input type="file" name="thumb" required="required" />
                                     </div>
                                 </form>
@@ -624,7 +623,7 @@ $this->title = 'Edit Qard';
 	$this->registerJs("$(function() {
 	   $('#add_to_deck').click(function(e) {
 		 e.preventDefault();
-		 console.log($(this).attr('href'));
+		 //console.log($(this).attr('href'));
 		 var qard_id = $('#qard_id').val(); 
 /* 		 if(typeof qard_id == 'undefined' || qard_id == '' || qard_id == 0)
 		 {
@@ -695,7 +694,7 @@ $this->title = 'Edit Qard';
 		});
 		
 		function saveDeck(deck){
-			 console.log("Handle the saving here");							
+			 //console.log("Handle the saving here");							
 			 var formData = new FormData($(deck)[0]);
 				$.ajax( {
 				  url: '<?=Url::to(['deck/create-ajax'], true)?>',
@@ -727,16 +726,16 @@ $this->title = 'Edit Qard';
 				type : 'POST',
 				data : {'qard_id':qard_id,'deck_id':deck_id},
 				success : function(response){
-					console.log(response);
+					//console.log(response);
 					//load the a new create page with a deckid included request
 					var red_url = "<?=Url::to(['qard/edit'], true)?>";
 					red_url = red_url+"?id="+qard_id;
-					console.log(red_url);
+					//console.log(red_url);
 					window.location.replace(red_url);
 					
 				}				
 			});
-			console.log(deck_id);
+			//console.log(deck_id);
 		}
 		function setBGColor(elem){
 			color = $(elem).attr('data-color');
@@ -773,7 +772,7 @@ $this->title = 'Edit Qard';
 			event.preventDefault();
 			// get text representation of clipboard
 			
-			//console.log(event.originalEvent.clipboardData);
+			////console.log(event.originalEvent.clipboardData);
 			if (event.clipboardData || event.originalEvent.clipboardData) {
 				content = (event.originalEvent || event).clipboardData.getData('text/plain');
 
@@ -810,10 +809,10 @@ $this->title = 'Edit Qard';
 		var qard_height= 0;
 		$('.current_blk').each(function(i, obj) {
 			var block_height = $(obj).attr('data-height');
-			console.log('block-height:'+block_height);
+			//console.log('block-height:'+block_height);
 			qard_height =  parseInt(qard_height)+parseInt(block_height);
 		})
-		console.log(qard_height);
+		//console.log(qard_height);
 		/*
 		 *If qard is filled with 15,hide the add block button
 		 */
@@ -829,7 +828,7 @@ $this->title = 'Edit Qard';
 		**/
 		if(event.which != 8 && qard_height >= 17){
 			event.preventDefault();
-			console.log('stopped');
+			//console.log('stopped');
 			var last = $(this).children(':last-child');
 			var html = $(last).html();
 			$('#extra_text').html(html);
@@ -845,7 +844,7 @@ $this->title = 'Edit Qard';
 				setHeightBlock(this,scrollHeight);
 			}
 			else{
-				console.log('resized'+scrollHeight);
+				//console.log('resized'+scrollHeight);
 				return;				
 			}
 		} 
@@ -872,7 +871,7 @@ $this->title = 'Edit Qard';
 	 * Double click to edit the block again
 	 */
 	$(document).delegate('.add-block-qard > div', "dblclick", function(event) {
-		console.log($(this).attr("id"));
+		//console.log($(this).attr("id"));
 		if ($(this).attr("id") !== 'working_div') {
 			$('#working_div .current_blk').removeAttr("unselectable");
 			$("#working_div .current_blk").removeAttr("contenteditable");
@@ -911,7 +910,7 @@ $this->title = 'Edit Qard';
 						var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight) / 37.5);
 						$(this).find(".current_blk").attr('data-init-height',initialHeight);
 						var total = totalHeight();
-						console.log("total height:"+total);
+						//console.log("total height:"+total);
 						if(total >= 16 ){
 							if(scrollHeight < initialHeight ){
 								adjustHeight();	
@@ -940,7 +939,7 @@ $this->title = 'Edit Qard';
 		$(document).mouseup(function(event){
 		if (dragging) {
 			var percentage = Math.ceil((event.pageY-148)/37.5);
-			console.log("percentage"+percentage);
+			//console.log("percentage"+percentage);
 			setHeightBlock(percentage);
 			$(document).unbind('mousemove');
 			dragging = false;
@@ -950,22 +949,22 @@ $this->title = 'Edit Qard';
 		$('#add-block').sortable({
 			group: 'no-drop',
 			handle: '.drag',
+			cursorAt: { right: 5},
+			tolerance: 'intersect',
 			onDragStart: function($item, container, _super) {
 				if (!container.options.drop) $item.clone().insertAfter($item);
 				_super($item, container);
 			},
 			start: function(event, ui){
-				console.log("started");
-
-
+				//console.log("started");
 			},
 			stop: function(event, ui){
-				
+
 				if(!$('.add-another').is(':last-child')){					
-					console.log("Dragging Not allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());
+					//console.log("Dragging Not allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());
 					return false;	
 				}else{
-					console.log("Dragging allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());			
+					//console.log("Dragging allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());			
 				}
 				
 				ui.item.trigger("dblclick");
@@ -976,7 +975,7 @@ $this->title = 'Edit Qard';
 						
 				});		
 				totalBlocks = $("#add-block").find(".current_blk").length;	
-				//console.log("totla now"+totalBlocks);				
+				////console.log("totla now"+totalBlocks);				
 				if ($("#qard_id").length == 0)
 					var max_allowed_position = parseInt(totalBlocks+1); 
 				else 
@@ -984,7 +983,7 @@ $this->title = 'Edit Qard';
 				
 				var total = totalHeight();	
 				if($('.add-another').is(':last-child')){
-					console.log("last");
+					//console.log("last");
 				}
 
 	
@@ -1015,7 +1014,7 @@ $this->title = 'Edit Qard';
 		
 		});
 		$('#working_div .text-block').bind('resize', function(){
-            console.log('resized');
+            //console.log('resized');
 		}); */
 		/** End of drag and drop ***/
 		
@@ -1095,15 +1094,15 @@ $this->title = 'Edit Qard';
 		 */
 		$('#text_align').change(function() {
 			document.execCommand($(this).val(), false, null);
-			console.log($(this).val());
+			//console.log($(this).val());
 			$('.working_div').focus();
 			return false;
 		});
 		//replaced by this
 		$("#alignment_select li a").click(function(){
-		  //console.log($(this).attr("data-align"));
+		  ////console.log($(this).attr("data-align"));
 		  	document.execCommand($(this).attr("data-align"), false, null);
-			console.log($(this).val());
+			//console.log($(this).val());
 			$('.working_div').focus();
 			return false;
 		}); 
@@ -1166,7 +1165,7 @@ $this->title = 'Edit Qard';
 		$('#extra_text_link').click(function(){
 			//check selected block first
 			//setTimeout("add_block(true,false);",1000);
-			//console.log($("#working_div .current_blk").attr('data-block_id'));
+			////console.log($("#working_div .current_blk").attr('data-block_id'));
 			add_block(true,false);
 			$.ajax({
 				url : "<?=Url::to(['block/add-text'], true)?>",
@@ -1242,14 +1241,14 @@ $this->title = 'Edit Qard';
         });
 /*         $(document).delegate('span.review-qard', 'dblclick', function() {
             //	e.preventDefault();
-            console.log('Double clicked');
+            //console.log('Double clicked');
             $('.nav-tabs a[href="#linkblock"]').tab('show');
             //$('#linkblock').tab('show')
             //fill the area with this content
             var title = $(this).find('span.url-content >h4').html();
             var content = $(this).find('span.url-text >p').html();
             var image = $(this).find('span.img-preview').html();
-            console.log(title);
+            //console.log(title);
             if (typeof image === 'undefined') {
                 var html = "<div id='review-qard-id' class='review-qard row'>" +
                     "<div class='col-sm-12 col-md-12' id='title_desc_url'><div class='url-content'><h4><input name='url_title' type='text' class='form-control' value='" + title + "'></h4>" +
@@ -1306,7 +1305,7 @@ $this->title = 'Edit Qard';
 			if ($(this).is(":checked")) {
 				if (parseInt($("#working_div .current_blk").attr("data-height")) < 4) {
 					setHeightBlock($("#working_div .current_blk"),4);
-					console.log($("#working_div .current_blk").attr("data-height"));
+					//console.log($("#working_div .current_blk").attr("data-height"));
 				}
 			} else {
 				//removeBr();
@@ -1315,17 +1314,17 @@ $this->title = 'Edit Qard';
             // for image
 		$(document).delegate("#image_opc", "blur keydown keyup", function() {
 			var per = parseInt($(this).val() || 1) / 100;
-			console.log("image opc" + per);
+			//console.log("image opc" + per);
 			$("#working_div .bgimg-block").css('opacity', per);
 		});
 		$(document).delegate("#overlay_color", "blur", function() {
 			var color = $(this).val();
-			console.log(color);
+			//console.log(color);
 			$("#working_div .bgoverlay-block").css('background-color', color);
 		});
 		$(document).delegate("#overlay_opc", "blur keydown  keyup", function() {
 			var per = parseInt($(this).val()) / 100;
-			console.log("image opc" + per);
+			//console.log("image opc" + per);
 			$("#working_div .bgoverlay-block").css('opacity', per);
 		});
 		$(document).delegate("#bg_color", "blur", function() {
@@ -1345,7 +1344,7 @@ $this->title = 'Edit Qard';
 		var qard_height= 0;
 		$('.current_blk').each(function(i, obj) {
 			var block_height = $(obj).attr('data-height');
-			console.log('block-height:'+block_height);
+			//console.log('block-height:'+block_height);
 			qard_height =  parseInt(qard_height)+parseInt(block_height);
 		})
 		return qard_height;
@@ -1358,7 +1357,7 @@ $this->title = 'Edit Qard';
 			//set for other elements also
 			$("#working_div .parent_current_blk").css("height", h);
 			$("#working_div .bgoverlay-block").css("height", h);
-			console.log(offset);
+			//console.log(offset);
 	}
 	function add_block(event,new_block){
 		//save block
@@ -1379,7 +1378,7 @@ $this->title = 'Edit Qard';
 			if(typeof div_overlaycolor === 'undefined') {
 				div_overlaycolor = 'transparent';
 			}
-			console.log(div_overlaycolor);
+			//console.log(div_overlaycolor);
 			data.push({
 				name: 'div_overlaycolor',
 				value: div_overlaycolor
@@ -1391,13 +1390,13 @@ $this->title = 'Edit Qard';
             });
  */
 			var div_bgcolor = $("#working_div .bgimg-block").css("background-color");
-			console.log(div_bgcolor);
+			//console.log(div_bgcolor);
             data.push({
                 name: 'div_bgcolor',
                 value: div_bgcolor
             });
             var div_bgimage = $("#working_div .bgimg-block").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-			//console.log(div_bgimage);
+			////console.log(div_bgimage);
 			//return;
             data.push({
                 name: 'div_bgimage',
@@ -1491,7 +1490,7 @@ $this->title = 'Edit Qard';
             });	
 			// add the block style also
 			var data_style_qard = $("#working_div .bgimg-block").attr('data-style-qard') || 'line';
-			//console.log("block_style:"+data_style_qard);return;
+			////console.log("block_style:"+data_style_qard);return;
             data.push({
                 name: 'data_style_qard',
                 value: data_style_qard
@@ -1516,10 +1515,10 @@ $this->title = 'Edit Qard';
 	}
 	function addSaveCard() {
 		//calculate the total height
-		console.log("save here");
+		//console.log("save here");
 		var total_data_height = 0;
 		$('.current_blk').each(function(obj) {
-			console.log($(this).attr("data-height"));
+			//console.log($(this).attr("data-height"));
 			total_data_height = parseInt($(this).attr("data-height"))+parseInt(total_data_height);
 		});
 /* 		if(total_data_height != 16){
@@ -1563,14 +1562,14 @@ $this->title = 'Edit Qard';
 			if(typeof div_overlaycolor === 'undefined') {
 				div_overlaycolor = 'transparent';
 			}
-			//console.log('overlay'+div_overlaycolor);return;
+			////console.log('overlay'+div_overlaycolor);return;
 			data.push({
 				name: 'div_overlaycolor',
 				value: div_overlaycolor
 			});			
 			//Background color for background block
 			var div_bgcolor = $(this).css("background-color");
-			//console.log(div_bgcolor);return;
+			////console.log(div_bgcolor);return;
 			data.push({
 				name: 'div_bgcolor',
 				value: div_bgcolor
@@ -1581,7 +1580,7 @@ $this->title = 'Edit Qard';
 				var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 			}
             var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-			//console.log(div_bgimage);
+			////console.log(div_bgimage);
 			//return;
 			data.push({
 				name: 'div_bgimage',
@@ -1685,7 +1684,7 @@ $this->title = 'Edit Qard';
 			//		return false;
 			//	    }
 			//
-			//	    console.log(data);
+			//	    //console.log(data);
 			//	    return false;
 			var new_block = true;
 			commanAjaxFun(data, 'save_block',new_block);
@@ -1717,7 +1716,7 @@ $this->title = 'Edit Qard';
 		return ++blk_pri;
 	}
 	function commanAjaxFun(postData, callFrom, new_block) {
-		//console.log(postData);return;
+		////console.log(postData);return;
 		if (callFrom == "save_block") {
 			$("#wait").show();
 		}
@@ -1779,7 +1778,7 @@ $this->title = 'Edit Qard';
 								$(this).find(".current_blk").addClass("working_div");
 								$(this).find(".current_blk").attr("unselectable", 'off');
 								$(this).find(".current_blk").attr("contenteditable", 'true');
-								console.log("wrap old block");
+								//console.log("wrap old block");
 								checkForNew = false;
 								return;
 							}
@@ -1814,7 +1813,7 @@ $this->title = 'Edit Qard';
 				},
 				error: function(data) {
 					$("#wait").hide();
-					console.log(data);
+					//console.log(data);
 					return false;
 				}
 		});
@@ -1823,7 +1822,7 @@ $this->title = 'Edit Qard';
 		* Link block functions
 		*/
         function callUrl(urlField,displayCheck) {
-            console.log($(urlField).val());
+            //console.log($(urlField).val());
 			//$('#link_div').hide();
             var preview_url = $(urlField).val();
             var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
@@ -1836,7 +1835,7 @@ $this->title = 'Edit Qard';
                 },
                 success: function(data) {
 					data = $.parseJSON(data);
-                    console.log(data);
+                    //console.log(data);
                     if (data.type == 'PDF' || data.type == 'pdf') {
                         <!--ADDED BY DENCY -->
                         $('#dispIcon').attr('src', '<?= Yii::$app->request->baseUrl?>/images/pdf.png');
@@ -1895,7 +1894,7 @@ $this->title = 'Edit Qard';
             var image = $('#review-qard-id .img-preview > img').attr('src');
             if (typeof title === 'undefined')
                 return false;
-            //console.log(title);
+            ////console.log(title);
             if (typeof image === 'undefined') {
                 var str = '<span class="url-qard-block" id="url_parent' + $("#working_div div").attr("id") + '">' +
                     '<span class="col-sm-12 col-md-12" id="title_desc_url' + $("#working_div div").attr("id") + '">' +
@@ -2050,7 +2049,7 @@ $this->title = 'Edit Qard';
                         
                     object += "</object>";      
 					$("#showFilePreview").html(object); $("#showFilePreview").hide();
-                      console.log(object);
+                      //console.log(object);
                }
          
           }
@@ -2071,7 +2070,7 @@ $this->title = 'Edit Qard';
                 },
                 success: function(data) {
 					data = $.parseJSON(data);
-                    console.log(data);
+                    //console.log(data);
 					$("#drop-file  , .file_options").hide();
 					/*added by dency */
 							$("#working_div .current_blk").focus();
@@ -2097,7 +2096,7 @@ $this->title = 'Edit Qard';
                 },
                 success: function(data) {
 					data = $.parseJSON(data);
-                    console.log(data);
+                    //console.log(data);
 					$("#drop-file  , .file_options").hide();
 					$('#link_div').html(data.iframelink);
 					$('#link_div').show();
@@ -2106,7 +2105,7 @@ $this->title = 'Edit Qard';
 		}
 		function embedCode(videoLink){
 			var eUrl = $(videoLink).siblings('input[id=embedHide]');
-			console.log(eUrl);
+			//console.log(eUrl);
 			calldisplayEmbedUrl(eUrl);
 			$('#embed_code').val($(videoLink).attr('data-content-url'));
 		}
@@ -2231,7 +2230,7 @@ $this->title = 'Edit Qard';
                         droppedFiles = e.dataTransfer.files; // the files that were dropped
                         showFiles(droppedFiles);
                         //            var file_data = $('#qard-url-upload').prop('files')[0];   
-                        //console.log($("#qard-url-upload").serializeArray());
+                        ////console.log($("#qard-url-upload").serializeArray());
                         
                         var ajaxData = new FormData($('#qard-url-upload').get(0));
 						
@@ -2242,7 +2241,7 @@ $this->title = 'Edit Qard';
                                 ajaxData.append($('#qard-url-upload input[type=text]').attr('name'), file);
                             });
                         }
-                        //console.log(ajaxData);
+                        ////console.log(ajaxData);
                         //return false;
                         var ext = fileType.split('.').pop();
                         if (ext == "pdf" || ext == "docx" || ext == "doc") {
@@ -2308,7 +2307,7 @@ $this->title = 'Edit Qard';
                                     $(".drop-image").show();
                                     $(".fileName").val(response.code);
                                     $(".fileSwitch").hide();
-                                    // console.log(response);
+                                    // //console.log(response);
                                     //count++;
                                 }
                             });
