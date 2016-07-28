@@ -119,16 +119,7 @@ $this->title = 'Edit Qard';
 						$theme_properties = unserialize($theme['theme_properties']);
 						//print_r($theme_properties);
 						?>
-                        <!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
-						<div class="bgoverlay-block" style="height:75px;">
-						<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
-						</div>                                
-						</div>
-						<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: #0055cc" style="height:150px;">
-						<div class="bgoverlay-block" style="height:150px;">
-						<div class="text-block current_blk" data-height="4" style="height:150px;"></div>                                    
-						</div>                                
-						</div>-->
+                        
 					<?php 
 					//get theme properties
 					$theme_properties = unserialize($theme['theme_properties']);
@@ -203,13 +194,7 @@ $this->title = 'Edit Qard';
 					}
 					echo $str;
 					?>
-                        <!--<div id="working_div" class="working_div block active">
-                            <div id="blk_1" class="bgimg-block parent_current_blk">
-                                <div class="bgoverlay-block">
-                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off" data-block_priority="1" style="overflow:hidden;margin:10px"></div>
-                                </div>
-                            </div>
-                        </div>-->
+
                         <h5 class="add-another" onclick="add_block(event,true)"><i class="fa fa-plus"></i>Add another block </h5>
                 </div>
             </div>
@@ -887,12 +872,14 @@ $this->title = 'Edit Qard';
 	 * Double click to edit the block again
 	 */
 	$(document).delegate('.add-block-qard > div', "dblclick", function(event) {
+		console.log($(this).attr("id"));
 		if ($(this).attr("id") !== 'working_div') {
 			$('#working_div .current_blk').removeAttr("unselectable");
 			$("#working_div .current_blk").removeAttr("contenteditable");
 			$("#working_div .current_blk").removeClass("working_div");
 			$("#working_div .parent_current_blk").unwrap();
-			$(this).wrap('<div  id="working_div" class="working_div active"></div>');
+			if($(this).html != "")
+				$(this).wrap('<div  id="working_div" class="working_div active"></div>');
 			$(this).find(".current_blk").addClass("working_div");
 			$(this).find(".current_blk").attr("unselectable", 'off');
 			$(this).find(".current_blk").attr("contenteditable", 'true');
@@ -963,13 +950,19 @@ $this->title = 'Edit Qard';
 		$('#add-block').sortable({
 			group: 'no-drop',
 			handle: '.drag',
-			onDragStart: function($item, container, _super) {
+			onDragStart: function($item, container, _super,event,ui) {
 				
 				if (!container.options.drop) $item.clone().insertAfter($item);
 				_super($item, container);
 			},
 			stop: function(event, ui){
+
 				ui.item.trigger("dblclick");
+				//removig empty wraps
+				$(".working_div").each(function(){
+					if($(this).html() == '')
+						$(this).remove();
+				});
 				totalBlocks = $("#add-block").find(".current_blk").length;
 				
 				if ($("#qard_id").length == 0)
@@ -978,14 +971,12 @@ $this->title = 'Edit Qard';
 					var max_allowed_position = parseInt(totalBlocks+2); 
 				
 				var total = totalHeight();	
-				if( total < 16 && $('.add-another').index() !== max_allowed_position){
-				//if(total <= 16){
-					
+				if( total < 16 && $('.add-another').index() !== max_allowed_position){					
 					console.log("Dragging Not allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());
 					return false;	
 				}			
 			},
-			update: function() {
+			update: function(event, ui) {
 				var postData = getNSetOrderOfBlocks();
 				$.ajax({
 					url: "<?=Url::to(['block/change-priority'], true)?>",
@@ -1001,6 +992,7 @@ $this->title = 'Edit Qard';
 						$("#working_div .current_blk").focus();
 						document.execCommand('styleWithCSS', false, true);
 						document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');
+						
 					}
 				});
 			}
