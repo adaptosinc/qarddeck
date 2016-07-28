@@ -152,16 +152,16 @@ $this->title = 'Preview Qard';
 		<div id="cardtabs">
 	
 	  <!-- Nav tabs -->
-	  <ul class="nav nav-tabs col-sm-1 col-md-1" role="tablist">
+	  <!--<ul class="nav nav-tabs col-sm-1 col-md-1" role="tablist">
 		<li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab"><img class="image-default" src="<?=Yii::$app->homeUrl;?>images/comments_icon.png" alt=""> <img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>                                
 		<li role="presentation"><a href="#shareblock" aria-controls="shareblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/share_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>                                
 		<li role="presentation" class="tootip" data-title="Qard was added to your bookmarks"><span class="arrow-left"></span><a href="#bookmarkblock" aria-controls="bookmarkblock" role="tab" data-toggle="tab" aria-expanded="true"><img src="<?=Yii::$app->homeUrl;?>images/bookmark_icon.png" class="image-default" alt="" style="width:15px;margin:0 auto;"><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/bookmark_icon_light.png" alt=""></a></li>                              
 		<li role="presentation" class="tootip" data-title="Qard was added to your favourites"><span class="arrow-left"></span><a href="#favblock" aria-controls="favblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/heart_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/heart_icon_light.png" alt=""></a></li>
 		<!--<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/pop-up_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>-->
-	  </ul>
+	  <!--</ul>-->
 	
 	  <!-- Tab panes -->
-	<div class="col-sm-11 col-md-11">
+	<div class="col-sm-12 col-md-12">
 		<div id="preview-tab" class="preview-tab" style="display: block;">
 			<div class="bookmark-content">
 				<img src="<?=Yii::$app->homeUrl;?>images/demo_icon.png" alt="">
