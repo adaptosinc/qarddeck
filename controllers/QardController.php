@@ -15,6 +15,7 @@ use yii\db\Query;
 use yii\db\Command;
 use yii\db\Connection;
 use lib\GrabzItClient;
+use yii\web\ForbiddenHttpException;
 /**
  * QardController implements the CRUD actions for Qard model.
  */
@@ -207,6 +208,10 @@ class QardController extends Controller
 	public function actionEdit($id,$theme_id=null){
 		$switch_theme = false;
 		$model = $this->findModel($id);
+		if($model->user_id != \Yii::$app->user->id){
+			//throw new NotFoundHttpException();
+			throw new ForbiddenHttpException();
+		}
 		if($theme_id)
 			$switch_theme = true;
 		if(!$theme_id)
