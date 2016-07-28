@@ -2,10 +2,19 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use app\models\QardComments;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
 $this->title = 'Preview Qard';
 ?>
+
+ <?php
+		if(isset($model['qard_id'])){
+		    echo '<input type="hidden" name="qard_id" id="qard_id" value="'.$model['qard_id'].'"><input type="hidden" name="user_id" id="user_id" value="'.$model['user_id'].'">';
+		}
+		?>
+		
     <!-- requiered for tag -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400" />
 
@@ -260,41 +269,64 @@ $this->title = 'Preview Qard';
 				</div>
 			</div>                                    
 		</div>                                 
-		<div class="tab-content" style="display: none;">                               
+		<div class="tab-content" style="display: none; ">                               
 		  <div role="tabpanel" class="tab-pane active" id="comments">
 			  <div class="cardblock-header">
-				  <h4>Comments(12) <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
-				  <h4 class="comment-input"><input type="text" name="comment-input" class="col-sm-10 col-md-10" placeholder="Share what you're thinking..."><button class="btn qard col-sm-2 col-md-2">POST</button></h4>
+			  
+			  <?php 
+			  $qard_id = $model->qard_id;
+			  
+						$comments = QardComments::find()->where(['qard_id'=>$qard_id])->orderBy('created_at DESC')->all();
+						
+							?>
+							
+				  <h4>Comments(<span id='comment-count'><?=count($comments)?></span>) <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				  <h4 class="comment-input"><input type="text" id="comment-input" name="comment-input" class="col-sm-10 col-md-10" placeholder="Share what you're thinking..."><button id="commentSubmit" class="btn qard col-sm-2 col-md-2">POST</button></h4>
 			  </div>
-				  <ul class="comment-list">
-					  <li>
+			  
+			  <?php 
+						//load old comments
+						if(isset($comments) && !empty($comments))
+						{
+					
+								
+							//arrange it
+						?>
+						
+				  <ul class="comment-list" style=" overflow-y:scroll; height:500px;">
+				  <?php foreach($comments as $comment){ 
+						   $profile_photo = $comment->userProfile->profile_photo; 
+				  ?>
+					  <li class="col-sm-12 col-md-12">
+					  
 						  <div class="comment-img col-sm-1 col-md-1">
-							  <img src="<?=Yii::$app->homeUrl;?>images/deck-thumb.png" alt="">
+							  <img src="<?=$profile_photo?>" alt="">
 						  </div>
 						  <div class="comment-txt col-sm-11 col-md-11">
-							  <p><strong>Tim Hatherly-Greene</strong>Tim Hatherley-Greene The following tips on creating a direct mail advertising campaign have been street-tested and will bring you huge returns in a short period of time.</p>
-							  <p class="post-date">3 days ago</p>
+							  <p><strong><?=$model->userProfile->fullname ?></strong><?=$comment['text']?></p>
+							   <?php 
+								  $datetime = $comment['created_at'];
+								  $date = date('M j Y g:i A', strtotime($datetime));
+								  $date = new DateTime($date);
+								  $datetime1 = new DateTime("now"); 
+								  $diff = $datetime1->diff($date)->format("%a");
+								  if($diff == 0){
+									  $diff = 'Today';
+								  }else if($diff==1){
+									  $diff = '1 day ago';
+								  }else{
+									  $diff = $diff.' days ago';
+								  }
+								  ?>
+								  
+							  <p class="post-date"><?=$diff?></p>
 						  </div>
+						
 					  </li>
-					  <li>
-							 <div class="comment-img col-sm-1 col-md-1">
-								 <img src="<?=Yii::$app->homeUrl;?>images/deck-thumb.png" alt="">
-							 </div>
-							 <div class="comment-txt col-sm-11 col-md-11">
-								 <p><strong>Tim Hatherly-Greene</strong>Tim Hatherley-Greene The following tips on creating a direct mail advertising campaign have been street-tested and will bring you huge returns in a short period of time.</p>
-								 <p class="post-date">3 days ago</p>
-							 </div>
-					  </li>
-					  <li>
-							 <div class="comment-img col-sm-1 col-md-1">
-								 <img src="<?=Yii::$app->homeUrl;?>images/deck-thumb.png" alt="">
-							 </div>
-							 <div class="comment-txt col-sm-11 col-md-11">
-								 <p><strong>Tim Hatherly-Greene</strong>Tim Hatherley-Greene The following tips on creating a direct mail advertising campaign have been street-tested and will bring you huge returns in a short period of time.</p>
-								 <p class="post-date">3 days ago</p>
-							 </div>
-					  </li>                                         
-				  </ul>                                    
+ 
+				  <?php } ?>					  
+				  </ul>  
+						<?php  } ?>				  
 		  </div>
 		  <div role="tabpanel" class="tab-pane" id="fileblock">
 				<div class="fallback">
@@ -560,4 +592,33 @@ $this->title = 'Preview Qard';
 			$('.'+except).show();
 		}
 	/***************************/
+	
+	$(document).ready(function(){
+	
+		
+	$('#commentSubmit').click(function(e){
+		e.preventDefault();
+				var commentcount = $('#comment-count').html();					
+				var qardid = $('#qard_id').val();
+				var userid = $('#user_id').val();
+				var qardcomment = $('#comment-input').val();
+				if(qardid!=''){
+					$.ajax({
+						url: '<?=Url::to(['comments/create'], true);?>',
+						type: "POST",
+						data: {
+							'qardid': qardid,'userid':userid ,'qardcomment':qardcomment
+						},
+						success: function(data) {
+							$('#comment-input').val('');
+							var newcount = parseInt(commentcount) + parseInt(1);
+							$('#comment-count').html(newcount);
+							$('.comment-list').load(location.href +" .comment-list>*","");
+						}
+					});
+				}
+
+			});
+	});
+			
 	</script>
