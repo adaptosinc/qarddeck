@@ -863,30 +863,34 @@ $this->title = 'Create Qard';
 				_super($item, container);
 			},
 			stop: function(event, ui){
-
+				
+				if(!$('.add-another').is(':last-child')){					
+					console.log("Dragging Not allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());
+					return false;	
+				}else{
+					console.log("Dragging allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());			
+				}
+				
 				ui.item.trigger("dblclick");
-				//removig empty wraps
-				$(".working_div.active").each(function(){
-					if($(this).html() == ''){
+				$("#working_div").each(function(){
+					if($(this).html() == '' ){
 						$(this).remove();
 					}
 						
-				});
-				totalBlocks = $("#add-block").find(".current_blk").length;
-				
+				});		
+				totalBlocks = $("#add-block").find(".current_blk").length;	
+				//console.log("totla now"+totalBlocks);				
 				if ($("#qard_id").length == 0)
 					var max_allowed_position = parseInt(totalBlocks+1); 
 				else 
 					var max_allowed_position = parseInt(totalBlocks+2); 
 				
 				var total = totalHeight();	
-				
-				if( total < 16 && $('.add-another').index() !== max_allowed_position){					
-					console.log("Dragging Not allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());
-					return false;	
-				}else{
-					console.log("Dragging allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());					
-				}	
+				if($('.add-another').is(':last-child')){
+					console.log("last");
+				}
+
+	
 			},
 			update: function() {
 				var postData = getNSetOrderOfBlocks();

@@ -950,36 +950,44 @@ $this->title = 'Edit Qard';
 		$('#add-block').sortable({
 			group: 'no-drop',
 			handle: '.drag',
-			onDragStart: function($item, container, _super,event,ui) {
-				
+			onDragStart: function($item, container, _super) {
 				if (!container.options.drop) $item.clone().insertAfter($item);
 				_super($item, container);
 			},
-			stop: function(event, ui){
+			start: function(event, ui){
+				console.log("started");
 
+
+			},
+			stop: function(event, ui){
+				
+				if(!$('.add-another').is(':last-child')){					
+					console.log("Dragging Not allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());
+					return false;	
+				}else{
+					console.log("Dragging allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());			
+				}
+				
 				ui.item.trigger("dblclick");
-				//removig empty wraps
-				$(".working_div.active").each(function(){
-					if($(this).html() == ''){
+				$("#working_div").each(function(){
+					if($(this).html() == '' ){
 						$(this).remove();
 					}
 						
-				});
-				totalBlocks = $("#add-block").find(".current_blk").length;
-				
+				});		
+				totalBlocks = $("#add-block").find(".current_blk").length;	
+				//console.log("totla now"+totalBlocks);				
 				if ($("#qard_id").length == 0)
 					var max_allowed_position = parseInt(totalBlocks+1); 
 				else 
 					var max_allowed_position = parseInt(totalBlocks+2); 
 				
 				var total = totalHeight();	
-				
-				if( total < 16 && $('.add-another').index() !== max_allowed_position){					
-					console.log("Dragging Not allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());
-					return false;	
-				}else{
-					console.log("Dragging allowed with total height "+total+" and max_allowed_position "+ max_allowed_position + " add button at "+ $('.add-another').index());					
-				}	
+				if($('.add-another').is(':last-child')){
+					console.log("last");
+				}
+
+	
 			},
 			update: function(event, ui) {
 				var postData = getNSetOrderOfBlocks();
