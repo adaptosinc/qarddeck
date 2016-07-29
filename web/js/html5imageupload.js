@@ -24,7 +24,7 @@
 		
 		//buttons
 		this.button				= {}
-		this.button.edit		= '<div class="btn btn-info btn-edit" title="' + (this.options.editTitle || 'Edit') + '"><i class="glyphicon glyphicon-pencil"></i></div>'
+		this.button.edit		= '<div class="btn btn-info btn-edit" style="display:block !important" title="' + (this.options.editTitle || 'Edit') + '"><i class="glyphicon glyphicon-pencil"></i></div>'
 		this.button.saving		= '<div class="btn btn-warning saving">' + (this.options.saveLabel || 'Saving...') + ' <i class="glyphicon glyphicon-time"></i></div>';
 		this.button.zoomin		= '<div class="btn btn-default btn-zoom-in" title="' + (this.options.zoominTitle || 'Zoom in') + '"><i class="glyphicon glyphicon-resize-full"></i></div>';
 		this.button.zoomout		= '<div class="btn btn-default btn-zoom-out" title="' + (this.options.zoomoutTitle || 'Zoom out') + '"><i class="glyphicon glyphicon-resize-small"></i></div>';
@@ -32,7 +32,7 @@
 //		this.button.rotatecw	= '<div class="btn btn-default btn-rotate-cw" title="' + (this.options.cwTitle || 'Rotate clockwise') + '"><i class="glyphicon glyphicon-share"></i></div>';
 //		this.button.rotateccw	= '<div class="btn btn-default btn-rotate-ccw" title="' + (this.options.ccwTitle || 'Rotate counter clockwise') + '"><i class="glyphicon glyphicon-share icon-flipped"></i></div>';
 		this.button.cancel		= '<div class="btn btn-danger btn-cancel" title="' + (this.options.cancelTitle || 'Cancel') + '"><i class="glyphicon glyphicon-remove"></i></div>';
-		this.button.done		= '<div class="btn btn-success btn-ok" title="' + (this.options.okTitle || 'Ok') + '"><i class="glyphicon glyphicon-ok"></i></div>';
+		this.button.done		= '<div class="btn btn-success btn-ok" title="' + (this.options.okTitle || 'Ok') + '"><i class="glyphicon glyphicon-ok save-pic"></i></div>';
 		this.button.del			= '<div class="btn btn-danger btn-del" title="' + (this.options.delTitle || 'Delete') + '"><i class="glyphicon glyphicon-trash"></i></div>';
 		
 		this.button.download	= '<a class="btn btn-warning download"><i class="glyphicon glyphicon-download"></i> ' + (this.options.downloadLabel || 'Download') + '</a>';
@@ -57,7 +57,7 @@
 		ajax:				true,
 		resize: 			false,
 		dimensionsonly:		false,
-		editstart:			false,
+		editstart:			true,
 		saveOriginal:		false,
 		save:				true,
 		download:			false,
@@ -699,8 +699,8 @@
 			var total_background_size = parseInt(finalTop) + parseInt(finalLeft);
 			var background_size = total_background_size/2;
 			background_size = Math.abs(background_size);
-			$("#working_div .bgimg-block").css("background-size",background_size+"%");
-			$("#working_div .bgimg-block").css("background-position","left "+finalLeft+"px top "+finalTop+"px");
+		//	$("#working_div .bgimg-block").css("background-size",background_size+"%");
+		//	$("#working_div .bgimg-block").css("background-position","left "+finalLeft+"px top "+finalTop+"px");
 		},
 		_ajax: function(obj) {
 			var _self				= this;

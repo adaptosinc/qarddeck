@@ -176,11 +176,11 @@ $this->title = 'Preview Qard';
 				if(isset($theme)){
 					//img block styles
 						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
-						if($block->link_image != ''){
+/* 						if($block->link_image != ''){
 								
 								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 								$img_block_style .= 'background-size: cover;';
-						}
+						} */
 						if($theme['div_bgcolor'] != '')
 							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
 						$img_block_style .= 'min-height:'.$theme['height'].'px;';
@@ -362,7 +362,7 @@ $this->title = 'Preview Qard';
 				  <h4 class="comment-input"><input type="text" id="comment-input" name="comment-input" class="col-sm-10 col-md-10" placeholder="Share what you're thinking..."><button id="commentSubmit" class="btn qard col-sm-2 col-md-2">POST</button></h4>
 			  </div>
 			  
-			
+
 						
 				  <ul class="comment-list" style=" overflow-y:scroll; height:500px;">
 				  <?php foreach($comments as $comment){ 
@@ -398,8 +398,10 @@ $this->title = 'Preview Qard';
 					  </li>
  
 				  <?php } ?>					  
+
 				  </ul>  
 									  
+
 		  </div>
 		  <div role="tabpanel" class="tab-pane" id="fileblock">
 				<div class="fallback">
@@ -436,6 +438,7 @@ $this->title = 'Preview Qard';
 						<li class="activity_card" act-type="share" act-id="<?=$model->qard_id?>" for="facebook" ><a style="display:block !important " href="https://www.facebook.com/sharer/sharer.php?u=<?= Yii::$app->request->absoluteUrl ?>" target="_blank" ><i class="fa fa-facebook"></i></a></li>
 						<li class="activity_card" act-type="share" act-id="<?=$model->qard_id?>" for="twitter"  ><a href="https://twitter.com/home?status=<?= Yii::$app->request->absoluteUrl ?>" target="_blank" ><i class="fa fa-twitter"></i></a></li>
 						<li class="activity_card" act-type="share" act-id="<?=$model->qard_id?>" for="linkedin" ><a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?= Yii::$app->request->absoluteUrl ?>&title=&summary=&source="><i class="fa fa-linkedin"></i></a></li>
+
 					</ul>
 				</div>
 			  </div>
@@ -492,7 +495,9 @@ $this->title = 'Preview Qard';
         });
 	
 		$('#cardtabs a').click(function (e) {
+
 		//  e.preventDefault();
+
 		  $(this).tab('show');
 		});
 

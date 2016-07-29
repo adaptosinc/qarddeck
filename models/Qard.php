@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
+use yii\db\Command;
 
 /**
  * This is the model class for table "qard".
@@ -156,11 +158,11 @@ class Qard extends \yii\db\ActiveRecord
 				if(isset($theme)){
 					//img block styles
 						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
-						if($block->link_image != ''){
+/* 						if($block->link_image != ''){
 								
 								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 								$img_block_style .= 'background-size: cover;';
-						}
+						} */
 						if($theme['div_bgcolor'] != '')
 							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
 						$img_block_style .= 'height:'.$theme['height'].'px;';
@@ -192,10 +194,10 @@ class Qard extends \yii\db\ActiveRecord
 						<div class="qard-share">
 							<h4><button class="btn btn-warning">View Qard</button></h4>
 							<ul>
-								<li><img src="'.Yii::$app->homeUrl.'images/comments_icon.png" alt=""><span>20</span></li>
-								<li><img src="'.Yii::$app->homeUrl.'images/share_icon.png" alt=""><span>20</span></li>
-								<li><img src="'.Yii::$app->homeUrl.'images/bookmark_icon.png" alt=""><span>20</span></li>
-								<li><img src="'.Yii::$app->homeUrl.'images/heart_icon.png" alt=""><span>20</span></li>
+								<li><img src="'.Yii::$app->homeUrl.'images/comments_icon.png" alt=""><span>'.$this->getCommentsCount().'</span></li>
+								<li><img src="'.Yii::$app->homeUrl.'images/share_icon.png" alt=""><span>'.$this->getShareCount().'</span></li>
+								<li><img src="'.Yii::$app->homeUrl.'images/bookmark_icon.png" alt=""><span>'.$this->getBookmarkCount().'</span></li>
+								<li><img src="'.Yii::$app->homeUrl.'images/heart_icon.png" alt=""><span>'.$this->getLikeCount().'</span></li>
 							</ul>
 						</div>
 					</div>
@@ -232,11 +234,11 @@ class Qard extends \yii\db\ActiveRecord
 				if(isset($theme)){
 					//img block styles
 						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
-						if($block->link_image != ''){
+/* 						if($block->link_image != ''){
 								
 								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 								$img_block_style .= 'background-size: cover;';
-						}
+						} */
 						if($theme['div_bgcolor'] != '')
 							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
 						$img_block_style .= 'height:'.$theme['height'].'px;';
@@ -270,5 +272,45 @@ class Qard extends \yii\db\ActiveRecord
 		return $str;
 		
 			}	
+	}
+	public function getCommentsCount(){
+		$comments = count($this->qardComments);
+		return $comments ;
+	}
+	public function getShareCount(){
+		$query = new Query;
+		//see if the row already exists or not
+		$query->select(['*'])
+			->from('qard_user_activity')
+			->where(['activity_type' => 'share',
+					'qard_id' => $this->qard_id
+					]);
+		$command = $query->createCommand();
+		$activities = $command->queryAll();
+		return 	count($activities);	
+	}
+	public function getLikeCount(){
+		$query = new Query;
+		//see if the row already exists or not
+		$query->select(['*'])
+			->from('qard_user_activity')
+			->where(['activity_type' => 'like',
+					'qard_id' => $this->qard_id
+					]);
+		$command = $query->createCommand();
+		$activities = $command->queryAll();
+		return 	count($activities);			
+	}
+	public function getBookmarkCount(){
+		$query = new Query;
+		//see if the row already exists or not
+		$query->select(['*'])
+			->from('qard_user_activity')
+			->where(['activity_type' => 'bookmark',
+					'qard_id' => $this->qard_id
+					]);
+		$command = $query->createCommand();
+		$activities = $command->queryAll();	
+		return 	count($activities);			
 	}
 }

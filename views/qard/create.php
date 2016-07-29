@@ -193,7 +193,7 @@ $this->title = 'Create Qard';
 									<div class="dropdown">
 									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 									  </button>
-									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
+									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu4" style="left: -50px;">
 										<li class="color" style="background:<?php echo $theme_properties['theme_color_1'] ?>" data-bgcolor-id="theme_color_1" data-color="<?php echo $theme_properties['theme_color_1'] ?>" onclick="setBGColor(this);"></li>
                                         <li class="color" style="background:<?php echo $theme_properties['theme_color_2'] ?>" data-bgcolor-id="theme_color_2" data-color="<?php echo $theme_properties['theme_color_2'] ?>" onclick="setBGColor(this);"></li>
 										<li class="color" style="background:<?php echo $theme_properties['theme_color_3'] ?>" data-bgcolor-id="theme_color_3" data-color="<?php echo $theme_properties['theme_color_3'] ?>" onclick="setBGColor(this);"></li>
@@ -226,13 +226,13 @@ $this->title = 'Create Qard';
 
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
-                                    <div class="dropzone" data-originalsize="false" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;">
+                                    <div class="dropzone" data-smaller="true" data-canvas-image-only="true" data-originalsize="false" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;" >
                                         <input type="file" name="thumb" required="required" />
                                     </div>
                                 </form>
                             </div>
                             <!--		    </form>-->
-                            <div class="form-group image-elements">
+                            <!--<div class="form-group image-elements">
                                 <div class="col-sm-3 col-md-3">
                                     <input type="text" id="image_opc" class="form-control" placeholder="Image Opacity (%)">
                                 </div>
@@ -248,15 +248,36 @@ $this->title = 'Create Qard';
                                         <li id="reset_image"><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
                                     </ul>
                                 </div>
+                            </div>-->
+							<div class="form-group image-elements">
+								<!--<div class="col-sm-3 col-md-3 on-off">
+									<span>Fit</span>
+										<div class="switch">
+											<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-6"></label>
+										</div>  <span>Crop</span> 
+								</div>
+								<div class="col-sm-3 col-md-3 on-off">
+										<div class="switch">
+											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-7"></label>
+										</div>  <span>Display Preview</span> 
+								</div>-->
+								<div class="col-sm-6 col-md-6 on-off">
+										<div class="switch">
+											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-3"></label>
+										</div>  <span>Use this Image</span> 
+								</div>                                       
                             </div>
-                            <ul class="on-off pull-right">
+                            <!--<ul class="on-off pull-right">
                                 <li id="file_id">
                                     <div class="switch" >
                                         <input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
                                         <label for="cmn-toggle-3"></label>
                                     </div> <span>Display as Background Image</span>
                                 </li>
-                            </ul>
+                            </ul>-->
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
@@ -536,7 +557,7 @@ $this->title = 'Create Qard';
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-grey pull-left" data-dismiss="modal">CANCEL</button>
-			<button type="button" class="btn btn-warning pull-right" id="qrdstyle-link" data-theme="<?=$_REQUEST['theme_id']?>" data-pattern="flat">APPLY STYLE</button>
+			<button type="button" class="btn btn-warning pull-right" id="qrdstyle-link" data-theme="" data-pattern="">APPLY STYLE</button>
 		  </div>
 		</div>
 	  </div>
@@ -694,7 +715,7 @@ $this->title = 'Create Qard';
 	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {		
 		//select color and apply span
 		if (event.type === "input") {
-			focusWorkspace();
+			//focusWorkspace();
 		}
 		if(event.type === "paste"){
 			event.preventDefault();
@@ -773,8 +794,8 @@ $this->title = 'Create Qard';
 	  }); */
 	function focusWorkspace(){
 			$("#working_div .current_blk").focus();
-			//document.execCommand('styleWithCSS', false, true);
-			//document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
+			document.execCommand('styleWithCSS', false, true);
+			document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
 		
 	}
 	/*
@@ -809,6 +830,7 @@ $this->title = 'Create Qard';
 				$(this).resizable({ 
 					handles: "s",
 					delay: 200,
+					cursorAt: { right: 5},
 					start: function( event, ui ) {
 						$(this).trigger('dblclick');
 					},
@@ -1196,13 +1218,16 @@ $this->title = 'Create Qard';
 		});
 		// on click image tab should increase block height
 		$(document).delegate("#cmn-toggle-3", "click", function() {
-			if ($(this).is(":checked")) {
+			if($(this).prop('checked')){
 				if (parseInt($("#working_div .current_blk").attr("data-height")) < 4) {
-					setHeightBlock($("#working_div .current_blk"),4);
+					//setHeightBlock($("#working_div .current_blk"),4);
 					//console.log($("#working_div .current_blk").attr("data-height"));
+					$(".save-pic").trigger("click");
 				}
 			} else {
 				//removeBr();
+				$('#working_div .current_blk').find('.image_icon_span').remove();
+				adjustHeight();
 			}
 		});
             // for image
@@ -1633,10 +1658,14 @@ $this->title = 'Create Qard';
 						$('#qardid-link').attr("href","<?=Yii::$app->request->baseUrl?>/theme/select-theme/?q_id="+ data.qard_id +"");
 					}
 					// if stored data contain image then true
-					var img = '';
+					var img = image_icon_span = '';
 					if (data.link_image) {
-						
-						img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+						/** Uncomment this for background image **/
+						//img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+						/** ----------------------------------- **/
+						/** Make link icon **/
+						var image_icon_span = '<span data-url = "<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage();"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" alt=""></span>';
+						/** ----------------------------------- **/
 /* 						if(data.div_bgimage_position != "null")
 							img = img+'background-position:'+data.div_bgimage_position+';' */
 					}
@@ -1653,6 +1682,12 @@ $this->title = 'Create Qard';
 						//alert("new_block:"+new_block);
 						$("#working_div").before(qard);
 						$("#working_div").html(theme + new_div);
+						if(data.text == ''){
+							focusWorkspace();
+							$("#working_div .current_blk").html("Add your comments here");
+						}
+							
+						$("#working_div .current_blk").append(image_icon_span);
 						$("#reset_image").trigger("click");
 						 return;
 					}
@@ -2010,9 +2045,10 @@ $this->title = 'Create Qard';
 			$('.qrd-pattern').removeClass('active');
 			$(this).addClass('active');
 			var styleCard = $(this).attr('id');
-			$('.bgimg-block').removeClass('flat gap shadow line');
-			$('.bgimg-block').addClass(styleCard);
-			$('.bgimg-block').attr('data-style-qard',styleCard);
+			//$('.bgimg-block').removeClass('flat gap shadow line');
+			//$('.bgimg-block').addClass(styleCard);
+			//$('.bgimg-block').attr('data-style-qard',styleCard);
+			$('#qrdstyle-link').attr("data-pattern",styleCard);
 		}); 
 		$('.embedBlock').click(function(){
 			$('a[href="#paste"]').parent().removeClass('active');
@@ -2026,18 +2062,40 @@ $this->title = 'Create Qard';
 			$('#paste').addClass('active');
 			$('#embed').removeClass('active');
 		});
+		
 		$('#qrdstyle-link').click(function(e){
 			e.preventDefault();
-			//check total height
+			//check total height			
+			//$("h5[class=add-another]").trigger("click");
 			
-			$("h5[class=add-another]").trigger("click");
 			var theme_id = $(this).attr('data-theme');
+			var block_style = $(this).attr('data-pattern');
+			add_block(true,false);
 			var q_id = $('#qard_id').val();
-			if(q_id){
-				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
-			}else{
-				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
+			//changeBlockStyle(block_style);
+			console.log(block_style);
+			console.log(q_id);
+			console.log(theme_id);
+			if(block_style !='' || theme_id !=''){
+				if(q_id){
+					$.ajax({
+						url :"<?=Url::to(['qard/change-style'], true);?>",
+						data: {"qard_style":block_style,"qard_id":q_id},
+						type: "GET",
+						success: function(){
+							if(theme_id !='')
+								window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
+							else
+								window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id;
+								
+						}
+					});
+					
+				}else{
+					window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
+				}				
 			}
+
 		});
 		// Styling Card script Ends
 	/***************************/

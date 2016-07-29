@@ -138,11 +138,11 @@ $this->title = 'Edit Qard';
 						if(isset($theme)){
 							//img block styles
 								$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
-								if($block->link_image != ''){
+/* 								if($block->link_image != ''){
 										
 										$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 										$img_block_style .= 'background-size: cover;';
-								}
+								} */
 								if($switch_theme){
 									//echo $theme['data_bgcolor_id'];
 									if(isset($theme['data_bgcolor_id']) && $theme['data_bgcolor_id'] != '0' ){
@@ -275,7 +275,7 @@ $this->title = 'Edit Qard';
 									<div class="dropdown">
 									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 									  </button>
-									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
+									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu4" style="left: -50px;">
 										<li class="color" style="background:<?php echo $theme_properties['theme_color_1'] ?>" data-bgcolor-id="theme_color_1" data-color="<?php echo $theme_properties['theme_color_1'] ?>" onclick="setBGColor(this);"></li>
                                         <li class="color" style="background:<?php echo $theme_properties['theme_color_2'] ?>" data-bgcolor-id="theme_color_2" data-color="<?php echo $theme_properties['theme_color_2'] ?>" onclick="setBGColor(this);"></li>
 										<li class="color" style="background:<?php echo $theme_properties['theme_color_3'] ?>" data-bgcolor-id="theme_color_3" data-color="<?php echo $theme_properties['theme_color_3'] ?>" onclick="setBGColor(this);"></li>
@@ -314,7 +314,7 @@ $this->title = 'Edit Qard';
                                 </form>
                             </div>
                             <!--		    </form>-->
-                            <div class="form-group image-elements">
+                            <!--<div class="form-group image-elements">
                                 <div class="col-sm-3 col-md-3">
                                     <input type="text" id="image_opc" class="form-control" placeholder="Image Opacity (%)">
                                 </div>
@@ -338,7 +338,28 @@ $this->title = 'Edit Qard';
                                         <label for="cmn-toggle-3"></label>
                                     </div> <span>Display as Background Image</span>
                                 </li>
-                            </ul>
+                            </ul>-->
+							<div class="form-group image-elements">
+								<!--<div class="col-sm-3 col-md-3 on-off">
+									<span>Fit</span>
+										<div class="switch">
+											<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-6"></label>
+										</div>  <span>Crop</span> 
+								</div>
+								<div class="col-sm-3 col-md-3 on-off">
+										<div class="switch">
+											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-7"></label>
+										</div>  <span>Display Preview</span> 
+								</div>-->
+								<div class="col-sm-6 col-md-6 on-off">
+										<div class="switch">
+											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-3"></label>
+										</div>  <span>Use this Image</span> 
+								</div>                                       
+                            </div>
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
@@ -612,7 +633,7 @@ $this->title = 'Edit Qard';
 			  </div>
 			  <div class="modal-footer">
 				<button type="button" class="btn btn-grey pull-left" data-dismiss="modal">CANCEL</button>
-				<button type="button" class="btn btn-warning pull-right" id="qrdstyle-link" data-theme="<?=$theme['theme_id']?>" data-pattern="flat">APPLY STYLE</button>
+				<button type="button" class="btn btn-warning pull-right" id="qrdstyle-link" data-theme="" data-pattern="">APPLY STYLE</button>
 			  </div>
 			</div>
 		  </div>
@@ -766,7 +787,7 @@ $this->title = 'Edit Qard';
 	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {		
 		//select color and apply span
 		if (event.type === "input") {
-			focusWorkspace();
+			//focusWorkspace();
 		}
 		if(event.type === "paste"){
 			event.preventDefault();
@@ -863,8 +884,8 @@ $this->title = 'Edit Qard';
 	  }); */
 	function focusWorkspace(){
 			$("#working_div .current_blk").focus();
-			//document.execCommand('styleWithCSS', false, true);
-			//document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
+			document.execCommand('styleWithCSS', false, true);
+			document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
 		
 	}
 	/*
@@ -1302,13 +1323,16 @@ $this->title = 'Edit Qard';
 		});
 		// on click image tab should increase block height
 		$(document).delegate("#cmn-toggle-3", "click", function() {
-			if ($(this).is(":checked")) {
+			if($(this).prop('checked')){
 				if (parseInt($("#working_div .current_blk").attr("data-height")) < 4) {
-					setHeightBlock($("#working_div .current_blk"),4);
+					//setHeightBlock($("#working_div .current_blk"),4);
 					//console.log($("#working_div .current_blk").attr("data-height"));
+					$(".save-pic").trigger("click");
 				}
 			} else {
 				//removeBr();
+				$('#working_div .current_blk').find('.image_icon_span').remove();
+				adjustHeight();
 			}
 		});
             // for image
@@ -1739,10 +1763,14 @@ $this->title = 'Edit Qard';
 						$('#qardid-link').attr("href","<?=Yii::$app->request->baseUrl?>/theme/select-theme/?q_id="+ data.qard_id +"");
 					}
 					// if stored data contain image then true
-					var img = '';
+					var img = image_icon_span = '';
 					if (data.link_image) {
-						
-						img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+						/** Uncomment this for background image **/
+						//img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+						/** ----------------------------------- **/
+						/** Make link icon **/
+						var image_icon_span = '<span data-url = "<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage();"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" alt=""></span>';
+						/** ----------------------------------- **/
 /* 						if(data.div_bgimage_position != "null")
 							img = img+'background-position:'+data.div_bgimage_position+';' */
 					}
@@ -1759,6 +1787,12 @@ $this->title = 'Edit Qard';
 						//alert("new_block:"+new_block);
 						$("#working_div").before(qard);
 						$("#working_div").html(theme + new_div);
+						if(data.text == ''){
+							focusWorkspace();
+							$("#working_div .current_blk").html("Add your comments here");
+						}
+							
+						$("#working_div .current_blk").append(image_icon_span);
 						$("#reset_image").trigger("click");
 						 return;
 					}
@@ -2146,20 +2180,26 @@ $this->title = 'Edit Qard';
 			var block_style = $(this).attr('data-pattern');
 			add_block(true,false);
 			//changeBlockStyle(block_style);
-
-			if(q_id){
-				$.ajax({
-					url :"<?=Url::to(['qard/change-style'], true);?>",
-					data: {"qard_style":block_style,"qard_id":q_id},
-					type: "GET",
-					success: function(){
-						window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
-					}
-				});
-				
-			}else{
-				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
+			if(block_style !='' || theme_id !=''){
+				if(q_id){
+					$.ajax({
+						url :"<?=Url::to(['qard/change-style'], true);?>",
+						data: {"qard_style":block_style,"qard_id":q_id},
+						type: "GET",
+						success: function(){
+							if(theme_id !='')
+								window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
+							else
+								window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id;
+								
+						}
+					});
+					
+				}else{
+					window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
+				}				
 			}
+
 		});
 /* 		function changeBlockStyle(block_style){
 			var q_id = $('#qard_id').val();
