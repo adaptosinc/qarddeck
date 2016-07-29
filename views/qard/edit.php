@@ -138,11 +138,11 @@ $this->title = 'Edit Qard';
 						if(isset($theme)){
 							//img block styles
 								$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
-								if($block->link_image != ''){
+/* 								if($block->link_image != ''){
 										
 										$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 										$img_block_style .= 'background-size: cover;';
-								}
+								} */
 								if($switch_theme){
 									//echo $theme['data_bgcolor_id'];
 									if(isset($theme['data_bgcolor_id']) && $theme['data_bgcolor_id'] != '0' ){
