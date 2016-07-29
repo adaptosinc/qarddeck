@@ -289,14 +289,7 @@ $this->title = 'Preview Qard';
 				  <h4 class="comment-input"><input type="text" id="comment-input" name="comment-input" class="col-sm-10 col-md-10" placeholder="Share what you're thinking..."><button id="commentSubmit" class="btn qard col-sm-2 col-md-2">POST</button></h4>
 			  </div>
 			  
-			  <?php 
-						//load old comments
-						if(isset($comments) && !empty($comments))
-						{
-					
-								
-							//arrange it
-						?>
+
 						
 				  <ul class="comment-list" style=" overflow-y:scroll; height:500px;">
 				  <?php foreach($comments as $comment){ 
@@ -308,7 +301,7 @@ $this->title = 'Preview Qard';
 							  <img src="<?=$profile_photo?>" alt="">
 						  </div>
 						  <div class="comment-txt col-sm-11 col-md-11">
-							  <p><strong><?=$model->userProfile->fullname ?></strong><?=$comment['text']?></p>
+							  <p><strong><?=$comment->userProfile->fullname ?></strong><?=$comment['text']?></p>
 							   <?php 
 								  $datetime = $comment['created_at'];
 								  $date = date('M j Y g:i A', strtotime($datetime));
@@ -330,8 +323,7 @@ $this->title = 'Preview Qard';
 					  </li>
  
 				  <?php } ?>					  
-				  </ul>  
-						<?php  } ?>				  
+				  </ul>  			  
 		  </div>
 		  <div role="tabpanel" class="tab-pane" id="fileblock">
 				<div class="fallback">

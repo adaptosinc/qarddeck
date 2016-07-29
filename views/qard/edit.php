@@ -314,7 +314,7 @@ $this->title = 'Edit Qard';
                                 </form>
                             </div>
                             <!--		    </form>-->
-                            <div class="form-group image-elements">
+                            <!--<div class="form-group image-elements">
                                 <div class="col-sm-3 col-md-3">
                                     <input type="text" id="image_opc" class="form-control" placeholder="Image Opacity (%)">
                                 </div>
@@ -338,7 +338,28 @@ $this->title = 'Edit Qard';
                                         <label for="cmn-toggle-3"></label>
                                     </div> <span>Display as Background Image</span>
                                 </li>
-                            </ul>
+                            </ul>-->
+							<div class="form-group image-elements">
+								<!--<div class="col-sm-3 col-md-3 on-off">
+									<span>Fit</span>
+										<div class="switch">
+											<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-6"></label>
+										</div>  <span>Crop</span> 
+								</div>
+								<div class="col-sm-3 col-md-3 on-off">
+										<div class="switch">
+											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-7"></label>
+										</div>  <span>Display Preview</span> 
+								</div>-->
+								<div class="col-sm-6 col-md-6 on-off">
+										<div class="switch">
+											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-3"></label>
+										</div>  <span>Use this Image</span> 
+								</div>                                       
+                            </div>
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
@@ -1302,13 +1323,16 @@ $this->title = 'Edit Qard';
 		});
 		// on click image tab should increase block height
 		$(document).delegate("#cmn-toggle-3", "click", function() {
-			if ($(this).is(":checked")) {
+			if($(this).prop('checked')){
 				if (parseInt($("#working_div .current_blk").attr("data-height")) < 4) {
-					setHeightBlock($("#working_div .current_blk"),4);
+					//setHeightBlock($("#working_div .current_blk"),4);
 					//console.log($("#working_div .current_blk").attr("data-height"));
+					$(".save-pic").trigger("click");
 				}
 			} else {
 				//removeBr();
+				$('.image_icon_span').remove();
+				adjustHeight();
 			}
 		});
             // for image
@@ -1739,10 +1763,14 @@ $this->title = 'Edit Qard';
 						$('#qardid-link').attr("href","<?=Yii::$app->request->baseUrl?>/theme/select-theme/?q_id="+ data.qard_id +"");
 					}
 					// if stored data contain image then true
-					var img = '';
+					var img = image_icon_span = '';
 					if (data.link_image) {
-						
-						img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+						/** Uncomment this for background image **/
+						//img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+						/** ----------------------------------- **/
+						/** Make link icon **/
+						var image_icon_span = '<span data-url = "<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage();"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" alt=""></span>';
+						/** ----------------------------------- **/
 /* 						if(data.div_bgimage_position != "null")
 							img = img+'background-position:'+data.div_bgimage_position+';' */
 					}
@@ -1759,6 +1787,12 @@ $this->title = 'Edit Qard';
 						//alert("new_block:"+new_block);
 						$("#working_div").before(qard);
 						$("#working_div").html(theme + new_div);
+						if(data.text == ''){
+							focusWorkspace();
+							$("#working_div .current_blk").html("Add your comments here");
+						}
+							
+						$("#working_div .current_blk").append(image_icon_span);
 						$("#reset_image").trigger("click");
 						 return;
 					}

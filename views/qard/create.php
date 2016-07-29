@@ -794,8 +794,8 @@ $this->title = 'Create Qard';
 	  }); */
 	function focusWorkspace(){
 			$("#working_div .current_blk").focus();
-			//document.execCommand('styleWithCSS', false, true);
-			//document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
+			document.execCommand('styleWithCSS', false, true);
+			document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
 		
 	}
 	/*
@@ -1220,12 +1220,13 @@ $this->title = 'Create Qard';
 		$(document).delegate("#cmn-toggle-3", "click", function() {
 			if($(this).prop('checked')){
 				if (parseInt($("#working_div .current_blk").attr("data-height")) < 4) {
-					setHeightBlock($("#working_div .current_blk"),4);
+					//setHeightBlock($("#working_div .current_blk"),4);
 					//console.log($("#working_div .current_blk").attr("data-height"));
 					$(".save-pic").trigger("click");
 				}
 			} else {
 				//removeBr();
+				$('.image_icon_span').remove();
 				adjustHeight();
 			}
 		});
@@ -1657,10 +1658,14 @@ $this->title = 'Create Qard';
 						$('#qardid-link').attr("href","<?=Yii::$app->request->baseUrl?>/theme/select-theme/?q_id="+ data.qard_id +"");
 					}
 					// if stored data contain image then true
-					var img = '';
+					var img = image_icon_span = '';
 					if (data.link_image) {
-						
-						img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+						/** Uncomment this for background image **/
+						//img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+						/** ----------------------------------- **/
+						/** Make link icon **/
+						var image_icon_span = '<span data-url = "<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage();"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" alt=""></span>';
+						/** ----------------------------------- **/
 /* 						if(data.div_bgimage_position != "null")
 							img = img+'background-position:'+data.div_bgimage_position+';' */
 					}
@@ -1677,6 +1682,12 @@ $this->title = 'Create Qard';
 						//alert("new_block:"+new_block);
 						$("#working_div").before(qard);
 						$("#working_div").html(theme + new_div);
+						if(data.text == ''){
+							focusWorkspace();
+							$("#working_div .current_blk").html("Add your comments here");
+						}
+							
+						$("#working_div .current_blk").append(image_icon_span);
 						$("#reset_image").trigger("click");
 						 return;
 					}
