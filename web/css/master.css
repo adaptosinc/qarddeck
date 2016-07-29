@@ -1276,6 +1276,9 @@ li.color4 {
 li.color5 {
     background: orange !important;
 }
+li.color {
+    cursor: pointer;
+}
 /* Qard Style popup */
 #qard-style .modal-dialog {
     width: 65%;
