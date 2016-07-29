@@ -363,7 +363,7 @@ class QardController extends Controller
 	 * To record the user activity for a qard
 	 * @return mixed
 	 */
-	public function actionActivity($id,$type){
+	public function actionActivity($id,$type,$sharetype){
 
 		$query = new Query;
 		//see if the row already exists or not
@@ -380,13 +380,14 @@ class QardController extends Controller
 				'activity_type' => $type,
 				'qard_id' => $id,
 				'user_id'=> \Yii::$app->user->id,
+				'share_type'=>$sharetype,
 			]);
 			if($command->execute())
 				return $type."ed";			
 		}
 		else{
 		
-			if($type != 'share'){
+			 if($type != 'share'){
 				//do an unlike,do an unfollow or an un-bookmark
 				$command = \Yii::$app->db->createCommand()->delete('qard_user_activity',[				
 				'activity_type' => $type,
@@ -395,14 +396,19 @@ class QardController extends Controller
 					if($command->execute())
 							return 'Un'.$type."ed";	
 			}
-			else if($type == 'share'){
+			else  
+			if($type == 'share'){
+				
 				$command = \Yii::$app->db->createCommand()->insert('qard_user_activity', [
 					'activity_type' => $type,
 					'qard_id' => $id,
 					'user_id'=> \Yii::$app->user->id,
+					'share_type'=>$sharetype,
 				]);
+				
+				
 				if($command->execute())
-					return $type."ed Again";				
+					return $type."ed";				
 			}
 
 		}

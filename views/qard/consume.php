@@ -3,6 +3,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use app\models\QardComments;
+use yii\db\Query;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
@@ -14,6 +16,8 @@ $this->title = 'Preview Qard';
 		    echo '<input type="hidden" name="qard_id" id="qard_id" value="'.$model['qard_id'].'"><input type="hidden" name="user_id" id="user_id" value="'.$model['user_id'].'">';
 		}
 		?>
+		
+	
 		
     <!-- requiered for tag -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400" />
@@ -53,6 +57,8 @@ $this->title = 'Preview Qard';
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
 
     <section class="consume-card">
+	
+	
 		<div class="profile-header">
 			<div class="col-sm-3 col-md-3">
 				<div class="left_nav">
@@ -204,22 +210,89 @@ $this->title = 'Preview Qard';
 		$str .= '		</div>
 			';	
 			echo $str;
+			  $qard_id = $model['qard_id'];			
+			  $userid = \Yii::$app->user->id;
+			 
+			
+			
 			?>
                
             </div>
+			
 	<div class="col-sm-9 col-md-9">
+
 		<div id="cardtabs">
-	
+	 		
 	  <!-- Nav tabs -->
 	  <ul class="nav nav-tabs col-sm-1 col-md-1" role="tablist">
-		<li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab"><img class="image-default" src="<?=Yii::$app->homeUrl;?>images/comments_icon.png" alt=""> <img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>                                
-		<li role="presentation"><a href="#shareblock" aria-controls="shareblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/share_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>                                
-		<li role="presentation" class="tootip" data-title="Qard was added to your bookmarks"><span class="arrow-left"></span><a href="#bookmarkblock" aria-controls="bookmarkblock" role="tab" data-toggle="tab" aria-expanded="true"><img src="<?=Yii::$app->homeUrl;?>images/bookmark_icon.png" class="image-default" alt="" style="width:15px;margin:0 auto;"><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/bookmark_icon_light.png" alt=""></a></li>                              
-		<li role="presentation" class="tootip" data-title="Qard was added to your favourites"><span class="arrow-left"></span><a href="#favblock" aria-controls="favblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/heart_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/heart_icon_light.png" alt=""></a></li>
-		<!--<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/pop-up_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>-->
+	  
+	  <?php
+					//*************  like check ***********//
+						$query = new Query;
+						$hquery = $query->select('*')
+							->from('qard_user_activity')
+							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'like']);
+						$command = $hquery->createCommand();
+						$data = $command->queryAll();
+						$hact = "";
+						if(empty($data)){
+							$himg = '<img id="like-img" src="'.Yii::$app->request->baseUrl.'/images/heart_icon.png" class="image-activity" alt="">';
+						}else{
+							$hact ="active";
+							$himg = '<img id="like-img" src="'.Yii::$app->request->baseUrl.'/images/heart_icon_light.png" class="image-activity" alt="">';
+						}
+						
+						//*************  bookmark check ***********//
+						
+						$bkquery = $query->select('*')
+							->from('qard_user_activity')
+							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'bookmark']);
+						$command = $bkquery->createCommand();
+						$data = $command->queryAll();
+						$bkact = "";
+						if(empty($data)){
+							$bkimg = '<img id="book-img" style="width:15px;margin:0 auto;" src="'.Yii::$app->request->baseUrl.'/images/bookmark_icon.png" class="image-activity" alt="" style="width:15px;">';
+						}else{
+							$bkact ="active";
+							$bkimg = '<img id="book-img"  style="width:15px;margin:0 auto;" src="'.Yii::$app->request->baseUrl.'/images/bookmark_icon_light.png" class="image-activity" alt="">';
+						}
+						
+					//*************  share count check ***********//
+					
+					$shquery = $query->select('count(*) as sharecount ')
+							->from('qard_user_activity')
+							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'share']);
+						$command = $shquery->createCommand();
+						$data = $command->queryOne();
+						$count = $data;
+					;
+						
+						
+		?>
+		<?//=$count[0]['sharecount']?>
+		<li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab"><img class="image-default" src="<?=Yii::$app->homeUrl;?>images/comments_icon.png" alt=""> <img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li> 
+		
+		<li role="presentation"><span style="display:none;" id="share-count" class="cartdisplay" ><?=$count['sharecount']?></span><a href="#shareblock" aria-controls="shareblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/share_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>  
+		
+		<li role="presentation" class="activity_card <?=$bkact;?>" id="book-msg" act-type="bookmark" act-id="<?=$model->qard_id?>" for="" ><span class="arrow-left"></span><a  aria-controls="favblock" role="tab" data-toggle="tab" ><?=$bkimg?>
+		
+
+		
+		</a></li>   
+		
+		<li role="presentation" class="activity_card <?=$hact;?>"  id="like-msg" act-type="like" act-id="<?=$model->qard_id?>" for="" ><span class="arrow-left"></span><a  aria-controls="favblock" role="tab" data-toggle="tab" ><?=$himg?>
+		
+	
+		
+		</a></li>
+		
+		
 	  </ul>
 	
 	  <!-- Tab panes -->
+	  
+	 
+		
 	<div class="col-sm-11 col-md-11">
 		<div id="preview-tab" class="preview-tab" style="display: block;">
 			<div class="bookmark-content">
@@ -289,17 +362,12 @@ $this->title = 'Preview Qard';
 				  <h4 class="comment-input"><input type="text" id="comment-input" name="comment-input" class="col-sm-10 col-md-10" placeholder="Share what you're thinking..."><button id="commentSubmit" class="btn qard col-sm-2 col-md-2">POST</button></h4>
 			  </div>
 			  
-			  <?php 
-						//load old comments
-						if(isset($comments) && !empty($comments))
-						{
-					
-								
-							//arrange it
-						?>
+			
 						
 				  <ul class="comment-list" style=" overflow-y:scroll; height:500px;">
 				  <?php foreach($comments as $comment){ 
+						
+							
 						   $profile_photo = $comment->userProfile->profile_photo; 
 				  ?>
 					  <li class="col-sm-12 col-md-12">
@@ -308,7 +376,7 @@ $this->title = 'Preview Qard';
 							  <img src="<?=$profile_photo?>" alt="">
 						  </div>
 						  <div class="comment-txt col-sm-11 col-md-11">
-							  <p><strong><?=$model->userProfile->fullname ?></strong><?=$comment['text']?></p>
+							  <p><strong><?=$comment->userProfile->fullname ?></strong><?=$comment['text']?></p>
 							   <?php 
 								  $datetime = $comment['created_at'];
 								  $date = date('M j Y g:i A', strtotime($datetime));
@@ -331,7 +399,7 @@ $this->title = 'Preview Qard';
  
 				  <?php } ?>					  
 				  </ul>  
-						<?php  } ?>				  
+									  
 		  </div>
 		  <div role="tabpanel" class="tab-pane" id="fileblock">
 				<div class="fallback">
@@ -346,20 +414,28 @@ $this->title = 'Preview Qard';
 					  </li>                                      
 				  </ul>                                     
 		  </div>
-
+			<div role="tabpanel" class="tab-pane " id="favblock" style="padding: 20px;">
+			
+		  	<div class="bookmark-content">
+				<img src="<?=Yii::$app->homeUrl;?>images/demo_icon.png" alt="">
+				<h4 style="padding-left: 20px;">Explore the Qard Blocks by clicking the links on the qard</h4>
+			</div>
+			
+			</div>
+			
 		  <div role="tabpanel" class="tab-pane" id="shareblock">                                                                  
 			  <div class="cardblock-header">
 				  <h4>Share <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>                                        
 			  </div>
 			  <div class="share-input">
 				<h4>Share the link below in social media, in email, or whatever.</h4>
-				<h4 class="share-input"><input type="text" name="share-input" class="col-sm-10 col-md-10" placeholder="http://www.google.com"><button class="btn qard col-sm-2 col-md-2">COPY LINK</button></h4>
+				<h4 class="share-input"><input type="text" readonly="readonly" name="share-input" id="share-link" value="<?= Yii::$app->request->absoluteUrl ?>" class="col-sm-10 col-md-10" ><button for="copylink" act-type="share" act-id="<?=$model->qard_id?>" id="copy-link" class="btn qard col-sm-2 col-md-2 activity_card">COPY LINK</button></h4>
 				<div class="quick-share">
 					<h4>Quick Share</h4>
 					<ul>
-						<li><a href=""><i class="fa fa-facebook"></i></a></li>
-						<li><a href=""><i class="fa fa-twitter"></i></a></li>
-						<li><a href=""><i class="fa fa-linkedin"></i></a></li>
+						<li class="activity_card" act-type="share" act-id="<?=$model->qard_id?>" for="facebook" ><a style="display:block !important " href="https://www.facebook.com/sharer/sharer.php?u=<?= Yii::$app->request->absoluteUrl ?>" target="_blank" ><i class="fa fa-facebook"></i></a></li>
+						<li class="activity_card" act-type="share" act-id="<?=$model->qard_id?>" for="twitter"  ><a href="https://twitter.com/home?status=<?= Yii::$app->request->absoluteUrl ?>" target="_blank" ><i class="fa fa-twitter"></i></a></li>
+						<li class="activity_card" act-type="share" act-id="<?=$model->qard_id?>" for="linkedin" ><a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?= Yii::$app->request->absoluteUrl ?>&title=&summary=&source="><i class="fa fa-linkedin"></i></a></li>
 					</ul>
 				</div>
 			  </div>
@@ -400,13 +476,23 @@ $this->title = 'Preview Qard';
                 $('.tab-content').css('display','none');
             }
             $('ul.nav.nav-tabs li').click(function(){
-                $('.preview-tab').css('display','none');
-                $('.tab-content').css('display','block');            
+				var id = $(this).attr('id');
+				if( (id == "like-msg") ||(id == "book-msg") )
+				{
+				$('.preview-tab').css('display','block');
+                $('.tab-content').css('display','none'); 
+				}else{
+				$('.preview-tab').css('display','none');
+                $('.tab-content').css('display','block'); 
+				}
+				
+                
+				
             });
         });
 	
 		$('#cardtabs a').click(function (e) {
-		  e.preventDefault();
+		//  e.preventDefault();
 		  $(this).tab('show');
 		});
 
@@ -600,6 +686,7 @@ $this->title = 'Preview Qard';
 	
 	$(document).ready(function(){
 	
+		//******************* Function for Add Comments **************//
 		
 	$('#commentSubmit').click(function(e){
 		e.preventDefault();
@@ -624,6 +711,85 @@ $this->title = 'Preview Qard';
 				}
 
 			});
+			
+			//******************* Function for Favourites **************//
+			
+			$('.activity_card').on('click',function(){
+				var sharecount = $('#share-count').html();	
+				var check =$(this);
+				console.log($(this).attr('act-type'));
+				var sharetype = $(this).attr('for');
+				$.ajax({
+					url: '<?=Url::to(['qard/activity'], true);?>',
+					dataType: 'html',
+					type : 'GET',
+					data: {'id':$(this).attr('act-id'),'type':$(this).attr('act-type'),'sharetype':sharetype},
+					success: function(response) {							
+						console.log(response);
+						
+						 if(response=='likeed'){	
+							$("#like-msg").addClass( "tootip" );
+							$("#like-msg").attr("data-title","Qard was added to your favourites");							 
+							$("#like-img").attr('src','<?=Yii::$app->request->baseUrl?>/images/heart_icon_light.png');
+						}else if(response=='Unlikeed'){
+							$("#like-msg").removeClass('active');
+							$("#like-img").attr('src','<?=Yii::$app->request->baseUrl?>/images/heart_icon.png');
+						
+						}else if(response=='bookmarked'){	
+							$("#book-msg").addClass( "tootip" );
+							$("#book-msg").attr("data-title","Qard was added to your bookmarks");						
+							$("#book-img").attr('src','<?=Yii::$app->request->baseUrl?>/images/bookmark_icon_light.png');
+						}else if(response=='Unbookmarked'){	
+							$("#book-msg").removeClass('active');
+							$("#book-img").attr('src','<?=Yii::$app->request->baseUrl?>/images/bookmark_icon.png');
+						}else if(response=='shareed'){	
+							var newcount = parseInt(sharecount) + parseInt(1);
+							$('#share-count').html(newcount);
+						} 
+					}
+					
+				}); 
+			});
+
+		//******************* Function for Copy The URL Link **************//
+				
+			$("#copy-link").click(function(){
+				
+				 var copyTextarea = document.querySelector('#share-link');
+			  copyTextarea.select();
+
+			  try {
+				var successful = document.execCommand('copy');
+				var msg = successful ? 'successful' : 'unsuccessful';
+				console.log('Text Copied ' + msg);
+			  } catch (err) {
+				console.log('Oops, unable to copy');
+			  }
+			});
+
+			
+	
+
+
+			
 	});
 			
 	</script>
+	<style>
+	
+	
+.cartdisplay {
+    background: #ff0c93 none repeat scroll 0 0;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    height: 25px;
+    position: absolute;
+    right: -13px;
+    text-align: center;
+    top: -7px;
+    vertical-align: bottom;
+    width: 25px;
+}
+	</style>
