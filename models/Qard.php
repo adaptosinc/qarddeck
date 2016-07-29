@@ -158,11 +158,11 @@ class Qard extends \yii\db\ActiveRecord
 				if(isset($theme)){
 					//img block styles
 						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
-						if($block->link_image != ''){
+/* 						if($block->link_image != ''){
 								
 								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 								$img_block_style .= 'background-size: cover;';
-						}
+						} */
 						if($theme['div_bgcolor'] != '')
 							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
 						$img_block_style .= 'height:'.$theme['height'].'px;';
@@ -234,11 +234,11 @@ class Qard extends \yii\db\ActiveRecord
 				if(isset($theme)){
 					//img block styles
 						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
-						if($block->link_image != ''){
+/* 						if($block->link_image != ''){
 								
 								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 								$img_block_style .= 'background-size: cover;';
-						}
+						} */
 						if($theme['div_bgcolor'] != '')
 							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
 						$img_block_style .= 'height:'.$theme['height'].'px;';
