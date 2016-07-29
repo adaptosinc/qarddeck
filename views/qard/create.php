@@ -226,13 +226,13 @@ $this->title = 'Create Qard';
 
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
-                                    <div class="dropzone" data-originalsize="false" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;">
+                                    <div class="dropzone" data-smaller="true" data-canvas-image-only="true" data-originalsize="false" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;" >
                                         <input type="file" name="thumb" required="required" />
                                     </div>
                                 </form>
                             </div>
                             <!--		    </form>-->
-                            <div class="form-group image-elements">
+                            <!--<div class="form-group image-elements">
                                 <div class="col-sm-3 col-md-3">
                                     <input type="text" id="image_opc" class="form-control" placeholder="Image Opacity (%)">
                                 </div>
@@ -248,15 +248,36 @@ $this->title = 'Create Qard';
                                         <li id="reset_image"><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
                                     </ul>
                                 </div>
+                            </div>-->
+							<div class="form-group image-elements">
+								<!--<div class="col-sm-3 col-md-3 on-off">
+									<span>Fit</span>
+										<div class="switch">
+											<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-6"></label>
+										</div>  <span>Crop</span> 
+								</div>
+								<div class="col-sm-3 col-md-3 on-off">
+										<div class="switch">
+											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-7"></label>
+										</div>  <span>Display Preview</span> 
+								</div>-->
+								<div class="col-sm-6 col-md-6 on-off">
+										<div class="switch">
+											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-3"></label>
+										</div>  <span>Use this Image</span> 
+								</div>                                       
                             </div>
-                            <ul class="on-off pull-right">
+                            <!--<ul class="on-off pull-right">
                                 <li id="file_id">
                                     <div class="switch" >
                                         <input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
                                         <label for="cmn-toggle-3"></label>
                                     </div> <span>Display as Background Image</span>
                                 </li>
-                            </ul>
+                            </ul>-->
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
@@ -809,6 +830,7 @@ $this->title = 'Create Qard';
 				$(this).resizable({ 
 					handles: "s",
 					delay: 200,
+					cursorAt: { right: 5},
 					start: function( event, ui ) {
 						$(this).trigger('dblclick');
 					},
@@ -1196,13 +1218,15 @@ $this->title = 'Create Qard';
 		});
 		// on click image tab should increase block height
 		$(document).delegate("#cmn-toggle-3", "click", function() {
-			if ($(this).is(":checked")) {
+			if($(this).prop('checked')){
 				if (parseInt($("#working_div .current_blk").attr("data-height")) < 4) {
 					setHeightBlock($("#working_div .current_blk"),4);
 					//console.log($("#working_div .current_blk").attr("data-height"));
+					$(".save-pic").trigger("click");
 				}
 			} else {
 				//removeBr();
+				adjustHeight();
 			}
 		});
             // for image
