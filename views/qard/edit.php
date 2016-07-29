@@ -884,8 +884,8 @@ $this->title = 'Edit Qard';
 	  }); */
 	function focusWorkspace(){
 			$("#working_div .current_blk").focus();
-			//document.execCommand('styleWithCSS', false, true);
-			//document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
+			document.execCommand('styleWithCSS', false, true);
+			document.execCommand('foreColor', false, '<?php echo $theme_properties['dark_text_color'];?>');	
 		
 	}
 	/*
