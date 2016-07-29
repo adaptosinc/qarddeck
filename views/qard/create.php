@@ -715,7 +715,7 @@ $this->title = 'Create Qard';
 	$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {		
 		//select color and apply span
 		if (event.type === "input") {
-			focusWorkspace();
+			//focusWorkspace();
 		}
 		if(event.type === "paste"){
 			event.preventDefault();
