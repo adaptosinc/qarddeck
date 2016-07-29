@@ -1226,7 +1226,7 @@ $this->title = 'Create Qard';
 				}
 			} else {
 				//removeBr();
-				$('.image_icon_span').remove();
+				$('#working_div .current_blk').find('.image_icon_span').remove();
 				adjustHeight();
 			}
 		});
