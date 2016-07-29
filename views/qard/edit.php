@@ -633,7 +633,7 @@ $this->title = 'Edit Qard';
 			  </div>
 			  <div class="modal-footer">
 				<button type="button" class="btn btn-grey pull-left" data-dismiss="modal">CANCEL</button>
-				<button type="button" class="btn btn-warning pull-right" id="qrdstyle-link" data-theme="<?=$theme['theme_id']?>" data-pattern="flat">APPLY STYLE</button>
+				<button type="button" class="btn btn-warning pull-right" id="qrdstyle-link" data-theme="" data-pattern="">APPLY STYLE</button>
 			  </div>
 			</div>
 		  </div>
@@ -2180,20 +2180,26 @@ $this->title = 'Edit Qard';
 			var block_style = $(this).attr('data-pattern');
 			add_block(true,false);
 			//changeBlockStyle(block_style);
-
-			if(q_id){
-				$.ajax({
-					url :"<?=Url::to(['qard/change-style'], true);?>",
-					data: {"qard_style":block_style,"qard_id":q_id},
-					type: "GET",
-					success: function(){
-						window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
-					}
-				});
-				
-			}else{
-				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
+			if(block_style !='' || theme_id !=''){
+				if(q_id){
+					$.ajax({
+						url :"<?=Url::to(['qard/change-style'], true);?>",
+						data: {"qard_style":block_style,"qard_id":q_id},
+						type: "GET",
+						success: function(){
+							if(theme_id !='')
+								window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
+							else
+								window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id;
+								
+						}
+					});
+					
+				}else{
+					window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
+				}				
 			}
+
 		});
 /* 		function changeBlockStyle(block_style){
 			var q_id = $('#qard_id').val();

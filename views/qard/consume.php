@@ -349,7 +349,7 @@ $this->title = 'Preview Qard';
 				<div class="quick-share">
 					<h4>Quick Share</h4>
 					<ul>
-						<li><a href=""><i class="fa fa-facebook"></i></a></li>
+						<li><a href="abc.com"><i class="fa fa-facebook"></i></a></li>
 						<li><a href=""><i class="fa fa-twitter"></i></a></li>
 						<li><a href=""><i class="fa fa-linkedin"></i></a></li>
 					</ul>
@@ -398,7 +398,7 @@ $this->title = 'Preview Qard';
         });
 	
 		$('#cardtabs a').click(function (e) {
-		  e.preventDefault();
+		  //e.preventDefault();
 		  $(this).tab('show');
 		});
 

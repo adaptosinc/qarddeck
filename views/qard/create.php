@@ -557,7 +557,7 @@ $this->title = 'Create Qard';
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-grey pull-left" data-dismiss="modal">CANCEL</button>
-			<button type="button" class="btn btn-warning pull-right" id="qrdstyle-link" data-theme="<?=$_REQUEST['theme_id']?>" data-pattern="flat">APPLY STYLE</button>
+			<button type="button" class="btn btn-warning pull-right" id="qrdstyle-link" data-theme="" data-pattern="">APPLY STYLE</button>
 		  </div>
 		</div>
 	  </div>
@@ -2045,9 +2045,10 @@ $this->title = 'Create Qard';
 			$('.qrd-pattern').removeClass('active');
 			$(this).addClass('active');
 			var styleCard = $(this).attr('id');
-			$('.bgimg-block').removeClass('flat gap shadow line');
-			$('.bgimg-block').addClass(styleCard);
-			$('.bgimg-block').attr('data-style-qard',styleCard);
+			//$('.bgimg-block').removeClass('flat gap shadow line');
+			//$('.bgimg-block').addClass(styleCard);
+			//$('.bgimg-block').attr('data-style-qard',styleCard);
+			$('#qrdstyle-link').attr("data-pattern",styleCard);
 		}); 
 		$('.embedBlock').click(function(){
 			$('a[href="#paste"]').parent().removeClass('active');
@@ -2061,18 +2062,40 @@ $this->title = 'Create Qard';
 			$('#paste').addClass('active');
 			$('#embed').removeClass('active');
 		});
+		
 		$('#qrdstyle-link').click(function(e){
 			e.preventDefault();
-			//check total height
+			//check total height			
+			//$("h5[class=add-another]").trigger("click");
 			
-			$("h5[class=add-another]").trigger("click");
 			var theme_id = $(this).attr('data-theme');
+			var block_style = $(this).attr('data-pattern');
+			add_block(true,false);
 			var q_id = $('#qard_id').val();
-			if(q_id){
-				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
-			}else{
-				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
+			//changeBlockStyle(block_style);
+			console.log(block_style);
+			console.log(q_id);
+			console.log(theme_id);
+			if(block_style !='' || theme_id !=''){
+				if(q_id){
+					$.ajax({
+						url :"<?=Url::to(['qard/change-style'], true);?>",
+						data: {"qard_style":block_style,"qard_id":q_id},
+						type: "GET",
+						success: function(){
+							if(theme_id !='')
+								window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id+'&theme_id='+theme_id;
+							else
+								window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?id='+q_id;
+								
+						}
+					});
+					
+				}else{
+					window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+theme_id;
+				}				
 			}
+
 		});
 		// Styling Card script Ends
 	/***************************/
