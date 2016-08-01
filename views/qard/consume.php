@@ -127,7 +127,11 @@ $this->title = 'Preview Qard';
                             </div>
                             </nav> 
 							<?php 	} ?>							
-                            <h3><?=$model->title?></h3>
+                            <h3><?=$model->title?>
+							<?php if(\Yii::$app->user->id == $model->user_id){?>
+							<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button></span>
+							<?php } ?>
+							</h3>
                             <div class="bottom-card col-sm-12 col-md-12">
                                 <ul>
                                     <li>
