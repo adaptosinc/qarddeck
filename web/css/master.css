@@ -798,7 +798,7 @@ section.consume-card.save .btn-grey {
     margin-right: 40px;
     background: #f1f1f1;
 }
-section.create-card, section.create-theme, section.consume-card {
+section.create-card, section.create-theme{
     padding: 50px 40px;
     background: #f6f6f6;
     display: block;
@@ -2460,6 +2460,7 @@ span.arrow-left {
     left: 43px;
     top: 20px;    
 }
+
 
 /* ==================================
  *  Template Selection

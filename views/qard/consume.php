@@ -83,11 +83,7 @@ $this->title = 'Preview Qard';
 				</div>
 			</div>                        
         </div>
-		<div class="row">
-			<div class="col-sm-8 col-md-8">
-				<h3><span class="pull-left"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button></span><?=$model->title?></h3>
-			</div>
-		</div>
+
 		<div id="decknavbar" class="newdeck navbar-collapse collapse" aria-expanded="false" style="height: 0px;">
 			<ul class="nav navbar-nav">
 			  <li>
@@ -146,89 +142,73 @@ $this->title = 'Preview Qard';
         <div class="add-block col-sm-3 col-md-3" id="qard<?=$model->qard_id?>" >
 
 		
-		<?php 
-		//get theme properties
-		$theme_properties = unserialize($theme['theme_properties']);
-		//print_r($theme);die;
-		?>
-         <!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
-		    <div class="bgoverlay-block" style="height:75px;">
-			<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
-		    </div>                                
-		</div>
-		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: #0055cc" style="height:150px;">
-		    <div class="bgoverlay-block" style="height:150px;">
-			<div class="text-block current_blk" data-height="4" style="height:150px;"></div>                                    
-		    </div>                                
-		</div>-->
+			<?php 
+			//get theme properties
+			$theme_properties = unserialize($theme['theme_properties']);
 
-		<?php 		
-		
-		$str = '<div id="add-block'.$model->qard_id.'" class="qard-content">';
+			$str = '<div id="add-block'.$model->qard_id.'" class="qard-content">';
 
-			if(isset($blocks) && !empty($blocks)){
-			//	print_R($blocks);die;
-			foreach($blocks as $block){
-				////get the inline styles///
-				$img_block_style = '';
-				$overlay_block_style = '';
-				$text_block_style = '';
-				$theme = $block->theme->theme_properties;
-				$theme = unserialize($theme);
-				if(isset($theme)){
-					//img block styles
-						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
-/* 						if($block->link_image != ''){
-								
-								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
-								$img_block_style .= 'background-size: cover;';
-						} */
-						if($theme['div_bgcolor'] != '')
-							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
-						$img_block_style .= 'min-height:'.$theme['height'].'px;';
-						$img_block_style .= 'height:auto;';
-						
-					//overlay block styles
-						$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
-						if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
-							$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
-						$overlay_block_style .= 'min-height:'.$theme['height'].'px;';
-						$overlay_block_style .='height:auto;';
-						
-						$text_block_style .= 'min-height:'.$theme['height'].'px;';
-						$text_block_style .='overflow:hidden;';
-						$text_block_style .='height:auto;';
-				}
-				///////////////////////////
-				if(!isset($theme['data_style_qard']))
-					$theme['data_style_qard'] = 'line';
-				$str .= '<div class="bgimg-block '.$theme['data_style_qard'].'" style="'.$img_block_style.'" >
-				<div class="bgoverlay-block" style="'.$overlay_block_style.'">
-				<div class="text-block" style="'.$text_block_style.'">';
-				$str .= $block->text;
-				$str .= '</div></div></div>';
+				if(isset($blocks) && !empty($blocks)){
+				//	print_R($blocks);die;
+				foreach($blocks as $block){
+					////get the inline styles///
+					$img_block_style = '';
+					$overlay_block_style = '';
+					$text_block_style = '';
+					$theme = $block->theme->theme_properties;
+					$theme = unserialize($theme);
+					if(isset($theme)){
+						//img block styles
+							$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
+	/* 						if($block->link_image != ''){
+									
+									$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
+									$img_block_style .= 'background-size: cover;';
+							} */
+							if($theme['div_bgcolor'] != '')
+								$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
+							$img_block_style .= 'min-height:'.$theme['height'].'px;';
+							$img_block_style .= 'height:auto;';
+							
+						//overlay block styles
+							$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
+							if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
+								$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
+							$overlay_block_style .= 'min-height:'.$theme['height'].'px;';
+							$overlay_block_style .='height:auto;';
+							
+							$text_block_style .= 'min-height:'.$theme['height'].'px;';
+							$text_block_style .='overflow:hidden;';
+							$text_block_style .='height:auto;';
+					}
+					///////////////////////////
+					if(!isset($theme['data_style_qard']))
+						$theme['data_style_qard'] = 'line';
+					$str .= '<div class="bgimg-block '.$theme['data_style_qard'].'" style="'.$img_block_style.'" >
+					<div class="bgoverlay-block" style="'.$overlay_block_style.'">
+					<div class="text-block" style="'.$text_block_style.'">';
+					$str .= $block->text;
+					$str .= '</div></div></div>';
 
-			}	}
-		$str .= '		</div>
-			';	
-			echo $str;
-			  $qard_id = $model['qard_id'];			
-			  $userid = \Yii::$app->user->id;
-			 
-			
-			
-			?>
+				}	}
+			$str .= '		</div>
+				';	
+				echo $str;
+	
+				?>
                
-            </div>
+        </div>
 			
-	<div class="col-sm-9 col-md-9">
+		<div class="col-sm-9 col-md-9">
 
-		<div id="cardtabs">
+			<div id="cardtabs">
 	 		
-	  <!-- Nav tabs -->
-	  <ul class="nav nav-tabs col-sm-1 col-md-1" role="tablist">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs col-sm-1 col-md-1" role="tablist">
 	  
-	  <?php
+			<?php
+						$qard_id = $model['qard_id'];			
+						$userid = \Yii::$app->user->id;
 					//*************  like check ***********//
 						$query = new Query;
 						$hquery = $query->select('*')
@@ -463,10 +443,10 @@ $this->title = 'Preview Qard';
 		  <div role="tabpanel" class="tab-pane" id="deleteblock">.</div>
 		</div>
 	  
-	  </div>
-	</div>
-</div>
-        </div>
+		</div>
+		</div>
+		</div>
+    </div>
 </div>
     </section>
     <!-- block_error popup -->
@@ -488,10 +468,16 @@ $this->title = 'Preview Qard';
 				}else{
 				$('.preview-tab').css('display','none');
                 $('.tab-content').css('display','block'); 
-				}
-				
-                
-				
+				}				
+            });
+            $('#consume-preview .navbar-header button').click(function(){
+            if($('#consume-preview').hasClass('col-sm-12 col-md-12') === true){
+                $('#consume-preview').removeClass('col-sm-12 col-md-12');
+                $('#consume-preview').addClass('col-sm-10 col-md-10');
+            }else {
+                $('#consume-preview').addClass('col-sm-12 col-md-12');
+                $('#consume-preview').removeClass('col-sm-10 col-md-10');                
+            }                
             });
         });
 	
