@@ -281,6 +281,14 @@ class QardController extends Controller
 			'property' => 'og:image',
 			'content' => 'http://wordpressmonks.com'.Yii::$app->homeUrl.'uploads/qards/'.$qard->qard_id.".png",
 		]);
+		\Yii::$app->view->registerMetaTag([
+			'property' => 'og:title',
+			'content' => 'QardDeck',
+		]);
+		\Yii::$app->view->registerMetaTag([
+			'name' => 'description',
+			'content' => 'Check the awesome Qard created by '.$qard->userProfile->fullname.' !Share what you love,think and know. Easily.',
+		]);
 		//print_r($theme);die;
 		return $this->render('consume', [
 			'model' => $qard,
