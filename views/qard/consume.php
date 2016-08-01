@@ -337,15 +337,14 @@ $this->title = 'Preview Qard';
 				</div>
 			</div>
 			<div class="active-image-preview" style="display: none;">       <!-- image preview block -->
-				<h4>Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<h4 id="img_title">Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
-					<h4>Caption comes Here</h4>
-					<div class="image-show">
+					<div class="image-show" id="img_show" >
 						<img src="<?=Yii::$app->homeUrl;?>images/98.png" alt="">
 					</div>
 				</div>
-			</div>                                    
+			</div>                                   
 		</div>                                 
 		<div class="tab-content" style="display: none; ">                               
 		  <div role="tabpanel" class="tab-pane active" id="comments">
@@ -674,6 +673,14 @@ $this->title = 'Preview Qard';
 				}
 			});			
 		}
+		/** Image Preview **/
+		function showImage(elem){
+			console.log($(elem).attr('data-url'));
+			hideAll('active-image-preview');
+			$('.active-preview-content').show();	
+			var img = '<img style="width:100%" src="'+$(elem).attr('data-url')+'" alt="">';
+			$("#img_show").html(img);
+		}	
 		/** End of dragging function **/
 		function hideAll(except){
 			$('.tab-content').hide();
@@ -772,15 +779,7 @@ $this->title = 'Preview Qard';
 			  }
 			});
 
-			
-		/** Image Preview **/
-		function showImage(elem){
-			console.log($(elem).attr('data-url'));
-			hideAll('active-image-preview');
-			$('.active-preview-content').show();	
-			var img = '<img style="width:100%" src="'+$(elem).attr('data-url')+'" alt="">';
-			$("#img_show").html(img);
-		}		
+	
 	});
 			
 	</script>
