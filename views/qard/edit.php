@@ -2206,7 +2206,7 @@ $this->title = 'Edit Qard';
                 }
             });
 		}
-		function calldisplayEmbedUrl(videoUrl){
+/* 		function calldisplayEmbedUrl(videoUrl){
 			//$('#link_div').hide();
             var embedd_preview_url = $(videoUrl).val();
             var get_embed_url = "<?=Url::to(['qard/embeddisplay-url'], true);?>";
@@ -2231,7 +2231,7 @@ $this->title = 'Edit Qard';
 			//console.log(eUrl);
 			calldisplayEmbedUrl(eUrl);
 			$('#embed_code').val($(videoLink).attr('data-content-url'));
-		}
+		} */
 		//Embedd Video ends
 		$('.embedBlock').click(function(){
 			$('a[href="#paste"]').parent().removeClass('active');
