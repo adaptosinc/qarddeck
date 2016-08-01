@@ -773,10 +773,10 @@ $this->title = 'Preview Qard';
 			});
 
 			
-	
-
-
-			
+		/** Image Preview **/
+		function showImage(){
+			console.log($(this).attr('data-url'));
+		}		
 	});
 			
 	</script>

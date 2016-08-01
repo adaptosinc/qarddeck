@@ -1769,7 +1769,7 @@ $this->title = 'Edit Qard';
 						//img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
 						/** ----------------------------------- **/
 						/** Make link icon **/
-						var image_icon_span = '<span data-url = "<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage();"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" alt=""></span>';
+						var image_icon_span = '<span data-url = "<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" alt=""></span>';
 						/** ----------------------------------- **/
 /* 						if(data.div_bgimage_position != "null")
 							img = img+'background-position:'+data.div_bgimage_position+';' */
