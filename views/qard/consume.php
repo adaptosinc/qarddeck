@@ -10,7 +10,7 @@ use yii\db\Query;
 /* @var $model app\models\Qard */
 $this->title = 'Preview Qard';
 ?>
-
+<meta property="og:image" itemprop="image primaryImageOfPage" content="<?=Yii::$app->homeUrl?>uploads/qards/<?=$model['qard_id']?>.png" />
  <?php
 		if(isset($model['qard_id'])){
 		    echo '<input type="hidden" name="qard_id" id="qard_id" value="'.$model['qard_id'].'"><input type="hidden" name="user_id" id="user_id" value="'.$model['user_id'].'">';
@@ -29,6 +29,7 @@ $this->title = 'Preview Qard';
             r.className = r.className.replace(/(^|\s)no-js(\s|$)/, "$1js$2")
         })(document, window, 0);
     </script>
+	
 <!--for tags-->
     <link href="<?= Yii::$app->request->baseUrl?>/css/select2.css" rel="stylesheet">
     <!--<link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
