@@ -143,6 +143,7 @@ $this->title = 'Create Qard';
 
                     <!-- Tab panes -->
                     <div class="tab-content col-sm-11 col-md-11">
+				
 					<!-- Start of header-->
 						<div class="cardblock-header">
 							<h4>Edit Block</h4>
@@ -205,7 +206,8 @@ $this->title = 'Create Qard';
 								</li>                                                                                            
 							</ul>
 						</div> <!-- End of header-->
-						<div role="tabpanel" class="tab-pane active" id="cardblock">
+
+						<div role="tabpanel" class="tab-pane" id="cardblock">
 							<div id="descfield">
 								<h4>Add Extra text <span class="trash pull-right"><i class="fa fa-trash"></i>&nbsp;Remove Extra Text</span></h4>
 								<input type="text" name="extra-text" placeholder="Enter an optional text" class="form-control">
@@ -464,7 +466,9 @@ $this->title = 'Create Qard';
 			</div>
 			<div class="col-sm-8 col-md-8 col-md-offset-1">
 				<ul class="help-list"> 
-					<li class="help-link"><a href=""><img src="<?=Yii::$app->homeUrl?>images/need-help_icon.png" width="30px" height="30px" style="margin-right:5px;" alt="">Need Help?</a></li>
+					<li class="help-link"><a href=""><img src="<?=Yii::$app->homeUrl?>images/need-help_icon.png" width="30px" height="30px" style="margin-right:5px;" alt="">Need Help?</a>
+					</li>
+
 					<li class="pull-right"><button class="btn btn-warning" name="preview" onclick="addSaveCard(event)">Preview Card</button></li>
 					<!--<li><button class="btn btn-warning" name="preview">Save</button></li>-->
 				</ul>
@@ -583,7 +587,7 @@ $this->title = 'Create Qard';
    
 	});");
 	?>
-
+	<!-- MODALS -->
     <div class="modal fade" tabindex="-1" id="Block_error" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -602,9 +606,89 @@ $this->title = 'Create Qard';
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+					<!--- Tutorial Starts Here-->
 
+		<!-- Modal -->
+		<div class="modal fade" id="myModaltut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			  </div>
+			  <div class="modal-body">
+				<!-- carousel start -->
+				<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+				  <!-- Indicators -->
+				  <ol class="carousel-indicators">
+					<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+					<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+					<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+					<li data-target="#carousel-example-generic" data-slide-to="3"></li>
+					<li data-target="#carousel-example-generic" data-slide-to="4"></li>
+					<li data-target="#carousel-example-generic" data-slide-to="5"></li>
+				  </ol>
+				
+				  <!-- Wrapper for slides -->
+				  <div class="carousel-inner" role="listbox">
+					<div class="item active">
+					  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_01.png" alt="">
+					  <div class="carousel-caption">
+						<h4>Hi! I am <i>The</i> <strong>Block</strong></h4>
+						<h4>I am the building element of a Qard</h4>                                            
+					  </div>
+					</div>
+					<div class="item">
+					  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_02.png" alt="">
+					  <div class="carousel-caption">
+						<h4>I display you thoughts, comments and ideas in text form. You can type directly on my face.</h4>
+					  </div>
+					</div>
+					<div class="item">
+					  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_03.png" alt="">
+					  <div class="carousel-caption">
+						<h4>You can resize me to make room for all your thoughts. You can even move me around!</h4>
+					  </div>
+					</div>
+					<div class="item">
+					  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_04.png" alt=""  class="custom-img">
+					  <div class="carousel-caption">
+						<h4>You can style me to fit your personality or to match your content! I look good in any theme. </h4>
+					  </div>
+					</div>
+					<div class="item">
+					  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_05.png" alt="">
+					  <div class="carousel-caption">
+						<h4>You can add all types of media for me to present, but just one at a time. I am very organized!</h4>
+					  </div>
+					</div>
+					<div class="item">
+					  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_06.png" alt="">
+					  <div class="carousel-caption">
+						<h4>You can duplicate me or start fresh any time. If I don't fit anymore, you can even delete me. I'll haunt your dreams though...</h4>
+					  </div>
+					</div>                                        
+				  </div>        <!-- Wrapper for slides -->
+					<!-- Controls -->
+					<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+					  <img src="<?=Yii::$app->homeUrl?>images/arrow-left_icon.png" alt="">
+					  <span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+					  <img src="<?=Yii::$app->homeUrl?>images/arrow-right_icon.png" alt="">
+					  <span class="sr-only">Next</span>
+					</a>                                      
+				</div>      <!-- carousel end -->
+				
+			  </div>
+			</div>
+		  </div>
+		</div>          <!-- Modal --> 
+		<!--- Tutorial Ends Here-->	
     <script type="text/javascript">
-
+	$('.help-link a').click(function(e){
+		e.preventDefault();
+		$('#myModaltut').modal('show');
+	});
 	$('#qard-style #themeorder .qard-content').click(function(){
 		$('.qard-content').removeClass('active');
 		$(this).addClass('active');
@@ -1664,7 +1748,7 @@ $this->title = 'Create Qard';
 						//img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
 						/** ----------------------------------- **/
 						/** Make link icon **/
-						var image_icon_span = '<span data-url = "<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage();"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" alt=""></span>';
+						var image_icon_span = '<span data-url = "<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" alt=""></span>';
 						/** ----------------------------------- **/
 /* 						if(data.div_bgimage_position != "null")
 							img = img+'background-position:'+data.div_bgimage_position+';' */

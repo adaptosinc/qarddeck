@@ -317,7 +317,9 @@ class QardController extends Controller
 		
 		$theme = $qard->qardTheme;
 		$blocks = $qard->blocks;
-		
+
+		$this->metaTags($qard);
+
 		return $this->render('consume', [
 			'model' => $qard,
 			'theme' => $theme,
@@ -328,9 +330,28 @@ class QardController extends Controller
 			"curpostion"=>$curpostion,
 			"prevpostion"=>$prevpostion,
 			"viewcurrent"=>$viewcurrent,
+			"qards" => $results,
 			
 		]); 		
 	 }	 
+	 public function metaTags($qard){
+		\Yii::$app->view->registerMetaTag([
+			'property' => 'og:image',
+			'content' => 'http://wordpressmonks.com'.Yii::$app->homeUrl.'uploads/qards/'.$qard->qard_id.".png",
+		]);
+		\Yii::$app->view->registerMetaTag([
+			'property' => 'og:title',
+			'content' => 'QardDeck',
+		]);
+		\Yii::$app->view->registerMetaTag([
+			'name' => 'description',
+			'content' => 'Check the awesome Qard created by '.$qard->userProfile->fullname.' !Share what you love,think and know. Easily.',
+		]);		
+		\Yii::$app->view->registerMetaTag([
+			'property' => 'twitter:image',
+			'content' => 'http://wordpressmonks.com'.Yii::$app->homeUrl.'uploads/qards/'.$qard->qard_id.".png",
+		]);
+	 }
     /**
      * Updates an existing Qard model to the status published.
      * If update is successful, the browser will be redirected to the 'view' page.

@@ -308,7 +308,7 @@ $this->title = 'Edit Qard';
 
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
-                                    <div class="dropzone" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;">
+                                    <div class="dropzone" data-smaller="true" data-canvas-image-only="true" data-originalsize="false" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;" >
                                         <input type="file" name="thumb" required="required" />
                                     </div>
                                 </form>
@@ -656,7 +656,7 @@ $this->title = 'Edit Qard';
 	   adjustHeight();
 	});");
 	?>
-
+	<!-- MODALS -->
     <div class="modal fade" tabindex="-1" id="Block_error" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -675,8 +675,88 @@ $this->title = 'Edit Qard';
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+	<!-- Modal -->
+	<div class="modal fade" id="myModaltut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  </div>
+		  <div class="modal-body">
+			<!-- carousel start -->
+			<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+			  <!-- Indicators -->
+			  <ol class="carousel-indicators">
+				<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="3"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="4"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="5"></li>
+			  </ol>
+			
+			  <!-- Wrapper for slides -->
+			  <div class="carousel-inner" role="listbox">
+				<div class="item active">
+				  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_01.png" alt="">
+				  <div class="carousel-caption">
+					<h4>Hi! I am <i>The</i> <strong>Block</strong></h4>
+					<h4>I am the building element of a Qard</h4>                                            
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_02.png" alt="">
+				  <div class="carousel-caption">
+					<h4>I display you thoughts, comments and ideas in text form. You can type directly on my face.</h4>
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_03.png" alt="">
+				  <div class="carousel-caption">
+					<h4>You can resize me to make room for all your thoughts. You can even move me around!</h4>
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_04.png" alt=""  class="custom-img">
+				  <div class="carousel-caption">
+					<h4>You can style me to fit your personality or to match your content! I look good in any theme. </h4>
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_05.png" alt="">
+				  <div class="carousel-caption">
+					<h4>You can add all types of media for me to present, but just one at a time. I am very organized!</h4>
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="<?=Yii::$app->homeUrl?>images/tutorial_icon_06.png" alt="">
+				  <div class="carousel-caption">
+					<h4>You can duplicate me or start fresh any time. If I don't fit anymore, you can even delete me. I'll haunt your dreams though...</h4>
+				  </div>
+				</div>                                        
+			  </div>        <!-- Wrapper for slides -->
+				<!-- Controls -->
+				<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+				  <img src="<?=Yii::$app->homeUrl?>images/arrow-left_icon.png" alt="">
+				  <span class="sr-only">Previous</span>
+				</a>
+				<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+				  <img src="<?=Yii::$app->homeUrl?>images/arrow-right_icon.png" alt="">
+				  <span class="sr-only">Next</span>
+				</a>                                      
+			</div>      <!-- carousel end -->
+			
+		  </div>
+		</div>
+	  </div>
+	</div>          <!-- Modal --> 
+	<!--- Tutorial Ends Here-->	
 
     <script type="text/javascript">
+	$('.help-link a').click(function(e){
+		e.preventDefault();
+		$('#myModaltut').modal('show');
+	});
 	$('#qard-style #themeorder .qard-content').click(function(){
 		$('.qard-content').removeClass('active');
 		$(this).addClass('active');
@@ -1769,7 +1849,7 @@ $this->title = 'Edit Qard';
 						//img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
 						/** ----------------------------------- **/
 						/** Make link icon **/
-						var image_icon_span = '<span data-url = "<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage();"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" alt=""></span>';
+						var image_icon_span = '<span data-url = "<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" alt=""></span>';
 						/** ----------------------------------- **/
 /* 						if(data.div_bgimage_position != "null")
 							img = img+'background-position:'+data.div_bgimage_position+';' */
