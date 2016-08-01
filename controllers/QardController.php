@@ -279,7 +279,7 @@ class QardController extends Controller
 		$blocks = $qard->blocks;
 		\Yii::$app->view->registerMetaTag([
 			'property' => 'og:image',
-			'content' => 'http://wordpressmonks'.Yii::$app->homeUrl.'uploads/qards/'.$qard->qard_id.".png",
+			'content' => 'http://wordpressmonks.com'.Yii::$app->homeUrl.'uploads/qards/'.$qard->qard_id.".png",
 		]);
 		//print_r($theme);die;
 		return $this->render('consume', [
