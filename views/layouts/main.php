@@ -20,9 +20,9 @@ AppAsset::register($this);
 <meta charset="<?= Yii::$app->charset ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:type" content="website" />    
-<meta property="og:title" content="<?=$this->title?>" />  
+<!--<meta property="og:title" content="<?=$this->title?>" />  
 <meta property="og:image" itemprop="image primaryImageOfPage" content="http://wordpressmonks.com/works/qarddeck/web/images/logo.png" />
-<meta name="description" property="og:description" itemprop="description" content="Share what you love,think and know. Easily." />
+<meta name="description" property="og:description" itemprop="description" content="Share what you love,think and know. Easily." />-->
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">

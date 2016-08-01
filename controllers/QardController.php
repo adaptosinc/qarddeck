@@ -277,6 +277,15 @@ class QardController extends Controller
 		$qard = $this->findModel($qard_id);
 		$theme = $qard->qardTheme;
 		$blocks = $qard->blocks;
+		$this->metaTags($qard);
+		//print_r($theme);die;
+		return $this->render('consume', [
+			'model' => $qard,
+			'theme' => $theme,
+			'blocks' => $blocks,
+		]); 		
+	 }	 
+	 public function metaTags($qard){
 		\Yii::$app->view->registerMetaTag([
 			'property' => 'og:image',
 			'content' => 'http://wordpressmonks.com'.Yii::$app->homeUrl.'uploads/qards/'.$qard->qard_id.".png",
@@ -288,14 +297,8 @@ class QardController extends Controller
 		\Yii::$app->view->registerMetaTag([
 			'name' => 'description',
 			'content' => 'Check the awesome Qard created by '.$qard->userProfile->fullname.' !Share what you love,think and know. Easily.',
-		]);
-		//print_r($theme);die;
-		return $this->render('consume', [
-			'model' => $qard,
-			'theme' => $theme,
-			'blocks' => $blocks,
-		]); 		
-	 }	 
+		]);		 
+	 }
     /**
      * Updates an existing Qard model to the status published.
      * If update is successful, the browser will be redirected to the 'view' page.
