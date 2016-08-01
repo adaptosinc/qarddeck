@@ -753,6 +753,15 @@ $this->title = 'Edit Qard';
 	<!--- Tutorial Ends Here-->	
 
     <script type="text/javascript">
+	//preview functions//
+	/** Embed code preview **/
+	function embedCode(videoLink){
+		var eUrl = $(videoLink).attr('data-value');
+		console.log(eUrl);
+		var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+		$('.preview-image').html(html);
+	}
+	///////////////////////
 	$('.help-link a').click(function(e){
 		e.preventDefault();
 		$('#myModaltut').modal('show');

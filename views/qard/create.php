@@ -685,6 +685,15 @@ $this->title = 'Create Qard';
 		</div>          <!-- Modal --> 
 		<!--- Tutorial Ends Here-->	
     <script type="text/javascript">
+	//preview functions//
+	/** Embed code preview **/
+	function embedCode(videoLink){
+		var eUrl = $(videoLink).attr('data-value');
+		console.log(eUrl);
+		var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+		$('.preview-image').html(html);
+	}
+	////////////////////////////
 	$('.help-link a').click(function(e){
 		e.preventDefault();
 		$('#myModaltut').modal('show');
@@ -2096,7 +2105,7 @@ $this->title = 'Create Qard';
                 }
             });
 		}
-		function calldisplayEmbedUrl(videoUrl){
+/* 		function calldisplayEmbedUrl(videoUrl){
 			//$('#link_div').hide();
             var embedd_preview_url = $(videoUrl).val();
             var get_embed_url = "<?=Url::to(['qard/embeddisplay-url'], true);?>";
@@ -2121,7 +2130,7 @@ $this->title = 'Create Qard';
 			//console.log(eUrl);
 			calldisplayEmbedUrl(eUrl);
 			$('#embed_code').val($(videoLink).attr('data-content-url'));
-		}
+		} */
 		//Embedd Video ends
 		
 		// Styling Card script starts
