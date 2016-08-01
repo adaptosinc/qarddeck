@@ -144,4 +144,14 @@ class Deck extends \yii\db\ActiveRecord
 		
 		return $html;
 	}	
+	/**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDeckqardCount()
+    {
+		$qard_decks = $this->qardDecks;
+		$count = count($qard_decks);
+		return $count;
+		
+    }
 }

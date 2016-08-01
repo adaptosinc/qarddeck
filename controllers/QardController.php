@@ -4,8 +4,10 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Qard;
+
 use app\models\Theme;
 use app\models\Deck;
+use app\models\QardDeck;
 use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -16,6 +18,7 @@ use yii\db\Command;
 use yii\db\Connection;
 use lib\GrabzItClient;
 use yii\web\ForbiddenHttpException;
+
 /**
  * QardController implements the CRUD actions for Qard model.
  */
@@ -273,15 +276,59 @@ class QardController extends Controller
 	 * @return mixed
 	 */
 	 public function actionConsume($qard_id){
-		 
+		
 		$qard = $this->findModel($qard_id);
+		$deckrel  = $qard->qardDecks;
+		
+		$deck ="";
+		$deckcount = "";
+		$nextpostion ="";
+		$prevpostion ="";
+		$curpostion ="";
+		$viewcurrent ="";
+			
+		if(isset($deckrel) && !empty($deckrel))
+		{			
+			$deck = Deck::findOne($deckrel->deck_id);
+			$deckcount  = $deck->getDeckqardCount();
+			$results = QardDeck::find()->where(['deck_id'=>$deck->deck_id])->orderBy('qard_id ASC')->asArray()->all();
+					
+			foreach( $results as $key=>$tmp)
+			{
+				if($tmp['qard_id'] ==  $qard_id )
+				{				
+					 $viewcurrent = 1 + $curr = $key;
+						$curpostion=$results[$curr]["qard_id"];	
+					 
+					 $prev = $key - 1;
+					if($prev >= 0)
+						$prevpostion=$results[$prev]["qard_id"];
+										
+					 $next = $key + 1;					
+					if($next < count($results))
+						$nextpostion= $results[$next]["qard_id"];
+				
+					break;
+					
+				}
+			}
+			
+		}
+		
 		$theme = $qard->qardTheme;
 		$blocks = $qard->blocks;
-		//print_r($theme);die;
+		
 		return $this->render('consume', [
 			'model' => $qard,
 			'theme' => $theme,
 			'blocks' => $blocks,
+			'deck' => $deck,
+			"deckcount"=>$deckcount,
+			"nextpostion"=>$nextpostion,
+			"curpostion"=>$curpostion,
+			"prevpostion"=>$prevpostion,
+			"viewcurrent"=>$viewcurrent,
+			
 		]); 		
 	 }	 
     /**

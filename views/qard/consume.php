@@ -58,29 +58,44 @@ $this->title = 'Preview Qard';
 
     <section class="consume-card">
 	
-	
+	<?php if(isset($deck) && !empty($deck)){ ?>
 		<div class="profile-header">
 			<div class="col-sm-3 col-md-3">
-				<div class="left_nav">
+			
+				<div class="left_nav">	
+				<?php if(isset($prevpostion) && !empty($prevpostion)) { ?>	
+					<a href="<?=Yii::$app->homeUrl?>qard/consume?qard_id=<?= $prevpostion ?>" >
 					<img src="<?=Yii::$app->homeUrl?>images/arrow-left_icon.png" alt="" width="20px" height="30px">
-					<span><strong>Prev. Qard</strong></span>
+					<span><strong>Prev. Qard</strong></span> </a>
+				<?php } ?>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-6">
 				<ul class="view-list">
-					<li class="edit-info"><img src="<?=Yii::$app->homeUrl?>images/deck-thumb.png" width="65px" height="65px" alt=""><span><strong>Tips and Tricks about Travelling</strong></span></li>
-					<li><img src="<?=Yii::$app->homeUrl?>images/qards_icon.png" alt="">3/20</li>
-					<li class="preview-button"><button class="btn btn-grey"><img src="<?=Yii::$app->homeUrl?>images/preview_icon.png" width="25px" height="15px" alt=""></button></li>
-					<li class="preview-button"><button class="btn btn-grey"><i class="fa fa-pencil"></i></button></li>
+					<li class="edit-info"><img src="<?= $deck->bg_image; ?>" width="65px" height="65px" alt=""><span><strong><?= $deck->title; ?></strong></span></li>
+					<li><img src="<?=Yii::$app->homeUrl?>images/qards_icon.png" alt=""><?=$viewcurrent;?>/<?=$deckcount; ?></li>
+					<li class="preview-button"  ><a class="btn btn-grey" style="background: #e4e4e4 none repeat scroll 0 0;
+    border-radius: 50%;
+     " href="<?=Yii::$app->homeUrl?>deck/view?id=<?= $deck->deck_id ?>" ><img src="<?=Yii::$app->homeUrl?>images/preview_icon.png" alt="" width="25px" height="15px" ></a></li>
+					<li class="preview-button"><a style="background: #e4e4e4 none repeat scroll 0 0;
+    border-radius: 50%;
+     " class="btn btn-grey" href="<?=Yii::$app->homeUrl?>deck/manage?id=<?= $deck->deck_id ?>"><i class="fa fa-pencil"></i></a></li>
 				</ul>
 			</div>
 			<div class="col-sm-3 col-md-3">
-				<div class="right_nav">                                
+				<div class="right_nav">   
+			<?php if(isset($nextpostion) && !empty($nextpostion)) { ?>		
+					<a href="<?=Yii::$app->homeUrl?>qard/consume?qard_id=<?= $nextpostion ?>" >			
 					<span><strong>Next. Qard</strong></span>
 					<img src="<?=Yii::$app->homeUrl?>images/arrow-right_icon.png" alt="" width="20px" height="30px">
+					</a>
+			<?php } ?>		
 				</div>
 			</div>                        
         </div>
+		
+	<?php } ?>
+	
 		<div class="row">
 			<div class="col-sm-8 col-md-8">
 				<h3><span class="pull-left"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button></span><?=$model->title?></h3>

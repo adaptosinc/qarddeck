@@ -54,7 +54,7 @@ class QardDeck extends \yii\db\ActiveRecord
      */
     public function getQard()
     {
-        return $this->hasOne(Qard::className(), ['qard_id' => 'qard_id'])->andWhere(['status'=>1]);;
+        return $this->hasOne(Qard::className(), ['qard_id' => 'qard_id'])->andWhere(['status'=>1]);
     }
 
     /**
@@ -64,4 +64,7 @@ class QardDeck extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Deck::className(), ['deck_id' => 'deck_id']);
     }
+	
+	
+	
 }

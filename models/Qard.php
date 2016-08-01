@@ -313,4 +313,41 @@ class Qard extends \yii\db\ActiveRecord
 		$activities = $command->queryAll();	
 		return 	count($activities);			
 	}
+	
+	
+	/**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDeckqardCount()
+    {
+       /*   $query = new Query;
+		//see if the row already exists or not
+		$query->select(['deck_id'])
+			->from('qard_deck')
+			->where([
+					'qard_id' => $this->qard_id
+					]);
+			
+		$command = $query->createCommand();
+		$activities1 = $command->queryOne();	
+		
+		
+		$query->select(['*'])
+			->from('qard_deck')
+			->where(['deck_id' => $activities1]);
+			
+			
+		$command = $query->createCommand();
+		$activities2 = $command->queryAll();	
+
+			
+		
+		return $activities2;	 */ 
+		
+		 $qard_decks = $this->getQardDecks();
+		return count($qard_decks); 
+		
+    }
+	
+	
 }
