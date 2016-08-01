@@ -297,7 +297,11 @@ class QardController extends Controller
 		\Yii::$app->view->registerMetaTag([
 			'name' => 'description',
 			'content' => 'Check the awesome Qard created by '.$qard->userProfile->fullname.' !Share what you love,think and know. Easily.',
-		]);		 
+		]);		
+		\Yii::$app->view->registerMetaTag([
+			'property' => 'twitter:image',
+			'content' => 'http://wordpressmonks.com'.Yii::$app->homeUrl.'uploads/qards/'.$qard->qard_id.".png",
+		]);
 	 }
     /**
      * Updates an existing Qard model to the status published.
