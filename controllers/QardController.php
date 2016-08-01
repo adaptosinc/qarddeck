@@ -286,7 +286,8 @@ class QardController extends Controller
 		$prevpostion ="";
 		$curpostion ="";
 		$viewcurrent ="";
-			
+		$results = "";
+		
 		if(isset($deckrel) && !empty($deckrel))
 		{			
 			$deck = Deck::findOne($deckrel->deck_id);

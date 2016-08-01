@@ -103,7 +103,7 @@ $this->title = 'Preview Qard';
 			<?php 
 			foreach($qards as $qard) {?>
 			  <li>
-				  <div class="add-block-image">
+				  <div class="add-block-image" data-id="<?=$qard['qard_id']?>">
 					  <img src="<?=Yii::$app->homeUrl?>uploads/qards/<?=$qard['qard_id'];?>.png" alt="">
 				  </div>
 			  </li>
@@ -499,7 +499,12 @@ $this->title = 'Preview Qard';
 
 		  $(this).tab('show');
 		});
-
+		$(".add-block-image").on("click",function(){
+			
+			var q_id = $(this).attr("data-id");
+			var url = '<?=Yii::$app->homeUrl?>/qard/consume?qard_id='+q_id;
+			window.location.href = url;
+		});
         function showtext() {
             //code
             var s = document.getElementById('descfield');
