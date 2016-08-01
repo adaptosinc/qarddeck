@@ -774,8 +774,12 @@ $this->title = 'Preview Qard';
 
 			
 		/** Image Preview **/
-		function showImage(){
-			console.log($(this).attr('data-url'));
+		function showImage(elem){
+			console.log($(elem).attr('data-url'));
+			hideAll('active-image-preview');
+			$('.active-preview-content').show();	
+			var img = '<img style="width:100%" src="'+$(elem).attr('data-url')+'" alt="">';
+			$("#img_show").html(img);
 		}		
 	});
 			

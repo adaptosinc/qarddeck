@@ -308,7 +308,7 @@ $this->title = 'Edit Qard';
 
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
-                                    <div class="dropzone" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;">
+                                    <div class="dropzone" data-smaller="true" data-canvas-image-only="true" data-originalsize="false" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;" >
                                         <input type="file" name="thumb" required="required" />
                                     </div>
                                 </form>
