@@ -9,8 +9,9 @@ use yii\db\Query;
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
 $this->title = 'Preview Qard';
+//$this->meta_image = Yii::$app->homeUrl.'uploads/qards/'.$model['qard_id'].".png";
 ?>
-<meta property="og:image" itemprop="image primaryImageOfPage" content="<?=Yii::$app->homeUrl?>uploads/qards/<?=$model['qard_id']?>.png" />
+
  <?php
 		if(isset($model['qard_id'])){
 		    echo '<input type="hidden" name="qard_id" id="qard_id" value="'.$model['qard_id'].'"><input type="hidden" name="user_id" id="user_id" value="'.$model['user_id'].'">';

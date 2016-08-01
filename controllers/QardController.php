@@ -277,6 +277,10 @@ class QardController extends Controller
 		$qard = $this->findModel($qard_id);
 		$theme = $qard->qardTheme;
 		$blocks = $qard->blocks;
+		\Yii::$app->view->registerMetaTag([
+			'property' => 'og:image',
+			'content' => Yii::$app->homeUrl.'uploads/qards/'.$qard->qard_id.".png",
+		]);
 		//print_r($theme);die;
 		return $this->render('consume', [
 			'model' => $qard,
