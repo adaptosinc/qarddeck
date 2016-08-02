@@ -1540,7 +1540,8 @@ $this->title = 'Create Qard';
 		
 		//$("#wait").show();
 		// if storing image
-		var data = $("#image_upload").serializeArray();
+		//var data = $("#image_upload").serializeArray();
+		var data = [];
 		var qard_title = $("#qard_title").val() || 0;
 		data.push({
 			name: 'qard_title',

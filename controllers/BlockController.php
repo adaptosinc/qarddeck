@@ -70,6 +70,7 @@ class BlockController extends Controller
 			//print_r(Yii::$app->request->post());
 			$data = Yii::$app->request->post()['data'];
 			$data = json_decode($data,true);
+			//print_r($data);die;
 			$all_blocks = $data[2];
 			foreach($all_blocks['value'] as $block){
 				$post = [];

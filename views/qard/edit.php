@@ -1639,9 +1639,9 @@ $this->title = 'Edit Qard';
 			return;
 		} */
 		
-		//$("#wait").show();
+	//	$("#wait").show();
 		// if storing image
-		var data = $("#image_upload").serializeArray();
+		var data = [];
 		var qard_title = $("#qard_title").val() || 0;
 		data.push({
 			name: 'qard_title',
@@ -1812,6 +1812,8 @@ $this->title = 'Edit Qard';
 			data: {data:dataP},
 			async: false,
 			success: function(response){
+				
+				$("#wait").hide();
 				var qard_id = $("#qard_id").val() || 0;
 				var url = '<?=Url::to(['qard/preview-qard'], true);?>';
 				window.location.replace(url+"?qard_id="+qard_id);
