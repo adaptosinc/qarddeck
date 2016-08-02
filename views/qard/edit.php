@@ -289,17 +289,23 @@ $this->title = 'Edit Qard';
 						</div> <!-- End of header-->
 						<div role="tabpanel" class="tab-pane active" id="cardblock">
 							<div id="descfield">
-								<h4>Add Extra text <span class="trash pull-right"><i class="fa fa-trash"></i>&nbsp;Remove Extra Text</span></h4>
+								<h4>Add Extra text <span id="remove_extra_text" class="trash pull-right"><i class="fa fa-trash"></i>&nbsp;Remove Extra Text</span></h4>
 								<input type="text" name="extra-text" placeholder="Enter an optional text" class="form-control">
 								<ul class="editable-elements">
 									<li id="text_area_bold"><a href="#"><i class="fa fa-bold"></i></a></li>
 									<li id="text_area_italics"><a href="#"><i class="fa fa-italic"></i></li>
 									<li id="text_area_underline"><a href="#"><i class="fa fa-underline"></i></a></li>
-									<li><a id="extra_text_link" href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
+									<!--<li><a id="extra_text_link" href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>-->
 								</ul>
 							</div>
 							<div id="extrafield">
 								<div id="extra_text" name="desc" placeholder="Enter The Text" contenteditable="true"></div>
+							</div>
+							<div class="col-sm-6 col-md-6 on-off">
+								<div class="switch">
+									<input id="cmn-toggle-9" class="cmn-toggle cmn-toggle-round" type="checkbox">
+									<label for="cmn-toggle-9"></label>
+								</div>  <span>Link this text</span> 
 							</div>
 						</div>
 
@@ -1272,10 +1278,11 @@ $this->title = 'Edit Qard';
 			document.execCommand('underline', false, null);
 			return false;
 		});
-		$('#extra_text_link').click(function(){
+		$('#cmn-toggle-9').click(function(){
 			//check selected block first
 			//setTimeout("add_block(true,false);",1000);
 			////console.log($("#working_div .current_blk").attr('data-block_id'));
+			if($(this).prop('checked')){
 			add_block(true,false);
 			$.ajax({
 				url : "<?=Url::to(['block/add-text'], true)?>",
@@ -1309,7 +1316,9 @@ $this->title = 'Edit Qard';
 
 				}
 			});
-			
+			}else{
+				$("#working_div .current_blk").find(".icon-mark").remove();
+			}			
 			//save extra text
 			//put the icon and functio to the block
 		});
@@ -1336,10 +1345,15 @@ $this->title = 'Edit Qard';
 					data = $.parseJSON(data);
 					$("#extra_text").html(data.extra_text);
 					$("input[name=extra-text]").val(data.title);
-
+					$('#cmn-toggle-9').prop("checked",true);
 				}
 			});			
 		}
+		$("#remove_extra_text").click(function(){
+			$("#extra_text").html('');
+			$("input[name=extra-text]").val('');
+			$('#cmn-toggle-9').prop("checked",false);
+		});
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**** Link Block operations ******/
@@ -1950,6 +1964,7 @@ $this->title = 'Edit Qard';
 				//remove image after stored in db
 				$(".dropzone .btn-del").trigger("click");                    
 				$("#url_reset_link").trigger("click");
+				$("#remove_extra_text").trigger("click"); 
 				return true;
 				},
 				error: function(data) {

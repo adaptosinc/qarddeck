@@ -86,6 +86,8 @@ class BlockController extends Controller
 					$qard = $this->createQard($post, $post['qard_theme_id']);
 					if(empty($qard->errors) && !is_array($qard)){
 						$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
+						if(!empty($post['tags']))
+							$post['tags'] = implode(',',$post['tags']);
 						$tags=$this->createTagsQard($post,$qard->qard_id);
 						
 						if(empty($block->errors) && !is_array($block)){
@@ -343,7 +345,7 @@ class BlockController extends Controller
 	$qardTags=new QardTags();
 	$tags=new Tag();
 	//checking whether tags are present or not
-	//print_r($post);die;
+	//print_r($post['tags']);die;
 	if(!empty($post['tags'])){
 	    // tags are in string with comm format 
 	    $tags =  $post['tags'];
