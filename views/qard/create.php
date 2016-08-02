@@ -1538,7 +1538,7 @@ $this->title = 'Create Qard';
 			return;
 		} */
 		
-		$("#wait").show();
+		//$("#wait").show();
 		// if storing image
 		var data = $("#image_upload").serializeArray();
 		var qard_title = $("#qard_title").val() || 0;
@@ -1556,16 +1556,18 @@ $this->title = 'Create Qard';
 			name: 'qard_theme_id',
 			value: qard_theme_id 
 		});
+		var all_data = [];
 		$("#add-block .parent_current_blk").each(function(obj,index) {
 			// getting opacity for image-block div
+			var temp_data = [];
 			var image_opacity = parseFloat($(this).css("opacity") || 0);
-			data.push({
+			temp_data.push({
 				name: 'image_opacity',
 				value: image_opacity
 			});
 			//opacity for overlay-block
 			var div_opacity = parseFloat($(this).find(".bgoverlay-block").css("opacity") || 0);
-			data.push({
+			temp_data.push({
 				name: 'div_opacity',
 				value: div_opacity
 			});
@@ -1575,14 +1577,14 @@ $this->title = 'Create Qard';
 				div_overlaycolor = 'transparent';
 			}
 			////console.log('overlay'+div_overlaycolor);return;
-			data.push({
+			temp_data.push({
 				name: 'div_overlaycolor',
 				value: div_overlaycolor
 			});			
 			//Background color for background block
 			var div_bgcolor = $(this).css("background-color");
 			////console.log(div_bgcolor);return;
-			data.push({
+			temp_data.push({
 				name: 'div_bgcolor',
 				value: div_bgcolor
 			});
@@ -1594,43 +1596,43 @@ $this->title = 'Create Qard';
             var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 			////console.log(div_bgimage);
 			//return;
-			data.push({
+			temp_data.push({
 				name: 'div_bgimage',
 				value: div_bgimage
 			});
 			
 			var div_bgimage_position = $(this).css("background-position")||'null';
-            data.push({
+            temp_data.push({
                 name: 'div_bgimage_position',
                 value: div_bgimage_position
             });
 			//getting height of div
 			var height = parseInt($(this).find(".current_blk").attr('data-height')) * 37.5;
-			data.push({
+			temp_data.push({
 				name: 'height',
 				value: height
 			});
 			//getting text for the block
 			var text = $(this).find(".current_blk").html() || 0;
-			data.push({
+			temp_data.push({
 				name: 'text',
 				value: text
 			});
 			//if extra text is present
 			var extra_text = $("#extra_text").html() || 0;
-			data.push({
+			temp_data.push({
 				name: 'extra_text',
 				value: extra_text
 			});
 			//to check operation for edit a block or for add new block
 			var block_id = $(this).find(".current_blk").attr("data-block_id") || 0;
-			data.push({
+			temp_data.push({
 				name: 'block_id',
 				value: block_id
 			});
 			// check whether theme is already preasent for qard or not
 			var theme_id = $(this).find(".current_blk").attr("data-theme_id") || 0;
-			data.push({
+			temp_data.push({
 				name: 'theme_id',
 				value: theme_id
 			});
@@ -1638,69 +1640,83 @@ $this->title = 'Create Qard';
 			var calc_index = index + 1;
 			//$(this).find(".current_blk").attr("data-block_priority", (index + 1));
 			var block_priority = $(this).find(".current_blk").attr("data-block_priority") || calc_index;
-			data.push({
+			temp_data.push({
 				name: 'block_priority',
 				value: block_priority
 			});
 			//check qard id is present to edit or add new qard
 			var qard_id = $("#qard_id").val() || 0;
-			data.push({
+			temp_data.push({
 				name: 'qard_id',
 				value: qard_id
 			});
 			// getting tags fot qard
             var tags = $("#tags").val();            
-            data.push({
+            temp_data.push({
                 name: 'tags',
                 value: tags
             });
 			var qard_title = $("#qard_title").val() || 0;
-			data.push({
+			temp_data.push({
 				name: 'qard_title',
 				value: qard_title
 			});
 			//if block contains title for block then true
 			var is_title = $("[name='is_title']:checked").val() || 0;
-			data.push({
+			temp_data.push({
 				name: 'is_title',
 				value: is_title
 			});
 			//to get current block id
 			var blk_id = $(this).attr("id");
-			data.push({
+			temp_data.push({
 				name: 'blk_id',
 				value: blk_id
 			});
 			//addded data bgcolor id and font color id
 			var data_bgcolor_id = $(this).attr("data-bgcolor-id") || 0;
-            data.push({
+            temp_data.push({
                 name: 'data_bgcolor_id',
                 value: data_bgcolor_id
             });	
 			var data_fontcolor_id = $(this).find(".current_blk").attr("data-fontcolor-id") || 0;
-            data.push({
+            temp_data.push({
                 name: 'data_fontcolor_id',
                 value: data_fontcolor_id
             });	
 			//add block style
 			// add the block style also
 			var data_style_qard = $(this).attr('data-style-qard') || 'line';
-            data.push({
+            temp_data.push({
                 name: 'data_style_qard',
                 value: data_style_qard
             });	
-			
+			all_data.push({
+				name: 'block_data',
+				value : temp_data
+			});
 			$(this).addClass("delete_blk");
-			//	    if(typeof $(this).find(".current_blk").html() == typeof undefined && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
-			//		alert("please enter block or image to save");
-			//		return false;
-			//	    }
-			//
-			//	    //console.log(data);
-			//	    return false;
-			var new_block = true;
-			commanAjaxFun(data, 'save_block',new_block);
+/* 			var new_block = true;
+			commanAjaxFun(data, 'save_block',new_block); */
 		});
+		data.push({
+			name: 'all_blocks',
+			value : all_data			
+		});
+		console.log(data);
+		dataP = JSON.stringify( data );
+		$.ajax({
+			url: "<?=Url::to(['block/save-qard'], true)?>",
+			type: "POST",
+			data: {data:dataP},
+			async: false,
+			success: function(response){
+				var qard_id = $("#qard_id").val() || 0;
+				var url = '<?=Url::to(['qard/preview-qard'], true);?>';
+				window.location.replace(url+"?qard_id="+qard_id);
+			}
+		});
+		return;
 	}
 	function getNextBlockId() {
 		var blk_id = 0;

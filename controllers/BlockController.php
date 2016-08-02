@@ -60,7 +60,47 @@ class BlockController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
+    /**
+     * Save call from create page.
+     * If save is successful, the browser will be redirected to the 'preview' page.
+     * @return mixed
+     */
+    public function actionSaveQard(){
+        
+			//print_r(Yii::$app->request->post());
+			$data = Yii::$app->request->post()['data'];
+			$data = json_decode($data,true);
+			$all_blocks = $data[2];
+			foreach($all_blocks['value'] as $block){
+				$post = [];
+				$post['qard_title'] = $data[0]['value'];
+				$post['qard_theme_id'] = $data[1]['value'];
+				foreach($block['value'] as $block_properties){
+					$key = $block_properties['name'];
+					$value = $block_properties['value'];
+					$post[$key] = $value;
+				}
+				$theme=$this->createTheme($post);
+				if(empty($theme->errors) && !is_array($theme)){ 
+					$qard = $this->createQard($post, $post['qard_theme_id']);
+					if(empty($qard->errors) && !is_array($qard)){
+						$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
+						$tags=$this->createTagsQard($post,$qard->qard_id);
+						
+						if(empty($block->errors) && !is_array($block)){
+							$text=(empty($block->text))?'':$block->text;
+							echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_overlaycolor'=>$post['div_overlaycolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id'],'block_priority'=>$block->block_priority, 'data_style_qard'=>$post['data_style_qard'],'div_bgimage_position'=>$post['div_bgimage_position']));
+							
+						}  else {
+							echo "unable to create block";
+							exit;
+						}
+					}					
+				}
+				
+			}
+			echo "Success";
+    }
     /**
      * Creates a new Block model along with a qard and a block theme.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -109,14 +149,7 @@ class BlockController extends Controller
 	//	$model->=\Yii::$app->request->post('tags');
 
 		exit(0);
-		
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['view', 'id' => $model->block_id]);
-		} else {
-			return $this->render('create', [
-				'model' => $model,
-			]);
-		}
+
     }
 	/**
 	 * For adding extra text,ajax call from create qard page
