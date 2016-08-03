@@ -78,12 +78,8 @@ $this->title = 'Preview Qard';
 				<ul class="view-list">
 					<li class="edit-info"><img src="<?= $deck->bg_image; ?>" width="65px" height="65px" alt=""><span><strong><?= $deck->title; ?></strong></span></li>
 					<li><img src="<?=Yii::$app->homeUrl?>images/qards_icon.png" alt=""><?=$viewcurrent;?>/<?=$deckcount; ?></li>
-					<li class="preview-button"  ><a class="btn btn-grey" style="background: #e4e4e4 none repeat scroll 0 0;
-    border-radius: 50%;
-     " href="<?=Yii::$app->homeUrl?>deck/view?id=<?= $deck->deck_id ?>" ><img src="<?=Yii::$app->homeUrl?>images/preview_icon.png" alt="" width="25px" height="15px" ></a></li>
-					<li class="preview-button"><a style="background: #e4e4e4 none repeat scroll 0 0;
-    border-radius: 50%;
-     " class="btn btn-grey" href="<?=Yii::$app->homeUrl?>deck/manage?id=<?= $deck->deck_id ?>"><i class="fa fa-pencil"></i></a></li>
+					<li class="preview-button"  ><a class="btn btn-grey" style="background: #e4e4e4 none repeat scroll 0 0;border-radius: 50%;" href="<?=Yii::$app->homeUrl?>deck/view?id=<?= $deck->deck_id ?>" ><img src="<?=Yii::$app->homeUrl?>images/preview_icon.png" alt="" width="25px" height="15px" ></a></li>
+					<li class="preview-button"><a style="background: #e4e4e4 none repeat scroll 0 0;border-radius: 50%;" class="btn btn-grey" href="<?=Yii::$app->homeUrl?>deck/manage?id=<?= $deck->deck_id ?>"><i class="fa fa-pencil"></i></a></li>
 				</ul>
 			</div>
 			<div class="col-sm-3 col-md-3">
@@ -108,9 +104,8 @@ $this->title = 'Preview Qard';
 			<ul class="nav navbar-nav">
 			<?php 
 			foreach($qards as $qard) {?>
-
 			  <li>
-				  <div class="add-block">
+				  <div class="add-block-image" data-id="<?=$qard['qard_id']?>">
 					  <img src="<?=Yii::$app->homeUrl?>uploads/qards/<?=$qard['qard_id'];?>.png" alt="">
 				  </div>
 			  </li>
@@ -134,7 +129,11 @@ $this->title = 'Preview Qard';
                             </div>
                             </nav> 
 							<?php 	} ?>							
-                            <h3><?=$model->title?></h3>
+                            <h3><?=$model->title?>
+							<?php if(\Yii::$app->user->id == $model->user_id){?>
+							<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button></span>
+							<?php } ?>
+							</h3>
                             <div class="bottom-card col-sm-12 col-md-12">
                                 <ul>
                                     <li>
@@ -521,7 +520,12 @@ $this->title = 'Preview Qard';
 
 		  $(this).tab('show');
 		});
-
+		$(".add-block-image").on("click",function(){
+			
+			var q_id = $(this).attr("data-id");
+			var url = '<?=Yii::$app->homeUrl?>/qard/consume?qard_id='+q_id;
+			window.location.href = url;
+		});
         function showtext() {
             //code
             var s = document.getElementById('descfield');

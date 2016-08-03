@@ -207,19 +207,25 @@ $this->title = 'Create Qard';
 							</ul>
 						</div> <!-- End of header-->
 
-						<div role="tabpanel" class="tab-pane" id="cardblock">
+						<div role="tabpanel" class="tab-pane active" id="cardblock">
 							<div id="descfield">
-								<h4>Add Extra text <span class="trash pull-right"><i class="fa fa-trash"></i>&nbsp;Remove Extra Text</span></h4>
+								<h4>Add Extra text <span id="remove_extra_text" class="trash pull-right"><i class="fa fa-trash"></i>&nbsp;Remove Extra Text</span></h4>
 								<input type="text" name="extra-text" placeholder="Enter an optional text" class="form-control">
 								<ul class="editable-elements">
 									<li id="text_area_bold"><a href="#"><i class="fa fa-bold"></i></a></li>
 									<li id="text_area_italics"><a href="#"><i class="fa fa-italic"></i></li>
 									<li id="text_area_underline"><a href="#"><i class="fa fa-underline"></i></a></li>
-									<li><a id="extra_text_link" href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
+									<!--<li><a id="extra_text_link" href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>-->
 								</ul>
 							</div>
 							<div id="extrafield">
 								<div id="extra_text" name="desc" placeholder="Enter The Text" contenteditable="true"></div>
+							</div>
+							<div class="col-sm-6 col-md-6 on-off">
+								<div class="switch">
+									<input id="cmn-toggle-9" class="cmn-toggle cmn-toggle-round" type="checkbox">
+									<label for="cmn-toggle-9"></label>
+								</div>  <span>Link this text</span> 
 							</div>
 						</div>
 
@@ -685,6 +691,15 @@ $this->title = 'Create Qard';
 		</div>          <!-- Modal --> 
 		<!--- Tutorial Ends Here-->	
     <script type="text/javascript">
+	//preview functions//
+	/** Embed code preview **/
+	function embedCode(videoLink){
+		var eUrl = $(videoLink).attr('data-value');
+		console.log(eUrl);
+		var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+		$('.preview-image').html(html);
+	}
+	////////////////////////////
 	$('.help-link a').click(function(e){
 		e.preventDefault();
 		$('#myModaltut').modal('show');
@@ -1162,9 +1177,10 @@ $this->title = 'Create Qard';
 			document.execCommand('underline', false, null);
 			return false;
 		});
-		$('#extra_text_link').click(function(){
+		$('#cmn-toggle-9').click(function(){
 			//check selected block first
 			//setTimeout("add_block(true,false);",1000);
+			if($(this).prop('checked')){
 			add_block(true,false);
 			////console.log($("#extra_text").html());
 			$.ajax({
@@ -1199,7 +1215,9 @@ $this->title = 'Create Qard';
 
 				}
 			});
-			
+			}else{
+				$("#working_div .current_blk").find(".icon-mark").remove();
+			}
 			//save extra text
 			//put the icon and functio to the block
 		});
@@ -1226,10 +1244,15 @@ $this->title = 'Create Qard';
 					data = $.parseJSON(data);
 					$("#extra_text").html(data.extra_text);
 					$("input[name=extra-text]").val(data.title);
-
+					$('#cmn-toggle-9').prop("checked",true);
 				}
 			});			
 		}
+		$("#remove_extra_text").click(function(){
+			$("#extra_text").html('');
+			$("input[name=extra-text]").val('');
+			$('#cmn-toggle-9').prop("checked",false);
+		});
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**** Link Block operations ******/
@@ -1529,9 +1552,10 @@ $this->title = 'Create Qard';
 			return;
 		} */
 		
-		$("#wait").show();
+		//$("#wait").show();
 		// if storing image
-		var data = $("#image_upload").serializeArray();
+		//var data = $("#image_upload").serializeArray();
+		var data = [];
 		var qard_title = $("#qard_title").val() || 0;
 		data.push({
 			name: 'qard_title',
@@ -1547,16 +1571,18 @@ $this->title = 'Create Qard';
 			name: 'qard_theme_id',
 			value: qard_theme_id 
 		});
+		var all_data = [];
 		$("#add-block .parent_current_blk").each(function(obj,index) {
 			// getting opacity for image-block div
+			var temp_data = [];
 			var image_opacity = parseFloat($(this).css("opacity") || 0);
-			data.push({
+			temp_data.push({
 				name: 'image_opacity',
 				value: image_opacity
 			});
 			//opacity for overlay-block
 			var div_opacity = parseFloat($(this).find(".bgoverlay-block").css("opacity") || 0);
-			data.push({
+			temp_data.push({
 				name: 'div_opacity',
 				value: div_opacity
 			});
@@ -1566,14 +1592,14 @@ $this->title = 'Create Qard';
 				div_overlaycolor = 'transparent';
 			}
 			////console.log('overlay'+div_overlaycolor);return;
-			data.push({
+			temp_data.push({
 				name: 'div_overlaycolor',
 				value: div_overlaycolor
 			});			
 			//Background color for background block
 			var div_bgcolor = $(this).css("background-color");
 			////console.log(div_bgcolor);return;
-			data.push({
+			temp_data.push({
 				name: 'div_bgcolor',
 				value: div_bgcolor
 			});
@@ -1585,43 +1611,43 @@ $this->title = 'Create Qard';
             var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 			////console.log(div_bgimage);
 			//return;
-			data.push({
+			temp_data.push({
 				name: 'div_bgimage',
 				value: div_bgimage
 			});
 			
 			var div_bgimage_position = $(this).css("background-position")||'null';
-            data.push({
+            temp_data.push({
                 name: 'div_bgimage_position',
                 value: div_bgimage_position
             });
 			//getting height of div
 			var height = parseInt($(this).find(".current_blk").attr('data-height')) * 37.5;
-			data.push({
+			temp_data.push({
 				name: 'height',
 				value: height
 			});
 			//getting text for the block
 			var text = $(this).find(".current_blk").html() || 0;
-			data.push({
+			temp_data.push({
 				name: 'text',
 				value: text
 			});
 			//if extra text is present
 			var extra_text = $("#extra_text").html() || 0;
-			data.push({
+			temp_data.push({
 				name: 'extra_text',
 				value: extra_text
 			});
 			//to check operation for edit a block or for add new block
 			var block_id = $(this).find(".current_blk").attr("data-block_id") || 0;
-			data.push({
+			temp_data.push({
 				name: 'block_id',
 				value: block_id
 			});
 			// check whether theme is already preasent for qard or not
 			var theme_id = $(this).find(".current_blk").attr("data-theme_id") || 0;
-			data.push({
+			temp_data.push({
 				name: 'theme_id',
 				value: theme_id
 			});
@@ -1629,69 +1655,83 @@ $this->title = 'Create Qard';
 			var calc_index = index + 1;
 			//$(this).find(".current_blk").attr("data-block_priority", (index + 1));
 			var block_priority = $(this).find(".current_blk").attr("data-block_priority") || calc_index;
-			data.push({
+			temp_data.push({
 				name: 'block_priority',
 				value: block_priority
 			});
 			//check qard id is present to edit or add new qard
 			var qard_id = $("#qard_id").val() || 0;
-			data.push({
+			temp_data.push({
 				name: 'qard_id',
 				value: qard_id
 			});
 			// getting tags fot qard
             var tags = $("#tags").val();            
-            data.push({
+            temp_data.push({
                 name: 'tags',
                 value: tags
             });
 			var qard_title = $("#qard_title").val() || 0;
-			data.push({
+			temp_data.push({
 				name: 'qard_title',
 				value: qard_title
 			});
 			//if block contains title for block then true
 			var is_title = $("[name='is_title']:checked").val() || 0;
-			data.push({
+			temp_data.push({
 				name: 'is_title',
 				value: is_title
 			});
 			//to get current block id
 			var blk_id = $(this).attr("id");
-			data.push({
+			temp_data.push({
 				name: 'blk_id',
 				value: blk_id
 			});
 			//addded data bgcolor id and font color id
 			var data_bgcolor_id = $(this).attr("data-bgcolor-id") || 0;
-            data.push({
+            temp_data.push({
                 name: 'data_bgcolor_id',
                 value: data_bgcolor_id
             });	
 			var data_fontcolor_id = $(this).find(".current_blk").attr("data-fontcolor-id") || 0;
-            data.push({
+            temp_data.push({
                 name: 'data_fontcolor_id',
                 value: data_fontcolor_id
             });	
 			//add block style
 			// add the block style also
 			var data_style_qard = $(this).attr('data-style-qard') || 'line';
-            data.push({
+            temp_data.push({
                 name: 'data_style_qard',
                 value: data_style_qard
             });	
-			
+			all_data.push({
+				name: 'block_data',
+				value : temp_data
+			});
 			$(this).addClass("delete_blk");
-			//	    if(typeof $(this).find(".current_blk").html() == typeof undefined && typeof data.div_bgimage==typeof undefined && typeof data.thumb_values== typeof undefined){
-			//		alert("please enter block or image to save");
-			//		return false;
-			//	    }
-			//
-			//	    //console.log(data);
-			//	    return false;
-			var new_block = true;
-			commanAjaxFun(data, 'save_block',new_block);
+/* 			var new_block = true;
+			commanAjaxFun(data, 'save_block',new_block); */
 		});
+		data.push({
+			name: 'all_blocks',
+			value : all_data			
+		});
+		console.log(data);
+		dataP = JSON.stringify( data );
+		$.ajax({
+			url: "<?=Url::to(['block/save-qard'], true)?>",
+			type: "POST",
+			data: {data:dataP},
+			async: false,
+			success: function(response){
+				var qard_id = $("#qard_id").val() || 0;
+				var url = '<?=Url::to(['qard/preview-qard'], true);?>';
+				window.location.replace(url+"?qard_id="+qard_id);
+			}
+		});
+		return;
 	}
 	function getNextBlockId() {
 		var blk_id = 0;
@@ -1822,6 +1862,7 @@ $this->title = 'Create Qard';
 				//remove image after stored in db
 				$(".dropzone .btn-del").trigger("click");                    
 				$("#url_reset_link").trigger("click");
+				$("#remove_extra_text").trigger("click");
 				return true;
 				},
 				error: function(data) {
@@ -2096,7 +2137,7 @@ $this->title = 'Create Qard';
                 }
             });
 		}
-		function calldisplayEmbedUrl(videoUrl){
+/* 		function calldisplayEmbedUrl(videoUrl){
 			//$('#link_div').hide();
             var embedd_preview_url = $(videoUrl).val();
             var get_embed_url = "<?=Url::to(['qard/embeddisplay-url'], true);?>";
@@ -2121,7 +2162,7 @@ $this->title = 'Create Qard';
 			//console.log(eUrl);
 			calldisplayEmbedUrl(eUrl);
 			$('#embed_code').val($(videoLink).attr('data-content-url'));
-		}
+		} */
 		//Embedd Video ends
 		
 		// Styling Card script starts
