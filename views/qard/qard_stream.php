@@ -4,6 +4,9 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 ?>
+<style>
+.grid-item { width: 350px; }
+</style>
     <?php 
 	$all_class = $qard_class = $deck_class= '';
 	if($type =="both")
@@ -13,7 +16,7 @@ use yii\widgets\ActiveForm;
 	if($type =="decks")
 		$deck_class = 'active';	
 	?>         
-<script src="<?=Yii::$app->homeUrl?>js/modernizr.js"></script>
+<script src="<?= Yii::$app->request->baseUrl?>/js/masonry.js" type="text/javascript"></script>	
 
     
                 <section class="main-stream">
@@ -30,7 +33,7 @@ use yii\widgets\ActiveForm;
                         <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
-                                    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 15 }' >	
+                                    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
 										<?php  
 											echo $feed;
 										?>
