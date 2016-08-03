@@ -12,7 +12,10 @@ use yii\widgets\ActiveForm;
 		$qard_class = 'active';	
 	if($type =="decks")
 		$deck_class = 'active';	
-	?>             
+	?>         
+<script src="<?=Yii::$app->homeUrl?>js/modernizr.js"></script>
+
+    
                 <section class="main-stream">
                     <div id="tabs">
                     <div class="stream-cat">
@@ -27,7 +30,7 @@ use yii\widgets\ActiveForm;
                         <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
-                                    <div class="grid row">	
+                                    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 15 }' >	
 										<?php  
 											echo $feed;
 										?>
@@ -42,31 +45,7 @@ use yii\widgets\ActiveForm;
 	<img src="<?php echo \Yii::$app->homeUrl; ?>images/loading.gif" width="100px" height="100px" alt="Loading…" />
 </p>
 <script>
-/* $('#save').on('click',function(){
-	var dataUrl = document.getElementById('save').toDataURL("image/png");
-	console.log(dataUrl);
-    html2canvas([document.getElementById('save')], {
-		onrendered: function (canvas) {
-		//document.getElementById('canvas').appendChild(canvas);
-		var data = canvas.toDataURL('image/png');
 
-		$.ajax({
-		   url: "<?=Url::to(['qard/save-blob'], true);?>",
-		   type: "POST",
-		   data: { 
-			 'img': data
-		   },
-		//   processData: false,
-		 //  contentType: false,
-		}).done(function(respond){
-				console.log(respond);
-			//$("#save").html("Uploaded Canvas image link: <a href="+respond+">"+respond+"</a>").hide().fadeIn("fast");
-		});
-
-	  }
-	});
-	
-}); */
 $(document).ready(function() {
 	var win = $(window);
 	var page = 1;
@@ -74,14 +53,14 @@ $(document).ready(function() {
 	win.scroll(function() {
 		// End of the document reached?
 		if ($(document).height() - win.height() == win.scrollTop()) {
-			$('#loading').show();
+			$('#loading').show();		
 			$.ajax({
 				url: '<?=Url::to(['qard/index'], true);?>',
 				dataType: 'html',
 				data: {'page':page,'type':'<?=$type?>'},
 				success: function(html) {
-					console.log(page);
-					$('.grid').append(html);
+					var el = jQuery(html);
+					$(".grid").append(el).masonry( 'appended', el, true );
 					$('#loading').hide();
 				}
 			});
@@ -101,6 +80,7 @@ $(document).ready(function() {
 			});
 	});
 });
+
 $(document).on('click','.qard-content',function(){
 	var data_id = $(this).attr('id');
 	var id = data_id.replace("qard", "");

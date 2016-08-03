@@ -142,10 +142,13 @@ class Qard extends \yii\db\ActiveRecord
 	
 	public function getQardHtml($type=null){
 		
+		
+		
 		$str = '<div class="grid-item">
 				<div class="qard-content" id="qard'.$this->qard_id.'">
 				<div id="add-block'.$this->qard_id.'" class="qard-div ">';
 			$blocks = $this->blocks;
+			
 			if(isset($blocks) && !empty($blocks)){
 			//	print_R($blocks);die;
 			foreach($blocks as $block){
@@ -153,8 +156,10 @@ class Qard extends \yii\db\ActiveRecord
 				$img_block_style = '';
 				$overlay_block_style = '';
 				$text_block_style = '';
+				
 				$theme = $block->theme->theme_properties;
 				$theme = unserialize($theme);
+			
 				if(isset($theme)){
 					//img block styles
 						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
@@ -182,6 +187,8 @@ class Qard extends \yii\db\ActiveRecord
 				if(!isset($theme['data_style_qard']))
 					$theme['data_style_qard'] = "line";
 				///////////////////////////
+				
+				
 				$str .= '<div class="bgimg-block '.$theme['data_style_qard'].'" style="'.$img_block_style.'" >
 				<div class="bgoverlay-block" style="'.$overlay_block_style.'">
 				<div class="text-block" style="'.$text_block_style.'">';
@@ -320,30 +327,7 @@ class Qard extends \yii\db\ActiveRecord
      */
     public function getDeckqardCount()
     {
-       /*   $query = new Query;
-		//see if the row already exists or not
-		$query->select(['deck_id'])
-			->from('qard_deck')
-			->where([
-					'qard_id' => $this->qard_id
-					]);
-			
-		$command = $query->createCommand();
-		$activities1 = $command->queryOne();	
-		
-		
-		$query->select(['*'])
-			->from('qard_deck')
-			->where(['deck_id' => $activities1]);
-			
-			
-		$command = $query->createCommand();
-		$activities2 = $command->queryAll();	
-
-			
-		
-		return $activities2;	 */ 
-		
+      
 		 $qard_decks = $this->getQardDecks();
 		return count($qard_decks); 
 		

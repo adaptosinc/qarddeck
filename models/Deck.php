@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\Qard;
 
 /**
  * This is the model class for table "deck".
@@ -128,21 +129,64 @@ class Deck extends \yii\db\ActiveRecord
 	 */
 	public function getDeckHtml()
 	{
-		$html = '<div class="grid-item"><div class="qard-content qard5"><div class="bgimg-block style-block" id="deck_'.$this->deck_id.'">';
-		$html .= '<img src="'.$this->bg_image.'" />';
-		$html .= '</div></div>';
+		
+		$datetime = $this->created_at;
+		$date = date('M j Y g:i A', strtotime($datetime));
+		$date = new \DateTime($date);
+		$datetime1 = new \DateTime("now"); 
+		$diff = $datetime1->diff($date)->format("%a");								
+		if($diff == 0){
+			$diff = 'Today';
+		}else if($diff==1){
+			$diff = '1 day ago';
+		}else{
+			$diff = $diff.' days ago';
+		}
+								  
+		
+		$qardcount = $this->deckqardCount;
+		$bookmarkcount = $this->deckqardbookmarkCount;
+		$sharecount = $this->deckqardshareCount;
+		$likecount = $this->deckqardlikeCount;
+		$commentscount = $this->deckqardcommentCount;
+		
+				
+		$html = '<div class="grid-item "><div class="qard-content qard5"><div class="bgimg-block style-block" id="deck_'.$this->deck_id.'">';
+		$html .= '<img  src="'.$this->bg_image.'" />';
+		$html .= '</div>';
 		//deck bottom
+		
+		$html .='<div class="qard-overlay">
+                                                    <div class="qard-share">
+                                                        <h4><button class="btn btn-warning">View Qard</button></h4>
+                                                        <ul>
+                                                            <li><img alt="" src="'.Yii::$app->homeUrl.'images/comments_icon.png"><span>'.$commentscount.'</span></li>
+                                                            <li><img alt="" src="'.Yii::$app->homeUrl.'images/share_icon.png"><span>'.$sharecount.'</span></li>
+                                                            <li><img alt="" src="'.Yii::$app->homeUrl.'images/bookmark_icon.png"><span>'.$bookmarkcount.'</span></li>
+                                                            <li><img alt="" src="'.Yii::$app->homeUrl.'images/heart_icon.png"><span>'.$likecount.'</span></li>
+                                                        </ul>
+                                                    </div>
+                                                </div></div>';
+												
+												
+												
+												
 		$html .= '
 				<div class="qard-bottom">
 					<ul class="qard-tags">
 					<li class="pull-left"><img src="'.$this->userProfile->profile_photo.'" alt="" width="15px" height="15px" style="border-radius:50%;">'.$this->userProfile->fullname.'</li>
-					<li class="pull-right">3 days ago</li>
+					<li class="pull-right">'.$diff.'</li>
 				</ul>
-				<h3>'.$this->title.'</h3>
+				<h3 class="col-sm-9 col-md-9" >'.$this->title.'</h3>
+					<span class="col-sm-3 col-md-3 pull-right"><img  alt="" src="'.Yii::$app->homeUrl.'images/qard-stream_icon.png">&nbsp;'.$qardcount.'</span>
+				
 				</div></div>';
-		
+				
+	
 		
 		return $html;
+		
+		
 	}	
 	/**
      * @return \yii\db\ActiveQuery
@@ -154,4 +198,51 @@ class Deck extends \yii\db\ActiveRecord
 		return $count;
 		
     }
+	
+	
+	 public function getDeckqardbookmarkCount()
+    {
+		
+		$connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand('SELECT count(*) as bookmark FROM `qard_deck` `qd`, `qard_user_activity` `qua` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= qua.`qard_id`) AND (`qua`.`activity_type`="bookmark")');
+	
+		$activities = $command->queryOne();	
+		return $count_bookmark  = $activities['bookmark'];
+		
+    }
+	
+	
+	 public function getDeckqardshareCount()
+    {
+	
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand('SELECT count(*) as share FROM `qard_deck` `qd`, `qard_user_activity` `qua` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= qua.`qard_id`) AND (`qua`.`activity_type`="share")');
+	
+		$activities = $command->queryOne();	
+		return $count_bookmark  = $activities['share'];
+		
+    }
+	
+	public function getDeckqardlikeCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand('SELECT count(*) as liked FROM `qard_deck` `qd`, `qard_user_activity` `qua` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= qua.`qard_id`) AND (`qua`.`activity_type`="like")');
+	
+		$activities = $command->queryOne();	
+		return $count_bookmark  = $activities['liked'];
+		
+    }
+	
+	public function getDeckqardcommentCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand('SELECT count(*) as comments FROM `qard_deck` qd, `qard_comments` qc WHERE qd.deck_id = '.$this->deck_id.' and qd.`qard_id` = qc.`qard_id`');
+	
+		$activities = $command->queryOne();	
+		return $count_comments  = $activities['comments'];
+		
+    }
+	
 }

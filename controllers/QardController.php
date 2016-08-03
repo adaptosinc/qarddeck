@@ -67,7 +67,11 @@ class QardController extends Controller
 		$offset = $page*$limit;
 		$qards = $this->getQardsfeed($offset,$limit,$type);
 		//	print_r($feed);die;
+		
+		
 		$decks =  $this->getDecksfeed($offset,2);
+		//$decks =  "";
+		
 		if($type == 'both'){
 			//joining the dec+qard array
 			array_splice($qards, count($qards), 0, $decks);
@@ -286,7 +290,8 @@ class QardController extends Controller
 		$prevpostion ="";
 		$curpostion ="";
 		$viewcurrent ="";
-			
+		$results = "";
+		
 		if(isset($deckrel) && !empty($deckrel))
 		{			
 			$deck = Deck::findOne($deckrel->deck_id);

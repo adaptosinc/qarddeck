@@ -9,6 +9,10 @@ use yii\helpers\Url;
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Decks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+
+
+
 ?>
 <div class="deck-view">
 
@@ -29,12 +33,29 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             <div class="right-block col-sm-4 col-md-4">
                                 <ul class="deck-list">
-                                    <li><a href=""><img src="<?= \Yii::$app->homeUrl?>images/share_icon.png" alt=""></a><span>11520</span></li>
-                                    <li><a href=""><img src="<?= \Yii::$app->homeUrl?>images/bookmark_icon.png" alt=""></a><span>222</span></li>
-                                    <li><a href=""><img src="<?= \Yii::$app->homeUrl?>images/heart_icon.png" alt=""></a><span>444</span></li>
+                                    <li><a href=""><img src="<?= \Yii::$app->homeUrl?>images/share_icon.png" alt=""></a><span><?=$count_share;?></span></li>
+                                    <li><a href=""><img src="<?= \Yii::$app->homeUrl?>images/bookmark_icon.png" alt=""></a><span><?=$count_bookmark;?></span></li>
+                                    <li><a href=""><img src="<?= \Yii::$app->homeUrl?>images/heart_icon.png" alt=""></a><span><?=$count_liked;?></span></li>
                                 </ul>
                                 <div class="user-info">
-                                    <img src="<?= \Yii::$app->homeUrl?>images/deck-thumb.png" alt="" width="50px" height="50px" style="border-radius: 50%;display: inline-block;"><strong><?=$model->userProfile->fullname?><br><span>3 days ago</span></strong>
+								 <?php 
+								 
+								  $datetime = $model['created_at'];								 
+								  $date = date('M j Y g:i A', strtotime($datetime));
+								  $date = new DateTime($date);
+								  $datetime1 = new DateTime("now"); 
+								  $diff = $datetime1->diff($date)->format("%a");
+								  if($diff == 0){
+									  $diff = 'Today';
+								  }else if($diff==1){
+									  $diff = '1 day ago';
+								  }else{
+									  $diff = $diff.' days ago';
+								  }
+								
+								  ?>
+								  
+                                    <img src="<?=$model->userProfile->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;display: inline-block;"><strong><?=$model->userProfile->fullname?><br><span><?=$diff ?></span></strong>
                                     
                                 </div>
                                 <button class="btn qard">View Deck as Slides</button>

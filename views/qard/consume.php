@@ -10,6 +10,8 @@ use yii\db\Query;
 /* @var $model app\models\Qard */
 $this->title = 'Preview Qard';
 //$this->meta_image = Yii::$app->homeUrl.'uploads/qards/'.$model['qard_id'].".png";
+
+
 ?>
 
  <?php
@@ -141,7 +143,22 @@ $this->title = 'Preview Qard';
                                            </div>
                                            <div class="comment-txt">
                                                <h5><strong><?=$model->userProfile->fullname?></strong></h5>
-                                               <p class="post-date">3 days ago</p>
+											    <?php 
+								  $datetime = $model->last_updated_at;
+								  $date = date('M j Y g:i A', strtotime($datetime));
+								  $date = new DateTime($date);
+								  $datetime1 = new DateTime("now"); 
+								  $diff = $datetime1->diff($date)->format("%a");
+								  if($diff == 0){
+									  $diff = 'Today';
+								  }else if($diff==1){
+									  $diff = '1 day ago';
+								  }else{
+									  $diff = $diff.' days ago';
+								  }
+								  ?>
+								  
+                                               <p class="post-date"><?=$diff?></p>
                                            </div>
                                     </li>
 									<?php 

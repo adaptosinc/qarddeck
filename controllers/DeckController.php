@@ -204,8 +204,13 @@ class DeckController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+	$model= $this->findModel($id);
+	$count_bookmark  = $model->deckqardbookmarkCount;
+	$count_share  = $model->deckqardshareCount;
+	$count_liked  = $model->deckqardlikeCount;
+	
+	return $this->render('view', [
+            'model' =>$model ,"count_bookmark" =>$count_bookmark,"count_share" =>$count_share,"count_liked" =>$count_liked
         ]);
     }
     /**
