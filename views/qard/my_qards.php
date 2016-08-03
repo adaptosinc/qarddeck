@@ -8,25 +8,63 @@ use yii\widgets\ActiveForm;
 .grid-item { width: 350px; }
 </style>
     <?php 
-	$all_class = $qard_class = $deck_class= '';
+	$all_class = $qard_class = $deck_class= 'btn-default';
 	if($type =="both")
-		$all_class = 'active';
+		$all_class = 'qard'; 
 	if($type =="qards")
-		$qard_class = 'active';	
+		$qard_class = 'qard';
 	if($type =="decks")
-		$deck_class = 'active';	
+		$deck_class = 'qard';	
 	?>
     <script src="<?= Yii::$app->request->baseUrl?>/js/masonry.js" type="text/javascript"></script>	
+				<div class="profile-header">
+					<div class="col-sm-6 col-md-6">
+						<div class="user-details">
+							<div class="col-sm-2 col-md-2">
+								<img src="<?=\Yii::$app->user->identity->profile_photo?>" width="80px" height="80px" style="border-radius: 50%;" alt="">
+							</div>
+							<div class="col-sm-10 col-md-10">
+								<h4><?=\Yii::$app->user->identity->firstname?></h4>
+								<ul>
+									<li><a href="">@<?=\Yii::$app->user->identity->username?></a></li>
+									<li><a href=""><i class="fa fa-envelope"></i>&nbsp;<?=\Yii::$app->user->identity->showEmail?></a></li>
+									<li><a href=""><i class="fa fa-chain"></i>&nbsp;<?=\Yii::$app->user->identity->website?></a></li>
+								</ul>
+							</div>
+							<p><?=\Yii::$app->user->identity->bio?></p>
+						</div>
+					</div>
+					<div class="col-sm-3 col-md-3">
+						<ul class="view-list">
+							<li class="edit-info"><button class="btn btn-grey" onclick="location.href='<?=Yii::$app->homeUrl?>user/profile';"><i class="fa fa-pencil"></i>Edit info</button></li>
+							<li>117 Following</li>
+							<li>23 Followers</li>
+						</ul>
+					</div>
+					<div class="profile-action col-sm-3 col-md-3">
+						<button class="btn btn-lg <?=$all_class ?>" onclick="location.href='<?=Yii::$app->homeUrl?>qard/my-qards?type=both';">Wall</button>
+						<button class="btn btn-lg <?=$qard_class ?>" onclick="location.href='<?=Yii::$app->homeUrl?>qard/my-qards?type=qards';">Qards</button>
+						<button class="btn btn-lg <?=$deck_class ?>" onclick="location.href='<?=Yii::$app->homeUrl?>qard/my-qards?type=decks';">Decks</button>
+					</div>                        
+				</div>
+				<div class="stream-cat">
+					<ul class="profile-title">
+						<li class="tootip" data-title="Created by me"><span class="arrow-up"></span><h4><img src="<?=Yii::$app->homeUrl?>images/newqard.png" alt="" width="20px" height="20px">0</h4></li>
+						<li><h4><img src="<?=Yii::$app->homeUrl?>images/heart_icon.png" alt="" width="20px" height="20px">0</h4></li>
+						<li><h4><img src="<?=Yii::$app->homeUrl?>images/bookmark_icon.png" alt="" width="15px" height="20px">0</h4></li>
+						<li><h4><img src="<?=Yii::$app->homeUrl?>images/share_icon.png" alt="" width="20px" height="20px">0</h4></li>
+					</ul>
+				</div>
                 <section class="main-stream">
                     <div id="tabs">
-                    <div class="stream-cat">
+                    <!--<div class="stream-cat">
                         <ul class="profile-title nav nav-tabs" role="tablist">
 							
                             <li role="presentation" class="<?=$all_class ?>"><h4><a href="<?=Yii::$app->homeUrl?>qard/my-qards?type=both">All</a></h4></li>
                             <li role="presentation" class="<?=$qard_class ?>"><h4><a href="<?=Yii::$app->homeUrl?>qard/my-qards?type=qards" >Qards</a></h4></li>
                             <li role="presentation" class="<?=$deck_class ?>"><h4><a href="<?=Yii::$app->homeUrl?>qard/my-qards?type=decks" >Deck</a></h4></li>
                         </ul>
-                    </div>
+                    </div>-->
                     <div class="main-content">
                         <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
                             <div class="row">

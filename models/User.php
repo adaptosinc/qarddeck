@@ -34,6 +34,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     public $isPublicEmail;
     public $showEmail;
+	public $website;
+	public $bio;
 
     /**
      * @inheritdoc
@@ -73,25 +75,30 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
- 
-
 	$profile = UserProfile::find()->where(['user_id'=>$id])->one();
     $user = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+	//Defaults first
+	$user->firstname = "";
+	$user->profile_photo = Yii::$app->homeUrl."images/avatar-lg.png";
+	$user->isPublicEmail = 0;
+	$user->showEmail = '';//$user->email;
+	$user->website = '---';
+	$user->bio = 'Hey there, I am using Qarddeck. Its Awesome!!';	
 	if($user){
-        if(!empty($profile->firstname)){
-		$user->firstname= $profile->firstname.' '.$profile->lastname;
-		}
-        if(!empty($profile->profile_photo)){
-            $user->profile_photo= $profile->profile_photo;
-		}
+        if(!empty($profile->firstname))
+			$user->firstname= $profile->firstname.' '.$profile->lastname;
+		
+        if(!empty($profile->profile_photo))
+            $user->profile_photo = $profile->profile_photo;
+		
         if($profile->isEmailEnabled!=0){
-		$user->isPublicEmail=1;
-                  $user->showEmail= $profile->display_email;//$user->email;
+			$user->isPublicEmail=1;
+            $user->showEmail= $profile->display_email;//$user->email;
 		}
-        if($profile->isEmailEnabled==0){
-		$user->isPublicEmail=0;
-                $user->showEmail= 'email@address.com';
-		}		
+		if($profile->display_url != '')
+			$user->website = $profile->display_url; 
+		if($profile->short_description != '')
+			$user->bio = $profile->short_description;
 	}
 	return $user;
 
