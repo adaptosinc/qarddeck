@@ -37,7 +37,7 @@ class QardController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['publish','activity','edit'],
+                'only' => ['publish','activity','edit','my-qards'],
                 'rules' => [
 /*                  [
                         'allow' => true,
@@ -46,7 +46,7 @@ class QardController extends Controller
                     ], */
                     [
                         'allow' => true,
-                        'actions' => ['publish','activity','edit'],
+                        'actions' => ['publish','activity','edit','my-qards'],
                         'roles' => ['@'],
                     ],
                 ],
