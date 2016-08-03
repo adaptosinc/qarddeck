@@ -76,7 +76,7 @@ $(document).ready(function() {
 		if ($(document).height() - win.height() == win.scrollTop()) {
 			$('#loading').show();
 			$.ajax({
-				url: '<?=Url::to(['qard/index'], true);?>',
+				url: '<?=Url::to(['qard/my-qards'], true);?>',
 				dataType: 'html',
 				data: {'page':page,'type':'<?=$type?>'},
 				success: function(html) {
