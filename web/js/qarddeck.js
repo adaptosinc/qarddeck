@@ -128,6 +128,9 @@
 					//var html='';
 				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="/qarddeck/web/images/qards_icon.png" alt="">20</div> <div class="col-sm-8 col-md-8"> <button class="btn btn-grey"><img src="/qarddeck/web/images/preview_icon.png" alt="">Preview</button> </div></div></div>';
 					$('#add_to_deck').trigger('click');
+					$("input[id=deck-title]").val('');
+					$("input[id=deck-bg_image]").val('');
+					$(".deck-img-pre").removeAttr("style");
 					//$(".grid").prepend(html);
 					//$("#ajaxDeckPreview").html(''); // Clear the preview..	
 					//$('form[name="ajaxDeck"]')[0].reset();	

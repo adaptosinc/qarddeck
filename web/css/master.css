@@ -2994,6 +2994,19 @@ section.manage-deck textarea {
     background-size: 150px;
     background-position: 50px 50px;
 }
+
+.deck-img-pre.col-sm-12.col-md-12 {
+    background: #f1f1f1 url(../images/image_icon_lg.png);
+    text-align: center;
+    color: #9c9a9a;
+    text-transform: capitalize;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    min-height: 150px;
+    background-size: 110px;
+    background-position: 50px 50px;
+}
+
 form#deck-form span.btn.btn-success {
 	opacity:0;
 }
@@ -4158,3 +4171,6 @@ section.theme-main.content .btn-default {
 .dropzone img.ghost {
     opacity: 0;
 }
+
+
+

@@ -13,6 +13,8 @@ use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use yii\helpers\Json;
 use yii\filters\AccessControl;
 use yii\db\Query;
 use yii\db\Command;
@@ -313,6 +315,9 @@ class QardController extends Controller
 	
     }
 	public function actionEdit($id,$theme_id=null){
+		
+		
+		
 		$switch_theme = false;
 		$model = $this->findModel($id);
 		if($model->user_id != \Yii::$app->user->id){
@@ -337,8 +342,11 @@ class QardController extends Controller
 			}
             return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
+			
+			
 			$tags=\app\models\Tag::find()->all();
             if(!$this->isMobile()){ 
+			
                 return $this->render('edit', [
                     'model' => $model,
 					'theme' => $theme,
@@ -934,6 +942,8 @@ class QardController extends Controller
 		$grabzIt->SaveTo($filepath);
 		return $filepath;
 	} 
+	
+
 	
 	
 	

@@ -123,9 +123,12 @@ class DeckController extends Controller
 	public function actionSelectDeck(){
 		
 		$decks = Deck::find()->where(['user_id'=>Yii::$app->user->id])->orderBy('created_at DESC')->all();
-		$html = '<div class="grid">';
+		$html = '';
 		foreach($decks as $deck){
 			//make html $html.='';
+			
+			$declqardcount = $deck->getDeckqardCount();	
+			
 			$html .= '<div class="grid-item" id="'.$deck->deck_id.'" onClick="addToDeck(this)">';
 				$html.= '<div class="grid-img">'; //grif image
 					$html.= '<img src="'.$deck->bg_image.'" alt="">';
@@ -133,7 +136,8 @@ class DeckController extends Controller
 				$html.='<div class="grid-content">'; //grid-content
 					$html.='<h4>'.$deck->title.'</h4>';
 					$html.='<div class="col-sm-4 col-md-4">
-                                <img src="'.Yii::$app->request->baseUrl.'/images/qards_icon.png" alt="">20
+                                <img src="'.Yii::$app->request->baseUrl.'/images/qards_icon.png" alt="">
+								'.$declqardcount.'
                             </div>
                             <div class="col-sm-8 col-md-8">
                                 <button class="btn btn-grey"><img src="'.Yii::$app->request->baseUrl.'/images/preview_icon.png" alt="">Preview</button>
@@ -141,21 +145,11 @@ class DeckController extends Controller
 				$html.='</div>';//grid-content
 			$html .= '</div>'; //grid item
 		}
-		//add new form
-		$html .= '<div class="grid-item">
-					<div id="add_new_deck">
-						<form onSubmit="saveDeck(this);return false;" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
-						<input type="file" id="deck-bg_image" class="class" name="bg_image" />
-						<div id="ajaxDeckPreview"></div>
-						<input type="text" name="title" placeholder="Title of Deck"/>
-						<button class="btn btn-success">Add Deck</button>
-						
-						</form>
-					</div>
-				</div>';
-		$html .= '</div>';
 		
+		
+	
 		return $html; 
+	
 	}
 
 
@@ -298,7 +292,8 @@ class DeckController extends Controller
 	 */	 
 	public function actionCreateAjax(){
 		  
-		  $uploadFile = UploadedFile::getInstanceByName('bg_image');
+		/*   $uploadFile = UploadedFile::getInstanceByName('bg_image');
+		  
 		  $directory = \Yii::getAlias('@app/web/uploads') . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;
 		
 			if ($uploadFile) {
@@ -307,8 +302,10 @@ class DeckController extends Controller
 				$filePath = $directory . $fileName;		
 				$path = '../uploads/' . Yii::$app->session->id . DIRECTORY_SEPARATOR . $fileName;
 				
-				if ($uploadFile->saveAs($filePath)){
+				if ($uploadFile->saveAs($filePath)){ */
+				
 				  $title = Yii::$app->request->post()['title'];		
+				  $path = Yii::$app->request->post()['bg_image'];		
 				  $model = new Deck();				
 				  $model->user_id = Yii::$app->user->getId();//uid
 				  $model->title = $title;//title				  
@@ -319,8 +316,8 @@ class DeckController extends Controller
 							'title'=> $title,
 							"url" => $path								
 					]);
-				}
-			} 
+				//}
+			//} 
  
 	 }
 	 

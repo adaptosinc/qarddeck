@@ -31,8 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 									'clientOptions' => [
 										'maxFileSize' => 2000000
 									],
-									// Also, you can specify jQuery-File-Upload events
-									// see: https://github.com/blueimp/jQuery-File-Upload/wiki/Options#processing-callback-options
+								
 									'clientEvents' => [
 										'fileuploaddone' => 'function(e, data) {
 																console.log(e);
@@ -41,11 +40,11 @@ $this->params['breadcrumbs'][] = $this->title;
 																thumbnailUrl = dat.files[0].thumbnailUrl;
 																console.log(thumbnailUrl);
 																var html = "<img width=200px height=200px src="+thumbnailUrl+" />";
-																//$("#preview").html(html);
+																
 																$(".deck-img-pre").css("background","#f1f1f1 url("+thumbnailUrl+")")
 																$(".deck-img-pre").css("background-size", "cover");
 																$("#deck-cover_image").val(thumbnailUrl);
-																//$("#deck-bg_image").css("min-height","20px");
+															
 															}',
 										'fileuploadfail' => 'function(e, data) {
 																console.log(e);
