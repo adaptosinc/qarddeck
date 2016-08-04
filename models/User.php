@@ -246,4 +246,50 @@ class User extends ActiveRecord implements IdentityInterface
 		 else
 			 return false;
 	 }
+	 
+	 
+	 
+	public function getUserqardCount()
+    {
+		
+		$connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand("SELECT count(*) as qardcount FROM `qard` where `user_id` = '".$this->id."' and  `status` = '1'");
+	
+		$activities = $command->queryOne();	
+		return $userqardcount  = $activities['qardcount'];
+		
+    }
+	
+	public function getUserlikeCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand("SELECT count(*) as liked FROM `qard` q , `qard_user_activity` qu where q.`user_id` = '".$this->id."' and  q.`status` = '1' and q.`qard_id` = qu.`qard_id` and qu.`activity_type` ='like'");
+	
+		$activities = $command->queryOne();	
+		return $userlikedcount  = $activities['liked'];
+		
+    }
+	
+	public function getUserbookmarkCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand("SELECT count(*) as bookmark FROM `qard` q , `qard_user_activity` qu where q.`user_id` = '".$this->id."' and  q.`status` = '1' and q.`qard_id` = qu.`qard_id` and qu.`activity_type` ='bookmark'");
+	
+		$activities = $command->queryOne();	
+		return $userbookmarkcount  = $activities['bookmark'];
+		
+    }
+	
+	public function getUsershareCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand("SELECT count(*) as share FROM `qard` q , `qard_user_activity` qu where q.`user_id` = '".$this->id."' and  q.`status` = '1' and q.`qard_id` = qu.`qard_id` and qu.`activity_type` ='share'");
+	
+		$activities = $command->queryOne();	
+		return $usersharecount  = $activities['share'];
+		
+    }
 }

@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Qard;
 
+use app\models\User;
 use app\models\Theme;
 use app\models\Deck;
 use app\models\QardDeck;
@@ -161,13 +162,12 @@ class QardController extends Controller
 		$qards = $this->getMyQardsfeed($offset,$limit,$type);
 		//	print_r($feed);die;
 		$decks =  $this->getMyDecksfeed($offset,2);
-		
-		$qardcount = Qard::getUserqardCount();		
-		$likecount = Qard::getUserlikeCount();		
-		$bookmarkcount = Qard::getUserbookmarkCount();		
-		$sharecount = Qard::getUsershareCount();
-		
-		
+		$user = User::findOne(\Yii::$app->user->id);
+		$qardcount = $user->getUserqardCount();		
+		$likecount = $user->getUserlikeCount();		
+		$bookmarkcount = $user->getUserbookmarkCount();		
+		$sharecount = $user->getUsershareCount();
+
 		if($type == 'both'){
 			//joining the dec+qard array
 			array_splice($qards, count($qards), 0, $decks);
