@@ -3,9 +3,15 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use app\models\QardTags;
+
+
+use app\models\Deck;
+use dosamigos\fileupload\FileUpload;
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
 $this->title = 'Edit Qard';
+
+		
 ?>
     <!-- requiered for tag -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400" />
@@ -568,10 +574,82 @@ $this->title = 'Edit Qard';
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 					</h4>
 				</div>
-				<div class="modal-body"></div>
-				<div class="grid">
+				<div class="modal-body">
+				
+				
+				
+				<div class="grid">			
+
+				<div class="load-pre"></div>					
+				<div class="grid-item">				
+					<div class="grid-img deck-img-pre col-sm-12 col-md-12">
+								<?php $form = ActiveForm::begin([
+									'id' => 'deck-form',
+									]); ?>
+								<?= FileUpload::widget([
+									'model' => new Deck(),
+									'attribute' => 'bg_image',
+									
+									'url' => ['deck/set-cover-image'], // your url, this is just for demo purposes,
+									'options' => ['accept' => 'image/*','class'=>'class'],
+									'clientOptions' => [
+										'maxFileSize' => 2000000
+									],
+								
+									'clientEvents' => [
+										'fileuploaddone' => 'function(e, data) {
+																console.log(e);
+																console.log(data.result);
+																var dat = JSON.parse(data.result);
+																thumbnailUrl = dat.files[0].thumbnailUrl;
+																console.log(thumbnailUrl);
+																
+																var html = "<img width=200px height=200px src="+thumbnailUrl+" />";
+																
+																$(".deck-img-pre").css("background","#f1f1f1 url("+thumbnailUrl+")")
+																$(".deck-img-pre").css("background-size", "cover");
+															
+																$("#bg_image").val(thumbnailUrl);
+															
+															}',
+										'fileuploadfail' => 'function(e, data) {
+																console.log(e);
+																console.log(data);
+															}',
+									],
+								]);?>
+								<p>click to select file</p>
+								<div id="preview">
+								</div>
+								<?php ActiveForm::end(); ?>	
+				</div>
+				
+			
+				
+				<div class="grid-content" >
+					<form onSubmit="saveDeck(this);return false;" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
+					<input style="margin-top:10px" type="text" name="title"  id="deck-title" placeholder="Untitle Deck"/>
+					<div class="col-sm-4 col-md-4"></div>
+					
+					<div class="col-sm-8 col-md-8">
+						<input type="hidden" id="bg_image" class="class" name="bg_image" />
+						<div id="ajaxDeckPreview"></div>
+						<button  style="margin-top:10px" class="btn btn-grey">Add Deck</button>
+					</div>			
+				</form>		
+				</div>
+				
 
 				</div>
+				</div>
+				
+				
+				</div>
+				
+				
+				
+				
+				
 			</div>
 		</div>
 	</div>
@@ -657,7 +735,7 @@ $this->title = 'Edit Qard';
 			 alert('You need to create atleast one block');
 			 return;
 		 } */
-		 $('#deck-style').modal('show').find('.modal-body').load($(this).attr('href'));
+		 $('#deck-style').modal('show').find('.load-pre').load($(this).attr('href'));
 	   });	   
 	   adjustHeight();
 	});");
@@ -830,6 +908,13 @@ $this->title = 'Edit Qard';
 					//$(".grid").prepend(html);
 					//$("#ajaxDeckPreview").html(''); // Clear the preview..	
 					//$('form[name="ajaxDeck"]')[0].reset();	
+					
+					
+					$("#deck-bg_image").val('');
+						$("#deck-title").val('');
+						$("#qard-bg_image").val('');
+						$(".deck-img-pre").removeAttr("style");
+						
  			  	  }				  
 				}); 				
 		}
