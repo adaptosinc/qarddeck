@@ -84,10 +84,19 @@ $(document).ready(function() {
 	});
 });
 
-$(document).on('click','.qard-content',function(){
+$(document).on('click','.qardid',function(){
 	var data_id = $(this).attr('id');
 	var id = data_id.replace("qard", "");
 	var url = '<?=Url::to(['qard/consume'], true);?>';
 	window.location.href = url+"?qard_id="+id;
 });
+
+$(document).on('click','.deckid',function(){
+	 var data_id = $(this).attr('id');
+	var id = data_id.replace("deck", "");
+	var url = '<?=Url::to(['deck/view'], true);?>';
+	window.location.href = url+"?id="+id; 
+});
+
+
 </script>

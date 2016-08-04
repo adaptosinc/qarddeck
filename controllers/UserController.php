@@ -22,6 +22,7 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
+			'class' => 'yii\filters\HttpCache',
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -102,11 +103,13 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+		
+		
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        } else {			
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -169,6 +172,7 @@ class UserController extends Controller
      * @return mixed
      */
     public function actionProfile(){ 
+	
         return $this->render('profile');
 	}	
     /**

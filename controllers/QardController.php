@@ -150,6 +150,8 @@ class QardController extends Controller
      * @return mixed
      */
     public function actionMyQards($page=null,$type=null){ 
+
+		
 		if(!$type)
 			$type = 'both';
 		$limit = 5;
@@ -159,6 +161,13 @@ class QardController extends Controller
 		$qards = $this->getMyQardsfeed($offset,$limit,$type);
 		//	print_r($feed);die;
 		$decks =  $this->getMyDecksfeed($offset,2);
+		
+		$qardcount = Qard::getUserqardCount();		
+		$likecount = Qard::getUserlikeCount();		
+		$bookmarkcount = Qard::getUserbookmarkCount();		
+		$sharecount = Qard::getUsershareCount();
+		
+		
 		if($type == 'both'){
 			//joining the dec+qard array
 			array_splice($qards, count($qards), 0, $decks);
@@ -175,7 +184,11 @@ class QardController extends Controller
 		if(!$page || $page == 0){
 			return $this->render('my_qards',[
 				'feed' => $feed,
-				'type' => $type
+				'type' => $type,
+				'qardcount'=>$qardcount,
+				'sharecount'=>$sharecount,
+				'bookmarkcount'=>$bookmarkcount,
+				'likecount'=>$likecount,
 			]);		
 		}
 		else{
@@ -921,5 +934,7 @@ class QardController extends Controller
 		$grabzIt->SaveTo($filepath);
 		return $filepath;
 	} 
+	
+	
 	
 }

@@ -151,14 +151,14 @@ class Deck extends \yii\db\ActiveRecord
 		$commentscount = $this->deckqardcommentCount;
 		
 				
-		$html = '<div class="grid-item "><div class="qard-content qard5"><div class="bgimg-block style-block" id="deck_'.$this->deck_id.'">';
+		$html = '<div class="grid-item "><div class="qard-content qard5 deckid" id="deck'.$this->deck_id.'"><div class="bgimg-block style-block" id="deck_'.$this->deck_id.'">';
 		$html .= '<img  src="'.$this->bg_image.'" />';
 		$html .= '</div>';
 		//deck bottom
 		
 		$html .='<div class="qard-overlay">
                                                     <div class="qard-share">
-                                                        <h4><button class="btn btn-warning">View Qard</button></h4>
+                                                        <h4><button class="btn btn-warning">View Deck</button></h4>
                                                         <ul>
                                                             <li><img alt="" src="'.Yii::$app->homeUrl.'images/comments_icon.png"><span>'.$commentscount.'</span></li>
                                                             <li><img alt="" src="'.Yii::$app->homeUrl.'images/share_icon.png"><span>'.$sharecount.'</span></li>

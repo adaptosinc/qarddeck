@@ -205,7 +205,7 @@ $this->title = 'Consume Qard';
 						usort($comments, 'date_compare'); */
 							?>
 						<div class="cardblock-header">
-							<h4>Comments(<?=count($comments)?>)<span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+							<h4>Comments(<span id='comment-count'><?=count($comments)?></span>)<span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
 						</div>
 						<form>
 							<h4 class="comment-input"><input type="text" id="comment-input" name="comment-input" class="col-sm-10 col-md-10" placeholder="Share what you're thinking..."><button id="commentSubmit" class="btn qard col-sm-2 col-md-2">POST</button></h4>

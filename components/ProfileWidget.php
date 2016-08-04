@@ -22,10 +22,10 @@ class ProfileWidget extends Widget
         $model = User::find()->where(['id' => $id])->one();		
         $profile = Profile::find()->where(['user_id' => $id])->one();	
         
-        
-  
         if($profile->load(Yii::$app->request->post())){
-            
+          $currentpwd = Yii::$app->request->post()['cur_password'];
+		  
+		   
             $newProfile = Profile::find()->where(['user_id' => $id])->one();
 			$profile->profile_photo = \Yii::$app->homeUrl.$newProfile->temp_image; 			
             //$profile->validate();
@@ -43,13 +43,20 @@ class ProfileWidget extends Widget
                      ]);
             };
 	
-            if($profile->password_profile)
-            {
-                $model->password = $profile->password_profile;
-                $model->setPassword($model->password );
-                $model->generateAuthKey();
-                $model->save(false);
-            }	    
+			if(!empty($currentpwd))
+			{
+				if(!empty($profile->password_profile) && !empty($profile->verify_password_profile) && ($profile->password_profile == $profile->verify_password_profile ))
+				{
+					if($model->validatePassword($currentpwd))
+					{										
+						$model->password = $profile->password_profile;
+						$model->setPassword($model->password);										
+						$model->generateAuthKey();
+						$model->save(false);
+					
+					}
+				}
+			}			
            // print_R($profile->errors);die;
             $profile->save(false);    
             \Yii::$app->controller->goBack();

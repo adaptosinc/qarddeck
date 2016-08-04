@@ -142,10 +142,24 @@ class Qard extends \yii\db\ActiveRecord
 	
 	public function getQardHtml($type=null){
 		
+		$datetime = $this->last_updated_at;								 
+		$date = date('M j Y g:i A', strtotime($datetime));
+		$date = new \DateTime($date);
+		$datetime1 = new \DateTime("now"); 
+		$diff = $datetime1->diff($date)->format("%a");
+		if($diff == 0){
+			$diff = 'Today';
+		}else if($diff==1){
+			$diff = '1 day ago';
+		}else{
+			$diff = $diff.' days ago';
+		}
+		
+		
 		
 		
 		$str = '<div class="grid-item">
-				<div class="qard-content" id="qard'.$this->qard_id.'">
+				<div class="qard-content qardid" id="qard'.$this->qard_id.'">
 				<div id="add-block'.$this->qard_id.'" class="qard-div ">';
 			$blocks = $this->blocks;
 			
@@ -212,7 +226,7 @@ class Qard extends \yii\db\ActiveRecord
 				<div class="qard-bottom">
 					<ul class="qard-tags">
 					<li class="pull-left"><img src="'.$this->userProfile->profile_photo.'" alt="" width="15px" height="15px" style="border-radius:50%;">'.$this->userProfile->fullname.'</li>
-					<li class="pull-right">3 days ago</li>
+					<li class="pull-right">'.$diff.'</li>
 				</ul>
 				<h3>'.$this->title.'</h3>
 				</div>
@@ -224,6 +238,7 @@ class Qard extends \yii\db\ActiveRecord
 	
 	}
 	public function getQardHtmlSingle(){
+		
 		
 		$str = '<div class="grid-item">
 				<div class="qard-content" id="qard'.$this->qard_id.'" style="border: 5px solid #fff;">
@@ -333,5 +348,48 @@ class Qard extends \yii\db\ActiveRecord
 		
     }
 	
+	public function getUserqardCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand("SELECT count(*) as qardcount FROM `qard` where `user_id` = '".Yii::$app->user->id."' and  `status` = '1'");
+	
+		$activities = $command->queryOne();	
+		return $userqardcount  = $activities['qardcount'];
+		
+    }
+	
+	public function getUserlikeCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand("SELECT count(*) as liked FROM `qard` q , `qard_user_activity` qu where q.`user_id` = '".Yii::$app->user->id."' and  q.`status` = '1' and q.`qard_id` = qu.`qard_id` and qu.`activity_type` ='like'");
+	
+		$activities = $command->queryOne();	
+		return $userlikedcount  = $activities['liked'];
+		
+    }
+	
+	public function getUserbookmarkCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand("SELECT count(*) as bookmark FROM `qard` q , `qard_user_activity` qu where q.`user_id` = '".Yii::$app->user->id."' and  q.`status` = '1' and q.`qard_id` = qu.`qard_id` and qu.`activity_type` ='bookmark'");
+	
+		$activities = $command->queryOne();	
+		return $userbookmarkcount  = $activities['bookmark'];
+		
+    }
+	
+	public function getUsershareCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand("SELECT count(*) as share FROM `qard` q , `qard_user_activity` qu where q.`user_id` = '".Yii::$app->user->id."' and  q.`status` = '1' and q.`qard_id` = qu.`qard_id` and qu.`activity_type` ='share'");
+	
+		$activities = $command->queryOne();	
+		return $usersharecount  = $activities['share'];
+		
+    }
 	
 }

@@ -202,7 +202,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
        // echo "here";die;
 		//echo "gere::".$password;echo Yii::$app->security->generatePasswordHash($password);die;
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
 		
     }
 

@@ -49,10 +49,10 @@ use yii\widgets\ActiveForm;
 				</div>
 				<div class="stream-cat">
 					<ul class="profile-title">
-						<li class="tootip" data-title="Created by me"><span class="arrow-up"></span><h4><img src="<?=Yii::$app->homeUrl?>images/newqard.png" alt="" width="20px" height="20px">0</h4></li>
-						<li><h4><img src="<?=Yii::$app->homeUrl?>images/heart_icon.png" alt="" width="20px" height="20px">0</h4></li>
-						<li><h4><img src="<?=Yii::$app->homeUrl?>images/bookmark_icon.png" alt="" width="15px" height="20px">0</h4></li>
-						<li><h4><img src="<?=Yii::$app->homeUrl?>images/share_icon.png" alt="" width="20px" height="20px">0</h4></li>
+						<li class="tootip" data-title="Created by me"><span class="arrow-up"></span><h4><img src="<?=Yii::$app->homeUrl?>images/newqard.png" alt="" width="20px" height="20px"><?=$qardcount?></h4></li>
+						<li><h4><img src="<?=Yii::$app->homeUrl?>images/heart_icon.png" alt="" width="20px" height="20px"><?=$likecount?></h4></li>
+						<li><h4><img src="<?=Yii::$app->homeUrl?>images/bookmark_icon.png" alt="" width="15px" height="20px"><?=$bookmarkcount?></h4></li>
+						<li><h4><img src="<?=Yii::$app->homeUrl?>images/share_icon.png" alt="" width="20px" height="20px"><?=$sharecount?></h4></li>
 					</ul>
 				</div>
                 <section class="main-stream">
@@ -120,10 +120,19 @@ $(document).ready(function() {
 			});
 	});
 });
-$(document).on('click','.qard-content',function(){
+$(document).on('click','.qardid',function(){
 	var data_id = $(this).attr('id');
 	var id = data_id.replace("qard", "");
 	var url = '<?=Url::to(['qard/consume'], true);?>';
 	window.location.href = url+"?qard_id="+id;
 });
+
+
+$(document).on('click','.deckid',function(){
+	 var data_id = $(this).attr('id');
+	var id = data_id.replace("deck", "");
+	var url = '<?=Url::to(['deck/view'], true);?>';
+	window.location.href = url+"?id="+id; 
+});
+
 </script>

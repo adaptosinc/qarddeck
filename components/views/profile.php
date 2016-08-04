@@ -8,8 +8,12 @@ use yii\helpers\Url;
 $this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'Edit Profile', 'url' => ['profile']];
 $this->params['breadcrumbs'][] = 'Edit';
+
+
 ?>      
 <!-- Edit Account -->
+ 
+
 <div id="editd" class="modal-header">       
   <h4 class="modal-title"></h4>
 </div>
@@ -99,7 +103,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 				    <h3 class="main-title">Change Your Password</h3>
 				    <div class="form-group">
 					    <label>CURRENT PASSWORD</label>
-						<input type="password" id="cur_password" class="form-control" name="cur_password" placeholder="Current Password">     
+						<input type="password" id="cur_password" class="form-control" name="cur_password" placeholder="Current Password" value="">     
 					</div>
 					<span id="ispswdvalid" class="text-danger">Please Enter The Correct Password</span>  
 					<?= $form->field($profile, 'password_profile', [
@@ -289,5 +293,6 @@ $this->params['breadcrumbs'][] = 'Edit';
                            }
                     });
 	 });
+	 
    });    
 </script>               

@@ -8,6 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <?= \Yii::$app->session->getFlash('email_reg_error'); ?>
+
 <section class="email-signin content">
         <div class="row">
             <div class="signback">
