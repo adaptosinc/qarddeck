@@ -206,118 +206,229 @@
 		};
 		
 		plugin.addBlock = function(postData,callFrom,new_block){
-		////console.log(postData);return;
-		if (callFrom == "save_block") {
-			$("#wait").show();
-		}
-		$.ajax({
-			//url: "<?=Url::to(['block/create'], true)?>",
-			url: plugin.settings.blockCreateUrl,
-			type: "POST",
-			data: postData,
-			dataType: "json",
-			async: false,
-			success: function(data) {
-				if (callFrom === "add_block") {
-					//$("#wait").hide();
-					//var total_height = totalHeight();
-					//	       checkHeight();
-					var qard = '';
-					var theme = '';
-					//if qard is editing
-					if (!$("#qard_id").attr("value")) {
-						qard = '<input id="qard_id" type="hidden" value="' + data.qard_id + '">';
-						$('#qardid-link').attr("href",plugin.settings.homeUrl+"/theme/select-theme/?q_id="+ data.qard_id +"");
-					}
-					// if stored data contain image then true
-					var img = image_icon_span = '';
-					if (data.link_image) {
-						/** Uncomment this for background image **/
-						//img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
-						/** ----------------------------------- **/
-						/** Make link icon **/
-						var image_icon_span = '<span data-url = "'+plugin.settings.homeUrl+'/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src='+plugin.settings.homeUrl+'"images/image_icon.png" alt=""></span>';
-						/** ----------------------------------- **/
-/* 						if(data.div_bgimage_position != "null")
-							img = img+'background-position:'+data.div_bgimage_position+';' */
-					}
-					//creating parent block or img-block
-					var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
-					//creating overlay-block or middel block
-					new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' + data.div_opacity + ';height:' + data.height + 'px;">';
-					//creating main block or text block
-					new_div += '<div data-height="' + (data.height / 37.5) + '" style="height:' + data.height + 'px;" data-block_id="' + data.block_id + '" data-theme_id="' + data.theme_id + '" data-block_priority="' + data.block_priority + '" class="text-block current_blk">' + data.text + '</div></div></div>';
-					
-					/* Added by Dency */
-					/* Image is added to the current block without adding a newblock */
-					if(new_block == false){
-						//alert("new_block:"+new_block);
-						$("#working_div").before(qard);
-						$("#working_div").html(theme + new_div);
-						if(data.text == ''){
-							focusWorkspace();
-							$("#working_div .current_blk").html("Add your comments here");
+			////console.log(postData);return;
+			if (callFrom == "save_block") {
+				$("#wait").show();
+			}
+			$.ajax({
+				//url: "<?=Url::to(['block/create'], true)?>",
+				url: plugin.settings.blockCreateUrl,
+				type: "POST",
+				data: postData,
+				dataType: "json",
+				async: false,
+				success: function(data) {
+					if (callFrom === "add_block") {
+						//$("#wait").hide();
+						//var total_height = totalHeight();
+						//	       checkHeight();
+						var qard = '';
+						var theme = '';
+						//if qard is editing
+						if (!$("#qard_id").attr("value")) {
+							qard = '<input id="qard_id" type="hidden" value="' + data.qard_id + '">';
+							$('#qardid-link').attr("href",plugin.settings.homeUrl+"/theme/select-theme/?q_id="+ data.qard_id +"");
 						}
-							
-						$("#working_div .current_blk").append(image_icon_span);
-						$("#reset_image").trigger("click");
-						 return;
-					}
-					/*****************/
-					
-					$("#working_div").css("background-color","red");
-					//adding before working block
-					$("#working_div").before(qard + theme + new_div);
-					var checkForNew = true;
-					//checking whether block is editing or adding new block
-					if (data.edit_block) {
-						//for edit block
-						$("#add-block .parent_current_blk").each(function() {
-							if (typeof $(this).find(".current_blk").attr("data-block_id") === 'undefined' && data.blk_id !== $(this).attr("id")) {
-								$("#working_div").remove();
-								$(this).wrap('<div  id="working_div" class="working_div active"></div>');
-								$(this).find(".current_blk").addClass("working_div");
-								$(this).find(".current_blk").attr("unselectable", 'off');
-								$(this).find(".current_blk").attr("contenteditable", 'true');
-								//console.log("wrap old block");
-								checkForNew = false;
-								return;
+						// if stored data contain image then true
+						var img = image_icon_span = '';
+						if (data.link_image) {
+							/** Uncomment this for background image **/
+							//img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+							/** ----------------------------------- **/
+							/** Make link icon **/
+							var image_icon_span = '<span data-url = "'+plugin.settings.homeUrl+'/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src='+plugin.settings.homeUrl+'"images/image_icon.png" alt=""></span>';
+							/** ----------------------------------- **/
+	/* 						if(data.div_bgimage_position != "null")
+								img = img+'background-position:'+data.div_bgimage_position+';' */
+						}
+						//creating parent block or img-block
+						var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
+						//creating overlay-block or middel block
+						new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' + data.div_opacity + ';height:' + data.height + 'px;">';
+						//creating main block or text block
+						new_div += '<div data-height="' + (data.height / 37.5) + '" style="height:' + data.height + 'px;" data-block_id="' + data.block_id + '" data-theme_id="' + data.theme_id + '" data-block_priority="' + data.block_priority + '" class="text-block current_blk">' + data.text + '</div></div></div>';
+						
+						/* Added by Dency */
+						/* Image is added to the current block without adding a newblock */
+						if(new_block == false){
+							//alert("new_block:"+new_block);
+							$("#working_div").before(qard);
+							$("#working_div").html(theme + new_div);
+							if(data.text == ''){
+								focusWorkspace();
+								$("#working_div .current_blk").html("Add your comments here");
 							}
-						});
-					}
-					if (checkForNew) {
-						    var nextBlockPriority = getNextBlockPriority();
-							$("#working_div").remove();
-							var new_div = '<div  id="working_div" class="working_div active"><div id="blk_' + getNextBlockId() + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" data-style-qard = "'+data.data_style_qard+'"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off" data-block_priority="' + nextBlockPriority + '"></div></div></div></div>';
-							$("#add-block .parent_current_blk:last").after(new_div);
-					}
-				} 
-				else {
-				$("#" + data.blk_id).find(".current_blk").attr("data-block_id", data.block_id);
-				$("#" + data.blk_id).find(".current_blk").attr("data-theme_id", data.theme_id);
-				//var url = '<?=Url::to(['qard/preview-qard'], true);?>';
-				//window.location.replace(url+"?qard_id="+data.qard_id);
-				$("#wait").hide();
-				}
-				plugin.focusWorkspace();
-				//removing uneccessary created working block
-				$("#add-block div").each(function() {
-				if ($(this).attr('id') === "working_div" && $(this).html() === "") {
-					$("#working_div").remove();
-				}
-				});
-				//remove image after stored in db
-				$(".dropzone .btn-del").trigger("click");                    
-				$("#url_reset_link").trigger("click");
-				$("#remove_extra_text").trigger("click"); 
-				return true;
-				},
-				error: function(data) {
+								
+							$("#working_div .current_blk").append(image_icon_span);
+							$("#reset_image").trigger("click");
+							 return;
+						}
+						/*****************/
+						
+						$("#working_div").css("background-color","red");
+						//adding before working block
+						$("#working_div").before(qard + theme + new_div);
+						var checkForNew = true;
+						//checking whether block is editing or adding new block
+						if (data.edit_block) {
+							//for edit block
+							$("#add-block .parent_current_blk").each(function() {
+								if (typeof $(this).find(".current_blk").attr("data-block_id") === 'undefined' && data.blk_id !== $(this).attr("id")) {
+									$("#working_div").remove();
+									$(this).wrap('<div  id="working_div" class="working_div active"></div>');
+									$(this).find(".current_blk").addClass("working_div");
+									$(this).find(".current_blk").attr("unselectable", 'off');
+									$(this).find(".current_blk").attr("contenteditable", 'true');
+									//console.log("wrap old block");
+									checkForNew = false;
+									return;
+								}
+							});
+						}
+						if (checkForNew) {
+								var nextBlockPriority = getNextBlockPriority();
+								$("#working_div").remove();
+								var new_div = '<div  id="working_div" class="working_div active"><div id="blk_' + getNextBlockId() + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" data-style-qard = "'+data.data_style_qard+'"><div class="bgoverlay-block"><div class="text-block current_blk" data-height="1"  contenteditable="true" unselectable="off" data-block_priority="' + nextBlockPriority + '"></div></div></div></div>';
+								$("#add-block .parent_current_blk:last").after(new_div);
+						}
+					} 
+					else {
+					$("#" + data.blk_id).find(".current_blk").attr("data-block_id", data.block_id);
+					$("#" + data.blk_id).find(".current_blk").attr("data-theme_id", data.theme_id);
+					//var url = '<?=Url::to(['qard/preview-qard'], true);?>';
+					//window.location.replace(url+"?qard_id="+data.qard_id);
 					$("#wait").hide();
-					//console.log(data);
-					return false;
+					}
+					plugin.focusWorkspace();
+					//removing uneccessary created working block
+					$("#add-block div").each(function() {
+					if ($(this).attr('id') === "working_div" && $(this).html() === "") {
+						$("#working_div").remove();
+					}
+					});
+					//remove image after stored in db
+					$(".dropzone .btn-del").trigger("click");                    
+					$("#url_reset_link").trigger("click");
+					$("#remove_extra_text").trigger("click"); 
+					return true;
+					},
+					error: function(data) {
+						$("#wait").hide();
+						//console.log(data);
+						return false;
+					}
+			});			
+		};
+		
+		plugin.addExtraText = function(){
+			$.ajax({
+			//	url : "<?=Url::to(['block/add-text'], true)?>",
+				url : plugin.settings.addExtraTextUrl,
+				type: "POST",
+				data: { 'extra_text':$("#extra_text").html(),
+						'block_id':$("#working_div .current_blk").attr('data-block_id'),
+						'title' : $("input[name=extra-text]").val(),
+					  },
+				success: function(data){
+					data = $.parseJSON(data);
+					if(data.status == true){
+						if(data.extra_text != ""){
+							var html = $("#working_div .current_blk").html();
+							if(html == ''){
+								var new_html = (data.extra_text).substring(0,30)+"...";
+								$("#working_div .current_blk").html(new_html);
+							}
+							//see whether T icon is already there
+							var icon = $("#working_div .current_blk").find(".icon-mark").length;
+							if(icon == 0)
+								$("#working_div .current_blk").append(data.link_data);
+							$("#working_div .current_blk").attr("contenteditable","true");								
+						}else{
+							$("#working_div .current_blk").find(".icon-mark").remove();
+						}
+					
+					}
+					else{
+						alert("Error! Please try again later");
+					}	
+
 				}
-		});			
+			});			
+		};
+		
+		plugin.getExtraText = function(elem){
+			$.ajax({
+				//url : "<?=Url::to(['block/get-text'], true)?>",
+				url: plugin.settings.getExtraTextUrl,
+				type: "GET",
+				data: { 'block_id': $(elem).attr('block_id') },
+				success: function(data){
+					$('.nav-tabs a[href="#cardblock"]').tab('show');
+					data = $.parseJSON(data);
+					$("#extra_text").html(data.extra_text);
+					$("input[name=extra-text]").val(data.title);
+					$('#cmn-toggle-9').prop("checked",true);
+				}
+			});				
+		};
+		
+		plugin.saveQard = function(stringified){
+			$.ajax({
+				url: plugin.settings.saveQardUrl,
+				type: "POST",
+				data: {data:stringified},
+				async: false,
+				success: function(response){
+					
+					$("#wait").hide();
+					var qard_id = $("#qard_id").val() || 0;
+					var url = plugin.settings.previewQardUrl;
+					window.location.replace(url+"?qard_id="+qard_id);
+				}
+			});			
+		}
+		
+		plugin.fetchUrl = function(urlField,displayCheck){
+			var preview_url = $(urlField).val();
+			var homeUrl = plugin.settings.homeUrl;
+			$.ajax({
+				url: plugin.settings.getUrlPreviewUrl,
+				type: "GET",
+				datatype : 'json',
+				data: {
+					'url': preview_url
+				},
+				success: function(data) {
+					data = $.parseJSON(data);
+					if (data.type == 'PDF' || data.type == 'pdf') {
+						<!--ADDED BY DENCY -->
+						$('#dispIcon').attr('src', homeUrl+'images/pdf.png');
+					}
+					if (data.type == 'DOC' || data.type == 'DOCX') {
+						$('#dispIcon').attr('src', homeUrl+'images/doc.png');
+					}
+					if (data.type == 'web_page') {
+						if(displayCheck==1){
+							
+						}else{
+							$("#working_div .current_blk").focus();
+							document.execCommand('foreColor', false, plugin.settings.dark_text_color);	
+							var work_space_text  = '<span style="color: '+plugin.settings.dark_text_color+';">'+data.work_space_text+'</span></br>';
+							$("#working_div .current_blk").html(work_space_text);
+							adjustHeight();
+						}
+						$('#link_div').html(data.preview_html);
+						//add here
+						$('#cmn-toggle-6').prop("checked",true).trigger("change");
+					}
+					else {
+						$('#link_div').html(data);
+					}
+					if(displayCheck!=1){
+						adjustHeight();
+					}
+				}
+			});			
 		};
         // fire up the plugin!
         // call the "constructor" method
@@ -434,6 +545,49 @@ function getNSetOrderOfBlocks() {
 	});
 	return data;
 }
+function getNextBlockId() {
+	var blk_id = 0;
+	$(".add-block-qard div").each(function() {
+		var attr = $(this).attr('id');
+		if (typeof attr !== typeof undefined && attr !== false && attr.search("_")) {
+			new_blk_id = attr.split('_');
+			if (blk_id < parseInt(new_blk_id[1])) {
+				blk_id = parseInt(new_blk_id[1]);
+			}
+		}
+	});
+	return ++blk_id;
+}		
+function getNextBlockPriority() {
+	var blk_pri = 0;
+	$(".add-block-qard .parent_current_blk").each(function() {
+		var attr = $(this).find(".current_blk").attr('data-block_priority');
+		if (typeof attr !== typeof undefined) {
+			if (blk_pri < parseInt(attr)) {
+				blk_pri = parseInt(attr);
+			}
+		}
+	});
+	return ++blk_pri;
+}
+function showExtraText(elem){
+	//console.log($(this).parent().find('.current_blk'));
+	$(elem).parent('div').trigger("dblclick");
+	$(window).data('qardDeck').getExtraText(elem);
+		
+}
+function showImage(element){
+	$('.nav-tabs a[href="#imgblock"]').tab('show');
+	$(element).trigger("dblclick");
+	var data_image = $(element).attr("data-url");
+	$('.drop-image').hide();
+	var img = "<img class='hover_me' src='"+data_image+"' style='width:100%;height:300px;'>";
+	$('.img_preview').html(img);
+	$('.img_preview').show();
+}
+function callUrl(urlField,displayCheck) {
+	$(window).data('qardDeck').fetchUrl(urlField,displayCheck);
+}
 function add_block(event,new_block){
 	//save block
 		var data = $("#image_upload").serializeArray();
@@ -486,7 +640,7 @@ function add_block(event,new_block){
 			name: 'div_bgimage_position',
 			value: div_bgimage_position
 		});
-/*             var div_bg_color = $("#working_div .bgimg-block").css("background-color");
+/*      var div_bg_color = $("#working_div .bgimg-block").css("background-color");
 		data.push({
 			name: 'div_bg_color',
 			value: div_bg_color
@@ -586,11 +740,185 @@ function add_block(event,new_block){
 		$("#showFile").hide();
 		$("#showFilePreview").empty();
 }
+function addSaveCard() {
 
+	var total_data_height = 0;
+	$('.current_blk').each(function(obj) {
+		//console.log($(this).attr("data-height"));
+		total_data_height = parseInt($(this).attr("data-height"))+parseInt(total_data_height);
+	});
+	// if storing image
+	var data = [];
+	var qard_title = $("#qard_title").val() || 0;
+	data.push({
+		name: 'qard_title',
+		value: qard_title
+	});
+	//if qard title is empty
+	if (qard_title === '') {
+		alert("please enter qard title");
+		return false;
+	}
+	var qard_theme_id = $('input[name=theme_id]').val();
+	data.push({
+		name: 'qard_theme_id',
+		value: qard_theme_id 
+	});
+	var all_data = [];
+	$("#add-block .parent_current_blk").each(function(obj,index) {
+		// getting opacity for image-block div
+		var temp_data = [];
+		var image_opacity = parseFloat($(this).css("opacity") || 0);
+		temp_data.push({
+			name: 'image_opacity',
+			value: image_opacity
+		});
+		//opacity for overlay-block
+		var div_opacity = parseFloat($(this).find(".bgoverlay-block").css("opacity") || 0);
+		temp_data.push({
+			name: 'div_opacity',
+			value: div_opacity
+		});
+		//overlay color
+		var div_overlaycolor = $(this).find(".bgoverlay-block").css("background-color");
+		if(typeof div_overlaycolor === 'undefined') {
+			div_overlaycolor = 'transparent';
+		}
+		////console.log('overlay'+div_overlaycolor);return;
+		temp_data.push({
+			name: 'div_overlaycolor',
+			value: div_overlaycolor
+		});			
+		//Background color for background block
+		var div_bgcolor = $(this).css("background-color");
+		////console.log(div_bgcolor);return;
+		temp_data.push({
+			name: 'div_bgcolor',
+			value: div_bgcolor
+		});
+		//if it contains background as image then true
+		var div_bgimage = $(this).css("background-image");
+		if (typeof div_bgimage === 'undefined') {
+			var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+		}
+		var div_bgimage = $(this).css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+		////console.log(div_bgimage);
+		//return;
+		temp_data.push({
+			name: 'div_bgimage',
+			value: div_bgimage
+		});
+		
+		var div_bgimage_position = $(this).css("background-position")||'null';
+		temp_data.push({
+			name: 'div_bgimage_position',
+			value: div_bgimage_position
+		});
+		//getting height of div
+		var height = parseInt($(this).find(".current_blk").attr('data-height')) * 37.5;
+		temp_data.push({
+			name: 'height',
+			value: height
+		});
+		//getting text for the block
+		var text = $(this).find(".current_blk").html() || 0;
+		temp_data.push({
+			name: 'text',
+			value: text
+		});
+		//if extra text is present
+		var extra_text = $("#extra_text").html() || 0;
+		temp_data.push({
+			name: 'extra_text',
+			value: extra_text
+		});
+		//to check operation for edit a block or for add new block
+		var block_id = $(this).find(".current_blk").attr("data-block_id") || 0;
+		temp_data.push({
+			name: 'block_id',
+			value: block_id
+		});
+		// check whether theme is already preasent for qard or not
+		var theme_id = $(this).find(".current_blk").attr("data-theme_id") || 0;
+		temp_data.push({
+			name: 'theme_id',
+			value: theme_id
+		});
+		// check whether theme is already preasent for qard or not
+		var calc_index = index + 1;
+		//$(this).find(".current_blk").attr("data-block_priority", (index + 1));
+		var block_priority = $(this).find(".current_blk").attr("data-block_priority") || calc_index;
+		temp_data.push({
+			name: 'block_priority',
+			value: block_priority
+		});
+		//check qard id is present to edit or add new qard
+		var qard_id = $("#qard_id").val() || 0;
+		temp_data.push({
+			name: 'qard_id',
+			value: qard_id
+		});
+		// getting tags fot qard
+		var tags = $("#tags").val();            
+		temp_data.push({
+			name: 'tags',
+			value: tags
+		});
+		var qard_title = $("#qard_title").val() || 0;
+		temp_data.push({
+			name: 'qard_title',
+			value: qard_title
+		});
+		//if block contains title for block then true
+		var is_title = $("[name='is_title']:checked").val() || 0;
+		temp_data.push({
+			name: 'is_title',
+			value: is_title
+		});
+		//to get current block id
+		var blk_id = $(this).attr("id");
+		temp_data.push({
+			name: 'blk_id',
+			value: blk_id
+		});
+		//addded data bgcolor id and font color id
+		var data_bgcolor_id = $(this).attr("data-bgcolor-id") || 0;
+		temp_data.push({
+			name: 'data_bgcolor_id',
+			value: data_bgcolor_id
+		});	
+		var data_fontcolor_id = $(this).find(".current_blk").attr("data-fontcolor-id") || 0;
+		temp_data.push({
+			name: 'data_fontcolor_id',
+			value: data_fontcolor_id
+		});	
+		//add block style
+		// add the block style also
+		var data_style_qard = $(this).attr('data-style-qard') || 'line';
+		temp_data.push({
+			name: 'data_style_qard',
+			value: data_style_qard
+		});	
+		all_data.push({
+			name: 'block_data',
+			value : temp_data
+		});
+		$(this).addClass("delete_blk");
+/* 			var new_block = true;
+		commanAjaxFun(data, 'save_block',new_block); */
+	});
+	data.push({
+		name: 'all_blocks',
+		value : all_data			
+	});
+	console.log(data);
+	dataP = JSON.stringify(data);
+	$(window).data('qardDeck').saveQard(dataP);	
+	return;
+}
 /**
  ** Event handlers Used
  **/
-
 $('.help-link a').click(function(e){
 	e.preventDefault();
 	$('#myModaltut').modal('show');
@@ -804,3 +1132,138 @@ $('#text_indent').click(function() {
 	$('.working_div').children().focus();
 	return false;
 });
+$('#text_area_bold').click(function() {
+	$("#extra_text").focus();
+	document.execCommand('bold', false, null);
+	return false;
+});
+$('#text_area_italics').click(function() {
+	$("#extra_text").focus();
+	document.execCommand('italic', false, null);
+	return false;
+});
+$('#text_area_underline').click(function() {
+	$("#extra_text").focus();
+	document.execCommand('underline', false, null);
+	return false;
+});
+$("#extra_text").on("paste",function(event){
+	event.preventDefault();
+		if (event.clipboardData || event.originalEvent.clipboardData) {
+			content = (event.originalEvent || event).clipboardData.getData('text/plain');
+
+			document.execCommand('insertText', false, content);
+		}
+		else if (window.clipboardData) {
+			content = window.clipboardData.getData('Text');
+
+			document.selection.createRange().pasteHTML(content);
+		} 		
+});
+$("#remove_extra_text").click(function(){
+	$("#extra_text").html('');
+	$("input[name=extra-text]").val('');
+	$('#cmn-toggle-9').prop("checked",false);
+}); 
+$('#cmn-toggle-9').click(function(){
+	//check selected block first
+	//setTimeout("add_block(true,false);",1000);
+	////console.log($("#working_div .current_blk").attr('data-block_id'));
+	if($(this).prop('checked')){
+		add_block(true,false);
+		$(window).data('qardDeck').addExtraText();
+	}else{
+		$("#working_div .current_blk").find(".icon-mark").remove();
+	}			
+
+});
+/**** Link Block operations ******/
+$('#cmn-toggle-4').on('change', function() {
+	if($(this).prop('checked')){
+		if($("input[id=link_url]").val() != '')
+		{
+			var str = '<span id="show_url_span">'+$("input[id=link_url]").val()+'</span>';
+			$("#working_div .current_blk").find('#previewLink').prepend(str);		
+			$("#previewLink").attr("data-showurl","true");						
+		}
+	}else{
+		if($("#working_div .current_blk").find('#show_url_span').length != 0 && $("input[id=link_url]").val() != '')
+			$('#show_url_span').remove();
+		$("#previewLink").attr("data-showurl","false");	
+	}
+});
+$('#cmn-toggle-6').on('change', function() {
+	if($(this).prop('checked')){
+		if($("input[id=link_url]").val() != '')
+		{
+			$("#previewLink").attr("data-open","new");				
+		}
+	}else{
+		$("#previewLink").attr("data-open","same");	
+	}
+});
+$('input[id=link_url]').on('change', function() {
+	callUrl(this,0);
+});
+$('body').on('change', $('input[name=url_title]', 'textarea[name=url_content]'), function() {
+	showUrlPreview();
+});
+
+/**** End of Link Block operations ******/
+		
+/** Image block operations **/
+$('.img_preview').mouseenter(function(){
+	$(".dropzone .btn-cancel").trigger("click");
+	$('.drop-image').show();
+	//$('.img_preview').css("z-index","-1");
+	$('.img_preview').hide();
+	$('.img_preview').html('');
+});
+$('.drop-image').mouseleave(function(){
+	if($('#working_div .current_blk').find('.image_icon_span').length !=0){
+		var data_image = $('#working_div .current_blk').find('.image_icon_span').attr("data-url");
+		var img = "<img class='hover_me' src='"+data_image+"' style='width:100%;height:300px;'>";
+		$('.img_preview').html(img);
+		$('.img_preview').show();
+		$('.drop-image').hide();			
+	}
+});
+$(document).delegate("#reset_image", "click", function() {
+	$(".dropzone .btn-cancel").trigger("click");
+});
+// on click image tab should increase block height
+$(document).delegate("#cmn-toggle-3", "click", function() {
+	if($(this).prop('checked')){
+		if (parseInt($("#working_div .current_blk").attr("data-height")) < 4) {
+			//setHeightBlock($("#working_div .current_blk"),4);
+			//console.log($("#working_div .current_blk").attr("data-height"));
+			$(".save-pic").trigger("click");
+		}
+	} else {
+		//removeBr();
+		$('#working_div .current_blk').find('.image_icon_span').remove();
+		adjustHeight();
+	}
+});
+	// for image
+$(document).delegate("#image_opc", "blur keydown keyup", function() {
+	var per = parseInt($(this).val() || 1) / 100;
+	//console.log("image opc" + per);
+	$("#working_div .bgimg-block").css('opacity', per);
+});
+$(document).delegate("#overlay_color", "blur", function() {
+	var color = $(this).val();
+	//console.log(color);
+	$("#working_div .bgoverlay-block").css('background-color', color);
+});
+$(document).delegate("#overlay_opc", "blur keydown  keyup", function() {
+	var per = parseInt($(this).val()) / 100;
+	//console.log("image opc" + per);
+	$("#working_div .bgoverlay-block").css('opacity', per);
+});
+$(document).delegate("#bg_color", "blur", function() {
+	var color = $(this).val();
+	$("#working_div .bgimg-block").css('background-color', color);
+});
+		
+/** End of Image block operations **/
