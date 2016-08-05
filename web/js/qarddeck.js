@@ -257,10 +257,11 @@
 							$("#working_div").before(qard);
 							$("#working_div").html(theme + new_div);
 							if(data.text == ''){
-								focusWorkspace();
+								plugin.focusWorkspace();
 								$("#working_div .current_blk").html("Add your comments here");
 							}
-								
+							if($("#working_div .current_blk").find('.image_icon_span').length > 0)
+									$("#working_div .current_blk").find('.image_icon_span').remove();
 							$("#working_div .current_blk").append(image_icon_span);
 							$("#reset_image").trigger("click");
 							 return;

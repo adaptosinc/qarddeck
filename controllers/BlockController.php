@@ -418,8 +418,15 @@ class BlockController extends Controller
 	    /*
 	    * to upload image 
 	    */
+		//print_r($post['thumb_values']);die;
 	    $image=  json_decode($post['thumb_values']);
-	    $img = str_replace('data:image/jpeg;base64,', '', $image->data);
+		
+		if (strpos($image->data, 'data:image/jpeg;base64,') !== false) {
+			$img = str_replace('data:image/jpeg;base64,', '', $image->data);
+		}
+		if (strpos($image->data, 'data:image/png;base64,') !== false) {
+			$img = str_replace('data:image/png;base64,', '', $image->data);
+		}	    
 	    $img = str_replace(' ', '+', $img);
 	    $image_data = base64_decode($img);
 	    $image_name='rand_'.rand(0000,9999).'time_'.time().'qid_'.$qard_id.'.JPG';
