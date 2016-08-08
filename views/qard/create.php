@@ -234,6 +234,7 @@ $this->title = 'Create Qard';
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
                             <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
+							<h4 id="reflink" >Add Image<span id="reset_image" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove File</span></h4>
 							<div class="img_preview" style="display:none"></div>
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
@@ -261,7 +262,7 @@ $this->title = 'Create Qard';
                                 </div>
                             </div>-->
 							<div class="form-group image-elements">
-								<!--<div class="col-sm-3 col-md-3 on-off">
+								<div class="col-sm-3 col-md-3 on-off">
 									<span>Fit</span>
 										<div class="switch">
 											<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
@@ -273,12 +274,12 @@ $this->title = 'Create Qard';
 											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-7"></label>
 										</div>  <span>Display Preview</span> 
-								</div>-->
+								</div>
 								<div class="col-sm-6 col-md-6 on-off">
 										<div class="switch">
 											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-3"></label>
-										</div>  <span>Use this Image</span> 
+										</div>  <span>Display as background Image</span> 
 								</div>                                       
                             </div>
                             <!--<ul class="on-off pull-right">
@@ -787,6 +788,8 @@ $this->title = 'Create Qard';
 	});
 	$(window).qardDeck({
 		'dark_text_color': '<?php echo $theme_properties['dark_text_color'];?>',
+		'overlay_color'  : '<?php echo $theme_properties['overlay_color'];?>',
+		'overlay_opacity': '<?php echo $theme_properties['overlay_opacity'];?>',
 		'createDeckUrl'  : '<?=Url::to(['deck/create-ajax'], true)?>',
 		'addToDeckUrl'   : '<?=Url::to(['deck/add-qard'], true)?>',
 		'saveQardUrl'    : '<?=Url::to(['block/save-qard'], true)?>',
