@@ -109,22 +109,29 @@ $this->title = 'Preview Qard';
 				$theme = $block->theme->theme_properties;
 				$theme = unserialize($theme);
 				if(isset($theme)){
+						if(!isset($theme['data_img_type']))
+							$theme['data_img_type'] = "preview";
 					//img block styles
 						$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
-/* 						if($block->link_image != ''){
+						if($block->link_image != '' && ($theme['data_img_type'] == 'background' || $theme['data_img_type'] == 'both')){
 								
 								$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 								$img_block_style .= 'background-size: cover;';
-						} */
+								$data_img_url = \Yii::$app->homeUrl.'uploads/block/'.$block->link_image;
+						}
 						if($theme['div_bgcolor'] != '')
 							$img_block_style .= 'background-color:'.$theme['div_bgcolor'].';';	
 						$img_block_style .= 'min-height:'.$theme['height'].'px;';
 						$img_block_style .= 'height:auto;';
 						
 					//overlay block styles
-						$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
-						if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
-							$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
+						if($block->link_image != '' && ($theme['data_img_type'] == 'background' || $theme['data_img_type'] == 'both')){
+							$opacity = $theme_properties['overlay_opacity']/100;
+							$overlay_block_style .= 'opacity:'.$opacity.';';
+							//if(isset($theme['div_overlaycolor']) && $theme_properties['div_overlaycolor']!='')
+								$overlay_block_style .= 'background-color:'.$theme_properties['overlay_color'].';';								
+							
+						}
 						$overlay_block_style .= 'min-height:'.$theme['height'].'px;';
 						$overlay_block_style .='height:auto;';
 						
