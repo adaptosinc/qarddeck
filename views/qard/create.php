@@ -307,7 +307,7 @@ $this->title = 'Create Qard';
 									</div>
 									<div class="form-group extra-content" style="margin-bottom: 60px;">
 										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
-										<input type="text" name="url-desc" class="col-sm-5 col-md-5 col-md-offset-1" placeholder="Add a description">
+										<input type="text" name="url-desc" class="col-sm-6 col-md-6 col-md-offset-1" placeholder="Add a description">
 									</div>
 									<div id="link_div" style="padding-bottom: 10px;">
 										<div class="preview-image">                                       
