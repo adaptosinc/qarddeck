@@ -378,6 +378,10 @@ $this->title = 'Edit Qard';
 										<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
 										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
 									</div>
+									<div class="form-group extra-content" style="margin-bottom: 60px;">
+										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
+										<input type="text" name="url-desc" class="col-sm-5 col-md-5 col-md-offset-1" placeholder="Add a description">
+									</div>
 									<div id="link_div" style="padding-bottom: 10px;">
 										<div class="preview-image">                                       
 										</div>  
@@ -399,10 +403,7 @@ $this->title = 'Edit Qard';
 										</div>
 										<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Url</span>
 									</div>
-									<div class="form-group extra-content">
-										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
-										<input type="text" name="url-desc" class="col-sm-5 col-md-5 col-md-offset-1" placeholder="Add a description">
-									</div>
+
 								</div>
 								<div role="tabpanel" class="tab-pane" id="embed">
 									<h4 id="reflink">Add Embed Code<button class="btn btn-warning pull-right">Link Embed Code</button></h4>
