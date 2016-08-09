@@ -285,7 +285,7 @@
 							$('#working_div .current_blk').attr("data-img-url",plugin.settings.homeUrl+'/uploads/block/' + data.link_image);
 							if(data.text == ''){
 								plugin.focusWorkspace();
-								$("#working_div .current_blk").html("<span>Add your comments here</span>");
+							//	$("#working_div .current_blk").html("<span>Add your comments here</span>");
 							}
 							if($("#working_div .current_blk").find('.image_icon_span').length > 0)
 									$("#working_div .current_blk").find('.image_icon_span').remove();
@@ -1040,7 +1040,7 @@ function add_block(event,new_block){
 		$("#reset_image").trigger("click");
 }
 function addSaveCard() {
-
+	add_block(true,false);
 	var total_data_height = 0;
 	$('.current_blk').each(function(obj) {
 		//console.log($(this).attr("data-height"));
@@ -1527,6 +1527,7 @@ $('#cmn-toggle-6').on('change', function() {
 $('#link_url_button').click(function() {
 		console.log("url taken");
 		//callUrl($('input[id=link_url]'),0);
+		add_block(true,false);
 		$(window).data('qardDeck').useUrl();
 
 });
