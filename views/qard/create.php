@@ -293,22 +293,24 @@ $this->title = 'Create Qard';
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
-							<ul class="nav nav-tabs" role="tablist">
-								<li role="presentation" class="active"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
-								<li role="presentation"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>
-								<li class="pull-right"><span class="trash pull-right" id="url_reset_link"><i class="fa fa-trash"></i>&nbsp;Remove Url/Embed Code</span></li>                                        
+							<!--<ul class="nav nav-tabs" role="tablist">
+								<li role="presentation" class="active" style="display:none"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
+								<li role="presentation" style="display:none"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>                                       
 							</ul>
-							<h4>&nbsp;</h4>
+							<h4>&nbsp;</h4>-->
 							<div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="paste">
+									<h4 id="reflink" >Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>									
 									<div class="form-group" id="showlinkUrl">
 										<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
 										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
 									</div>
 									<div id="link_div" style="padding-bottom: 10px;">
 										<div class="preview-image">                                       
-										</div>  
+										</div> 
 									</div>	
+										<input type="hidden" id="work_space_text" />
+										<input type="hidden" id="work_space_link_only" />
 									<div class="form-group toggle-btn">
 										<div class="col-sm-4 col-md-4 on-off">
 											<div class="switch">
@@ -322,6 +324,7 @@ $this->title = 'Create Qard';
 												<label for="cmn-toggle-6"></label>
 											</div>  <span>Open Link in New Tab</span>                                                 
 										</div>
+										<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Url</span>
 									</div>
 									<div class="form-group extra-content">
 										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
@@ -329,6 +332,7 @@ $this->title = 'Create Qard';
 									</div>
 								</div>
 								<div role="tabpanel" class="tab-pane" id="embed">
+									<h4 id="reflink">Add Embed Code<button class="btn btn-warning pull-right">Link Embed Code</button></h4>
 									<div class="form-group" id="embedCode">
 										<input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
 									</div>
@@ -336,6 +340,7 @@ $this->title = 'Create Qard';
 										<div class="preview-image">                                       
 										</div>  
 									</div>	
+									<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>
 								</div>  
 
 							</div>
@@ -806,6 +811,7 @@ $this->title = 'Create Qard';
 		'uploadSimpleFileUrl'  :'<?=Url::to(['qard/simple'], true)?>',
 		'embedCodeUrl'   : '<?=Url::to(['qard/embed-url'], true);?>',
 		'changeStyleUrl' : '<?=Url::to(['qard/change-style'], true);?>',
+		'addUrlDataUrl'  : '<?=Url::to(['qard/add-urldata'], true);?>',
 	});
 
 	</script>

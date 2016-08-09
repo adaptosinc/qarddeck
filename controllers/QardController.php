@@ -9,6 +9,7 @@ use app\models\User;
 use app\models\Theme;
 use app\models\Deck;
 use app\models\QardDeck;
+use app\models\QardBlock as Block;
 use app\models\search\SearchQard;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -584,7 +585,7 @@ class QardController extends Controller
 	 * @param string $url
 	 * @return mixed
 	 */
-	public function actionUrlPreview($url){
+	public function actionUrlPreview($url,$block_id=null){
 			$output_array = [];
 			//$url = $_POST['url'];		
 			$c = curl_init($url);			
@@ -704,11 +705,23 @@ class QardController extends Controller
 			//$title = explode('.',$title);
 			/******************************/
 			//FORMAT THE OUTPUT IN JSON
-			$link_icon = '<p><span class="icon-mark pull-right" id="previewLink" data-open="same" contenteditable="false" onclick = "displayLink(this);" data-url="'.$url.'"><img src="'.Yii::$app->request->baseUrl.'/images/link_icon.png" alt=""></span></p>';
+			$link_icon = '<span class="icon-mark pull-right" id="previewLink" data-open="same" contenteditable="false" onclick = "displayLink(this);" data-url="'.$url.'"><img src="'.Yii::$app->request->baseUrl.'/images/link_icon.png" alt=""></span>';
 			$output_array['preview_html'] = $preview_html;
-			$output_array['work_space_text'] ='<div id="qardContent">'. substr($title,0,150).'...'.$link_icon.'</div>';//link_icon with onclik function
+			$output_array['work_space_link_only'] = $link_icon;
+			$output_array['work_space_text'] ='<span>'. substr($title,0,150).'...</span>'.$link_icon;//link_icon with onclik function
 			$output_array['type'] = 'web_page';
 			/*****************************/
+			$output_array['url_title'] = '';
+			$output_array['url_description'] = '';	
+			if($block_id && $block_id!=0){
+				$block = Block::findOne($block_id);
+				$data = [];
+				if($block){
+						$output_array['url_title'] = $block->link_title;
+						$output_array['url_description'] = $block->link_description;				
+				}
+		//return json_encode($data);
+			}
 			echo json_encode($output_array);
 	}
 	
@@ -788,12 +801,15 @@ class QardController extends Controller
 		if (strpos($src, 'youtube') !== false) {
 			$videoid = str_replace("https://www.youtube.com/embed/",'',$src);
 			$video_link = $title.'https://youtu.be/'.$videoid.'<span class="icon-mark pull-right" id="embedHide" data-value="'.$src.'" onclick="embedCode(this);"><img src="'.Yii::$app->homeUrl.'images/video_icon.png" alt=""></span>';
+			$video_link_only = '<span class="icon-mark pull-right" id="embedHide" data-value="'.$src.'" onclick="embedCode(this);"><img src="'.Yii::$app->homeUrl.'images/video_icon.png" alt=""></span>';
 		}else{
 			$videoid = str_replace("https://player.vimeo.com/video/",'',$src);
 			$video_link = $title.'https://vimeo.com/'.$videoid.'<span class="icon-mark pull-right" id="embedHide" data-value="'.$src.'" onclick="embedCode(this);"><img src="'.Yii::$app->homeUrl.'images/video_icon.png" alt=""></span>';
+			$video_link_only = '<span class="icon-mark pull-right" id="embedHide" data-value="'.$src.'" onclick="embedCode(this);"><img src="'.Yii::$app->homeUrl.'images/video_icon.png" alt=""></span>';
 		}
 		$video_array['video_img'] = $video_link;
 		$video_array['iframelink'] = $embed_code;
+		$video_array['video_link_only'] = $video_link_only;
 		/****** youtube code ends *****/
 		echo json_encode($video_array);		
 	}

@@ -1118,6 +1118,9 @@ li.help-link a {
 .text-block {
     padding: 8px !important;
 }
+.text-block span{
+    line-height: 0px !important;
+}
 /* .ui-resizable-handle.ui-resizable-s:hover {
     background: url(../images/hamburger_icon.png) no-repeat;
     height: 20px;
@@ -1160,7 +1163,7 @@ li.help-link a {
 } */
 span#show_url_span {
     display: block;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 section.create-card button {
     text-transform: uppercase;

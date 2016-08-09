@@ -227,7 +227,7 @@ $this->title = 'Preview Qard';
 						$theme['data_style_qard'] = 'line';
 					$str .= '<div class="bgimg-block '.$theme['data_style_qard'].'" style="'.$img_block_style.'" >
 					<div class="bgoverlay-block" style="'.$overlay_block_style.'">
-					<div class="text-block" style="'.$text_block_style.'">';
+					<div class="text-block" style="'.$text_block_style.'" data-block-id="'.$block->block_id.'">';
 					$str .= $block->text;
 					$str .= '</div></div></div>';
 
@@ -337,10 +337,10 @@ $this->title = 'Preview Qard';
 				</div>
 			</div>
 			<div class="active-link-preview" style="display: none;">        <!-- link preview block -->
-				<h4>Dribble <span class="pull-right"><quote>http://youtube.com/ahsdgu</quote><i class="fa fa-times-thin"></i></span></h4>
+				<h4 id="title_and_url">Dribble <span class="pull-right"><quote>http://youtube.com/ahsdgu</quote><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. </p>
+					<p id="url_desc">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. </p>
 					<div id="url_data"><iframe height="315" src="https://www.youtube.com/embed/cqNmVJk7Zyg" frameborder="0" allowfullscreen=""></iframe></div>
 				</div>
 			</div>
@@ -565,16 +565,17 @@ $this->title = 'Preview Qard';
 			console.log(dataurl);
 			var checkit = $(identifier).find('#hiddenUrl');
 			var displayCheck = 1;
-			callUrl(dataurl,displayCheck);
+			callUrl(identifier,dataurl,displayCheck);
 			$('#preview-tab').show();
 			return false;
 		}
 		/*
 		* Link block functions
 		*/
-        function callUrl(urlField,displayCheck) {
+        function callUrl(identifier,urlField,displayCheck) {
             //console.log($(urlField).val());
-			
+			console.log($(identifier).parent('.text-block').attr('data-block-id'));
+			var block_id = $(identifier).parent('.text-block').attr('data-block-id');			
             var preview_url = urlField;
             var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
             $.ajax({
@@ -582,7 +583,8 @@ $this->title = 'Preview Qard';
                 type: "GET",
 				datatype : 'json',
                 data: {
-                    'url': preview_url
+                    'url': preview_url,
+					'block_id': block_id
                 },
                 success: function(data) {
 					data = $.parseJSON(data);
@@ -636,7 +638,10 @@ $this->title = 'Preview Qard';
 					hideAll('active-link-preview');
 					$('.active-preview-content').show();
 					$('#url_data').html(data_to_show);
-
+					var l = data.url_title+'<span class="pull-right"><quote>'+preview_url+'</quote><i class="fa fa-times-thin"></i></span>';
+					$('#title_and_url').html(l);
+					$('#url_desc').html(data.url_description);
+					
 					if(displayCheck!=1){
 						adjustHeight();
 					}

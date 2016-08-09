@@ -92,7 +92,7 @@
 					$('#extra_text').focus();
 				}
 				if ($(this).attr("data-resized")=='true') {
-					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
+					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10) / 37.5);
 					var setHeight =  $(this).attr("data-height");
 					if(scrollHeight > setHeight ){
 						$("#working_div .current_blk").attr('data-resized','false');	
@@ -107,7 +107,7 @@
 				 * Or autoset the height of block
 				 **/
 				$(this).css("height", 'auto');
-				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
+				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10)/ 37.5);
 				setHeightBlock(this,scrollHeight);
 			});		
 		};
@@ -426,7 +426,8 @@
 				type: "GET",
 				datatype : 'json',
 				data: {
-					'url': preview_url
+					'url': preview_url,
+					'block_id':$("#working_div .current_blk").attr('data-block_id'),
 				},
 				success: function(data) {
 					data = $.parseJSON(data);
@@ -441,14 +442,14 @@
 						if(displayCheck==1){
 							
 						}else{
-							$("#working_div .current_blk").focus();
-							document.execCommand('foreColor', false, plugin.settings.dark_text_color);	
-							var work_space_text  = '<span style="color: '+plugin.settings.dark_text_color+';">'+data.work_space_text+'</span></br>';
-							$("#working_div .current_blk").html(work_space_text);
-							adjustHeight();
+							//save for later use
+							$("input[id=work_space_text]").val(data.work_space_text);
+							$("input[id=work_space_link_only]").val(data.work_space_link_only);
 						}
 						$('#link_div').html(data.preview_html);
 						//add here
+						$("input[name=url-title]").val(data.url_title);
+						$("input[name=url-desc]").val(data.url_description);
 						$('#cmn-toggle-6').prop("checked",true).trigger("change");
 					}
 					else {
@@ -459,6 +460,28 @@
 					}
 				}
 			});			
+		};
+		plugin.useUrl = function(){
+			//save the title and description if set
+			$.ajax({
+			//	url : "<?=Url::to(['block/add-text'], true)?>",
+				url : plugin.settings.addUrlDataUrl,
+				type: "POST",
+				data: { 'url_title':$("input[name=url-title]").val(),
+						'block_id':$("#working_div .current_blk").attr('data-block_id'),
+						'url_description' : $("input[name=url-desc]").val(),
+					  },
+				success: function(data){
+					$("#working_div .current_blk").find('.icon-mark').remove();
+					var work_space_text  = '<span style="color: '+plugin.settings.dark_text_color+';">'+$("input[id=work_space_text]").val()+'</span></br>';
+					if($("#working_div .current_blk").html() != '')
+						$("#working_div .current_blk").append($("input[id=work_space_link_only]").val());
+					else
+						$("#working_div .current_blk").html(work_space_text);
+					adjustHeight();					
+				}
+			});				
+			//if html is present in the working div, append after removing akll other icons	
 		};
 		plugin.uploadFile = function(ajaxData){
 			$.ajax({
@@ -555,7 +578,13 @@
 					document.execCommand('foreColor', false, plugin.settings.dark_text_color);	
 					var video_img  = '<span style="color: '+plugin.settings.dark_text_color+';">'+data.video_img+'</span></br>';
 					/****************/
-					$("#working_div .current_blk").html(video_img);
+					//if html is present in the working div, append after removing akll other icons
+					$("#working_div .current_blk").find('.icon-mark').remove();
+					if($("#working_div .current_blk").html() != '')
+						$("#working_div .current_blk").append(data.video_link_only);
+					else
+						$("#working_div .current_blk").html(video_img);
+					
 					adjustHeight();
 					$('#embed_div').html(data.iframelink);
                 }
@@ -643,7 +672,7 @@
 function adjustHeight(){
 	var elem = $('#working_div .current_blk');
 	$(elem).css("height", 'auto');
-	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight) / 37.5);
+	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight-10) / 37.5);
 	setHeightBlock(elem,scrollHeight);		
 }
 function totalHeight(){
@@ -767,6 +796,8 @@ function showImage(element){
 }
 function callUrl(urlField,displayCheck) {
 	$(window).data('qardDeck').fetchUrl(urlField,displayCheck);
+	//save title and description of url
+	
 }
 
 /**
@@ -794,10 +825,7 @@ function showUrlPreview() {
 			'<span class="url-text"><p>' + content.substring(0,125) + '...</p>' +
 			'</span></span></span></span>';
 	}
-	$("#working_div .current_blk").html(str);
-	$("#working_div .current_blk")[0].css("height", 'auto');
-	var scrollHeight = Math.ceil(parseInt($("#working_div .current_blk")[0].scrollHeight) / 37.5);
-	setHeightBlock($("#working_div .current_blk"),scrollHeight);
+	adjustHeight();
 }
 /**
  * Click on link icon to see the content
@@ -807,8 +835,8 @@ function displayLink(identifier){
 	$(identifier).trigger("dblclick");
 	$('.nav-tabs a[href="#linkblock"]').tab('show');
 	$('.nav-tabs a[href="#paste"]').tab('show');
-	$('input[id=link_url]').val(dataurl);
-	callUrl($('input[id=link_url]'),1);
+	$('input[id=link_url]').val(dataurl).trigger("change");
+	//callUrl($('input[id=link_url]'),1);
 	var dataopen = $(identifier).attr('data-open');
 	var datashowurl = $(identifier).attr('data-showurl');
 	if(datashowurl == "true")
@@ -1258,7 +1286,7 @@ if (event.type === "mouseleave") {
 			//var resized height
 			var scrollHeight = Math.ceil(ui.size.height / 37.5);
 			//var initial height
-			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight) / 37.5);
+			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-10) / 37.5);
 			$(this).find(".current_blk").attr('data-init-height',initialHeight);
 			var total = totalHeight();
 			//console.log("total height:"+total);
@@ -1473,7 +1501,8 @@ $('#cmn-toggle-4').on('change', function() {
 		if($("input[id=link_url]").val() != '')
 		{
 			var str = '<span id="show_url_span">'+$("input[id=link_url]").val()+'</span>';
-			$("#working_div .current_blk").find('#previewLink').prepend(str);		
+			//$("#working_div .current_blk").find('#previewLink').prepend(str);	
+			$(str).insertBefore($("#working_div .current_blk").find('#previewLink'));
 			$("#previewLink").attr("data-showurl","true");						
 		}
 	}else{
@@ -1492,13 +1521,19 @@ $('#cmn-toggle-6').on('change', function() {
 		$("#previewLink").attr("data-open","same");	
 	}
 });
-$('input[id=link_url]').on('change', function() {
+ $('input[id=link_url]').on('change', function() {
 	callUrl(this,0);
+});
+$('#link_url_button').click(function() {
+		console.log("url taken");
+		//callUrl($('input[id=link_url]'),0);
+		$(window).data('qardDeck').useUrl();
+
 });
 $('body').on('change', $('input[name=url_title]', 'textarea[name=url_content]'), function() {
 	showUrlPreview();
 });
-$('#url_reset_link').on('click', function() {
+$('.url_reset_link').on('click', function() {
 	$('#link_div').html("<div class='preview-image'></div>");
 	$('#embed_div').html("<div class='preview-image'></div>");
 	$("input[id=link_url]").val('');
