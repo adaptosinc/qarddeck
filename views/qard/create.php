@@ -811,7 +811,7 @@ $this->title = 'Create Qard';
 		'uploadSimpleFileUrl'  :'<?=Url::to(['qard/simple'], true)?>',
 		'embedCodeUrl'   : '<?=Url::to(['qard/embed-url'], true);?>',
 		'changeStyleUrl' : '<?=Url::to(['qard/change-style'], true);?>',
-		'addUrlDataUrl'  : '<?=Url::to(['qard/add-urldata'], true);?>',
+		'addUrlDataUrl'  : '<?=Url::to(['block/add-urldata'], true);?>',
 	});
 
 	</script>
