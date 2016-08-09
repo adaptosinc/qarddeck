@@ -1119,7 +1119,7 @@ li.help-link a {
     padding: 8px !important;
 }
 .text-block span{
-    line-height: 0px !important;
+   /* line-height: 0px !important; */
 }
 /* .ui-resizable-handle.ui-resizable-s:hover {
     background: url(../images/hamburger_icon.png) no-repeat;
