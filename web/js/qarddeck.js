@@ -687,9 +687,12 @@
 				$("#working_div .bgimg-block").css("background-size","cover");
 				$("#working_div .bgoverlay-block").css("background-color",overlay_blk.css("background-color"));
 				$("#working_div .bgoverlay-block").css("opacity",overlay_blk.css("opacity"));
-				
+				$("#working_div .current_blk").attr("data-img-type",current_block.attr("data-img-type"));
+				//add_block(true,false);
+				//here we need to save this block
 			}	
 			adjustHeight();
+			//add_block(true,true);
 		}
         // fire up the plugin!
         // call the "constructor" method

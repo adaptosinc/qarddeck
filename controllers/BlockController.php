@@ -89,7 +89,7 @@ class BlockController extends Controller
 						if(!empty($post['tags']))
 							$post['tags'] = implode(',',$post['tags']);
 						$tags=$this->createTagsQard($post,$qard->qard_id);
-						print_r($post);
+						//print_r($block);die;
 						if(empty($block->errors) && !is_array($block)){
 							$text=(empty($block->text))?'':$block->text;
 							echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_overlaycolor'=>$post['div_overlaycolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id'],'block_priority'=>$block->block_priority, 'data_style_qard'=>$post['data_style_qard'],'div_bgimage_position'=>$post['div_bgimage_position']));
@@ -126,7 +126,8 @@ class BlockController extends Controller
 			//echo $qard->qard_id;die;
 			$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
 			$tags=$this->createTagsQard($post,$qard->qard_id);
-			
+			//echo $block->block_id;
+			//echo $block->link_image; die;
 			if(empty($block->errors) && !is_array($block)){
 				$text=(empty($block->text))?'':$block->text;
 				echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_overlaycolor'=>$post['div_overlaycolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id'],'block_priority'=>$block->block_priority, 'data_style_qard'=>$_POST['data_style_qard'],'div_bgimage_position'=>$_POST['div_bgimage_position']));
@@ -361,13 +362,13 @@ class BlockController extends Controller
 		$serilized_arr['data_style_qard'] = $post['data_style_qard'];
 		$serilized_arr['div_bgimage_position'] = $post['div_bgimage_position'];
 		$serilized_arr['data_img_type'] = $post['data-img-type'];
-		if(strpos('/',$post['div_bgimage'])){
+		if(strpos($post['div_bgimage'],'/')){
 			$url_split=  explode('/',$post['div_bgimage']);
 			$serilized_arr['div_bgimage']=end($url_split);
 		}else{
 			$serilized_arr['div_bgimage']="";
 		}
-			
+		//echo strpos('/',$post['div_bgimage']);die;	
 		$serilized_arr['height']=$post['height'];
 		$theme->theme_properties=  serialize($serilized_arr);	
 		
@@ -479,7 +480,11 @@ class BlockController extends Controller
 //	    die;
 	}
 	
-	
+	if($block->link_image =='' && strpos($post['div_bgimage'],'/')){
+		$url_split=  explode('/',$post['div_bgimage']);
+		$block->link_image = end($url_split);
+	}
+	//echo $block->link_image;die;
 	if($is_true){
 	    
 	    //if($post['block_id']){
