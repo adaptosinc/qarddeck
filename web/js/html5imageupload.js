@@ -32,7 +32,7 @@
 //		this.button.rotatecw	= '<div class="btn btn-default btn-rotate-cw" title="' + (this.options.cwTitle || 'Rotate clockwise') + '"><i class="glyphicon glyphicon-share"></i></div>';
 //		this.button.rotateccw	= '<div class="btn btn-default btn-rotate-ccw" title="' + (this.options.ccwTitle || 'Rotate counter clockwise') + '"><i class="glyphicon glyphicon-share icon-flipped"></i></div>';
 		this.button.cancel		= '<div class="btn btn-danger btn-cancel" title="' + (this.options.cancelTitle || 'Cancel') + '"><i class="glyphicon glyphicon-remove"></i></div>';
-		this.button.done		= '<div class="btn btn-success btn-ok" title="' + (this.options.okTitle || 'Ok') + '"><i class="glyphicon glyphicon-ok save-pic"></i></div>';
+		this.button.done		= '<div style="display:none" class="btn btn-success btn-ok" title="' + (this.options.okTitle || 'Ok') + '"><i class="glyphicon glyphicon-ok save-pic"></i></div>';
 		//this.button.done = '<div class="col-sm-6 col-md-6 on-off"><div class="switch"><input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox"><label for="cmn-toggle-3"></label></div><span>Use this Image</span></div>';
 		this.button.del			= '<div class="btn btn-danger btn-del" title="' + (this.options.delTitle || 'Delete') + '"><i class="glyphicon glyphicon-trash"></i></div>';
 		
