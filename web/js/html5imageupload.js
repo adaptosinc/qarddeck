@@ -347,7 +347,8 @@
 
     			//place the images
     			$(element).append($('<div class="cropWrapper"></div>').append($(_self.image)));
- 				$(element).bind("mousewheel DOMMouseScroll MozMousePixelScroll",function(e){
+				//Mouse zoom-n/zoom-out events
+/*  				$(element).bind("mousewheel DOMMouseScroll MozMousePixelScroll",function(e){
 					e.stopImmediatePropagation();
 					e.stopPropagation();
 					e.preventDefault();
@@ -364,7 +365,7 @@
 						if (_self.options.onAfterZoomImage) _self.options.onAfterZoomImage.call(_self,_self);
 
 					}					
-				}); 
+				}); */ 
 				//console.log(_self.image[0].currentSrc);
 				//$("#working_div .bgimg-block").css("background-image","url("+_self.image[0].currentSrc+")");
     			if (!empty(_self.imageGhost)) {
@@ -934,7 +935,7 @@
 			var options			= _self.options;
 			
 			//zoomin button
-/* 			if (options.buttonZoomin != false) {
+			if (options.buttonZoomin != false) {
 				$(tools).append($(_self.button.zoomin).on({
 					'touchstart mousedown': function(e) { 
 						e.preventDefault();
@@ -949,7 +950,7 @@
 					}
 
 				}));
-			} */
+			}
 			
 			//zoomreset button (set the image to the "original" size, same size as when selecting the image
 			if (options.buttonZoomreset != false) {
@@ -962,7 +963,7 @@
 			}
 			
 			//zoomout button
-/* 			if (options.buttonZoomout != false) {
+			if (options.buttonZoomout != false) {
 				$(tools).append($(_self.button.zoomout).on({
 					'touchstart mousedown': function(e) { 
 						e.preventDefault();
@@ -976,7 +977,7 @@
 						if (_self.options.onAfterZoomImage) _self.options.onAfterZoomImage.call(_self,_self);
 					}
 				}));
-			} */
+			}
 			
 /*			if (options.buttonRotateccw != false) {
 				$(tools).append($(_self.button.rotateccw).on({
