@@ -145,14 +145,18 @@ $this->title = 'Edit Qard';
 						$theme = $block->theme->theme_properties;
 						$theme = unserialize($theme);
 						$height_in_BU = $theme['height']/37.5;
+						$data_img_url = '';
 						if(isset($theme)){
+							if(!isset($theme['data_img_type']))
+								$theme['data_img_type'] = "preview";
 							//img block styles
 								$img_block_style .= 'opacity:'.$theme['image_opacity'].';';
-/* 								if($block->link_image != ''){
+								if($block->link_image != '' && ($theme['data_img_type'] == 'background' || $theme['data_img_type'] == 'both')){
 										
 										$img_block_style .= 'background-image:url('.\Yii::$app->homeUrl.'uploads/block/'.$block->link_image.');';
 										$img_block_style .= 'background-size: cover;';
-								} */
+										$data_img_url = \Yii::$app->homeUrl.'uploads/block/'.$block->link_image;
+								}
 								if($switch_theme){
 									//echo $theme['data_bgcolor_id'];
 									if(isset($theme['data_bgcolor_id']) && $theme['data_bgcolor_id'] != '0' ){
@@ -172,15 +176,19 @@ $this->title = 'Edit Qard';
 								//$img_block_style .= 'height:auto;';
 								
 							//overlay block styles
-								$overlay_block_style .= 'opacity:'.$theme['div_opacity'].';';
-								if(isset($theme['div_overlaycolor']) && $theme['div_overlaycolor']!='')
-									$overlay_block_style .= 'background-color:'.$theme['div_overlaycolor'].';';
-								$overlay_block_style .= 'height:'.$theme['height'].'px;';
-								//$overlay_block_style .='height:auto;';
+							if($block->link_image != '' && ($theme['data_img_type'] == 'background' || $theme['data_img_type'] == 'both')){
+								$opacity = $theme_properties['overlay_opacity']/100;
+								$overlay_block_style .= 'opacity:'.$opacity.';';
+								//if(isset($theme['div_overlaycolor']) && $theme_properties['div_overlaycolor']!='')
+									$overlay_block_style .= 'background-color:'.$theme_properties['overlay_color'].';';								
 								
-								$text_block_style .= 'height:'.$theme['height'].'px;';
-								$text_block_style .='overflow:hidden;';
-								//$text_block_style .='height:auto;';
+							}
+							$overlay_block_style .= 'height:'.$theme['height'].'px;';
+							//$overlay_block_style .='height:auto;';
+							
+							$text_block_style .= 'height:'.$theme['height'].'px;';
+							$text_block_style .='overflow:hidden;';
+							//$text_block_style .='height:auto;';
 						}
 						///////////////////////////
 					if(!isset($theme['data_style_qard']))
@@ -191,9 +199,9 @@ $this->title = 'Edit Qard';
 						$str .= '<div id="blk_'.$i.'" data-style-qard="'.$model['qard_style'].'" data-bgcolor-id="'.$theme['data_bgcolor_id'].'" class="bgimg-block parent_current_blk ui-resizable '.$model['qard_style'].'" style="'.$img_block_style.'" >
 						<div class="bgoverlay-block" style="'.$overlay_block_style.'">';
 					if($i == 1)
-						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk working_div" contenteditable="true" unselectable="off" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="overflow:hidden" style="'.$text_block_style.'">';
+						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk working_div" contenteditable="true" unselectable="off" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="overflow:hidden" style="'.$text_block_style.'" data-img-type="'.$theme['data_img_type'].'" data-img-url="'.$data_img_url.'">';
 					else
-						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="'.$text_block_style.'">';
+						$str .= '<div data-height="'.$height_in_BU.'" class="text-block current_blk" data-block_priority="'.$i.'" data-theme_id="'.$block->theme->theme_id.'" data-block_id="'.$block->block_id.'" style="'.$text_block_style.'" data-img-type="'.$theme['data_img_type'].'" data-img-url="'.$data_img_url.'">';
 						$str .= $block->text;
 						$str .= '</div>';
 						
@@ -342,6 +350,7 @@ $this->title = 'Edit Qard';
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
                             <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
+							<h4 id="reflink" >Add Image<span id="reset_image" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Image</span></h4>
 							<div class="img_preview" style="display:none"></div>
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
@@ -350,38 +359,12 @@ $this->title = 'Edit Qard';
                                     </div>
                                 </form>
                             </div>
-                            <!--		    </form>-->
-                            <!--<div class="form-group image-elements">
-                                <div class="col-sm-3 col-md-3">
-                                    <input type="text" id="image_opc" class="form-control" placeholder="Image Opacity (%)">
-                                </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <input type="text" id="overlay_color" class="form-control" placeholder="Overlay Color (#fff)">
-                                </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <input type="text" id="overlay_opc" class="form-control" placeholder="Overlay Opacity (%)">
-                                </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <ul>
-                                        <li><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/place.png" alt=""></a></li>
-                                        <li id="reset_image"><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <ul class="on-off pull-right">
-                                <li>
-                                    <div class="switch">
-                                        <input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                        <label for="cmn-toggle-3"></label>
-                                    </div> <span>Display as Background Image</span>
-                                </li>
-                            </ul>-->
 							<div class="form-group image-elements">
-								<!--<div class="col-sm-3 col-md-3 on-off">
+								<div class="col-sm-3 col-md-3 on-off">
 									<span>Fit</span>
 										<div class="switch">
-											<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
-											<label for="cmn-toggle-6"></label>
+											<input id="cmn-toggle-8" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-8"></label>
 										</div>  <span>Crop</span> 
 								</div>
 								<div class="col-sm-3 col-md-3 on-off">
@@ -389,33 +372,47 @@ $this->title = 'Edit Qard';
 											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-7"></label>
 										</div>  <span>Display Preview</span> 
-								</div>-->
+								</div>
 								<div class="col-sm-6 col-md-6 on-off">
 										<div class="switch">
 											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-3"></label>
-										</div>  <span>Use this Image</span> 
+										</div>  <span>Display as background Image</span> 
 								</div>                                       
                             </div>
+                            <!--<ul class="on-off pull-right">
+                                <li>
+                                    <div class="switch">
+                                        <input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                                        <label for="cmn-toggle-3"></label>
+                                    </div> <span>Display as Background Image</span>
+                                </li>
+                            </ul>-->
+
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
-							<ul class="nav nav-tabs" role="tablist">
-								<li role="presentation" class="active"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
-								<li role="presentation"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>
-								<li class="pull-right"><span class="trash pull-right" id="url_reset_link"><i class="fa fa-trash"></i>&nbsp;Remove Url/Embed Code</span></li>                                        
-							</ul>
-							<h4>&nbsp;</h4>
+							<!--<ul class="nav nav-tabs" role="tablist">
+								<li role="presentation" class="active" style="display:none"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
+								<li role="presentation" style="display:none"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>                                       
+							</ul>-->
 							<div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="paste">
+									<h4 id="reflink" >Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>
 									<div class="form-group" id="showlinkUrl">
 										<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
 										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
 									</div>
+									<div class="form-group extra-content" style="margin-bottom: 60px;">
+										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
+										<input type="text" name="url-desc" class="col-sm-6 col-md-6 col-md-offset-1" placeholder="Add a description">
+									</div>
 									<div id="link_div" style="padding-bottom: 10px;">
 										<div class="preview-image">                                       
 										</div>  
-									</div>	
+									</div>
+										<input type="hidden" id="work_space_text" />
+										<input type="hidden" id="work_space_link_only" />									
 									<div class="form-group toggle-btn">
 										<div class="col-sm-4 col-md-4 on-off">
 											<div class="switch">
@@ -429,13 +426,12 @@ $this->title = 'Edit Qard';
 												<label for="cmn-toggle-6"></label>
 											</div>  <span>Open Link in New Tab</span>                                                 
 										</div>
+										<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Url</span>
 									</div>
-									<div class="form-group extra-content">
-										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
-										<input type="text" name="url-desc" class="col-sm-5 col-md-5 col-md-offset-1" placeholder="Add a description">
-									</div>
+
 								</div>
 								<div role="tabpanel" class="tab-pane" id="embed">
+									<h4 id="reflink">Add Embed Code<button class="btn btn-warning pull-right">Link Embed Code</button></h4>
 									<div class="form-group" id="embedCode">
 										<input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
 									</div>
@@ -443,6 +439,7 @@ $this->title = 'Edit Qard';
 										<div class="preview-image">                                       
 										</div>  
 									</div>	
+									<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>
 								</div>  
 
 							</div>
@@ -891,6 +888,8 @@ $this->title = 'Edit Qard';
 	});
 	$(window).qardDeck({
 		'dark_text_color': '<?php echo $theme_properties['dark_text_color'];?>',
+		'overlay_color'  : '<?php echo $theme_properties['overlay_color'];?>',
+		'overlay_opacity': '<?php echo $theme_properties['overlay_opacity'];?>',
 		'createDeckUrl'  : '<?=Url::to(['deck/create-ajax'], true)?>',
 		'addToDeckUrl'   : '<?=Url::to(['deck/add-qard'], true)?>',
 		'saveQardUrl'    : '<?=Url::to(['block/save-qard'], true)?>',
@@ -907,6 +906,7 @@ $this->title = 'Edit Qard';
 		'uploadSimpleFileUrl'  :'<?=Url::to(['qard/simple'], true)?>',
 		'embedCodeUrl'   : '<?=Url::to(['qard/embed-url'], true);?>',
 		'changeStyleUrl' : '<?=Url::to(['qard/change-style'], true);?>',
+		'addUrlDataUrl'  : '<?=Url::to(['block/add-urldata'], true);?>',
 	});
 
 </script>

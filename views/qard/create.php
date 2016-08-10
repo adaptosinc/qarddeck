@@ -253,6 +253,7 @@ $this->title = 'Create Qard';
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
                             <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
+							<h4 id="reflink" >Add Image<span id="reset_image" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove File</span></h4>
 							<div class="img_preview" style="display:none"></div>
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
@@ -280,7 +281,7 @@ $this->title = 'Create Qard';
                                 </div>
                             </div>-->
 							<div class="form-group image-elements">
-								<!--<div class="col-sm-3 col-md-3 on-off">
+								<div class="col-sm-3 col-md-3 on-off">
 									<span>Fit</span>
 										<div class="switch">
 											<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
@@ -292,12 +293,12 @@ $this->title = 'Create Qard';
 											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-7"></label>
 										</div>  <span>Display Preview</span> 
-								</div>-->
+								</div>
 								<div class="col-sm-6 col-md-6 on-off">
 										<div class="switch">
 											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-3"></label>
-										</div>  <span>Use this Image</span> 
+										</div>  <span>Display as background Image</span> 
 								</div>                                       
                             </div>
                             <!--<ul class="on-off pull-right">
@@ -311,22 +312,28 @@ $this->title = 'Create Qard';
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
-							<ul class="nav nav-tabs" role="tablist">
-								<li role="presentation" class="active"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
-								<li role="presentation"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>
-								<li class="pull-right"><span class="trash pull-right" id="url_reset_link"><i class="fa fa-trash"></i>&nbsp;Remove Url/Embed Code</span></li>                                        
+							<!--<ul class="nav nav-tabs" role="tablist">
+								<li role="presentation" class="active" style="display:none"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
+								<li role="presentation" style="display:none"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>                                       
 							</ul>
-							<h4>&nbsp;</h4>
+							<h4>&nbsp;</h4>-->
 							<div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="paste">
+									<h4 id="reflink" >Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>									
 									<div class="form-group" id="showlinkUrl">
 										<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
 										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
 									</div>
+									<div class="form-group extra-content" style="margin-bottom: 60px;">
+										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
+										<input type="text" name="url-desc" class="col-sm-6 col-md-6 col-md-offset-1" placeholder="Add a description">
+									</div>
 									<div id="link_div" style="padding-bottom: 10px;">
 										<div class="preview-image">                                       
-										</div>  
+										</div> 
 									</div>	
+										<input type="hidden" id="work_space_text" />
+										<input type="hidden" id="work_space_link_only" />
 									<div class="form-group toggle-btn">
 										<div class="col-sm-4 col-md-4 on-off">
 											<div class="switch">
@@ -336,17 +343,16 @@ $this->title = 'Create Qard';
 										</div>                                            
 										<div class="col-sm-4 col-md-4 on-off">
 											<div class="switch">
-												<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
-												<label for="cmn-toggle-6"></label>
+												<input id="cmn-toggle-8" class="cmn-toggle cmn-toggle-round" type="checkbox">
+												<label for="cmn-toggle-8"></label>
 											</div>  <span>Open Link in New Tab</span>                                                 
 										</div>
+										<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Url</span>
 									</div>
-									<div class="form-group extra-content">
-										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
-										<input type="text" name="url-desc" class="col-sm-5 col-md-5 col-md-offset-1" placeholder="Add a description">
-									</div>
+
 								</div>
 								<div role="tabpanel" class="tab-pane" id="embed">
+									<h4 id="reflink">Add Embed Code<button class="btn btn-warning pull-right">Link Embed Code</button></h4>
 									<div class="form-group" id="embedCode">
 										<input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
 									</div>
@@ -354,6 +360,7 @@ $this->title = 'Create Qard';
 										<div class="preview-image">                                       
 										</div>  
 									</div>	
+									<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>
 								</div>  
 
 							</div>
@@ -819,6 +826,8 @@ $this->title = 'Create Qard';
 	});
 	$(window).qardDeck({
 		'dark_text_color': '<?php echo $theme_properties['dark_text_color'];?>',
+		'overlay_color'  : '<?php echo $theme_properties['overlay_color'];?>',
+		'overlay_opacity': '<?php echo $theme_properties['overlay_opacity'];?>',
 		'createDeckUrl'  : '<?=Url::to(['deck/create-ajax'], true)?>',
 		'addToDeckUrl'   : '<?=Url::to(['deck/add-qard'], true)?>',
 		'saveQardUrl'    : '<?=Url::to(['block/save-qard'], true)?>',
@@ -835,6 +844,7 @@ $this->title = 'Create Qard';
 		'uploadSimpleFileUrl'  :'<?=Url::to(['qard/simple'], true)?>',
 		'embedCodeUrl'   : '<?=Url::to(['qard/embed-url'], true);?>',
 		'changeStyleUrl' : '<?=Url::to(['qard/change-style'], true);?>',
+		'addUrlDataUrl'  : '<?=Url::to(['block/add-urldata'], true);?>',
 	});
 
 	</script>

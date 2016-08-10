@@ -89,7 +89,7 @@ class BlockController extends Controller
 						if(!empty($post['tags']))
 							$post['tags'] = implode(',',$post['tags']);
 						$tags=$this->createTagsQard($post,$qard->qard_id);
-						
+						print_r($post);
 						if(empty($block->errors) && !is_array($block)){
 							$text=(empty($block->text))?'':$block->text;
 							echo json_encode(array('qard_id'=>$qard->qard_id,'theme_id'=>$theme->theme_id,'block_id'=>$block->block_id,'link_image'=>$block->link_image,"text"=>$text,"blk_id"=>$post['blk_id'],'div_bgcolor'=>$post['div_bgcolor'],'div_overlaycolor'=>$post['div_overlaycolor'],'div_opacity'=>$post['div_opacity'],'height'=>$post['height'],'edit_block'=>$post['block_id'],'block_priority'=>$block->block_priority, 'data_style_qard'=>$post['data_style_qard'],'div_bgimage_position'=>$post['div_bgimage_position']));
@@ -188,6 +188,42 @@ class BlockController extends Controller
 		if($block){
 				$data['extra_text'] = $block->extra_text;
 				$data['title'] = $block->extra_text_title;				
+		}
+		return json_encode($data);
+	}
+	/**
+	 * For adding link_title and description,ajax call from create qard page
+	 * @param: Null
+	 * return Json
+	**/
+	public function actionAddUrldata(){
+		$data = Yii::$app->request->post();
+		if(isset($data['block_id']) && $data['block_id'] != "undefined"){
+			$block = $this->findModel($data['block_id']);
+			//print_r($data['extra_text']);die;
+			if(isset($block)){
+
+				$block->link_title = $data['url_title'];
+				$block->link_description = $data['url_description'];
+				
+				if($block->save(false)){
+					
+					$data['status'] = true;
+					return json_encode($data);
+					die;
+				}
+			}
+			
+		}
+		$data['status'] = false;
+		return json_encode($data);		
+	}
+    public function actionGetUrldata($block_id){
+		$block = $this->findModel($block_id);
+		$data = [];
+		if($block){
+				$data['url_title'] = $block->link_title;
+				$data['url_description'] = $block->link_description;				
 		}
 		return json_encode($data);
 	}
@@ -316,7 +352,6 @@ class BlockController extends Controller
 		}
 		
 		$theme->theme_type=0; //theme type 1 define theme for qard o theme for block
-		$theme->theme_properties='test'; // serialized data all theme details
 		$serilized_arr['image_opacity'] = $post['image_opacity'];
 		$serilized_arr['div_opacity'] = $post['div_opacity'];
 		$serilized_arr['div_bgcolor'] = $post['div_bgcolor'];
@@ -325,6 +360,7 @@ class BlockController extends Controller
 		$serilized_arr['data_fontcolor_id'] = $post['data_fontcolor_id'];
 		$serilized_arr['data_style_qard'] = $post['data_style_qard'];
 		$serilized_arr['div_bgimage_position'] = $post['div_bgimage_position'];
+		$serilized_arr['data_img_type'] = $post['data-img-type'];
 		if(strpos('/',$post['div_bgimage'])){
 			$url_split=  explode('/',$post['div_bgimage']);
 			$serilized_arr['div_bgimage']=end($url_split);
@@ -418,8 +454,15 @@ class BlockController extends Controller
 	    /*
 	    * to upload image 
 	    */
+		//print_r($post['thumb_values']);die;
 	    $image=  json_decode($post['thumb_values']);
-	    $img = str_replace('data:image/jpeg;base64,', '', $image->data);
+		
+		if (strpos($image->data, 'data:image/jpeg;base64,') !== false) {
+			$img = str_replace('data:image/jpeg;base64,', '', $image->data);
+		}
+		if (strpos($image->data, 'data:image/png;base64,') !== false) {
+			$img = str_replace('data:image/png;base64,', '', $image->data);
+		}	    
 	    $img = str_replace(' ', '+', $img);
 	    $image_data = base64_decode($img);
 	    $image_name='rand_'.rand(0000,9999).'time_'.time().'qid_'.$qard_id.'.JPG';

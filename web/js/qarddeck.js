@@ -92,7 +92,7 @@
 					$('#extra_text').focus();
 				}
 				if ($(this).attr("data-resized")=='true') {
-					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
+					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10) / 37.5);
 					var setHeight =  $(this).attr("data-height");
 					if(scrollHeight > setHeight ){
 						$("#working_div .current_blk").attr('data-resized','false');	
@@ -107,7 +107,7 @@
 				 * Or autoset the height of block
 				 **/
 				$(this).css("height", 'auto');
-				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight) / 37.5);
+				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10)/ 37.5);
 				setHeightBlock(this,scrollHeight);
 			});		
 		};
@@ -212,6 +212,20 @@
 			if (callFrom == "save_block") {
 				$("#wait").show();
 			}
+			var div_opacity = plugin.settings.overlay_opacity/100;
+			postData.push({
+				name: 'div_opacity',
+				value: div_opacity
+			});
+			//overlay color
+			var div_overlaycolor = plugin.settings.overlay_color;
+			if(typeof div_overlaycolor === 'undefined') {
+				div_overlaycolor = 'transparent';
+			}
+			postData.push({
+				name: 'div_overlaycolor',
+				value: div_overlaycolor
+			});	
 			$.ajax({
 				//url: "<?=Url::to(['block/create'], true)?>",
 				url: plugin.settings.blockCreateUrl,
@@ -236,22 +250,33 @@
 						}
 						// if stored data contain image then true
 						var img = image_icon_span = '';
+						var data_img_type = false;
 						if (data.link_image) {
 							/** Uncomment this for background image **/
-							//img = 'background-size:cover;background-image:url(<?=Yii::$app->request->baseUrl?>/uploads/block/' + data.link_image + ');';
+							data_img_type = $('#working_div .current_blk').attr("data-img-type");
+							if(data_img_type == "background" || data_img_type == "both")
+								img = 'background-size:cover;background-image:url('+plugin.settings.homeUrl+'/uploads/block/' + data.link_image + ');';
 							/** ----------------------------------- **/
 							/** Make link icon **/
-							var image_icon_span = '<span data-url = "'+plugin.settings.homeUrl+'/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="'+plugin.settings.homeUrl+'images/image_icon.png" alt=""></span>';
+							if(data_img_type == "preview" || data_img_type == "both")
+								var image_icon_span = '<span data-url = "'+plugin.settings.homeUrl+'/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="'+plugin.settings.homeUrl+'images/image_icon.png" alt=""></span>';
 							/** ----------------------------------- **/
 	/* 						if(data.div_bgimage_position != "null")
 								img = img+'background-position:'+data.div_bgimage_position+';' */
+							
+							
 						}
 						//creating parent block or img-block
 						var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
 						//creating overlay-block or middel block
-						new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' + data.div_opacity + ';height:' + data.height + 'px;">';
+						console.log(plugin.settings.overlay_color);
+						if(data_img_type == "background")
+							new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' +  data.div_opacity + ';height:' + data.height + 'px;">';
+						else
+							new_div += '<div class="bgoverlay-block" style="height:' + data.height + 'px;">';
+						
 						//creating main block or text block
-						new_div += '<div data-height="' + (data.height / 37.5) + '" style="height:' + data.height + 'px;" data-block_id="' + data.block_id + '" data-theme_id="' + data.theme_id + '" data-block_priority="' + data.block_priority + '" class="text-block current_blk">' + data.text + '</div></div></div>';
+						new_div += '<div data-height="' + (data.height / 37.5) + '" style="height:' + data.height + 'px;" data-block_id="' + data.block_id + '" data-theme_id="' + data.theme_id + '" data-block_priority="' + data.block_priority + '" class="text-block current_blk" data-img-type="'+data_img_type+'">' + data.text + '</div></div></div>';
 						
 						/* Added by Dency */
 						/* Image is added to the current block without adding a newblock */
@@ -259,11 +284,14 @@
 							//alert("new_block:"+new_block);
 							$("#working_div").before(qard);
 							$("#working_div").html(theme + new_div);
+							//save the image url,opacity and background color for future use
+							$('#working_div .current_blk').attr("data-img-url",plugin.settings.homeUrl+'/uploads/block/' + data.link_image);
 							if(data.text == ''){
-								focusWorkspace();
-								$("#working_div .current_blk").html("Add your comments here");
+								plugin.focusWorkspace();
+							//	$("#working_div .current_blk").html("<span>Add your comments here</span>");
 							}
-								
+							if($("#working_div .current_blk").find('.image_icon_span').length > 0)
+									$("#working_div .current_blk").find('.image_icon_span').remove();
 							$("#working_div .current_blk").append(image_icon_span);
 							$("#reset_image").trigger("click");
 							 return;
@@ -404,7 +432,8 @@
 				type: "GET",
 				datatype : 'json',
 				data: {
-					'url': preview_url
+					'url': preview_url,
+					'block_id':$("#working_div .current_blk").attr('data-block_id'),
 				},
 				success: function(data) {
 					data = $.parseJSON(data);
@@ -418,17 +447,15 @@
 					if (data.type == 'web_page') {
 						if(displayCheck==1){
 							
-						}else{ 
-						
-							$("#working_div .current_blk").focus();
-							document.execCommand('foreColor', false, plugin.settings.dark_text_color);	
-							var work_space_text  = '<span style="color: '+plugin.settings.dark_text_color+';">'+data.work_space_text+'</span></br>';
-							$("#working_div .current_blk").html(work_space_text);
-							adjustHeight();
-							
+						}else{
+							//save for later use
+							$("input[id=work_space_text]").val(data.work_space_text);
+							$("input[id=work_space_link_only]").val(data.work_space_link_only);
 						}
 						$('#link_div').html(data.preview_html);
 						//add here
+						$("input[name=url-title]").val(data.url_title);
+						$("input[name=url-desc]").val(data.url_description);
 						$('#cmn-toggle-6').prop("checked",true).trigger("change");
 					}
 					else {
@@ -440,6 +467,28 @@
 					}
 				}
 			});			
+		};
+		plugin.useUrl = function(){
+			//save the title and description if set
+			$.ajax({
+			//	url : "<?=Url::to(['block/add-text'], true)?>",
+				url : plugin.settings.addUrlDataUrl,
+				type: "POST",
+				data: { 'url_title':$("input[name=url-title]").val(),
+						'block_id':$("#working_div .current_blk").attr('data-block_id'),
+						'url_description' : $("input[name=url-desc]").val(),
+					  },
+				success: function(data){
+					$("#working_div .current_blk").find('.icon-mark').remove();
+					var work_space_text  = '<span style="color: '+plugin.settings.dark_text_color+';">'+$("input[id=work_space_text]").val()+'</span></br>';
+					if($("#working_div .current_blk").html() != '')
+						$("#working_div .current_blk").append($("input[id=work_space_link_only]").val());
+					else
+						$("#working_div .current_blk").html(work_space_text);
+					adjustHeight();					
+				}
+			});				
+			//if html is present in the working div, append after removing akll other icons	
 		};
 		plugin.uploadFile = function(ajaxData){
 			$.ajax({
@@ -558,7 +607,13 @@
 					document.execCommand('foreColor', false, plugin.settings.dark_text_color);	
 					var video_img  = '<span style="color: '+plugin.settings.dark_text_color+';">'+data.video_img+'</span></br>';
 					/****************/
-					$("#working_div .current_blk").html(video_img);
+					//if html is present in the working div, append after removing akll other icons
+					$("#working_div .current_blk").find('.icon-mark').remove();
+					if($("#working_div .current_blk").html() != '')
+						$("#working_div .current_blk").append(data.video_link_only);
+					else
+						$("#working_div .current_blk").html(video_img);
+					
 					adjustHeight();
 					$('#embed_div').html(data.iframelink);
 					
@@ -591,7 +646,29 @@
 			}
 			return true;			
 		};
+		
+		plugin.applyBGImage = function(){
+			console.log($("#working_div .current_blk").attr("data-img-url"));
+			var url = "url('"+$("#working_div .current_blk").attr("data-img-url")+"')";
+			$("#working_div .bgimg-block").css("background-image",url);	
+			
+			var div_opacity = plugin.settings.overlay_opacity/100;
+			var div_overlaycolor = plugin.settings.overlay_color;
+			
+			$("#working_div .bgoverlay-block").css("opacity",div_opacity);
+			$("#working_div .bgoverlay-block").css("background-color",div_overlaycolor);			
+		};
 	
+		plugin.applyPreviewImage = function(){
+			var url = $("#working_div .current_blk").attr("data-img-url");
+			var image_icon_span = '<span data-url = "'+url+ '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="'+plugin.settings.homeUrl+'images/image_icon.png" alt=""></span>';
+			//remove all other spans
+			$("#working_div .current_blk").find('.icon-mark').remove();
+			if($("#working_div .current_blk").html == '')
+				image_icon_span = "<span> Add your coments here</span>"+image_icon_span;
+			$("#working_div .current_blk").append(image_icon_span);
+			
+		}
         // fire up the plugin!
         // call the "constructor" method
         plugin.init();
@@ -625,7 +702,7 @@
 function adjustHeight(){
 	var elem = $('#working_div .current_blk');
 	$(elem).css("height", 'auto');
-	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight) / 37.5);
+	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight-10) / 37.5);
 	setHeightBlock(elem,scrollHeight);		
 }
 function totalHeight(){
@@ -749,6 +826,8 @@ function showImage(element){
 }
 function callUrl(urlField,displayCheck) {
 	$(window).data('qardDeck').fetchUrl(urlField,displayCheck);
+	//save title and description of url
+	
 }
 
 /**
@@ -776,10 +855,7 @@ function showUrlPreview() {
 			'<span class="url-text"><p>' + content.substring(0,125) + '...</p>' +
 			'</span></span></span></span>';
 	}
-	$("#working_div .current_blk").html(str);
-	$("#working_div .current_blk")[0].css("height", 'auto');
-	var scrollHeight = Math.ceil(parseInt($("#working_div .current_blk")[0].scrollHeight) / 37.5);
-	setHeightBlock($("#working_div .current_blk"),scrollHeight);
+	adjustHeight();
 }
 /**
  * Click on link icon to see the content
@@ -790,8 +866,8 @@ function displayLink(identifier){
 	$(identifier).trigger("dblclick");
 	$('.nav-tabs a[href="#linkblock"]').tab('show');
 	$('.nav-tabs a[href="#paste"]').tab('show');
-	$('input[id=link_url]').val(dataurl);
-	callUrl($('input[id=link_url]'),1);
+	$('input[id=link_url]').val(dataurl).trigger("change");
+	//callUrl($('input[id=link_url]'),1);
 	var dataopen = $(identifier).attr('data-open');
 	var datashowurl = $(identifier).attr('data-showurl');
 	if(datashowurl == "true")
@@ -856,7 +932,7 @@ function add_block(event,new_block){
 			name: 'image_opacity',
 			value: image_opacity
 		});
-		var div_opacity = parseFloat($("#working_div .bgoverlay-block").css("opacity"));
+/* 		var div_opacity = parseFloat($("#working_div .bgoverlay-block").css("opacity"));
 		data.push({
 			name: 'div_opacity',
 			value: div_opacity
@@ -866,17 +942,25 @@ function add_block(event,new_block){
 		if(typeof div_overlaycolor === 'undefined') {
 			div_overlaycolor = 'transparent';
 		}
-		//console.log(div_overlaycolor);
 		data.push({
 			name: 'div_overlaycolor',
 			value: div_overlaycolor
-		});	
+		});	 */
 /*             var div_bgcolor = $("#working_div .bgoverlay-block").css("background-color");
 		data.push({
 			name: 'div_bgcolor',
 			value: div_bgcolor
 		});
 */
+
+		//////image type/////
+		var data_img_type = $("#working_div .current_blk").attr("data-img-type")||'false';
+		data.push({
+			name: 'data-img-type',
+			value: data_img_type
+		});	
+		////////////////////
+		
 		var div_bgcolor = $("#working_div .bgimg-block").css("background-color");
 		//console.log(div_bgcolor);
 		data.push({
@@ -999,19 +1083,24 @@ function add_block(event,new_block){
 		$('input[id=qard-url-upload-click]').val('');
 		$("#showFile").hide();
 		$("#showFilePreview").empty();
+/////////////ARIVAZHAKANS CODE ////////////
 		$("#editcheck").show();
 		$("#showFilePreview").hide();		
 		$(".fileName").val('');
 		$(".desc").val('');
 		$("#fileTitle").html('FileName.psd');
-	
 
-	
 }
 function addSaveCard() {
 	
 	add_block(true,false);
 	
+=======
+		$("#reset_image").trigger("click");
+}
+function addSaveCard() {
+	add_block(true,false);
+>>>>>>> e882a217f5850b5206790827e52db7d7a0c5d215
 	var total_data_height = 0;
 	$('.current_blk').each(function(obj) {
 		//console.log($(this).attr("data-height"));
@@ -1092,6 +1181,11 @@ function addSaveCard() {
 			name: 'height',
 			value: height
 		});
+		var data_img_type = $(this).find(".current_blk").attr("data-img-type")||'false';
+		temp_data.push({
+			name: 'data-img-type',
+			value: data_img_type
+		});	
 		//getting text for the block
 		var text = $(this).find(".current_blk").html() || 0;
 		temp_data.push({
@@ -1222,6 +1316,7 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 		$(this).find(".current_blk").attr("unselectable", 'off');
 		$(this).find(".current_blk").attr("contenteditable", 'true');
 	}
+////////////////ARIVAZHAKAN///////////////
 	
 var div_id = $(this).find( ".icon-mark" ).attr("for");
 
@@ -1259,6 +1354,21 @@ if(div_id != "showFilePrev")
 	}
 	
 	$($(this).find( ".icon-mark" )).trigger( "click" );
+//////////////////////////////////////////////////////////////////
+	//var bg_img_block = $('#working_div .bgimg-block').
+	var div_bgimage = $("#working_div .bgimg-block").css("background-image");
+	console.log(div_bgimage);
+	if(div_bgimage != 'none'){
+		
+		div_bgimage = $("#working_div .bgimg-block").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+		
+		var img = "<img class='hover_me' src='"+div_bgimage+"' style='width:100%;height:300px;'>";
+		$('.img_preview').html(img);
+		$('.img_preview').show();
+		$('.drop-image').hide();
+		$('.nav-tabs a[href="#imgblock"]').tab('show');
+	}
+			
 
 });
 /**** for drag the block ******/
@@ -1281,7 +1391,7 @@ if (event.type === "mouseleave") {
 			//var resized height
 			var scrollHeight = Math.ceil(ui.size.height / 37.5);
 			//var initial height
-			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight) / 37.5);
+			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-10) / 37.5);
 			$(this).find(".current_blk").attr('data-init-height',initialHeight);
 			var total = totalHeight();
 			//console.log("total height:"+total);
@@ -1497,7 +1607,8 @@ $('#cmn-toggle-4').on('change', function() {
 		if($("input[id=link_url]").val() != '')
 		{
 			var str = '<span id="show_url_span">'+$("input[id=link_url]").val()+'</span>';
-			$("#working_div .current_blk").find('#previewLink').prepend(str);		
+			//$("#working_div .current_blk").find('#previewLink').prepend(str);	
+			$(str).insertBefore($("#working_div .current_blk").find('#previewLink'));
 			$("#previewLink").attr("data-showurl","true");						
 		}
 	}else{
@@ -1516,13 +1627,20 @@ $('#cmn-toggle-6').on('change', function() {
 		$("#previewLink").attr("data-open","same");	
 	}
 });
-$('input[id=link_url]').on('change', function() {
+ $('input[id=link_url]').on('change', function() {
 	callUrl(this,0);
+});
+$('#link_url_button').click(function() {
+		console.log("url taken");
+		//callUrl($('input[id=link_url]'),0);
+		add_block(true,false);
+		$(window).data('qardDeck').useUrl();
+
 });
 $('body').on('change', $('input[name=url_title]', 'textarea[name=url_content]'), function() {
 	showUrlPreview();
 });
-$('#url_reset_link').on('click', function() {
+$('.url_reset_link').on('click', function() {
 	$('#link_div').html("<div class='preview-image'></div>");
 	$('#embed_div').html("<div class='preview-image'></div>");
 	$("input[id=link_url]").val('');
@@ -1534,7 +1652,7 @@ $('#url_reset_link').on('click', function() {
 /**** End of Link Block operations ******/
 		
 /** Image block operations **/
-$('.img_preview').mouseenter(function(){
+/* $('.img_preview').mouseenter(function(){
 	$(".dropzone .btn-cancel").trigger("click");
 	$('.drop-image').show();
 	//$('.img_preview').css("z-index","-1");
@@ -1549,18 +1667,49 @@ $('.drop-image').mouseleave(function(){
 		$('.img_preview').show();
 		$('.drop-image').hide();			
 	}
-});
-$(document).delegate("#reset_image", "click", function() {
+}); */
+$(document).on("click", "#reset_image", function() {
 	$(".dropzone .btn-cancel").trigger("click");
+	$(".img_preview").html('');
+	$(".img_preview").hide('');
+	$(".drop-image").show();
 });
 // on click image tab should increase block height
-$(document).delegate("#cmn-toggle-3", "click", function() {
+$(document).on("click", "#cmn-toggle-3", function() {
 	if($(this).prop('checked')){
+		
+		if($("#working_div .current_blk").attr("data-img-type") == "preview")
+			$("#working_div .current_blk").attr("data-img-type",'both');
+		else
+			$("#working_div .current_blk").attr("data-img-type",'background');
+		
 		if (parseInt($("#working_div .current_blk").attr("data-height")) < 4) {
-			//setHeightBlock($("#working_div .current_blk"),4);
-			//console.log($("#working_div .current_blk").attr("data-height"));
-			$(".save-pic").trigger("click");
+			setHeightBlock($("#working_div .current_blk"),4);
 		}
+		if($(".save-pic").length == 0){
+			$(window).data('qardDeck').applyBGImage();
+		}	
+			$(".save-pic").trigger("click");
+	} else {
+		//removeBr();
+		$("#working_div .bgimg-block").css("background-image","none");
+		$("#working_div .bgoverlay-block").css("opacity",1);
+		$("#working_div .bgoverlay-block").css("background-color",'transparent');
+	}
+});
+$(document).on("click", "#cmn-toggle-7", function() {
+	if($(this).prop('checked')){
+		if($("#working_div .current_blk").attr("data-img-type") == "background")
+			$("#working_div .current_blk").attr("data-img-type",'both');
+		else
+			$("#working_div .current_blk").attr("data-img-type",'preview');
+		
+			//setHeightBlock($("#working_div .current_blk"),4);
+			if($(".save-pic").length == 0){
+				$(window).data('qardDeck').applyPreviewImage();
+			}	
+			$(".save-pic").trigger("click");
+
 	} else {
 		//removeBr();
 		$('#working_div .current_blk').find('.image_icon_span').remove();

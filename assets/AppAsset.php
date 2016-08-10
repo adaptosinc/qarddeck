@@ -23,6 +23,7 @@ class AppAsset extends AssetBundle
 	//'css/html5imageupload.css',
 	'css/master.css',
 	'css/fonts.css',
+	'css/spinkit.css',
     ];
     public $jsOptions = [
 	'position' => \yii\web\view::POS_HEAD,
