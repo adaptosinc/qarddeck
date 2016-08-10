@@ -514,7 +514,7 @@ $this->title = 'Preview Qard';
         }
 		/** File preview **/
          function showFilePrev(fileName){
-
+			
 			hideAll('active-file-preview');
 			$('.active-preview-content').show();
 			$('#file_title').html(fileName);

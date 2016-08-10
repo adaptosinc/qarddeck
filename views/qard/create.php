@@ -211,9 +211,27 @@ $this->title = 'Create Qard';
 						</div> <!-- End of header-->
 
 						<div role="tabpanel" class="tab-pane active" id="cardblock">
-							<div id="descfield">
-								<h4>Add Extra text <span id="remove_extra_text" class="trash pull-right"><i class="fa fa-trash"></i>&nbsp;Remove Extra Text</span></h4>
-								<input type="text" name="extra-text" placeholder="Enter an optional text" class="form-control">
+						<div class="row">
+						<h4>
+							<span id="remove_extra_text" class="trash pull-right" >
+								<button  class="btn btn-warning" name="add_extra_text" id="add_extra_text" >Add Extra Text </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>
+						</h4>	
+						</div>
+						 <div id="extra-word" style="pointer-events: none;opacity: 0.4;" >	
+							<div id="descfield" >
+								<h4>Add Extra text <span id="remove_extra_text" class="trash pull-right">
+								
+								
+							<div class="col-sm-12 col-md-12 on-off" id="link-extra" style="display:none; "  >
+								<div class="switch">
+									<input id="cmn-toggle-9" class="cmn-toggle cmn-toggle-round" type="checkbox">
+									<label for="cmn-toggle-9"></label>
+								</div>  <span>Link This Text</span> 
+							</div>
+								
+								<!---<i class="fa fa-trash"></i>&nbsp;Remove Extra Text-->  </span></h4>
+								<input type="textbox" name="extra-text" id="extra-list" disabled="disabled" placeholder="Enter an optional text" class="form-control">
 								<ul class="editable-elements">
 									<li id="text_area_bold"><a href="#"><i class="fa fa-bold"></i></a></li>
 									<li id="text_area_italics"><a href="#"><i class="fa fa-italic"></i></li>
@@ -222,14 +240,15 @@ $this->title = 'Create Qard';
 								</ul>
 							</div>
 							<div id="extrafield">
-								<div id="extra_text" name="desc" placeholder="Enter The Text" contenteditable="true"></div>
+								<div id="extra_text" name="desc"  disabled="true"  placeholder="Enter The Text" contenteditable="true"></div>
 							</div>
-							<div class="col-sm-6 col-md-6 on-off">
+						 </div>
+							<!---<div class="col-sm-6 col-md-6 on-off">
 								<div class="switch">
 									<input id="cmn-toggle-9" class="cmn-toggle cmn-toggle-round" type="checkbox">
 									<label for="cmn-toggle-9"></label>
 								</div>  <span>Link this text</span> 
-							</div>
+							</div>--->
 						</div>
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
@@ -340,11 +359,23 @@ $this->title = 'Create Qard';
 							</div>
 						</div>
 						<div role="tabpanel" class="tab-pane" id="fileblock">
-							<h4 id="reflink" >Add File<span class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove File</span></h4>
+						
+						 <div id="showFilePreview" style="display:none"></div>
+						 
+						  <div id="editcheck" >
+						 
+							<h4 id="reflink" >Add File<span class="trash pull-right" >
+							<div class="col-sm-12 col-md-12 on-off">
+							<div class="switch">
+												<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
+												<label for="cmn-toggle-7" class="victim"></label>
+											</div>  <span>Link this Document</span>
+							</div>
+											<!--<i class="fa fa-trash"></i> &nbsp;Remove File --></span></h4>
                             
 							<form method="post" action="" id="qard-url-upload" enctype="multipart/form-data" novalidate class="box">
 								<div class="add-new-file">
-									<div class="drop-file form-group" id="drop-file-bg">
+									<div class="drop-file form-group" id="drop-file-bg" >
 										<img src="<?=Yii::$app->request->baseUrl?>/images/browse_light.png" alt="">
 										<h3>Drop files/click to Browse</h3>
 									</div>
@@ -366,20 +397,21 @@ $this->title = 'Create Qard';
 									</div>
 								</div>
 								
-								<div class="form-group toggle-btn">
+								<!--<div class="form-group toggle-btn">
 									<div class="col-sm-6 col-md-6 on-off">
 											<div class="switch">
 												<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
 												<label for="cmn-toggle-7" class="victim"></label>
 											</div>  <span>Open in New Tab</span> 
 									</div>                                      
-								</div>
+								</div>-->
 
 								<div class="form-group extra-content" id="drop-image">
 									<input type="text" name="filename" class="filename fileName col-sm-5 col-md-5" placeholder="Enter Title">
 									<input type="text" name="desc" class="col-sm-5 col-md-5 col-md-offset-1 desc" placeholder="Add a description">
 								</div>
 							</form>	
+						  </div>
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="paintblock">

@@ -172,7 +172,7 @@ class BlockController extends Controller
 				if($block->save(false)){
 					
 					$data['status'] = true;
-					$data['link_data'] = "<span block_id='".$block->block_id."' class='icon-mark pull-right' onclick='showExtraText(this);'><img src='".Yii::$app->homeUrl."images/text_icon.png' alt=''></span>";
+					$data['link_data'] = "<span data-url='".$data['extra_text']."' data-link='".$data['title']."' block_id='".$block->block_id."' class='icon-mark pull-right' onclick='showExtraText(this);' for='showExtraText' ><img src='".Yii::$app->homeUrl."images/text_icon.png' alt=''></span>";
 					return json_encode($data);
 					die;
 				}
