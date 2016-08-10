@@ -537,16 +537,16 @@
 			spantextval = '<span style="color: '+plugin.settings.dark_text_color+';">'+spantext+'</span></br>'
 			span = '<span style="color: '+plugin.settings.dark_text_color+';">'+spantext+spanicon+'</span></br>'
             //$("#working_div .current_blk").html(span);
-            $("#cmn-toggle-7").attr("data-url",span);
-            $("#cmn-toggle-7").attr("data-link",spantextval);
-			 if($('#cmn-toggle-7').prop('checked')){	
-				var linespan =  $("#cmn-toggle-7").attr("data-url");
+            $("#cmn-toggle-56").attr("data-url",span);
+            $("#cmn-toggle-56").attr("data-link",spantextval);
+			 if($('#cmn-toggle-56').prop('checked')){	
+				var linespan =  $("#cmn-toggle-56").attr("data-url");
 				$("#working_div .current_blk").html(linespan);
 				adjustHeight();
 			}
 			else
 			{	
-				var spantextval =  $("#cmn-toggle-7").attr("data-link");
+				var spantextval =  $("#cmn-toggle-56").attr("data-link");
 				$("#working_div .current_blk").html(spantextval); 
 			}
 		};
@@ -1355,9 +1355,9 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 		$(".fileName").val('');
 		$(".desc").val('');
 		$("#fileTitle").html('FileName.psd');
-		$("#cmn-toggle-7").attr("data-url","");
-		$("#cmn-toggle-7").attr("data-link","");
-		$('#cmn-toggle-7').prop('checked', false); 
+		$("#cmn-toggle-56").attr("data-url","");
+		$("#cmn-toggle-56").attr("data-link","");
+		$('#cmn-toggle-56').prop('checked', false); 
 		
 	}	
 	if(div_id == "showExtraText")
@@ -1879,8 +1879,8 @@ $(document).on("click",".icon-mark",function(){
 		$(".fileName").val('');
 		$(".desc").val('');
 		$("#fileTitle").html('FileName.psd');
-		$("#cmn-toggle-7").attr("data-url","");
-		$('#cmn-toggle-7').prop('checked', false); 
+		$("#cmn-toggle-56").attr("data-url","");
+		$('#cmn-toggle-56').prop('checked', false); 
 	}
 	
 	 if(div_id == "showExtraText")
@@ -1913,7 +1913,7 @@ $(document).on("mouseleave",".add-new-file",function(){
    $("#drop-file-bg").show();
   });
 
-$('#cmn-toggle-7').click(function(){	
+$('#cmn-toggle-56').click(function(){	
 	if($(this).prop('checked')){		
 		 var linespan =  $(this).attr("data-url");
             $("#working_div .current_blk").html(linespan);
@@ -1928,15 +1928,15 @@ $('#cmn-toggle-7').click(function(){
 $(document).on('click', '.removefile', function(){ 
 	$('#file_image').trigger('click');
 	$("#working_div").find(".icon-mark").remove();
-	$('#cmn-toggle-7').attr("data-url","");  
-	$('#cmn-toggle-7').attr("data-link","");  
-	$('#cmn-toggle-7').prop('checked', false); 
+	$('#cmn-toggle-56').attr("data-url","");  
+	$('#cmn-toggle-56').attr("data-link","");  
+	$('#cmn-toggle-56').prop('checked', false); 
 });	
 
 $(document).on('click', '.add-another', function(){ 
-	$('#cmn-toggle-7').attr("data-url","");  
-	$('#cmn-toggle-7').attr("data-link","");  
-	$('#cmn-toggle-7').prop('checked', false); 
+	$('#cmn-toggle-56').attr("data-url","");  
+	$('#cmn-toggle-56').attr("data-link","");  
+	$('#cmn-toggle-56').prop('checked', false); 
 		
 	$('#extra-list').prop("disabled",true);  
 	$("#extra-word").attr( "style","pointer-events: none; opacity: 0.4;" );	
