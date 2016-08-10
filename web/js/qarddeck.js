@@ -1311,9 +1311,9 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 	}
 ////////////////ARIVAZHAKAN///////////////
 	
-var div_id = $(this).find( ".icon-mark" ).attr("for");
+ var div_id = $(this).find( ".icon-mark" ).attr("for");
 
-if(div_id != "showFilePrev")
+	if(div_id != "showFilePrev")
 	{		
 		$(".drop-file , .drop-image , .file_options").show();
 		$("#showFilePreview").empty();
@@ -1327,7 +1327,7 @@ if(div_id != "showFilePrev")
 		$('#cmn-toggle-7').prop('checked', false); 
 		
 	}	
-	 if(div_id == "showExtraText")
+	if(div_id == "showExtraText")
 	{	
 		$('#add_extra_text').trigger("click");  
 		
@@ -1346,7 +1346,7 @@ if(div_id != "showFilePrev")
 	$('#extra_text').html(""); 	
 	}
 	
-	$($(this).find( ".icon-mark" )).trigger( "click" );
+/*	$($(this).find( ".icon-mark" )).trigger( "click" ); */
 //////////////////////////////////////////////////////////////////
 	//var bg_img_block = $('#working_div .bgimg-block').
 	var div_bgimage = $("#working_div .bgimg-block").css("background-image");

@@ -392,10 +392,10 @@ $this->title = 'Edit Qard';
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
-							<!--<ul class="nav nav-tabs" role="tablist">
+							<ul class="nav nav-tabs" role="tablist">
 								<li role="presentation" class="active" style="display:none"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
 								<li role="presentation" style="display:none"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>                                       
-							</ul>-->
+							</ul>
 							<div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="paste">
 									<h4 id="reflink" >Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>
