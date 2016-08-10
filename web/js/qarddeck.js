@@ -668,6 +668,28 @@
 				image_icon_span = "<span> Add your coments here</span>"+image_icon_span;
 			$("#working_div .current_blk").append(image_icon_span);
 			
+		};
+		plugin.copyBlock = function(){
+			//save the current block
+			var current_block = $("#working_div .current_blk");
+			var bg_img_block = $("#working_div .bgimg-block");
+			var overlay_blk = $("#working_div .bgoverlay-block");
+			//save the current block and add new one
+			add_block(true,true);
+			$("#working_div .current_blk").html(current_block.html());
+			//if backgorund image exists
+			var div_bgimage = bg_img_block.css("background-image");
+			console.log(div_bgimage);
+			if(div_bgimage != 'none'){
+				
+				//div_bgimage = div_bgimage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+				$("#working_div .bgimg-block").css("background-image",div_bgimage);
+				$("#working_div .bgimg-block").css("background-size","cover");
+				$("#working_div .bgoverlay-block").css("background-color",overlay_blk.css("background-color"));
+				$("#working_div .bgoverlay-block").css("opacity",overlay_blk.css("opacity"));
+				
+			}	
+			adjustHeight();
 		}
         // fire up the plugin!
         // call the "constructor" method
@@ -922,6 +944,9 @@ function changePic(v) {
 	$('#working_div').find('span.col-sm-9').removeClass("col-sm-9 col-md-9");
 	$('#title_desc_url').removeClass("col-sm-9 col-md-9");
 	$('#title_desc_url').addClass("col-sm-12 col-md-12");
+}
+function copyBlock(){
+	$(window).data('qardDeck').copyBlock();
 }
 function add_block(event,new_block){
 	//save block
