@@ -1094,13 +1094,6 @@ function add_block(event,new_block){
 function addSaveCard() {
 	
 	add_block(true,false);
-	
-=======
-		$("#reset_image").trigger("click");
-}
-function addSaveCard() {
-	add_block(true,false);
->>>>>>> e882a217f5850b5206790827e52db7d7a0c5d215
 	var total_data_height = 0;
 	$('.current_blk').each(function(obj) {
 		//console.log($(this).attr("data-height"));
