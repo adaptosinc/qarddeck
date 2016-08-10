@@ -691,6 +691,11 @@
 				//add_block(true,false);
 				//here we need to save this block
 			}	
+			//check for background color
+			var bg_color = bg_img_block.css("background-color");
+			$("#working_div .bgimg-block").css("background-color",bg_color);
+			console.log(bg_color);
+			add_block(true,false);
 			adjustHeight();
 			//add_block(true,true);
 		}
