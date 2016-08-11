@@ -46,7 +46,7 @@ $this->title = 'Create Qard';
 
     <!-- requiered for drop down of an image -->
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
-
+	<link rel="stylesheet" href="<?= Yii::$app->request->baseUrl?>/css/joyride-2.1.css">
 
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
@@ -124,20 +124,20 @@ $this->title = 'Create Qard';
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs col-sm-1 col-md-1" role="tablist">
 					
-                        <li role="presentation" class="active"><a href="#cardblock" aria-controls="cardblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/text_icon.png" alt="" class="dark" style="width:15px;margin:0 auto;"><img src="<?=Yii::$app->homeUrl?>images/text_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
+                        <li role="presentation" class="active"><a id="cardblock_li" href="#cardblock" aria-controls="cardblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/text_icon.png" alt="" class="dark" style="width:15px;margin:0 auto;"><img src="<?=Yii::$app->homeUrl?>images/text_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a href="#linkblock" class="pasteBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/link_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
+                        <li role="presentation"><a id="linkblock_li" href="#linkblock" class="pasteBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/link_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/image_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
+                        <li role="presentation"><a id="imgblock_li" id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/image_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a href="#linkblock" class="embedBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/video_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/video_icon_light.png" class="light" alt=""></a></li>
+                        <li role="presentation"><a id="embedblock_li" href="#linkblock" class="embedBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/video_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/video_icon_light.png" class="light" alt=""></a></li>
 						
-						<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" class="dark" alt="" style="width:15px;margin:0px auto;"><img src="<?=Yii::$app->homeUrl?>images/file_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
+						<li role="presentation"><a id="fileblock_li" href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" class="dark" alt="" style="width:15px;margin:0px auto;"><img src="<?=Yii::$app->homeUrl?>images/file_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a onClick="copyBlock();" aria-controls="copyblock" role="tab" data-toggle="tab"><hr class="divider"></hr><img src="<?=Yii::$app->homeUrl?>images/duplicate_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/duplicate_icon_light.png" class="light" alt=""></a></li>
+                        <li role="presentation"><a id="copyblock_li" onClick="copyBlock();" aria-controls="copyblock" role="tab" data-toggle="tab"><hr class="divider"></hr><img src="<?=Yii::$app->homeUrl?>images/duplicate_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/duplicate_icon_light.png" class="light" alt=""></a></li>
 
 						
-                        <li role="presentation" id="deleteblock"><a href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/delete_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/delete_icon_light.png" class="light" alt=""></a></li>
+                        <li role="presentation" id="deleteblock"><a id="deleteblock_li" href="#deleteblock" aria-controls="deleteblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/delete_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/delete_icon_light.png" class="light" alt=""></a></li>
 						
 						
                     </ul>
@@ -178,7 +178,7 @@ $this->title = 'Create Qard';
 								</li>
 								<li><a href="#"><img src="<?=Yii::$app->homeUrl?>images/type-align-top_icon.png" alt="" style="padding: 5px;"></a><span class="caret"></span></li>
 								<li><a href="#"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" alt="" style="padding: 8px;"></a></li>
-								<li class="color-elements">
+								<li class="color-elements" id="text_color_li">
 									<label>Text Color</label>
 									<div class="dropdown">
 									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -192,7 +192,7 @@ $this->title = 'Create Qard';
 									  </ul>
 									</div>
 								</li>
-								<li class="color-elements">
+								<li class="color-elements" id="block_color_li">
 									<label>Block Color</label>
 									<div class="dropdown">
 									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -805,15 +805,93 @@ $this->title = 'Create Qard';
 		<!--- Tutorial Ends Here-->	
 
     <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
-
-
     <script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.caret.js" type="text/javascript"></script>
 
     <script src="<?= Yii::$app->request->baseUrl?>/js/jquery-ui.js" type="text/javascript"></script>
 	<script src="<?= Yii::$app->request->baseUrl?>/js/qarddeck.js" type="text/javascript"></script>
+      <!-- Tip Content -->
+ 
+    <ol id="joyRideTipContent" style="display: none;">
+      <li data-id="working_div" data-text="Next" class="custom">
+        <h2>Tip #1</h2>
+        <p>Click here to type anything.This is your first block</p>
+      </li>
+      <li data-id="text_color_li" data-text="Next" class="custom">
+        <h2>Tip #2</h2>
+        <p>Click here to change color of the text.</p>
+      </li>
+      <li data-id="block_color_li" data-button="Next" data-options="tipLocation:left;tipAnimation:fade">
+        <h2>Tip #3</h2>
+        <p>Click here to change the background color of the block.</p>
+      </li>
+      <li data-id="cardblock_li" data-button="Next" data-options="tipLocation:right">
+        <h2>Tip #4</h2>
+        <p>Click here to add any extra text</p>
+      </li>
+      <li data-id="imgblock_li" data-button="Next" data-options="tipLocation:right">
+        <h2>Tip #5</h2>
+        <p>Click here to add an image</p>
+      </li>
+      <li data-id="linkblock_li" data-button="Next" data-options="tipLocation:right">
+        <h2>Tip #6</h2>
+        <p>Click here to add a url</p>
+      </li>
+      <li data-id="embedblock_li" data-button="Next" data-options="tipLocation:right">
+        <h2>Tip #7</h2>
+        <p>Click here to add an embed code</p>
+      </li>
+      <li data-id="fileblock_li" data-button="Next" data-options="tipLocation:right">
+        <h2>Tip #8</h2>
+        <p>Click here to add a file</p>
+      </li>
+      <li data-id="copyblock_li" data-button="Next" data-options="tipLocation:right">
+        <h2>Tip #9</h2>
+        <p>Click here to clone a block</p>
+      </li>
+      <li data-id="deleteblock_li" data-button="Next" data-options="tipLocation:right">
+        <h2>Tip #10</h2>
+        <p>Click here to delete a block</p>
+      </li>
+      <li data-class="help-link" data-button="Close" data-options="tipLocation:right">
+        <h2>Tip #11</h2>
+        <p>Click here for any help! Start creating awesome qards!!</p>
+      </li>
+      <!--<li data-id="Next">
+        <h2>Stop #4</h2>
+        <p>It works as a modal too!</p>
+      </li>
+      <li data-class="someclass" data-button="Next" data-options="tipLocation:right">
+        <h2>Stop #4.5</h2>
+        <p>It works with classes, and only on the first visible element with that class.</p>
+      </li>
+      <li data-id="numero5" data-button="Close">
+        <h2>Stop #5</h2>
+        <p>Now what are you waiting for? Add this to your projects and get the most out of your apps!</p>
+      </li>-->
+    </ol>
+	
+    <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/jquery.cookie.js"></script>
+    <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/modernizr.mq.js"></script>
+    <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/jquery.joyride-2.1.js"></script>
+	
 	<script type="text/javascript">
-
+	
+	/** Tip Content Only for create**/
+      $(window).load(function() {
+        $('#joyRideTipContent').joyride({
+          autoStart : true,
+          postStepCallback : function (index, tip) {
+          if (index == 2) {
+            $(this).joyride('set_li', false, 1);
+          }
+        },
+        modal:true,
+        expose: true
+        });
+      });
+	 /** Tip Content **/
+	 
 	/**
 	  * Script re-written by Dency G B 
 	 **/
