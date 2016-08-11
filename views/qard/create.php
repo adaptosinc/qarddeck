@@ -47,7 +47,7 @@ $this->title = 'Create Qard';
     <!-- requiered for drop down of an image -->
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
 	<link rel="stylesheet" href="<?= Yii::$app->request->baseUrl?>/css/joyride-2.1.css">
-
+	
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
 		
@@ -509,6 +509,7 @@ $this->title = 'Create Qard';
             </div>
         </div>
 		<div class="bottom-card row">
+
 			<div class="col-sm-3 col-md-3">
                                   
 			</div>
@@ -522,6 +523,7 @@ $this->title = 'Create Qard';
 				</ul>
 			</div>
 		</div> 
+
     </section>
     <!-- block_error popup -->
 	<?php
@@ -869,14 +871,13 @@ $this->title = 'Create Qard';
         <h2>Stop #5</h2>
         <p>Now what are you waiting for? Add this to your projects and get the most out of your apps!</p>
       </li>-->
-    </ol>
-	
     <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/jquery.cookie.js"></script>
     <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/modernizr.mq.js"></script>
     <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/jquery.joyride-2.1.js"></script>
-	
+
+
 	<script type="text/javascript">
-	
+
 	/** Tip Content Only for create**/
       $(window).load(function() {
         $('#joyRideTipContent').joyride({
