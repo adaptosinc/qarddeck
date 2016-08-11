@@ -369,15 +369,16 @@
 							var html = $("#working_div .current_blk").html();
 							if(html == ''){
 								var new_html = (data.extra_text).substring(0,30)+"...";
+								console.log(data.link_data);
 								$("#working_div .current_blk").html(new_html);
-							}
-							
-						
+								//return;
+							}						
 							$("#working_div .current_blk").find(".icon-mark").remove();
+							
 							//see whether T icon is already there
 							var icon = $("#working_div .current_blk").find(".icon-mark").length;
 							if(icon == 0)
-							$("#working_div .current_blk").append(data.link_data);
+								$("#working_div .current_blk").append(data.link_data);
 							$("#working_div .current_blk").attr("contenteditable","true");								
 						}else{ 	
 							$("#working_div .current_blk").find(".icon-mark").remove();
@@ -1393,6 +1394,8 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 		$('.img_preview').show();
 		$('.drop-image').hide();
 		$('.nav-tabs a[href="#imgblock"]').tab('show');
+	}else{
+		$('.img_preview').html('');	
 	}
 			
 
