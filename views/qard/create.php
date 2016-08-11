@@ -881,13 +881,11 @@ $this->title = 'Create Qard';
       $(window).load(function() {
         $('#joyRideTipContent').joyride({
           autoStart : true,
-          postStepCallback : function (index, tip) {
-          if (index == 2) {
-            $(this).joyride('set_li', false, 1);
-          }
-        },
-        modal:true,
-        expose: true
+		  modal:true,
+          expose: true,
+		  cookieMonster: true,           // true/false for whether cookies are used
+		  cookieName: 'QardDeck',         // choose your own cookie name
+          cookieDomain: false,
         });
       });
 	 /** Tip Content **/
