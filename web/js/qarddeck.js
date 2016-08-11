@@ -288,7 +288,7 @@
 							$('#working_div .current_blk').attr("data-img-url",plugin.settings.homeUrl+'/uploads/block/' + data.link_image);
 							if(data.text == ''){
 								plugin.focusWorkspace();
-							//	$("#working_div .current_blk").html("<span>Add your comments here</span>");
+								$("#working_div .current_blk").html("<span>Add your comments here</span>");
 							}
 							if($("#working_div .current_blk").find('.image_icon_span').length > 0)
 									$("#working_div .current_blk").find('.image_icon_span').remove();
@@ -665,7 +665,7 @@
 			var image_icon_span = '<span data-url = "'+url+ '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="'+plugin.settings.homeUrl+'images/image_icon.png" alt=""></span>';
 			//remove all other spans
 			$("#working_div .current_blk").find('.icon-mark').remove();
-			if($("#working_div .current_blk").html == '')
+			if($("#working_div .current_blk").html() == '')
 				image_icon_span = "<span> Add your coments here</span>"+image_icon_span;
 			$("#working_div .current_blk").append(image_icon_span);
 			
