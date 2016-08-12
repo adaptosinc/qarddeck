@@ -108,7 +108,7 @@
 				 **/
 				$(this).css("height", 'auto');
 				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-0.5)/ 37.5);
-				console.log("from main:"+$(this)[0].scrollHeight);
+				//console.log("from main:"+$(this)[0].scrollHeight);
 				setHeightBlock(this,scrollHeight);
 			});		
 		};
@@ -270,7 +270,7 @@
 						//creating parent block or img-block
 						var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
 						//creating overlay-block or middel block
-						console.log(plugin.settings.overlay_color);
+						//console.log(plugin.settings.overlay_color);
 						if(data_img_type == "background")
 							new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' +  data.div_opacity + ';height:' + data.height + 'px;">';
 						else
@@ -370,7 +370,7 @@
 							var html = $("#working_div .current_blk").html();
 							if(html == ''){
 								var new_html = (data.extra_text).substring(0,30)+"...";
-								console.log(data.link_data);
+								//console.log(data.link_data);
 								$("#working_div .current_blk").html(new_html);
 								//return;
 							}						
@@ -650,7 +650,7 @@
 		};
 		
 		plugin.applyBGImage = function(){
-			console.log($("#working_div .current_blk").attr("data-img-url"));
+			//console.log($("#working_div .current_blk").attr("data-img-url"));
 			var url = "url('"+$("#working_div .current_blk").attr("data-img-url")+"')";
 			$("#working_div .bgimg-block").css("background-image",url);	
 			
@@ -681,7 +681,7 @@
 			$("#working_div .current_blk").html(current_block.html());
 			//if backgorund image exists
 			var div_bgimage = bg_img_block.css("background-image");
-			console.log(div_bgimage);
+			//console.log(div_bgimage);
 			if(div_bgimage != 'none'){
 				
 				//div_bgimage = div_bgimage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
@@ -696,7 +696,7 @@
 			//check for background color
 			var bg_color = bg_img_block.css("background-color");
 			$("#working_div .bgimg-block").css("background-color",bg_color);
-			console.log(bg_color);
+			//console.log(bg_color);
 			add_block(true,false);
 			adjustHeight();
 			//add_block(true,true);
@@ -759,7 +759,7 @@ function setHeightBlock(elem,offset){
 /** Embed code preview **/
 function embedCode(videoLink){
 	var eUrl = $(videoLink).attr('data-value');
-	console.log(eUrl);
+//	console.log(eUrl);
 	var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 	$('.preview-image').html(html);
 	$('.nav-tabs a[href="#linkblock"]').tab('show');
@@ -1310,7 +1310,7 @@ function addSaveCard() {
 		value : all_data			
 	});
 		
-	console.log(data);
+	//console.log(data);
 	dataP = JSON.stringify(data);
 	
 	
@@ -1389,7 +1389,7 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 //////////////////////////////////////////////////////////////////
 	//var bg_img_block = $('#working_div .bgimg-block').
 	var div_bgimage = $("#working_div .bgimg-block").css("background-image");
-	console.log(div_bgimage);
+	//console.log(div_bgimage);
 	if(div_bgimage != 'none'){
 		
 		div_bgimage = $("#working_div .bgimg-block").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
@@ -1426,7 +1426,7 @@ if (event.type === "mouseleave") {
 			var scrollHeight = Math.ceil(ui.size.height / 37.5);
 			//var initial height
 			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-0.5) / 37.5);
-			console.log(initialHeight);
+			//console.log(initialHeight);
 			$(this).find(".current_blk").attr('data-init-height',initialHeight);
 			var total = totalHeight();
 			//console.log("total height:"+total);
@@ -1862,7 +1862,7 @@ Edit Document view
 **/
 
 $(document).on('click', '#file_image', function(){ 
-console.log("changed");
+//console.log("changed");
 $("#showFilePreview").hide();
 $("#editcheck").show();
 $(".drop-file").show();
