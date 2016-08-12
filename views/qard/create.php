@@ -46,7 +46,11 @@ $this->title = 'Create Qard';
 
     <!-- requiered for drop down of an image -->
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
+	
+	<!--for quick tour-->
 	<link rel="stylesheet" href="<?= Yii::$app->request->baseUrl?>/css/joyride-2.1.css">
+
+	<!----------------->
 	
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
@@ -861,25 +865,14 @@ $this->title = 'Create Qard';
         <h2>Tip #10</h2>
         <p>Click here to delete a block</p>
       </li>
-      <li data-class="help-link" data-button="Close" data-options="tipLocation:right">
+      <li data-class="help-link" data-button="Close" >
         <h2>Tip #11</h2>
         <p>Click here for any help! Start creating awesome qards!!</p>
       </li>
-      <!--<li data-id="Next">
-        <h2>Stop #4</h2>
-        <p>It works as a modal too!</p>
-      </li>
-      <li data-class="someclass" data-button="Next" data-options="tipLocation:right">
-        <h2>Stop #4.5</h2>
-        <p>It works with classes, and only on the first visible element with that class.</p>
-      </li>
-      <li data-id="numero5" data-button="Close">
-        <h2>Stop #5</h2>
-        <p>Now what are you waiting for? Add this to your projects and get the most out of your apps!</p>
-      </li>-->
+	</ol>
     <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/jquery.cookie.js"></script>
     <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/modernizr.mq.js"></script>
-    <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/jquery.joyride-2.1.js"></script>
+    <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/jquery.joyride-2.1.js"></script>	
 
 
 	<script type="text/javascript">
@@ -892,7 +885,7 @@ $this->title = 'Create Qard';
           expose: true,
 		  cookieMonster: true,           // true/false for whether cookies are used
 		  cookieName: 'QardDeck',         // choose your own cookie name
-          cookieDomain: false,
+          cookieDomain: false, 
         });
       });
 	 /** Tip Content **/
