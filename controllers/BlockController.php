@@ -172,7 +172,7 @@ class BlockController extends Controller
 				if($block->save(false)){
 					
 					$data['status'] = true;
-					$data['link_data'] = "<span data-url='".$data['extra_text']."' data-link='".$data['title']."' block_id='".$block->block_id."' class='icon-mark pull-right' onclick='showExtraText(this);' for='showExtraText' ><img src='".Yii::$app->homeUrl."images/text_icon.png' alt=''></span>";
+					$data['link_data'] = "<span block_id='".$block->block_id."' class='icon-mark pull-right' onclick='showExtraText(this);' for='showExtraText' ><img src='".Yii::$app->homeUrl."images/text_icon.png' alt=''></span>";
 					return json_encode($data);
 					die;
 				}
@@ -203,6 +203,7 @@ class BlockController extends Controller
 			//print_r($data['extra_text']);die;
 			if(isset($block)){
 
+				
 				$block->link_title = $data['url_title'];
 				$block->link_description = $data['url_description'];
 				
@@ -227,6 +228,43 @@ class BlockController extends Controller
 		}
 		return json_encode($data);
 	}
+	
+	
+	
+	public function actionAddFiledata(){
+		
+		$data = Yii::$app->request->post();
+		if(isset($data['block_id']) && $data['block_id'] != "undefined"){
+			$block = $this->findModel($data['block_id']);
+			//print_r($data['extra_text']);die;
+			if(isset($block)){
+
+				$block->file_title = $data['file_title'];
+				$block->file_description = $data['file_description'];
+			
+				if($block->save(false)){
+					
+					$data['status'] = true;
+					return json_encode($data);
+					die;
+				}
+			}
+			
+		}
+		$data['status'] = false;
+		return json_encode($data);	
+	}
+	
+	 public function actionGetFiledata($block_id){
+		$block = $this->findModel($block_id);
+		$data = [];
+		if($block){
+				$data['file_title'] = $block->file_title;
+				$data['file_description'] = $block->file_description;				
+		}
+		return json_encode($data);
+	}
+	
     /**
      * Updates an existing Block model.
      * If update is successful, the browser will be redirected to the 'view' page.
