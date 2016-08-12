@@ -92,7 +92,7 @@
 					$('#extra_text').focus();
 				}
 				if ($(this).attr("data-resized")=='true') {
-					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-12) / 37.5);
+					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10) / 37.5);
 					var setHeight =  $(this).attr("data-height");
 					if(scrollHeight > setHeight ){
 						$("#working_div .current_blk").attr('data-resized','false');	
@@ -107,7 +107,7 @@
 				 * Or autoset the height of block
 				 **/
 				$(this).css("height", 'auto');
-				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-12)/ 37.5);
+				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10)/ 37.5);
 				setHeightBlock(this,scrollHeight);
 			});		
 		};
@@ -126,7 +126,7 @@
 					var t=json.title; 
 					
 					//var html='';
-				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="/qarddeck/web/images/qards_icon.png" alt="">20</div> <div class="col-sm-12 col-md-12"> <button class="btn btn-grey"><img src="/qarddeck/web/images/preview_icon.png" alt="">Preview</button> </div></div></div>';
+				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="/qarddeck/web/images/qards_icon.png" alt="">20</div> <div class="col-sm-8 col-md-8"> <button class="btn btn-grey"><img src="/qarddeck/web/images/preview_icon.png" alt="">Preview</button> </div></div></div>';
 					$('#add_to_deck').trigger('click');
 					$("input[id=deck-title]").val('');
 					$("input[id=deck-bg_image]").val('');
@@ -733,7 +733,7 @@
 function adjustHeight(){
 	var elem = $('#working_div .current_blk');
 	$(elem).css("height", 'auto');
-	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight-12) / 37.5);
+	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight-10) / 37.5);
 	setHeightBlock(elem,scrollHeight);		
 }
 function totalHeight(){
@@ -1424,7 +1424,7 @@ if (event.type === "mouseleave") {
 			//var resized height
 			var scrollHeight = Math.ceil(ui.size.height / 37.5);
 			//var initial height
-			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-12) / 37.5);
+			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-10) / 37.5);
 			$(this).find(".current_blk").attr('data-init-height',initialHeight);
 			var total = totalHeight();
 			//console.log("total height:"+total);
