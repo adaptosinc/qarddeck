@@ -822,8 +822,7 @@ $this->title = 'Create Qard';
 
     <script src="<?= Yii::$app->request->baseUrl?>/js/jquery-ui.js" type="text/javascript"></script>
 	<script src="<?= Yii::$app->request->baseUrl?>/js/qarddeck.js" type="text/javascript"></script>
-      <!-- Tip Content -->
- 
+    <!-- Tip Content --> 
     <ol id="joyRideTipContent" style="display: none;">
       <li data-id="working_div" data-text="Next" class="custom">
         <h2>Tip #1</h2>

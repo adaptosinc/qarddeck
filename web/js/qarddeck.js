@@ -92,7 +92,7 @@
 					$('#extra_text').focus();
 				}
 				if ($(this).attr("data-resized")=='true') {
-					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10) / 37.5);
+					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-0.5) / 37.5);
 					var setHeight =  $(this).attr("data-height");
 					if(scrollHeight > setHeight ){
 						$("#working_div .current_blk").attr('data-resized','false');	
@@ -107,7 +107,8 @@
 				 * Or autoset the height of block
 				 **/
 				$(this).css("height", 'auto');
-				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10)/ 37.5);
+				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-0.5)/ 37.5);
+				console.log("from main:"+$(this)[0].scrollHeight);
 				setHeightBlock(this,scrollHeight);
 			});		
 		};
@@ -733,7 +734,7 @@
 function adjustHeight(){
 	var elem = $('#working_div .current_blk');
 	$(elem).css("height", 'auto');
-	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight-10) / 37.5);
+	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight-0.5) / 37.5);
 	setHeightBlock(elem,scrollHeight);		
 }
 function totalHeight(){
@@ -1424,7 +1425,8 @@ if (event.type === "mouseleave") {
 			//var resized height
 			var scrollHeight = Math.ceil(ui.size.height / 37.5);
 			//var initial height
-			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-10) / 37.5);
+			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-0.5) / 37.5);
+			console.log(initialHeight);
 			$(this).find(".current_blk").attr('data-init-height',initialHeight);
 			var total = totalHeight();
 			//console.log("total height:"+total);
