@@ -32,7 +32,7 @@
 //		this.button.rotatecw	= '<div class="btn btn-default btn-rotate-cw" title="' + (this.options.cwTitle || 'Rotate clockwise') + '"><i class="glyphicon glyphicon-share"></i></div>';
 //		this.button.rotateccw	= '<div class="btn btn-default btn-rotate-ccw" title="' + (this.options.ccwTitle || 'Rotate counter clockwise') + '"><i class="glyphicon glyphicon-share icon-flipped"></i></div>';
 		this.button.cancel		= '<div class="btn btn-danger btn-cancel" title="' + (this.options.cancelTitle || 'Cancel') + '"><i class="glyphicon glyphicon-remove"></i></div>';
-		this.button.done		= '<div class="btn btn-success btn-ok" title="' + (this.options.okTitle || 'Ok') + '"><i class="glyphicon glyphicon-ok save-pic"></i></div>';
+		this.button.done		= '<div style="display:none" class="btn btn-success btn-ok" title="' + (this.options.okTitle || 'Ok') + '"><i class="glyphicon glyphicon-ok save-pic"></i></div>';
 		//this.button.done = '<div class="col-sm-6 col-md-6 on-off"><div class="switch"><input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox"><label for="cmn-toggle-3"></label></div><span>Use this Image</span></div>';
 		this.button.del			= '<div class="btn btn-danger btn-del" title="' + (this.options.delTitle || 'Delete') + '"><i class="glyphicon glyphicon-trash"></i></div>';
 		
@@ -347,7 +347,8 @@
 
     			//place the images
     			$(element).append($('<div class="cropWrapper"></div>').append($(_self.image)));
- 				$(element).bind("mousewheel DOMMouseScroll MozMousePixelScroll",function(e){
+				//Mouse zoom-n/zoom-out events
+/*  				$(element).bind("mousewheel DOMMouseScroll MozMousePixelScroll",function(e){
 					e.stopImmediatePropagation();
 					e.stopPropagation();
 					e.preventDefault();
@@ -364,7 +365,7 @@
 						if (_self.options.onAfterZoomImage) _self.options.onAfterZoomImage.call(_self,_self);
 
 					}					
-				}); 
+				}); */ 
 				//console.log(_self.image[0].currentSrc);
 				//$("#working_div .bgimg-block").css("background-image","url("+_self.image[0].currentSrc+")");
     			if (!empty(_self.imageGhost)) {
@@ -934,7 +935,7 @@
 			var options			= _self.options;
 			
 			//zoomin button
-/* 			if (options.buttonZoomin != false) {
+			if (options.buttonZoomin != false) {
 				$(tools).append($(_self.button.zoomin).on({
 					'touchstart mousedown': function(e) { 
 						e.preventDefault();
@@ -949,7 +950,7 @@
 					}
 
 				}));
-			} */
+			}
 			
 			//zoomreset button (set the image to the "original" size, same size as when selecting the image
 			if (options.buttonZoomreset != false) {
@@ -962,7 +963,7 @@
 			}
 			
 			//zoomout button
-/* 			if (options.buttonZoomout != false) {
+			if (options.buttonZoomout != false) {
 				$(tools).append($(_self.button.zoomout).on({
 					'touchstart mousedown': function(e) { 
 						e.preventDefault();
@@ -976,7 +977,7 @@
 						if (_self.options.onAfterZoomImage) _self.options.onAfterZoomImage.call(_self,_self);
 					}
 				}));
-			} */
+			}
 			
 /*			if (options.buttonRotateccw != false) {
 				$(tools).append($(_self.button.rotateccw).on({

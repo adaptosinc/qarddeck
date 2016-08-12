@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
 											<li class="danger"><img src="<?=\Yii::$app->homeUrl?>images/delete_icon_small.png" alt=""></li>                                                        
 										</ul>
 									</div>
-									<img src="<?=\Yii::$app->homeUrl?>uploads/qards/98.png" alt="">									
+									<img src="<?=\Yii::$app->homeUrl?>uploads/qards/<?=$qard->qard_id;?>.png" alt="">									
 								</div>                                                                                      
 							</div>
 							<?php }} ?>  

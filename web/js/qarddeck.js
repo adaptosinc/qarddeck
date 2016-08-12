@@ -92,7 +92,7 @@
 					$('#extra_text').focus();
 				}
 				if ($(this).attr("data-resized")=='true') {
-					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10) / 37.5);
+					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-0.5) / 37.5);
 					var setHeight =  $(this).attr("data-height");
 					if(scrollHeight > setHeight ){
 						$("#working_div .current_blk").attr('data-resized','false');	
@@ -107,7 +107,8 @@
 				 * Or autoset the height of block
 				 **/
 				$(this).css("height", 'auto');
-				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10)/ 37.5);
+				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-0.5)/ 37.5);
+				//console.log("from main:"+$(this)[0].scrollHeight);
 				setHeightBlock(this,scrollHeight);
 			});		
 		};
@@ -270,7 +271,7 @@
 						//creating parent block or img-block
 						var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
 						//creating overlay-block or middel block
-						console.log(plugin.settings.overlay_color);
+						//console.log(plugin.settings.overlay_color);
 						if(data_img_type == "background")
 							new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' +  data.div_opacity + ';height:' + data.height + 'px;">';
 						else
@@ -289,7 +290,7 @@
 							$('#working_div .current_blk').attr("data-img-url",plugin.settings.homeUrl+'/uploads/block/' + data.link_image);
 							if(data.text == ''){
 								plugin.focusWorkspace();
-							//	$("#working_div .current_blk").html("<span>Add your comments here</span>");
+								$("#working_div .current_blk").html("<span>Add your comments here</span>");
 							}
 							if($("#working_div .current_blk").find('.image_icon_span').length > 0)
 									$("#working_div .current_blk").find('.image_icon_span').remove();
@@ -370,15 +371,16 @@
 							var html = $("#working_div .current_blk").html();
 							if(html == ''){
 								var new_html = (data.extra_text).substring(0,30)+"...";
+								//console.log(data.link_data);
 								$("#working_div .current_blk").html(new_html);
-							}
-							
-						
+								//return;
+							}						
 							$("#working_div .current_blk").find(".icon-mark").remove();
+							
 							//see whether T icon is already there
 							var icon = $("#working_div .current_blk").find(".icon-mark").length;
 							if(icon == 0)
-							$("#working_div .current_blk").append(data.link_data);
+								$("#working_div .current_blk").append(data.link_data);
 							$("#working_div .current_blk").attr("contenteditable","true");								
 						}else{ 	
 							$("#working_div .current_blk").find(".icon-mark").remove();
@@ -613,6 +615,7 @@ if (ext == "pdf" ) {
             }             
 			$("#working_div .current_blk").focus();
 			document.execCommand('foreColor', false, plugin.settings.dark_text_color);	
+
 			spantextval = '<span style="color: '+plugin.settings.dark_text_color+';">'+spantext+'</span></br>';
 			span = '<span style="color: '+plugin.settings.dark_text_color+';">'+spantext+spanicon+'</span></br>';
            
@@ -622,6 +625,7 @@ if (ext == "pdf" ) {
             $("#cmn-toggle-56").attr("data-link",spantextval);
 			
 			  if($('#cmn-toggle-56').prop('checked')){	
+
 				var linespan =  $("#cmn-toggle-56").attr("data-url");
 				$("#working_div .current_blk").html(linespan);
 				adjustHeight();
@@ -632,6 +636,7 @@ if (ext == "pdf" ) {
 				//$("#working_div .current_blk").html(spantextval); 
 			} 
 			
+
 		};
 		plugin.uploadFileSimple = function(elem){
 			
@@ -737,7 +742,7 @@ if (ext == "pdf" ) {
 		};
 		
 		plugin.applyBGImage = function(){
-			console.log($("#working_div .current_blk").attr("data-img-url"));
+			//console.log($("#working_div .current_blk").attr("data-img-url"));
 			var url = "url('"+$("#working_div .current_blk").attr("data-img-url")+"')";
 			$("#working_div .bgimg-block").css("background-image",url);	
 			
@@ -753,10 +758,40 @@ if (ext == "pdf" ) {
 			var image_icon_span = '<span data-url = "'+url+ '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="'+plugin.settings.homeUrl+'images/image_icon.png" alt=""></span>';
 			//remove all other spans
 			$("#working_div .current_blk").find('.icon-mark').remove();
-			if($("#working_div .current_blk").html == '')
+			if($("#working_div .current_blk").html() == '')
 				image_icon_span = "<span> Add your coments here</span>"+image_icon_span;
 			$("#working_div .current_blk").append(image_icon_span);
 			
+		};
+		plugin.copyBlock = function(){
+			//save the current block
+			var current_block = $("#working_div .current_blk");
+			var bg_img_block = $("#working_div .bgimg-block");
+			var overlay_blk = $("#working_div .bgoverlay-block");
+			//save the current block and add new one
+			add_block(true,true);
+			$("#working_div .current_blk").html(current_block.html());
+			//if backgorund image exists
+			var div_bgimage = bg_img_block.css("background-image");
+			//console.log(div_bgimage);
+			if(div_bgimage != 'none'){
+				
+				//div_bgimage = div_bgimage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+				$("#working_div .bgimg-block").css("background-image",div_bgimage);
+				$("#working_div .bgimg-block").css("background-size","cover");
+				$("#working_div .bgoverlay-block").css("background-color",overlay_blk.css("background-color"));
+				$("#working_div .bgoverlay-block").css("opacity",overlay_blk.css("opacity"));
+				$("#working_div .current_blk").attr("data-img-type",current_block.attr("data-img-type"));
+				//add_block(true,false);
+				//here we need to save this block
+			}	
+			//check for background color
+			var bg_color = bg_img_block.css("background-color");
+			$("#working_div .bgimg-block").css("background-color",bg_color);
+			//console.log(bg_color);
+			add_block(true,false);
+			adjustHeight();
+			//add_block(true,true);
 		}
         // fire up the plugin!
         // call the "constructor" method
@@ -791,7 +826,7 @@ if (ext == "pdf" ) {
 function adjustHeight(){
 	var elem = $('#working_div .current_blk');
 	$(elem).css("height", 'auto');
-	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight-10) / 37.5);
+	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight-0.5) / 37.5);
 	setHeightBlock(elem,scrollHeight);		
 }
 function totalHeight(){
@@ -816,8 +851,8 @@ function setHeightBlock(elem,offset){
 /** Embed code preview **/
 function embedCode(videoLink){
 	var eUrl = $(videoLink).attr('data-value');
-	console.log(eUrl);
-	var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';		
+//	console.log(eUrl);
+	var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 	$('.preview-image').html(html);
 	$('.nav-tabs a[href="#linkblock"]').tab('show');
 	$('.nav-tabs a[href="#embed"]').tab('show');
@@ -972,6 +1007,8 @@ function displayLink(identifier){
 	$('.nav-tabs a[href="#linkblock"]').tab('show');
 	$('.nav-tabs a[href="#paste"]').tab('show');
 	$('input[id=link_url]').val(dataurl).trigger("change");
+	//set link url to true
+	$('#cmn-toggle-21').prop('checked', true); 
 	//callUrl($('input[id=link_url]'),1);
 	var dataopen = $(identifier).attr('data-open');
 	var datashowurl = $(identifier).attr('data-showurl');
@@ -1001,6 +1038,9 @@ function changePic(v) {
 	$('#working_div').find('span.col-sm-9').removeClass("col-sm-9 col-md-9");
 	$('#title_desc_url').removeClass("col-sm-9 col-md-9");
 	$('#title_desc_url').addClass("col-sm-12 col-md-12");
+}
+function copyBlock(){
+	$(window).data('qardDeck').copyBlock();
 }
 function add_block(event,new_block){
 	//save block
@@ -1163,7 +1203,6 @@ function add_block(event,new_block){
 		$(".drop-file , .drop-image , .file_options").show();
 		$("#drop-file-bg").hide();
 		$(".fileSwitch").hide();
-		$("input[id=link_url]").val('');
 		$("input[id=embed_code]").val('');		
 		$('input[id=qard-url-upload-click]').val('');
 		$("#showFile").hide();
@@ -1177,10 +1216,10 @@ function add_block(event,new_block){
 		//$(".desc").val('');
 	
 		$("#fileTitle").html('FileName.psd');
-		
-		 
-			
-
+		//added by dency
+		if(new_block){
+			$(".url_reset_link").trigger("click");
+		}
 }
 function addSaveCard() {
 	
@@ -1362,7 +1401,7 @@ function addSaveCard() {
 		value : all_data			
 	});
 		
-	console.log(data);
+	//console.log(data);
 	dataP = JSON.stringify(data);
 	
 	
@@ -1401,53 +1440,10 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 		$(this).find(".current_blk").attr("contenteditable", 'true');
 	}
 	
-	
-	
-////////////////ARIVAZHAKAN///////////////
-/* 	
-var div_id = $(this).find( ".icon-mark" ).attr("for");
-
-if(div_id != "showFilePrev")
-	{		
-		$(".drop-file , .drop-image , .file_options").show();
-		$("#showFilePreview").empty();
-		$("#editcheck").show();
-		$("#drop-file-bg").hide();
-		$(".fileName").val('');
-		$(".desc").val('');
-		$("#fileTitle").html('FileName.psd');
-		$("#cmn-toggle-7").attr("data-url","");
-		$("#cmn-toggle-7").attr("data-link","");
-		$('#cmn-toggle-7').prop('checked', false); 
-		
-	}	
-	 if(div_id == "showExtraText")
-	{	
-		$('#add_extra_text').trigger("click");  
-		
-		var exttext = $(this).find( ".icon-mark" ).attr("data-url");
-		var exttext_title = $(this).find( ".icon-mark" ).attr("data-link");			
-		$("#extra-list").val(exttext_title);
-		$('#extra_text').html(exttext); 
-				
-	}
-	else{ 
-	$('#extra-list').prop("disabled",true);  
-	$("#extra-word").attr( "style","pointer-events: none; opacity: 0.4;" );	
-	$("#link-extra").hide();	
-	$("#add_extra_text").show();	
-	$('#extra-list').val("");  		
-	$('#extra_text').html(""); 	
-	}
-	
-	$($(this).find( ".icon-mark" )).trigger( "click" ); */
-//////////////////////////////////////////////////////////////////
-
-
 
 	//var bg_img_block = $('#working_div .bgimg-block').
 	var div_bgimage = $("#working_div .bgimg-block").css("background-image");
-	console.log(div_bgimage);
+	//console.log(div_bgimage);
 	if(div_bgimage != 'none'){
 		
 		div_bgimage = $("#working_div .bgimg-block").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
@@ -1457,6 +1453,8 @@ if(div_id != "showFilePrev")
 		$('.img_preview').show();
 		$('.drop-image').hide();
 		$('.nav-tabs a[href="#imgblock"]').tab('show');
+	}else{
+		$('.img_preview').html('');	
 	}
 			
 
@@ -1481,7 +1479,8 @@ if (event.type === "mouseleave") {
 			//var resized height
 			var scrollHeight = Math.ceil(ui.size.height / 37.5);
 			//var initial height
-			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-10) / 37.5);
+			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-0.5) / 37.5);
+			//console.log(initialHeight);
 			$(this).find(".current_blk").attr('data-init-height',initialHeight);
 			var total = totalHeight();
 			//console.log("total height:"+total);
@@ -1720,12 +1719,24 @@ $('#cmn-toggle-6').on('change', function() {
  $('input[id=link_url]').on('change', function() {
 	callUrl(this,0);
 });
-$('#link_url_button').click(function() {
+/* $('#link_url_button').click(function() {
 		console.log("url taken");
 		//callUrl($('input[id=link_url]'),0);
 		add_block(true,false);
 		$(window).data('qardDeck').useUrl();
 
+}); */
+$('#cmn-toggle-21').on('change', function() {
+	if($(this).prop('checked')){
+		if($("input[id=link_url]").val() != '')
+		{
+			add_block(true,false);
+			$(window).data('qardDeck').useUrl();			
+		}
+	}else{
+		if($("#working_div .current_blk").find('#previewLink').length != 0 )
+			$("#working_div .current_blk").find('#previewLink').remove();
+	}
 });
 $('body').on('change', $('input[name=url_title]', 'textarea[name=url_content]'), function() {
 	showUrlPreview();
@@ -1737,6 +1748,9 @@ $('.url_reset_link').on('click', function() {
 	$("input[id=embed_code]").val('');
 	$('#cmn-toggle-4').prop("checked",false);
 	$('#cmn-toggle-6').prop("checked",false);
+	$('#cmn-toggle-21').prop('checked', false); 
+	$("input[name=url-title]").val('');
+	$("input[name=url-desc]").val('');
 });
 
 /**** End of Link Block operations ******/
@@ -1904,7 +1918,7 @@ Edit Document view
 **/
 
 $(document).on('click', '#file_image', function(){ 
-console.log("changed");
+//console.log("changed");
 $("#showFilePreview").hide();
 $("#editcheck").show();
 $(".drop-file").show();
@@ -1975,6 +1989,7 @@ $(document).on("mouseleave",".add-new-file",function(){
   });
 
 $('#cmn-toggle-56').click(function(){	
+
 	if($(this).prop('checked')){
 		 var linespan =  $(this).attr("data-url");
             $("#working_div .current_blk").html(linespan);				
