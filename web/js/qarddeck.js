@@ -92,7 +92,7 @@
 					$('#extra_text').focus();
 				}
 				if ($(this).attr("data-resized")=='true') {
-					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10) / 37.5);
+					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-12) / 37.5);
 					var setHeight =  $(this).attr("data-height");
 					if(scrollHeight > setHeight ){
 						$("#working_div .current_blk").attr('data-resized','false');	
@@ -107,7 +107,7 @@
 				 * Or autoset the height of block
 				 **/
 				$(this).css("height", 'auto');
-				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-10)/ 37.5);
+				var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-12)/ 37.5);
 				setHeightBlock(this,scrollHeight);
 			});		
 		};
@@ -126,7 +126,7 @@
 					var t=json.title; 
 					
 					//var html='';
-				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="/qarddeck/web/images/qards_icon.png" alt="">20</div> <div class="col-sm-8 col-md-8"> <button class="btn btn-grey"><img src="/qarddeck/web/images/preview_icon.png" alt="">Preview</button> </div></div></div>';
+				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="/qarddeck/web/images/qards_icon.png" alt="">20</div> <div class="col-sm-12 col-md-12"> <button class="btn btn-grey"><img src="/qarddeck/web/images/preview_icon.png" alt="">Preview</button> </div></div></div>';
 					$('#add_to_deck').trigger('click');
 					$("input[id=deck-title]").val('');
 					$("input[id=deck-bg_image]").val('');
@@ -733,7 +733,7 @@
 function adjustHeight(){
 	var elem = $('#working_div .current_blk');
 	$(elem).css("height", 'auto');
-	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight-10) / 37.5);
+	var scrollHeight = Math.ceil(parseInt($(elem)[0].scrollHeight-12) / 37.5);
 	setHeightBlock(elem,scrollHeight);		
 }
 function totalHeight(){
@@ -898,6 +898,8 @@ function displayLink(identifier){
 	$('.nav-tabs a[href="#linkblock"]').tab('show');
 	$('.nav-tabs a[href="#paste"]').tab('show');
 	$('input[id=link_url]').val(dataurl).trigger("change");
+	//set link url to true
+	$('#cmn-toggle-21').prop('checked', true); 
 	//callUrl($('input[id=link_url]'),1);
 	var dataopen = $(identifier).attr('data-open');
 	var datashowurl = $(identifier).attr('data-showurl');
@@ -1112,7 +1114,6 @@ function add_block(event,new_block){
 		$(".drop-file , .drop-image , .file_options").show();
 		$("#drop-file-bg").hide();
 		$(".fileSwitch").hide();
-		$("input[id=link_url]").val('');
 		$("input[id=embed_code]").val('');		
 		$('input[id=qard-url-upload-click]').val('');
 		$("#showFile").hide();
@@ -1123,7 +1124,10 @@ function add_block(event,new_block){
 		$(".fileName").val('');
 		$(".desc").val('');
 		$("#fileTitle").html('FileName.psd');
-
+		//added by dency
+		if(new_block){
+			$(".url_reset_link").trigger("click");
+		}
 }
 function addSaveCard() {
 	
@@ -1420,7 +1424,7 @@ if (event.type === "mouseleave") {
 			//var resized height
 			var scrollHeight = Math.ceil(ui.size.height / 37.5);
 			//var initial height
-			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-10) / 37.5);
+			var initialHeight = Math.ceil(parseInt($(this).find(".current_blk")[0].scrollHeight-12) / 37.5);
 			$(this).find(".current_blk").attr('data-init-height',initialHeight);
 			var total = totalHeight();
 			//console.log("total height:"+total);
@@ -1659,12 +1663,24 @@ $('#cmn-toggle-6').on('change', function() {
  $('input[id=link_url]').on('change', function() {
 	callUrl(this,0);
 });
-$('#link_url_button').click(function() {
+/* $('#link_url_button').click(function() {
 		console.log("url taken");
 		//callUrl($('input[id=link_url]'),0);
 		add_block(true,false);
 		$(window).data('qardDeck').useUrl();
 
+}); */
+$('#cmn-toggle-21').on('change', function() {
+	if($(this).prop('checked')){
+		if($("input[id=link_url]").val() != '')
+		{
+			add_block(true,false);
+			$(window).data('qardDeck').useUrl();			
+		}
+	}else{
+		if($("#working_div .current_blk").find('#previewLink').length != 0 )
+			$("#working_div .current_blk").find('#previewLink').remove();
+	}
 });
 $('body').on('change', $('input[name=url_title]', 'textarea[name=url_content]'), function() {
 	showUrlPreview();
@@ -1676,6 +1692,9 @@ $('.url_reset_link').on('click', function() {
 	$("input[id=embed_code]").val('');
 	$('#cmn-toggle-4').prop("checked",false);
 	$('#cmn-toggle-6').prop("checked",false);
+	$('#cmn-toggle-21').prop('checked', false); 
+	$("input[name=url-title]").val('');
+	$("input[name=url-desc]").val('');
 });
 
 /**** End of Link Block operations ******/

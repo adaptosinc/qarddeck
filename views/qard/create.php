@@ -319,7 +319,13 @@ $this->title = 'Create Qard';
 							<!--<h4>&nbsp;</h4>-->
 							<div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="paste">
-									<h4 id="reflink">Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>									
+									<!--<h4 id="reflink">Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>-->
+									<h4 id="reflink">Add Url<span id="remove_extra_text" class="trash pull-right"><div class="col-sm-12 col-md-12 on-off">
+											<div class="switch">
+												<input id="cmn-toggle-21" class="cmn-toggle cmn-toggle-round" type="checkbox">
+												<label for="cmn-toggle-21" ></label>
+											</div>  <span>Link URL</span> 
+									</div></span></h4> 									
 									<div class="form-group" id="showlinkUrl">
 										<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
 										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
