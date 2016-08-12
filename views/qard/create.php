@@ -362,7 +362,33 @@ $this->title = 'Create Qard';
 
 								</div>
 								<div role="tabpanel" class="tab-pane" id="embed">
-									<h4 id="reflink">Add Embed Code<button class="btn btn-warning pull-right">Link Embed Code</button></h4>
+								<!--<div class="row">
+									<h4>
+										<span id="remove_extra_link" class="trash pull-right" >
+											<button id="btnembed_code"  class="btn btn-warning pull-right">Link Embed Code</button>
+											
+											
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										</span>
+									</h4>	
+								</div>-->
+							
+									<h4 id="reflink">Add Embed Code
+									<span class="trash pull-right">
+								
+								
+							<div class="col-sm-12 col-md-12 on-off" id="link-ecode"   >
+								<div class="switch">
+								<input type="hidden" id="emcode_hid" name="emcode_hid" >
+								<input type="hidden" id="emcode_hidimg" name="emcode_hidimg" >
+									<input id="cmn-toggle-57" class="cmn-toggle cmn-toggle-round" type="checkbox">
+									<label for="cmn-toggle-57"></label>
+								</div>  <span>Link This Code</span> 
+							</div>
+								
+								<!---<i class="fa fa-trash"></i>&nbsp;Remove Extra Text-->  </span>
+									
+									</h4>
 									<div class="form-group" id="embedCode">
 										<input type="text" name="embed_code" id="embed_code" class="form-control pasteUrl" placeholder="Paste your embed code (Youtube, Vimeo etc)">
 									</div>
@@ -370,7 +396,10 @@ $this->title = 'Create Qard';
 										<div class="preview-image">                                       
 										</div>  
 									</div>	
-									<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>
+									
+									<span id="rmembed_code" style="display:none;  cursor: pointer; cursor: hand; " class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>
+									
+									<!--<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>-->
 								</div>  
 
 							</div>
@@ -390,8 +419,17 @@ $this->title = 'Create Qard';
 							</div>
 											<!--<i class="fa fa-trash"></i> &nbsp;Remove File --></span></h4>
                             
+							<div class="form-group extra-content" id="drop-image" style="margin-bottom: 60px;  padding-top: 10px;" >
+									<input type="text" id="url-filename" name="filename" class="col-sm-5 col-md-5" placeholder="Enter Title">
+									<input type="hidden"  class="filename fileName col-sm-5 col-md-5" >
+									<input type="text" id="url-filedesc" name="filedesc" class="col-sm-6 col-md-6 col-md-offset-1 desc" placeholder="Add a description">
+								</div>
+								
 							<form method="post" action="" id="qard-url-upload" enctype="multipart/form-data" novalidate class="box">
-								<div class="add-new-file">
+							
+							
+								
+								<div class="add-new-file" style="padding-bottom: 10px;" >
 									<div class="drop-file form-group" id="drop-file-bg" >
 										<img src="<?=Yii::$app->request->baseUrl?>/images/browse_light.png" alt="">
 										<h3>Drop files/click to Browse</h3>
@@ -414,19 +452,9 @@ $this->title = 'Create Qard';
 									</div>
 								</div>
 								
-								<!--<div class="form-group toggle-btn">
-									<div class="col-sm-6 col-md-6 on-off">
-											<div class="switch">
-												<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
-												<label for="cmn-toggle-7" class="victim"></label>
-											</div>  <span>Open in New Tab</span> 
-									</div>                                      
-								</div>-->
-
-								<div class="form-group extra-content" id="drop-image">
-									<input type="text" name="filename" class="filename fileName col-sm-5 col-md-5" placeholder="Enter Title">
-									<input type="text" name="desc" class="col-sm-5 col-md-5 col-md-offset-1 desc" placeholder="Add a description">
-								</div>
+						
+								
+								
 							</form>	
 						  </div>
                         </div>
@@ -920,6 +948,8 @@ $this->title = 'Create Qard';
 		'embedCodeUrl'   : '<?=Url::to(['qard/embed-url'], true);?>',
 		'changeStyleUrl' : '<?=Url::to(['qard/change-style'], true);?>',
 		'addUrlDataUrl'  : '<?=Url::to(['block/add-urldata'], true);?>',
+		'addFileDataUrl'  : '<?=Url::to(['block/add-filedata'], true);?>',
+		'getFileDataUrl'  : '<?=Url::to(['block/get-filedata'], true);?>',
 	});
 
 	</script>

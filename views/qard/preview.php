@@ -520,14 +520,33 @@ $this->title = 'Preview Qard';
             });
         }
 		/** File preview **/
-         function showFilePrev(fileName){
+         function showFilePrev(identifier,fileName){
+			 
+			var block_id = $(identifier).parent().parent('.text-block').attr('data-block-id');			
 			
+		 		$.ajax({									
+				url : "<?=Url::to(['block/get-filedata'], true)?>",
+				type: "GET",
+				data: { 'block_id': block_id},
+				success: function(data){				
+					data1 = $.parseJSON(data);
+					if($.trim(data1.file_title) !=="" )
+						$('#file_title').html(data1.file_title);
+					else
+					$('#file_title').html(fileName);
+					$('#file_desc').html(data1.file_description);
+					
+					}
+				});  
+				
 			hideAll('active-file-preview');
 			$('.active-preview-content').show();
-			$('#file_title').html(fileName);
+			///$('#file_title').html(fileName);
 			$('#file_image').attr("file-name",fileName);
 			$('#file_controls').show();
 			$('#pdf_area').hide();
+			
+			
           }  
 		$('#file_image').on("click",function(e){
 			console.log("changed");
