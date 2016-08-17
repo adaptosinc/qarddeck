@@ -357,12 +357,25 @@ class Qard extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getDeckqardCount()
-    {
-      
-		 $qard_decks = $this->getQardDecks();
+    {      
+		$qard_decks = $this->getQardDecks();
 		return count($qard_decks); 
 		
     }
 	
-	
+	public function getCreatedAgo(){
+		$datetime = $this->last_updated_at;								 
+		$date = date('M j Y g:i A', strtotime($datetime));
+		$date = new \DateTime($date);
+		$datetime1 = new \DateTime("now"); 
+		$diff = $datetime1->diff($date)->format("%a");
+		if($diff == 0){
+			$diff = 'Today';
+		}else if($diff==1){
+			$diff = '1 day ago';
+		}else{
+			$diff = $diff.' days ago';
+		}
+		return $diff;
+	}
 }

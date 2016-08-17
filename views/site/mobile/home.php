@@ -34,6 +34,6 @@
                         <button class="btn qard" onclick="location.href='<?=\Yii::$app->homeUrl?>';">Create a Qard on Desktop</button>
                         <p>Mobile App coming soon</p>
                     </div>
-                </section>-->                  
+                </section>        
                     
           
