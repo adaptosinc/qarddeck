@@ -433,7 +433,7 @@ class QardController extends Controller
 		$blocks = $qard->blocks;
 
 		$this->metaTags($qard);
-		if($this->isMobile()){
+		if(!$this->isMobile()){
 			return $this->render('consume', [
 				'model' => $qard,
 				'theme' => $theme,
