@@ -272,10 +272,10 @@
 						var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
 						//creating overlay-block or middel block
 						//console.log(plugin.settings.overlay_color);
-						console.log(hexToRgb(data.div_overlaycolor,data.div_opacity));
+						//console.log(hexToRgb(data.div_overlaycolor,data.div_opacity));
 						
 						if(data_img_type == "background")
-							new_div += '<div class="bgoverlay-block" style="background-color:' + hexToRgb(data.div_overlaycolor,data.div_opacity) + ';height:' + data.height + 'px;">';
+							new_div += '<div class="bgoverlay-block" style="background-color:' + div_overlaycolor + ';height:' + data.height + 'px;">';
 						else
 							new_div += '<div class="bgoverlay-block" style="height:' + data.height + 'px;">';
 						
@@ -750,9 +750,9 @@ if (ext == "pdf" ) {
 			
 			var div_opacity = plugin.settings.overlay_opacity/100;
 			var div_overlaycolor = plugin.settings.overlay_color;
-			var color = hexToRgb(div_overlaycolor,div_opacity)
+		//	var color = hexToRgb(div_overlaycolor,div_opacity)
 			//$("#working_div .bgoverlay-block").css("opacity",div_opacity);
-			$("#working_div .bgoverlay-block").css("background-color",color);			
+			$("#working_div .bgoverlay-block").css("background-color",div_overlaycolor);			
 		};
 	
 		plugin.applyPreviewImage = function(){

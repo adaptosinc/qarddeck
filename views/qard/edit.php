@@ -178,14 +178,14 @@ $this->title = 'Edit Qard';
 							//overlay block styles
 							if($block->link_image != '' && ($theme['data_img_type'] == 'background' || $theme['data_img_type'] == 'both')){
 								$opacity = $theme_properties['overlay_opacity']/100;
-								$overlay_block_style .= 'opacity:'.$opacity.';';
+								//$overlay_block_style .= 'opacity:'.$opacity.';';
 								//if(isset($theme['div_overlaycolor']) && $theme_properties['div_overlaycolor']!='')
 									$overlay_block_style .= 'background-color:'.$theme_properties['overlay_color'].';';								
 								
 							}
 							$overlay_block_style .= 'height:'.$theme['height'].'px;';
 							//$overlay_block_style .='height:auto;';
-							
+							//print_r($overlay_block_style);
 							$text_block_style .= 'height:'.$theme['height'].'px;';
 							$text_block_style .='overflow:hidden;';
 							//$text_block_style .='height:auto;';

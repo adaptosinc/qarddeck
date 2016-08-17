@@ -281,7 +281,7 @@ class Qard extends \yii\db\ActiveRecord
 					//overlay block styles
 						if($block->link_image != '' && ($theme['data_img_type'] == 'background' || $theme['data_img_type'] == 'both')){
 							$opacity = $theme_properties['overlay_opacity']/100;
-							$overlay_block_style .= 'opacity:'.$opacity.';';
+							//$overlay_block_style .= 'opacity:'.$opacity.';';
 							//if(isset($theme['div_overlaycolor']) && $theme_properties['div_overlaycolor']!='')
 								$overlay_block_style .= 'background-color:'.$theme_properties['overlay_color'].';';								
 							

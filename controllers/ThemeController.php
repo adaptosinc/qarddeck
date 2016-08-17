@@ -82,6 +82,9 @@ class ThemeController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 			//print_r($model);die;
+			list($r, $g, $b) = sscanf('#'.$model->overlay_color, "#%02x%02x%02x");
+			$opacity = $model->overlay_opacity/100;
+			$model->overlay_color = 'rgba('.$r.','.$g.','.$b.','.$opacity.')';
 			$theme_properties = [
 				'theme_color_1' => '#'.$model->theme_color_1,
 				'theme_color_2' => '#'.$model->theme_color_2,
@@ -93,7 +96,7 @@ class ThemeController extends Controller
 				'light_link_color' => '#'.$model->light_link_color,
 				'dark_link_color' => '#'.$model->dark_link_color,
 				'overlay_opacity' => $model->overlay_opacity,
-				'overlay_color' => '#'.$model->overlay_color,
+				'overlay_color' => $model->overlay_color,
 				'block_background_color' => '#'.$model->block_background_color,				
 			];
 			$model->theme_type = 1; //for qard
@@ -132,6 +135,9 @@ class ThemeController extends Controller
 		$model->block_background_color = $theme_properties['block_background_color'];
 	
         if ($model->load(Yii::$app->request->post())) {
+			list($r, $g, $b) = sscanf('#'.$model->overlay_color, "#%02x%02x%02x");
+			$opacity = $model->overlay_opacity/100;
+			$model->overlay_color = 'rgba('.$r.','.$g.','.$b.','.$opacity.')';
 			$theme_properties = [
 				'theme_color_1' => '#'.$model->theme_color_1,
 				'theme_color_2' => '#'.$model->theme_color_2,
@@ -143,7 +149,7 @@ class ThemeController extends Controller
 				'light_link_color' => '#'.$model->light_link_color,
 				'dark_link_color' => '#'.$model->dark_link_color,
 				'overlay_opacity' => $model->overlay_opacity,
-				'overlay_color' => '#'.$model->overlay_color,
+				'overlay_color' => $model->overlay_color,
 				'block_background_color' => $model->block_background_color,		
 			];
 			$model->theme_type = 1; //for qard
