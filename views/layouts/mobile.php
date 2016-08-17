@@ -87,13 +87,13 @@
                                 <div id="navbar" class="navbar-collapse collapse">
                                     
                                   <ul class="nav navbar-nav">
-                                    <li class="active"><a href="#">Home</a></li>
-                                    <li><a href="#about">My Profile</a></li>
-                                    <li><a href="#contact">Templates</a></li>
-                                    <li><a href="#contact">Getting Started</a></li>
-                                    <li><a href="#contact">QardStream</a></li>
-                                    <li><a href="#contact">About</a></li>
-                                    <li><a href="#contact">Contact Us</a></li>
+                                    <li class="active"><a href="<?=\Yii::$app->homeUrl?>">Home</a></li>
+                                    <li><a href="<?=\Yii::$app->homeUrl?>qard/my-qards">My Profile</a></li>
+                                    <li><a href="#">Templates</a></li>
+                                    <li><a href="#">Getting Started</a></li>
+                                    <li><a href="<?=\Yii::$app->homeUrl?>qard/index">QardStream</a></li>
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#">Contact Us</a></li>
                                   </ul>
                                 </div><!--/.nav-collapse -->
 

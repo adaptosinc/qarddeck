@@ -441,7 +441,7 @@ $this->title = 'Consume Qard';
 
 			hideAll('active-file-preview');
 			$('.active-preview-content').show();
-			$('#file_title').html(fileName);
+			$('#file_title').html(fileName+'<span onclick="closeTab();" class="pull-right"><i class="fa fa-times-thin"></i></span>');
 			$('#file_image').attr("file-name",fileName);
 			$('#file_controls').show();
 			$('#pdf_area').hide();
