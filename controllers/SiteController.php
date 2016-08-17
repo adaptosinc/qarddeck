@@ -58,7 +58,7 @@ class SiteController extends Controller
                 'profile' => $profile,
             ]);        
         }else{
-            $this->layout = 'mobilelayout';
+            $this->layout = 'mobile';
              return $this->render('mobile/home', [
                 'model' => $model,
                 'profile' => $profile,
