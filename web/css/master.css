@@ -3486,7 +3486,11 @@ p.login-link a {
 }
 
 /* Profile Qard */
-
+button.logout {
+    border: none;
+    background-color: white;
+    padding: 0;
+}
 .mobile-screen .pqards-action button {
     margin: 10px 0;
     width: 100%;
