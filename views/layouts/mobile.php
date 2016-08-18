@@ -108,8 +108,8 @@
                                 <span class="caret"></span>
                               </a>                            
                               <ul class="dropdown-menu" aria-labelledby="myprofile">
-                                <li class="col-sm-3 col-md-3"><img src="<?=\Yii::$app->user->identity->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;"></li>
-                                <li class="col-sm-9 col-md-9">
+                                <li class="col-xs-3 col-sm-3 col-md-3"><img src="<?=\Yii::$app->user->identity->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;"></li>
+                                <li class="col-xs-9 col-sm-9 col-md-9">
                                     <ul>
                                         <li><span><?=\Yii::$app->user->identity->firstname?><br><?=\Yii::$app->user->identity->showEmail?></span></li>
                                         <li><a href="<?=\Yii::$app->homeUrl?>qard/my-qards">My Profile</a></li>
