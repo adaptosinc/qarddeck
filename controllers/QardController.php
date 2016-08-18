@@ -193,14 +193,26 @@ class QardController extends Controller
 			$feed .= $html;
 		}
 		if(!$page || $page == 0){
-			return $this->render('my_qards',[
-				'feed' => $feed,
-				'type' => $type,
-				'qardcount'=>$qardcount,
-				'sharecount'=>$sharecount,
-				'bookmarkcount'=>$bookmarkcount,
-				'likecount'=>$likecount,
-			]);		
+			if($this->isMobile()){
+				$this->layout = "mobile";
+				return $this->render('mobile/my_qards',[
+					'feed' => $feed,
+					'type' => $type,
+					'qardcount'=>$qardcount,
+					'sharecount'=>$sharecount,
+					'bookmarkcount'=>$bookmarkcount,
+					'likecount'=>$likecount,
+				]);
+			}
+			else	
+				return $this->render('my_qards',[
+					'feed' => $feed,
+					'type' => $type,
+					'qardcount'=>$qardcount,
+					'sharecount'=>$sharecount,
+					'bookmarkcount'=>$bookmarkcount,
+					'likecount'=>$likecount,
+				]);		
 		}
 		else{
 			return $feed;		

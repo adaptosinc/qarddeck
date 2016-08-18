@@ -48,8 +48,7 @@ use yii\widgets\ActiveForm;
     background-color: teal;
 }
 </style>
-<p id="loading" align="center" >
-<ul id="spinners">  
+<ul id="spinners" align="center">  
 	<li class="sk-cube-grid selected">
 		  <div class="sk-cube sk-cube1"></div>
 		  <div class="sk-cube sk-cube2"></div>
@@ -62,7 +61,6 @@ use yii\widgets\ActiveForm;
 		  <div class="sk-cube sk-cube9"></div>
 	</li>
 </ul>
-</p>
 <script>
 
 $(window).load(function() {

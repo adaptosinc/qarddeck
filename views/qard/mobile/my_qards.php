@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 <style>
-.grid-item { width: 350px; }
+.grid-item { width: 100%; height: auto;}
 </style>
     <?php 
 	$all_class = $qard_class = $deck_class= 'btn-default';
@@ -16,69 +16,77 @@ use yii\widgets\ActiveForm;
 	if($type =="decks")
 		$deck_class = 'qard';	
 	?>
-    <script src="<?= Yii::$app->request->baseUrl?>/js/masonry.js" type="text/javascript"></script>	
+    <script src="<?= Yii::$app->request->baseUrl?>/js/masonry.js" type="text/javascript"></script>
+			<section class="main-stream">	
 				<div class="profile-header">
-					<div class="col-sm-6 col-md-6">
+					<div class="col-xs-12 col-sm-6 col-md-6">
 						<div class="user-details">
-							<div class="col-sm-2 col-md-2">
+							<div class="col-xs-4 col-sm-2 col-md-2">
 								<img src="<?=\Yii::$app->user->identity->profile_photo?>" width="80px" height="80px" style="border-radius: 50%;" alt="">
 							</div>
-							<div class="col-sm-10 col-md-10">
-								<h4><?=\Yii::$app->user->identity->firstname?></h4>
+							<div class="col-xs-8 col-sm-10 col-md-10">
+                                 <h4><?=\Yii::$app->user->identity->firstname?> <span class="pull-right"><a  data-toggle="collapse" href="#collapseUser" aria-expanded="false" aria-controls="collapseUser"><i class="fa fa-chevron-down"></i></a></span></h4>
+                                    <p><a href="">@<?=\Yii::$app->user->identity->username?></a></p>							
+								<!--<h4><?=\Yii::$app->user->identity->firstname?></h4>
 								<ul>
 									<li><a href="">@<?=\Yii::$app->user->identity->username?></a></li>
 									<li><a href=""><i class="fa fa-envelope"></i>&nbsp;<?=\Yii::$app->user->identity->showEmail?></a></li>
 									<li><a href=""><i class="fa fa-chain"></i>&nbsp;<?=\Yii::$app->user->identity->website?></a></li>
-								</ul>
+								</ul>-->
 							</div>
-							<p><?=\Yii::$app->user->identity->bio?></p>
+							<!--<p><?=\Yii::$app->user->identity->bio?></p>-->
 						</div>
 					</div>
-					<div class="col-sm-3 col-md-3">
+					<div class="collapse" id="collapseUser">
+						<ul>                                
+							<li><a href=""><i class="fa fa-envelope"></i>&nbsp;<?=\Yii::$app->user->identity->showEmail?></a></li>
+							<li><a href=""><i class="fa fa-chain"></i>&nbsp;<?=\Yii::$app->user->identity->website?></a></li>
+						</ul>
+						<p><?=\Yii::$app->user->identity->bio?></p>    
+						<div class="col-xs-12 col-sm-3 col-md-3">
+							<ul class="view-list">
+								<li class="edit-info"><button class="btn btn-grey"><i class="fa fa-pencil"></i>Edit info</button></li>
+								<li>117 Following</li>
+								<li>23 Followers</li>
+							</ul>
+						</div> 
+					</div>
+					<!--<div class="col-sm-3 col-md-3">
 						<ul class="view-list">
 							<li class="edit-info"><button class="btn btn-grey" onclick="location.href='<?=Yii::$app->homeUrl?>user/profile';"><i class="fa fa-pencil"></i>Edit info</button></li>
 							<li>117 Following</li>
 							<li>23 Followers</li>
 						</ul>
-					</div>
-					<div class="profile-action col-sm-3 col-md-3">
+					</div>-->
+					<div class="profile-action col-xs-12 col-sm-3 col-md-3">
 						<button class="btn btn-lg <?=$all_class ?>" onclick="location.href='<?=Yii::$app->homeUrl?>qard/my-qards?type=both';">Wall</button>
 						<button class="btn btn-lg <?=$qard_class ?>" onclick="location.href='<?=Yii::$app->homeUrl?>qard/my-qards?type=qards';">Qards</button>
 						<button class="btn btn-lg <?=$deck_class ?>" onclick="location.href='<?=Yii::$app->homeUrl?>qard/my-qards?type=decks';">Decks</button>
 					</div>                        
 				</div>
 				<div class="stream-cat">
-					<ul class="profile-title">
+					<ul class="profile-title nav nav-tabs">
 						<li class="tootip" data-title="Created by me"><span class="arrow-up"></span><h4><img src="<?=Yii::$app->homeUrl?>images/newqard.png" alt="" width="20px" height="20px"><?=$qardcount?></h4></li>
 						<li><h4><img src="<?=Yii::$app->homeUrl?>images/heart_icon.png" alt="" width="20px" height="20px"><?=$likecount?></h4></li>
 						<li><h4><img src="<?=Yii::$app->homeUrl?>images/bookmark_icon.png" alt="" width="15px" height="20px"><?=$bookmarkcount?></h4></li>
 						<li><h4><img src="<?=Yii::$app->homeUrl?>images/share_icon.png" alt="" width="20px" height="20px"><?=$sharecount?></h4></li>
 					</ul>
 				</div>
-                <section class="main-stream">
-                    <div id="tabs">
-                    <!--<div class="stream-cat">
-                        <ul class="profile-title nav nav-tabs" role="tablist">
-							
-                            <li role="presentation" class="<?=$all_class ?>"><h4><a href="<?=Yii::$app->homeUrl?>qard/my-qards?type=both">All</a></h4></li>
-                            <li role="presentation" class="<?=$qard_class ?>"><h4><a href="<?=Yii::$app->homeUrl?>qard/my-qards?type=qards" >Qards</a></h4></li>
-                            <li role="presentation" class="<?=$deck_class ?>"><h4><a href="<?=Yii::$app->homeUrl?>qard/my-qards?type=decks" >Deck</a></h4></li>
-                        </ul>
-                    </div>-->
-                    <div class="main-content">
-                        <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 45 }'>	
-										<?php  
-											echo $feed;
-										?>
-									</div>
+                
+				<div class="main-content">
+					<div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
+						<div class="row">
+							<div class="col-sm-12 col-md-12">
+								<div class="grid" data-masonry='{ "itemSelector": ".grid-item", "gutter": 40 }'>	
+									<?php  
+										echo $feed;
+									?>
 								</div>
 							</div>
 						</div>
 					</div>
-				</section>
+				</div>
+			</section>
 
 <style>
 .sk-cube-grid .sk-cube {
@@ -99,18 +107,19 @@ use yii\widgets\ActiveForm;
 	</li>
 </ul>
 
+
 <script>
 
 $(window).load(function() {
 	var win = $(window);
 	var page = 1;
+	// Each time the user scrolls
 	var $container = $('.grid');
 	$container.masonry();
-	// Each time the user scrolls
 	win.scroll(function() {
 		// End of the document reached?
 		if ($(document).height() - win.height() == win.scrollTop()) {
-			$('#spinners').show();
+			$('#spinners').show();	
 			$.ajax({
 				url: '<?=Url::to(['qard/my-qards'], true);?>',
 				dataType: 'html',
@@ -118,14 +127,14 @@ $(window).load(function() {
 				success: function(html) {
 					var el = jQuery(html);
 					$(".grid").append(el).masonry( 'appended', el, true );
-					$container.masonry();
 					$('#spinners').hide();
+					$container.masonry();
 				}
 			});
 			page = page+1;
 		}
 	});
-	$('.social-list li a').on('click',function(){
+/* 	$('.social-list li a').on('click',function(){
 		console.log($(this).attr('act-type'));
 			$.ajax({
 				url: '<?=Url::to(['qard/activity'], true);?>',
@@ -136,7 +145,7 @@ $(window).load(function() {
 					console.log(response);
 				}
 			});
-	});
+	}); */
 });
 $(document).on('click','.qardid',function(){
 	var data_id = $(this).attr('id');
