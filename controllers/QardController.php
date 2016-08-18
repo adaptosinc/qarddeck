@@ -275,15 +275,17 @@ class QardController extends Controller
     public function actionCreate($theme_id=null)
     {
         $model = new Qard();
-		if(!$theme_id){
-			//go and select a theme and then come back
-			return $this->redirect(['theme/select-theme']);
-		}
-		else{
-			$theme = Theme::findOne($theme_id);
-			if(!$theme){
-				\Yii::$app->getSession()->setFlash('error', 'Please select a theme');
+		if(!$this->isMobile()){ 
+			if(!$theme_id){
+				//go and select a theme and then come back
 				return $this->redirect(['theme/select-theme']);
+			}
+			else{
+				$theme = Theme::findOne($theme_id);
+				if(!$theme){
+					\Yii::$app->getSession()->setFlash('error', 'Please select a theme');
+					return $this->redirect(['theme/select-theme']);
+				}
 			}
 		}
         if ($model->load(Yii::$app->request->post())) {
@@ -307,7 +309,7 @@ class QardController extends Controller
 					'tags'=>$tags
                 ]);
             }else{
-                $this->layout = 'mobilelayout';
+                $this->layout = 'mobile';
                 return $this->render('mobile/create', [
                     'model' => $model,
                 ]);                
