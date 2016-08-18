@@ -130,7 +130,7 @@
 
 						<?php
 						} else { ?>
-                        <li><button class="btn btn-default signin" onclick="location.href='<?=\Yii::$app->homeUrl;?>user/register';">Sign In/Sign Up</button></li>			    
+                        <li><button class="btn btn-default signin" onclick="location.href='<?=\Yii::$app->homeUrl;?>user/register';">Sign Up</button></li>			    
 						<?php }?> 
 						
                     </ul>
