@@ -1,19 +1,12 @@
-                <!-- mobile view qard half -->
-                <div class="container-fluid mobile-page">
-                    <section class="home-main content">
-                        <div class="mobile-qardcreate">
-                            <h2>Yay!</h2>
-                            <img src="<?= Yii::$app->request->baseUrl?>/images/mobile-success.png" alt="">
-                            <h4 style="color:#ff741b;">However, unit our mobile app is out the door, creating Qards is available only on Desktop</h4>
-                            <h4>Get a magic link sent to your email so that you can start creating on your Desktop</h4>
-                            <div class="form-group">
-                                <img src="<?= Yii::$app->request->baseUrl?>/images/email-trans.png" alt=""><input type="text" name="email" placeholder="Email Address">
-                            </div>
-                            <button class="btn btn-lg btn-warning">Send Magic Link</button>
-                            
-                            <p>Every magic link sent gives our Mobile team more reason to stay late and bring you QardDeck for Mobile!</p>
-                        </div>
-                        
-                    </section>                    
-                    
-                </div>     
+<section class="home-main content">
+	<div class="mobile-qardcreate">                        
+		<img src="<?=Yii::$app->homeUrl?>images/wand_icon.png" alt="">
+		<h4>If you already have an account, enter your email address below and we will sen youa magic link you can use on desktop:</h4>
+		<div class="form-group">
+			<input type="text" name="email" class="col-xs-9" placeholder="Enter Email Address">
+			<button class="btn btn-lg qard col-xs-3">Send</button>
+		</div>                                                
+		<p>Otherwise use this link in your favourite desktop browser and start creating Qards:</p>
+		<h3>www.qard.dk</h3>
+	</div>	
+</section>  
