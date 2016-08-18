@@ -65,9 +65,11 @@ use yii\widgets\ActiveForm;
 </p>
 <script>
 
-$(document).ready(function() {
+$(window).load(function() {
 	var win = $(window);
 	var page = 1;
+	var $container = $('.grid');
+	$container.masonry();
 	// Each time the user scrolls
 	win.scroll(function() {
 		// End of the document reached?
