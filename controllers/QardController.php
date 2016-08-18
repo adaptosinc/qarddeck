@@ -76,12 +76,15 @@ class QardController extends Controller
 		
 		$decks =  $this->getDecksfeed($offset,2);
 		//$decks =  "";
+		if(empty($qards)){
+			$qards = $decks;
+		}
 		if($type == 'both'){
 			//joining the dec+qard array
 			array_splice($qards, count($qards), 0, $decks);
 			shuffle($qards);			
 		}
-		if($type == 'decks' || empty($qards)){
+		if($type == 'decks'){
 			$qards = $decks;
 		}
 			//print_r($qards);die;
