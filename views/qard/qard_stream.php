@@ -74,7 +74,7 @@ $(window).load(function() {
 	win.scroll(function() {
 		// End of the document reached?
 		if ($(document).height() - win.height() == win.scrollTop()) {
-			$('#loading').show();		
+			$('#spinners').show();		
 			$.ajax({
 				url: '<?=Url::to(['qard/index'], true);?>',
 				dataType: 'html',
@@ -82,10 +82,11 @@ $(window).load(function() {
 				success: function(html) {
 					var el = jQuery(html);
 					$(".grid").append(el).masonry( 'appended', el, true );
-					$('#loading').hide();
+					$('#spinners').hide();
+					$container.masonry();
 				},
 				error:function(){
-					$('#loading').hide();
+					$('#spinners').hide();
 				}
 			});
 			page = page+1;
