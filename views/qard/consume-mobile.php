@@ -99,7 +99,7 @@ $this->title = 'Consume Qard';
                           </div>
                         </div> 
 						
-						<div id="comment-input" >
+						<div id="comment-view" >
 						
                         <div class="user-info">
                             <img src="<?php if(isset($model->userProfile)){
@@ -625,7 +625,7 @@ $this->title = 'Consume Qard';
 				var commentcount = $('#comment-count').html();					
 				var qardid = $('#qard_id').val();
 				var userid = $('#user_id').val();
-				var qardcomment = $('#comment-input').val();
+				var qardcomment = $('#comment-input').val();				
 				if(qardid!=''){
 					$.ajax({
 						url: '<?=Url::to(['comments/create'], true);?>',
@@ -695,7 +695,7 @@ $this->title = 'Consume Qard';
 			
 	$("#shareclick").click(function(){
         $("#share-input").toggle();
-        $("#comment-input").toggle();
+        $("#comment-view").toggle();
         $("#img-span").toggle();
         $("#x-span").toggle();
 		$(this).toggleClass( "active" );
