@@ -17,6 +17,10 @@ class SignUp extends Widget
         parent::init();
     }
 
+	 public function isMobile(){
+         return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+    }
+	
     public function run()
     {
       	$model = new User(); 
@@ -29,12 +33,12 @@ class SignUp extends Widget
 				foreach($model->errors as $error){
 					\Yii::$app->getSession()->setFlash('email_reg_error', $error[0]);
 				}
-
-				return $this->render('register', [
-					'model' => $model,
-					'profile' => $profile,
-				]);
-
+	
+				if(!$this->isMobile()){ 				
+					return $this->render('register', ['model' => $model,'profile' => $profile, ]);			
+				}else{
+					return $this->render('mobile/mobileregister' ,['model' => $model,'profile' => $profile,]); 
+				}			
 			}
 			else{
 				$model->setPassword($model->password);
@@ -73,11 +77,12 @@ class SignUp extends Widget
 			}
 
 				
-        } else {
-            return $this->render('register', [
-                'model' => $model,
-				'profile' => $profile,
-            ]);
+        } else {			
+			if(!$this->isMobile()){ 				
+				return $this->render('register', ['model' => $model,'profile' => $profile,]);			
+			}else{
+				return $this->render('mobile/mobileregister' ,['model' => $model,'profile' => $profile,]); 
+			}			           
         }
              
     }

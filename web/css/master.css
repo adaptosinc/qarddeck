@@ -4660,7 +4660,7 @@ p.login-link a {
 }
 .mobile-screen .profile-content span {
     position: relative;
-    top: -17px; 
+    /*top: -17px; */
     font-size: 13px;
 }
 
@@ -4668,4 +4668,8 @@ p.login-link a {
     display: block;
     float: left;
     width: 100%;
+}
+
+section.consume-main.content .right-block ul.deck-list li.active a{
+    background: #465360 !important;
 }

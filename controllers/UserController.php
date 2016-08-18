@@ -69,25 +69,9 @@ class UserController extends Controller
 		if(!$this->isMobile()){ 			
             return $this->render('register');
 		}else{			
-			 $model = new LoginForm();				
-		 if ($model->load(Yii::$app->request->post()) && $model->login()) {
-			   echo Yii::$app->session['qard'];
-			if(isset(Yii::$app->session['qard']) && Yii::$app->session['qard'] != '' ){
-				\Yii::$app->controller->redirect(['qard/publish']);
-				return "";
-			}
-			if(isset(Yii::$app->session['ref-url']) && Yii::$app->session['ref-url'] != ''){
-				\Yii::$app->controller->redirect(Yii::$app->session['ref-url']);
-				return "";
-			}
-			else{
-				\Yii::$app->controller->goBack();
-				return "";				
-			}
-		 }else{		
-                $this->layout = 'mobile';
-                return $this->render('mobile/register'); 
-			 }	
+			 $this->layout = 'mobile';
+             return $this->render('mobile/register'); 
+				
         }
 	}
 	/**
@@ -204,60 +188,8 @@ class UserController extends Controller
               return $this->render('profile');
 		}else{
 			
-			 $id =  \Yii::$app->user->id;
-			 $model = User::find()->where(['id' => $id])->one();		
-			 $profile = Profile::find()->where(['user_id' => $id])->one();	
-        
-             if($profile->load(Yii::$app->request->post())){
-				 
-             $currentpwd = Yii::$app->request->post()['cur_password'];
-		  
-		   
-            $newProfile = Profile::find()->where(['user_id' => $id])->one();
-			$profile->profile_photo = \Yii::$app->homeUrl.$newProfile->temp_image; 			
-            //$profile->validate();
-            if($profile->errors || $model->errors){
-                    foreach($model->errors as $error){
-                            \Yii::$app->getSession()->setFlash('profile_update_error', $error[0]);
-                    }
-                    foreach($profile->errors as $error){
-                            \Yii::$app->getSession()->setFlash('profile_update_error', $error[0]);
-                    }
-                    
-                    $this->layout = 'mobile';
-					return $this->render('mobile/profile', [
-                             'model' => $model,
-                             'profile' => $profile
-                     ]);
-            }
-	
-			if(!empty($currentpwd))
-			{
-				if(!empty($profile->password_profile) && !empty($profile->verify_password_profile) && ($profile->password_profile == $profile->verify_password_profile ))
-				{
-					if($model->validatePassword($currentpwd))
-					{										
-						$model->password = $profile->password_profile;
-						$model->setPassword($model->password);										
-						$model->generateAuthKey();
-						$model->save(false);
-					
-					}
-				}
-			}			
-           
-            $profile->save(false);    
-            \Yii::$app->controller->goBack();
-
-         } 
-         else 
-         { 
-                $this->layout = 'mobile';
-                return $this->render('mobile/profile',[
-                    'model' => $model,
-                    'profile' => $profile
-            ]);  
-		 }			
+			 $this->layout = 'mobile';
+                return $this->render('mobile/profile');  				
             }						
 	}	
     /**
