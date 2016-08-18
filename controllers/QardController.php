@@ -230,6 +230,7 @@ class QardController extends Controller
 		$Query->select(['*'])
 			->from('qard')
 			->where(['user_id'=>\Yii::$app->user->id])
+			->andWhere(['<>','status', 2])
 			->limit($limit)
 			->offset($offset)
 			->orderBy(['last_updated_at' => SORT_DESC]);	
