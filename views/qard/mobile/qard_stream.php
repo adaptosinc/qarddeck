@@ -65,10 +65,12 @@ use yii\widgets\ActiveForm;
 </p>
 <script>
 
-$(document).ready(function() {
+$(window).load(function() {
 	var win = $(window);
 	var page = 1;
 	// Each time the user scrolls
+	var $container = $('.grid');
+	$container.masonry();
 	win.scroll(function() {
 		// End of the document reached?
 		if ($(document).height() - win.height() == win.scrollTop()) {
@@ -89,7 +91,7 @@ $(document).ready(function() {
 			page = page+1;
 		}
 	});
-	$('.social-list li a').on('click',function(){
+/* 	$('.social-list li a').on('click',function(){
 		console.log($(this).attr('act-type'));
 			$.ajax({
 				url: '<?=Url::to(['qard/activity'], true);?>',
@@ -100,7 +102,7 @@ $(document).ready(function() {
 					console.log(response);
 				}
 			});
-	});
+	}); */
 });
 
 $(document).on('click','.qardid',function(){

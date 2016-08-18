@@ -158,7 +158,7 @@ class Qard extends \yii\db\ActiveRecord
 		$theme = $this->qardTheme;
 		$theme_properties = unserialize($theme->theme_properties);
 		
-		$str = '<div class="grid-item" style="height: auto;">
+		$str = '<div class="grid-item">
 				<div class="qard-content qardid" id="qard'.$this->qard_id.'">
 				<div id="add-block'.$this->qard_id.'" class="qard-div ">';
 			$blocks = $this->blocks;

@@ -151,7 +151,7 @@ class Deck extends \yii\db\ActiveRecord
 		$commentscount = $this->deckqardcommentCount;
 		
 				
-		$html = '<div class="grid-item" style="height: auto;"><div class="qard-content qard5 deckid" id="deck'.$this->deck_id.'"><div id="deck_'.$this->deck_id.'">';
+		$html = '<div class="grid-item"><div class="qard-content qard5 deckid" id="deck'.$this->deck_id.'"><div id="deck_'.$this->deck_id.'">';
 		$html .= '<img  src="'.$this->bg_image.'" />';
 		$html .= '</div>';
 		//deck bottom
