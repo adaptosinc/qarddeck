@@ -3375,9 +3375,6 @@ p.login-link a {
 }
 .mobile-screen .signback button {
     float: none !important;
-<<<<<<< HEAD
-	padding: 5px 10px;
-=======
     padding: 5px 10px;
 }
 
@@ -3410,7 +3407,6 @@ p.login-link a {
 }
 .mobile-screen .email-signin input {
     min-height: 40px;
->>>>>>> 08910b9cfb5393617d557e5f3f3f4c92d63de5c1
 }
 
 
@@ -4679,7 +4675,7 @@ p.login-link a {
 }
 .mobile-screen .profile-content span {
     position: relative;
-    top: -17px; 
+    /*top: -17px; */
     font-size: 13px;
 }
 
@@ -4687,4 +4683,8 @@ p.login-link a {
     display: block;
     float: left;
     width: 100%;
+}
+
+section.consume-main.content .right-block ul.deck-list li.active a{
+    background: #465360 !important;
 }

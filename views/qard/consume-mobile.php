@@ -11,9 +11,61 @@ use yii\db\Query;
 $this->title = 'Consume Qard';
 //$this->meta_image = Yii::$app->homeUrl.'uploads/qards/'.$model['qard_id'].".png";
 
+?>    
 
-?> 
-   
+ <?php
+		if(isset($model['qard_id'])){
+		    echo '<input type="hidden" name="qard_id" id="qard_id" value="'.$model['qard_id'].'"><input type="hidden" name="user_id" id="user_id" value="'.$model['user_id'].'">';
+		}
+		?>
+		
+			<?php
+						$qard_id = $model['qard_id'];			
+						$userid = \Yii::$app->user->id;
+					//*************  like check ***********//
+						$query = new Query;
+						$hquery = $query->select('*')
+							->from('qard_user_activity')
+							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'like']);
+						$command = $hquery->createCommand();
+						$data = $command->queryAll();
+						$hact = "";
+						if(empty($data)){
+							$himg = '<img id="like-img" src="'.Yii::$app->request->baseUrl.'/images/heart_icon.png" class="image-activity" alt="">';
+						}else{
+							$hact ="active";
+							$himg = '<img id="like-img" src="'.Yii::$app->request->baseUrl.'/images/heart_icon_light.png" class="image-activity" alt="">';
+						}
+						
+						//*************  bookmark check ***********//
+						
+						$bkquery = $query->select('*')
+							->from('qard_user_activity')
+							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'bookmark']);
+						$command = $bkquery->createCommand();
+						$data = $command->queryAll();
+						$bkact = "";
+						if(empty($data)){
+							$bkimg = '<img id="book-img" style="width:15px;margin:0 auto;" src="'.Yii::$app->request->baseUrl.'/images/bookmark_icon.png" class="image-activity" alt="" style="width:15px;">';
+						}else{
+							$bkact ="active";
+							$bkimg = '<img id="book-img"  style="width:15px;margin:0 auto;" src="'.Yii::$app->request->baseUrl.'/images/bookmark_icon_light.png" class="image-activity" alt="">';
+						}
+						
+					//*************  share count check ***********//
+					
+					$shquery = $query->select('count(*) as sharecount ')
+							->from('qard_user_activity')
+							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'share']);
+						$command = $shquery->createCommand();
+						$data = $command->queryOne();
+						$count = $data;
+					;
+						
+						
+		?>
+		
+
 	<section class="consume-main content">
 					<div class="profile-header">
 
@@ -42,20 +94,54 @@ $this->title = 'Consume Qard';
                     <div class="collapse" id="collapseUser">
                         <h4><?=$model->title?></h4>
                         <div class="row">
-                            <div class="right-block col-xs-12 col-sm-6 col-md-6">
-                                <ul class="deck-list">
-                                    <li><a href="mobile-consumeshare.html"><img src="../images/share_icon.png" alt=""></a><span><?=$model->shareCount?></span></li>
-                                    <li><a href=""><img src="../images/bookmark_icon.png" alt=""></a><span><?=$model->bookmarkCount?></span></li>
-                                    <li><a href=""><img src="../images/heart_icon.png" alt=""></a><span><?=$model->likeCount?></span></li>
+                            <div id="cardtabs " class="right-block col-xs-12 col-sm-6 col-md-6">
+                                <ul class="nav-tabs deck-list" role="tablist">
+                                    <li id="shareclick" role="presentation" ><a id="img-span" ><img  src="<?=Yii::$app->request->baseUrl?>/images/share_icon.png" alt=""></a><button style="display:none" id="x-span" class="close" type="button">
+<span aria-hidden="true">×</span>
+</button><span id="share-count"><?=$model->shareCount?></span></li>
+                                    <li  role="presentation" class="activity_card <?=$bkact;?>" id="book-msg" act-type="bookmark" act-id="<?=$model->qard_id?>"  for="" ><a href="" aria-controls="favblock" role="tab" data-toggle="tab" ><?=$bkimg?></a><span id="ch-book-count" ><?=$model->bookmarkCount?></span></li>
+                                    <li  role="presentation" class="activity_card <?=$hact;?>"  id="like-msg" act-type="like" act-id="<?=$model->qard_id?>" for="" ><a href="" aria-controls="favblock" role="tab" data-toggle="tab" ><?=$himg?></a><span id="ch-like-count" ><?=$model->likeCount?></span></li>
                                 </ul>
                             </div>
-                        </div>                        
+                        </div>  
+						<div class="share-input" id="share-input" style="display:none">
+                          <h4>Share the link below in social media, in email, or whatever.</h4>
+                          <h4 class="share-input"><input type="text" readonly="readonly" name="share-input" id="share-link" value="<?= Yii::$app->request->absoluteUrl ?>"
+						  class="col-xs-9 col-sm-10 col-md-10" ><button  for="copylink" act-type="share" act-id="<?=$model->qard_id?>" id="copy-link" class="btn qard col-xs-3 col-sm-2 col-md-2 activity_card ">COPY LINK</button></h4>
+                          <div class="quick-share">
+                              <h4>Quick Share</h4>
+                              <ul>
+                                 <li class="activity_card" act-type="share" act-id="<?=$model->qard_id?>" for="facebook" ><a style="display:block !important " href="https://www.facebook.com/sharer/sharer.php?u=<?= Yii::$app->request->absoluteUrl ?>" target="_blank" ><i class="fa fa-facebook"></i></a></li>
+                                  <li class="activity_card" act-type="share" act-id="<?=$model->qard_id?>" for="twitter"  ><a href="https://twitter.com/home?status=<?= Yii::$app->request->absoluteUrl ?>" target="_blank" ><i class="fa fa-twitter"></i></a></li>
+                                  <li class="activity_card" act-type="share" act-id="<?=$model->qard_id?>" for="linkedin" ><a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<?= Yii::$app->request->absoluteUrl ?>&title=&summary=&source="><i class="fa fa-linkedin"></i></a></li>
+                              </ul>
+                          </div>
+                        </div> 
+						
+						<div id="comment-input" >
+						
                         <div class="user-info">
-                            <img src="../images/deck-thumb.png" alt="" width="50px" height="50px" style="border-radius: 50%;float: left;"><strong>
+                            <img src="<?php if(isset($model->userProfile)){
+								echo $model->userProfile->profile_photo;
+							} ?>" alt="" width="50px" height="50px" style="border-radius: 50%;float: left;"><strong>
 							<?php if(isset($model->userProfile)){
 								echo $model->userProfile->fullname;
 							} ?>
-							<br /><span><?= $model->createdAgo?></span></strong>                                
+							<?php 							
+							 $datetime = $model->last_updated_at;
+								  $date = date('M j Y g:i A', strtotime($datetime));
+								  $date = new DateTime($date);
+								  $datetime1 = new DateTime("now"); 
+								  $diff = $datetime1->diff($date)->format("%a");
+								  if($diff == 0){
+									  $diff = 'Today';
+								  }else if($diff==1){
+									  $diff = '1 day ago';
+								  }else{
+									  $diff = $diff.' days ago';
+								  }								  
+							?>
+							<br /><span><?=$diff?></span></strong>                                
                         </div>                             
                         <ul class="deck-tags">
 									<?php 
@@ -66,11 +152,15 @@ $this->title = 'Consume Qard';
 									?>
                         </ul>                       
                         <div class="comment-preview">
-                            <h4>Comments(12)</h4>                            
+						<?php
+						$comments = QardComments::find()->where(['qard_id'=>$model->qard_id])->orderBy('created_at DESC')->all();
+						
+						?>
+                            <h4>Comments(<span id='comment-count'><?=count($comments)?></span>)</h4>                            
                             <ul class="comment-list">
 							<?php 
 							
-							$comments = QardComments::find()->where(['qard_id'=>$model->qard_id])->orderBy('created_at DESC')->all();
+							
 							foreach($comments as $comment){
 							$profile_photo = $comment->userProfile->profile_photo; 
 							?>
@@ -89,7 +179,9 @@ $this->title = 'Consume Qard';
                                          
                             </ul>
                         </div>
-                        <h4 class="comment-input"><input type="text" name="comment-input" class="col-sm-10 col-xs-10 col-md-10" placeholder="Share what you're thinking..."><button class="btn qard col-xs-2 col-sm-2 col-md-2">POST</button></h4>                            
+                        <h4 class="comment-input"><input id="comment-input" name="comment-input" type="text"  class="col-sm-10 col-xs-10 col-md-10" placeholder="Share what you're thinking..."><button id="commentSubmit" class="btn qard col-xs-2 col-sm-2 col-md-2">POST</button></h4>
+						
+						</div>                            
                     </div>                    
                     <div class="add-block col-sm-12">
 						<?php 
@@ -538,6 +630,117 @@ $this->title = 'Consume Qard';
 			$('.'+except).show();
 		}
 	/***************************/
+	
+	
+	//******************* Function for Add Comments **************//
+
+
+	$(document).ready(function(){
+
+		//******************* Function for Add Comments **************//
+	
+	$('#commentSubmit').click(function(e){
+		e.preventDefault();
+				var commentcount = $('#comment-count').html();					
+				var qardid = $('#qard_id').val();
+				var userid = $('#user_id').val();
+				var qardcomment = $('#comment-input').val();
+				if(qardid!=''){
+					$.ajax({
+						url: '<?=Url::to(['comments/create'], true);?>',
+						type: "POST",
+						data: {
+							'qardid': qardid,'userid':userid ,'qardcomment':qardcomment
+						},
+						success: function(data) {
+							$('#comment-input').val('');
+							var newcount = parseInt(commentcount) + parseInt(1);
+							$('#comment-count').html(newcount);
+							$('.comment-list').load(location.href +" .comment-list>*","");
+						}
+					});
+				}
+
+			});
+			
+			
+			//******************* Function for Favourites **************//
+			
+			$('.activity_card').on('click',function(){
+				var sharecount = $('#share-count').html();	
+				var likecount = $('#ch-like-count').html();	
+				var bookcount = $('#ch-book-count').html();	
+				var check =$(this);
+				console.log($(this).attr('act-type'));
+				var sharetype = $(this).attr('for');
+				$.ajax({
+					url: '<?=Url::to(['qard/activity'], true);?>',
+					dataType: 'html',
+					type : 'GET',
+					data: {'id':$(this).attr('act-id'),'type':$(this).attr('act-type'),'sharetype':sharetype},
+					success: function(response) {							
+						console.log(response);
+						
+						 if(response=='likeed'){	
+							
+							var newcount = parseInt(likecount) + parseInt(1);
+							$('#ch-like-count').html(newcount);
+							$("#like-img").attr('src','<?=Yii::$app->request->baseUrl?>/images/heart_icon_light.png');
+						}else if(response=='Unlikeed'){
+							var newcount = parseInt(likecount) - parseInt(1);
+							$('#ch-like-count').html(newcount);
+							$("#like-msg").removeClass('active');
+							$("#like-img").attr('src','<?=Yii::$app->request->baseUrl?>/images/heart_icon.png');
+						
+						}else if(response=='bookmarked'){	
+						
+							var newcount = parseInt(bookcount) + parseInt(1);
+							$('#ch-book-count').html(newcount);
+												
+							$("#book-img").attr('src','<?=Yii::$app->request->baseUrl?>/images/bookmark_icon_light.png');
+						}else if(response=='Unbookmarked'){	
+						var newcount = parseInt(bookcount) - parseInt(1);
+							$('#ch-book-count').html(newcount);
+							$("#like-msg").removeClass('active');
+							$("#book-img").attr('src','<?=Yii::$app->request->baseUrl?>/images/bookmark_icon.png');
+						}else if(response=='shareed'){	
+							var newcount = parseInt(sharecount) + parseInt(1);
+							$('#share-count').html(newcount);
+						} 
+					}
+					
+				}); 
+			});
+			
+	$("#shareclick").click(function(){
+        $("#share-input").toggle();
+        $("#comment-input").toggle();
+        $("#img-span").toggle();
+        $("#x-span").toggle();
+		$(this).toggleClass( "active" );
+		$(this).toggleClass( "share-close" );
+    });
+	
+	
+	
+	//******************* Function for Copy The URL Link **************//
+				
+			$("#copy-link").click(function(){
+				
+				 var copyTextarea = document.querySelector('#share-link');
+			  copyTextarea.select();
+
+			  try {
+				var successful = document.execCommand('copy');
+				var msg = successful ? 'successful' : 'unsuccessful';
+				console.log('Text Copied ' + msg);
+			  } catch (err) {
+				console.log('Oops, unable to copy');
+			  }
+			});
+			
+			
+	});	
         </script>
         
     </html>                

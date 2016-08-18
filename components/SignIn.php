@@ -15,11 +15,14 @@ class SignIn extends Widget
         parent::init();
     }
 
+	 public function isMobile(){
+         return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+    }
+	
     public function run()
     {
 
-        $model = new LoginForm();	    
-		
+        $model = new LoginForm();	    		
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 			echo Yii::$app->session['qard'];
 			if(isset(Yii::$app->session['qard']) && Yii::$app->session['qard'] != '' ){
@@ -38,9 +41,12 @@ class SignIn extends Widget
 
         }
 		else
-			
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+		{			
+			if(!$this->isMobile()){ 			
+            return $this->render('login', ['model' => $model,]);
+			}else{
+			 return $this->render('mobile/register' ,['model' => $model,]); 
+			}
+		}
 	}
 }
