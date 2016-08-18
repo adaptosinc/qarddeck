@@ -32,8 +32,8 @@ use yii\widgets\ActiveForm;
                     <div class="main-content">
                         <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
                             <div class="row">
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
+                                <div class="col-sm-12 col-md-12" style="padding:0px">
+                                    <div class="grid row" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
 										<?php  
 											echo $feed;
 										?>

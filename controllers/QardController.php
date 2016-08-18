@@ -91,12 +91,18 @@ class QardController extends Controller
 			$feed .= $html;
 		}
 		if(!$page || $page == 0){
-			if($this->isMobile())
+			if($this->isMobile()){
 				$this->layout = "mobile";
-			return $this->render('qard_stream',[
-				'feed' => $feed,
-				'type' => $type
-			]);		
+				return $this->render('mobile/qard_stream',[
+					'feed' => $feed,
+					'type' => $type
+				]);					
+			}
+			else
+				return $this->render('qard_stream',[
+					'feed' => $feed,
+					'type' => $type
+				]);		
 		}
 		else{
 			return $feed;		
