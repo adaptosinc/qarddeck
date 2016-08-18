@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 <style>
-.grid-item { width: 100%; }
+.grid-item { width: 100%; height: auto;}
 </style>
     <?php 
 	$all_class = $qard_class = $deck_class= '';

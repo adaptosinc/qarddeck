@@ -151,22 +151,22 @@ class Deck extends \yii\db\ActiveRecord
 		$commentscount = $this->deckqardcommentCount;
 		
 				
-		$html = '<div class="grid-item "><div class="qard-content qard5 deckid" id="deck'.$this->deck_id.'"><div class="bgimg-block style-block" id="deck_'.$this->deck_id.'">';
+		$html = '<div class="grid-item" style="height: auto;"><div class="qard-content qard5 deckid" id="deck'.$this->deck_id.'"><div id="deck_'.$this->deck_id.'">';
 		$html .= '<img  src="'.$this->bg_image.'" />';
 		$html .= '</div>';
 		//deck bottom
 		
 		$html .='<div class="qard-overlay">
-                                                    <div class="qard-share">
-                                                        <h4><button class="btn btn-warning">View Deck</button></h4>
-                                                        <ul>
-                                                            <li><img alt="" src="'.Yii::$app->homeUrl.'images/comments_icon.png"><span>'.$commentscount.'</span></li>
-                                                            <li><img alt="" src="'.Yii::$app->homeUrl.'images/share_icon.png"><span>'.$sharecount.'</span></li>
-                                                            <li><img alt="" src="'.Yii::$app->homeUrl.'images/bookmark_icon.png"><span>'.$bookmarkcount.'</span></li>
-                                                            <li><img alt="" src="'.Yii::$app->homeUrl.'images/heart_icon.png"><span>'.$likecount.'</span></li>
-                                                        </ul>
-                                                    </div>
-                                                </div></div>';
+					<div class="qard-share">
+						<h4><button class="btn btn-warning">View Deck</button></h4>
+						<ul>
+							<li><img alt="" src="'.Yii::$app->homeUrl.'images/comments_icon.png"><span>'.$commentscount.'</span></li>
+							<li><img alt="" src="'.Yii::$app->homeUrl.'images/share_icon.png"><span>'.$sharecount.'</span></li>
+							<li><img alt="" src="'.Yii::$app->homeUrl.'images/bookmark_icon.png"><span>'.$bookmarkcount.'</span></li>
+							<li><img alt="" src="'.Yii::$app->homeUrl.'images/heart_icon.png"><span>'.$likecount.'</span></li>
+						</ul>
+					</div>
+				</div></div>';
 												
 												
 												
