@@ -121,7 +121,7 @@ AppAsset::register($this);
 				</li>
                         <?php if(\Yii::$app->user->id){ ?>
 						<li class="account-drop">
-                            <div class="dropdown open">
+                            <div class="dropdown">
                               <a id="myprofile" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
                                <img src="<?=\Yii::$app->user->identity->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;">
                                 <span class="caret"></span>
