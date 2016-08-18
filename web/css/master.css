@@ -3486,7 +3486,11 @@ p.login-link a {
 }
 
 /* Profile Qard */
-
+button.logout {
+    border: none;
+    background-color: white;
+    padding: 0;
+}
 .mobile-screen .pqards-action button {
     margin: 10px 0;
     width: 100%;
@@ -4437,15 +4441,30 @@ section.theme-main.content .btn-default {
 }
 
 
+/* Mobile Qard create */
+.mobile-qardcreate {
+    padding: 20px;
+}
+.mobile-qardcreate .form-group {
+    display: inline-block;
+    width: 100%;
+}
+.mobile-qardcreate input {
+    min-height: 40px;
+    border: 1px solid #eaeaea;
+}
+.mobile-qardcreate h3 {
+    font-weight: 800;
+    color:#333;
+}
+.mobile-qardcreate h4 {
+    font-weight: 300;
+    color:#333;
+}
+
 .mobile-qardcreate h4, .mobile-qardcreate h2, .mobile-qardcreate p {
     line-height: 30px;
     margin: 40px 10px;
-}
-
-.mobile-qardcreate input {
-    border: 0;
-    border-bottom: 1px solid #eaeaea;
-    box-shadow: none;
 }
 
 .username p {

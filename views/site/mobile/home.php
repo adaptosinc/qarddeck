@@ -31,7 +31,7 @@
                     </div>                    
                     <div class="section-bottom">
                         <span class="close-section pull-right"><i class="fa fa-times-thin"></i></span>
-                        <button class="btn qard" onclick="location.href='<?=\Yii::$app->homeUrl?>';">Create a Qard on Desktop</button>
+                        <button class="btn qard" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/create';">Create a Qard on Desktop</button>
                         <p>Mobile App coming soon</p>
                     </div>
                 </section>        

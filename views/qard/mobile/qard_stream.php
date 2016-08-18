@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 <style>
-.grid-item { width: 350px; }
+.grid-item { width: 100%; height: auto;}
 </style>
     <?php 
 	$all_class = $qard_class = $deck_class= '';
@@ -32,8 +32,8 @@ use yii\widgets\ActiveForm;
                     <div class="main-content">
                         <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
                             <div class="row">
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
+                                <div class="col-sm-12 col-md-12" >
+                                    <div class="grid row" data-masonry='{ "itemSelector": ".grid-item", "gutter": 40 }' >	
 										<?php  
 											echo $feed;
 										?>
@@ -43,32 +43,32 @@ use yii\widgets\ActiveForm;
 						</div>
 					</div>
 				</section>
-<style>
-.sk-cube-grid .sk-cube {
-    background-color: teal;
-}
-</style>
-<ul id="spinners" align="center">  
-	<li class="sk-cube-grid selected">
-		  <div class="sk-cube sk-cube1"></div>
-		  <div class="sk-cube sk-cube2"></div>
-		  <div class="sk-cube sk-cube3"></div>
-		  <div class="sk-cube sk-cube4"></div>
-		  <div class="sk-cube sk-cube5"></div>
-		  <div class="sk-cube sk-cube6"></div>
-		  <div class="sk-cube sk-cube7"></div>
-		  <div class="sk-cube sk-cube8"></div>
-		  <div class="sk-cube sk-cube9"></div>
-	</li>
-</ul>
+				<style>
+				.sk-cube-grid .sk-cube {
+					background-color: teal;
+				}
+				</style>
+				<ul id="spinners" align="center" >  
+					<li class="sk-cube-grid selected">
+						  <div class="sk-cube sk-cube1"></div>
+						  <div class="sk-cube sk-cube2"></div>
+						  <div class="sk-cube sk-cube3"></div>
+						  <div class="sk-cube sk-cube4"></div>
+						  <div class="sk-cube sk-cube5"></div>
+						  <div class="sk-cube sk-cube6"></div>
+						  <div class="sk-cube sk-cube7"></div>
+						  <div class="sk-cube sk-cube8"></div>
+						  <div class="sk-cube sk-cube9"></div>
+					</li>
+				</ul>
 <script>
 
 $(window).load(function() {
 	var win = $(window);
 	var page = 1;
+	// Each time the user scrolls
 	var $container = $('.grid');
 	$container.masonry();
-	// Each time the user scrolls
 	win.scroll(function() {
 		// End of the document reached?
 		if ($(document).height() - win.height() == win.scrollTop()) {
@@ -81,7 +81,7 @@ $(window).load(function() {
 					var el = jQuery(html);
 					$(".grid").append(el).masonry( 'appended', el, true );
 					$('#spinners').hide();
-					$container.masonry();
+					$container.masonry();					
 				},
 				error:function(){
 					$('#spinners').hide();
@@ -90,7 +90,7 @@ $(window).load(function() {
 			page = page+1;
 		}
 	});
-	$('.social-list li a').on('click',function(){
+/* 	$('.social-list li a').on('click',function(){
 		console.log($(this).attr('act-type'));
 			$.ajax({
 				url: '<?=Url::to(['qard/activity'], true);?>',
@@ -101,7 +101,7 @@ $(window).load(function() {
 					console.log(response);
 				}
 			});
-	});
+	}); */
 });
 
 $(document).on('click','.qardid',function(){

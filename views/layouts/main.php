@@ -119,18 +119,39 @@ AppAsset::register($this);
 						</div><!--/.nav-collapse -->
 
 				</li>
-                        <li><?php if(\Yii::$app->user->id){ 
-	                        echo Html::beginForm(['/site/logout'], 'post');
-	               			echo Html::submitButton(
-	                   				'Logout',
-	                   			['class' => 'btn btn-default signin']
-	               			);
-	               			echo Html::endForm();
-
-               } else { ?>
-                        <button class="btn btn-default signin" onclick="location.href='<?=\Yii::$app->homeUrl;?>user/register';">Sign In/Sign Up</button>			    
-	        <?php }?>
+                        <?php if(\Yii::$app->user->id){ ?>
+						<li class="account-drop">
+                            <div class="dropdown">
+                              <a id="myprofile" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                               <img src="<?=\Yii::$app->user->identity->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;">
+                                <span class="caret"></span>
+                              </a>                            
+                              <ul class="dropdown-menu" aria-labelledby="myprofile">
+                                <li class="col-sm-3 col-md-3"><img src="<?=\Yii::$app->user->identity->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;"></li>
+                                <li class="col-sm-9 col-md-9">
+                                    <ul>
+                                        <li><span><?=\Yii::$app->user->identity->firstname?><br><?=\Yii::$app->user->identity->showEmail?></span></li>
+                                        <li><a href="<?=\Yii::$app->homeUrl?>qard/my-qards">My Profile</a></li>
+                                        <li><a href="<?=\Yii::$app->homeUrl?>user/profile">Edit Account Info</a></li>
+                                        <li><a href="index.html">						
+										<?php						
+											echo Html::beginForm(['/site/logout'], 'post');
+											echo Html::submitButton(
+													'LOG OUT',
+												['class' => 'logout']
+											);
+											echo Html::endForm();
+										?></a></li>                                        
+                                    </ul>
+                              </li></ul>
+                            </div>                            
                         </li>
+
+						<?php
+						} else { ?>
+                        <li><button class="btn btn-default signin" onclick="location.href='<?=\Yii::$app->homeUrl;?>user/register';">Sign In/Sign Up</button></li>			    
+						<?php }?>
+                        
                        
 			</ul>
 		</header>   

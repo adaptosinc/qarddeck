@@ -66,7 +66,7 @@ class QardController extends Controller
     public function actionIndex($page=null,$type=null){ 
 		if(!$type)
 			$type = 'both';
-		$limit = 5;
+		$limit = 3;
 		if(!$page)
 			$page = 0;
 		$offset = $page*$limit;
@@ -76,7 +76,6 @@ class QardController extends Controller
 		
 		$decks =  $this->getDecksfeed($offset,2);
 		//$decks =  "";
-		
 		if($type == 'both'){
 			//joining the dec+qard array
 			array_splice($qards, count($qards), 0, $decks);
@@ -91,10 +90,18 @@ class QardController extends Controller
 			$feed .= $html;
 		}
 		if(!$page || $page == 0){
-			return $this->render('qard_stream',[
-				'feed' => $feed,
-				'type' => $type
-			]);		
+			if($this->isMobile()){
+				$this->layout = "mobile";
+				return $this->render('mobile/qard_stream',[
+					'feed' => $feed,
+					'type' => $type
+				]);					
+			}
+			else
+				return $this->render('qard_stream',[
+					'feed' => $feed,
+					'type' => $type
+				]);		
 		}
 		else{
 			return $feed;		
@@ -186,14 +193,26 @@ class QardController extends Controller
 			$feed .= $html;
 		}
 		if(!$page || $page == 0){
-			return $this->render('my_qards',[
-				'feed' => $feed,
-				'type' => $type,
-				'qardcount'=>$qardcount,
-				'sharecount'=>$sharecount,
-				'bookmarkcount'=>$bookmarkcount,
-				'likecount'=>$likecount,
-			]);		
+			if($this->isMobile()){
+				$this->layout = "mobile";
+				return $this->render('mobile/my_qards',[
+					'feed' => $feed,
+					'type' => $type,
+					'qardcount'=>$qardcount,
+					'sharecount'=>$sharecount,
+					'bookmarkcount'=>$bookmarkcount,
+					'likecount'=>$likecount,
+				]);
+			}
+			else	
+				return $this->render('my_qards',[
+					'feed' => $feed,
+					'type' => $type,
+					'qardcount'=>$qardcount,
+					'sharecount'=>$sharecount,
+					'bookmarkcount'=>$bookmarkcount,
+					'likecount'=>$likecount,
+				]);		
 		}
 		else{
 			return $feed;		
@@ -211,6 +230,7 @@ class QardController extends Controller
 		$Query->select(['*'])
 			->from('qard')
 			->where(['user_id'=>\Yii::$app->user->id])
+			->andWhere(['<>','status', 2])
 			->limit($limit)
 			->offset($offset)
 			->orderBy(['last_updated_at' => SORT_DESC]);	
