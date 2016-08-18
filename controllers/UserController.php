@@ -336,7 +336,7 @@ class UserController extends Controller
    }
    
     public function actionMobileRegister(){
-		if(!$this->isMobile()){ 	
+		if($this->isMobile()){ 	
               $this->layout = 'mobile';
               return $this->render('mobile/mobileregister');                
 		} 			
