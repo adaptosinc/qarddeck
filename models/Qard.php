@@ -288,7 +288,7 @@ class Qard extends \yii\db\ActiveRecord
 					//overlay block styles
 						if($block->link_image != '' && ($theme['data_img_type'] == 'background' || $theme['data_img_type'] == 'both')){
 							$opacity = $theme_properties['overlay_opacity']/100;
-							$overlay_block_style .= 'opacity:'.$opacity.';';
+							//$overlay_block_style .= 'opacity:'.$opacity.';';
 							//if(isset($theme['div_overlaycolor']) && $theme_properties['div_overlaycolor']!='')
 								$overlay_block_style .= 'background-color:'.$theme_properties['overlay_color'].';';								
 							
@@ -364,12 +364,25 @@ class Qard extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getDeckqardCount()
-    {
-      
-		 $qard_decks = $this->getQardDecks();
+    {      
+		$qard_decks = $this->getQardDecks();
 		return count($qard_decks); 
 		
     }
 	
-	
+	public function getCreatedAgo(){
+		$datetime = $this->last_updated_at;								 
+		$date = date('M j Y g:i A', strtotime($datetime));
+		$date = new \DateTime($date);
+		$datetime1 = new \DateTime("now"); 
+		$diff = $datetime1->diff($date)->format("%a");
+		if($diff == 0){
+			$diff = 'Today';
+		}else if($diff==1){
+			$diff = '1 day ago';
+		}else{
+			$diff = $diff.' days ago';
+		}
+		return $diff;
+	}
 }

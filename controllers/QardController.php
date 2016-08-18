@@ -445,21 +445,36 @@ class QardController extends Controller
 		$blocks = $qard->blocks;
 
 		$this->metaTags($qard);
-
-		return $this->render('consume', [
-			'model' => $qard,
-			'theme' => $theme,
-			'blocks' => $blocks,
-			'deck' => $deck,
-			"deckcount"=>$deckcount,
-			"nextpostion"=>$nextpostion,
-			"curpostion"=>$curpostion,
-			"prevpostion"=>$prevpostion,
-			"viewcurrent"=>$viewcurrent,
-			"qards" => $results,
-			
-		]); 		
+		if(!$this->isMobile()){
+			return $this->render('consume', [
+				'model' => $qard,
+				'theme' => $theme,
+				'blocks' => $blocks,
+				'deck' => $deck,
+				"deckcount"=>$deckcount,
+				"nextpostion"=>$nextpostion,
+				"curpostion"=>$curpostion,
+				"prevpostion"=>$prevpostion,
+				"viewcurrent"=>$viewcurrent,
+				"qards" => $results,			
+			]);
+		}else{
+			$this->layout = "mobile";
+			return $this->render('consume-mobile', [
+				'model' => $qard,
+				'theme' => $theme,
+				'blocks' => $blocks,
+				'deck' => $deck,
+				"deckcount"=>$deckcount,
+				"nextpostion"=>$nextpostion,
+				"curpostion"=>$curpostion,
+				"prevpostion"=>$prevpostion,
+				"viewcurrent"=>$viewcurrent,
+				"qards" => $results,			
+			]);
+		}		
 	 }	 
+
 	 public function metaTags($qard){
 		\Yii::$app->view->registerMetaTag([
 			'property' => 'og:image',

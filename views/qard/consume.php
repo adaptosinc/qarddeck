@@ -8,7 +8,7 @@ use yii\db\Query;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
-$this->title = 'Preview Qard';
+$this->title = 'Consume Qard';
 //$this->meta_image = Yii::$app->homeUrl.'uploads/qards/'.$model['qard_id'].".png";
 
 
@@ -34,28 +34,7 @@ $this->title = 'Preview Qard';
     </script>
 	
 <!--for tags-->
-    <link href="<?= Yii::$app->request->baseUrl?>/css/select2.css" rel="stylesheet">
-    <!--<link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
-<script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-tagsinput.min.js" type="text/javascript"></script>
-<script src="<?= Yii::$app->request->baseUrl?>/js/typeahead.js" type="text/javascript"></script>-->
-    <!--only for this page-->
-    <link href="<?= Yii::$app->request->baseUrl?>/css/custom.css" rel="stylesheet">
 
-    <!-- requiered for fore color of text -->
-    <link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-colorpicker.min.css" rel="stylesheet">
-
-    <!--for image crop-->
-    <link href="<?= Yii::$app->request->baseUrl?>/css/html5imageupload.css" rel="stylesheet">
-    <link href="<?= Yii::$app->request->baseUrl?>/css/custom.css" rel="stylesheet">
-
-    <script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-colorpicker.js" type="text/javascript"></script>
-
-    <!-- requiered for get selected fiels in text editing -->
-    <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.selection.js" type="text/javascript"></script>
-    
-    <!--for resize block-->
-    
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <!-- requiered for drop down of an image -->
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
@@ -210,7 +189,7 @@ $this->title = 'Preview Qard';
 						//overlay block styles
 							if($block->link_image != '' && ($theme['data_img_type'] == 'background' || $theme['data_img_type'] == 'both')){
 								$opacity = $theme_properties['overlay_opacity']/100;
-								$overlay_block_style .= 'opacity:'.$opacity.';';
+								//$overlay_block_style .= 'opacity:'.$opacity.';';
 								//if(isset($theme['div_overlaycolor']) && $theme_properties['div_overlaycolor']!='')
 									$overlay_block_style .= 'background-color:'.$theme_properties['overlay_color'].';';								
 								
@@ -399,20 +378,7 @@ $this->title = 'Preview Qard';
 						  </div>
 						  <div class="comment-txt col-sm-11 col-md-11">
 							  <p><strong><?=$comment->userProfile->fullname ?></strong><?=$comment['text']?></p>
-							   <?php 
-								  $datetime = $comment['created_at'];
-								  $date = date('M j Y g:i A', strtotime($datetime));
-								  $date = new DateTime($date);
-								  $datetime1 = new DateTime("now"); 
-								  $diff = $datetime1->diff($date)->format("%a");
-								  if($diff == 0){
-									  $diff = 'Today';
-								  }else if($diff==1){
-									  $diff = '1 day ago';
-								  }else{
-									  $diff = $diff.' days ago';
-								  }
-								  ?>
+							   <?=$comment->createdAgo?>
 								  
 							  <p class="post-date"><?=$diff?></p>
 						  </div>

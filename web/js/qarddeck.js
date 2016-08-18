@@ -1,7 +1,7 @@
 // jQuery Plugin written For QardDeck
 // An easy platform for sharing your content
 // version 1.1, Aug 3rd, 2016
-// by Dency G B
+// by Abacies Logicels
 
 (function($) {
 
@@ -272,8 +272,10 @@
 						var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
 						//creating overlay-block or middel block
 						//console.log(plugin.settings.overlay_color);
+						//console.log(hexToRgb(data.div_overlaycolor,data.div_opacity));
+						
 						if(data_img_type == "background")
-							new_div += '<div class="bgoverlay-block" style="background-color:' + data.div_overlaycolor + ';opacity:' +  data.div_opacity + ';height:' + data.height + 'px;">';
+							new_div += '<div class="bgoverlay-block" style="background-color:' + div_overlaycolor + ';height:' + data.height + 'px;">';
 						else
 							new_div += '<div class="bgoverlay-block" style="height:' + data.height + 'px;">';
 						
@@ -748,8 +750,8 @@ if (ext == "pdf" ) {
 			
 			var div_opacity = plugin.settings.overlay_opacity/100;
 			var div_overlaycolor = plugin.settings.overlay_color;
-			
-			$("#working_div .bgoverlay-block").css("opacity",div_opacity);
+		//	var color = hexToRgb(div_overlaycolor,div_opacity)
+			//$("#working_div .bgoverlay-block").css("opacity",div_opacity);
 			$("#working_div .bgoverlay-block").css("background-color",div_overlaycolor);			
 		};
 	
@@ -780,7 +782,7 @@ if (ext == "pdf" ) {
 				$("#working_div .bgimg-block").css("background-image",div_bgimage);
 				$("#working_div .bgimg-block").css("background-size","cover");
 				$("#working_div .bgoverlay-block").css("background-color",overlay_blk.css("background-color"));
-				$("#working_div .bgoverlay-block").css("opacity",overlay_blk.css("opacity"));
+				//$("#working_div .bgoverlay-block").css("opacity",overlay_blk.css("opacity"));
 				$("#working_div .current_blk").attr("data-img-type",current_block.attr("data-img-type"));
 				//add_block(true,false);
 				//here we need to save this block
@@ -1042,6 +1044,23 @@ function changePic(v) {
 function copyBlock(){
 	$(window).data('qardDeck').copyBlock();
 }
+function hexToRgb(hex,opacity) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    var rgb =  result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+		a: opacity
+    } : null;
+	return "rgba("+rgb.r+","+rgb.g+","+rgb.b+","+rgb.a+")";
+}
+
 function add_block(event,new_block){
 	//save block
 	
@@ -1797,8 +1816,13 @@ $(document).on("click", "#cmn-toggle-3", function() {
 	} else {
 		//removeBr();
 		$("#working_div .bgimg-block").css("background-image","none");
-		$("#working_div .bgoverlay-block").css("opacity",1);
-		$("#working_div .bgoverlay-block").css("background-color",'transparent');
+		//$("#working_div .bgoverlay-block").css("opacity",1);
+		$("#working_div .bgoverlay-block").css("background-color",'rgba(0,0,0,0)');
+		
+		if($("#working_div .current_blk").attr("data-img-type") == "both")
+			$("#working_div .current_blk").attr("data-img-type",'preview');
+		if($("#working_div .current_blk").attr("data-img-type") == "background")
+			$("#working_div .current_blk").attr("data-img-type",'false');
 	}
 });
 $(document).on("click", "#cmn-toggle-7", function() {
@@ -1818,6 +1842,10 @@ $(document).on("click", "#cmn-toggle-7", function() {
 		//removeBr();
 		$('#working_div .current_blk').find('.image_icon_span').remove();
 		adjustHeight();
+		if($("#working_div .current_blk").attr("data-img-type") == "both")
+			$("#working_div .current_blk").attr("data-img-type",'background');
+		if($("#working_div .current_blk").attr("data-img-type") == "preview")
+			$("#working_div .current_blk").attr("data-img-type",'false');
 	}
 });
 	// for image

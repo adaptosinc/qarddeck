@@ -81,4 +81,22 @@ class QardComments extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+	
+	public function getCreatedAgo(){
+		
+		  $datetime = $this->created_at;
+		  $date = date('M j Y g:i A', strtotime($datetime));
+		  $date = new \DateTime($date);
+		  $datetime1 = new \DateTime("now"); 
+		  $diff = $datetime1->diff($date)->format("%a");
+		  if($diff == 0){
+			  $diff = 'Today';
+		  }else if($diff==1){
+			  $diff = '1 day ago';
+		  }else{
+			  $diff = $diff.' days ago';
+		  }
+		  
+		  return $diff;
+	}
 }
