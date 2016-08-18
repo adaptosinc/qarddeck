@@ -96,7 +96,7 @@ class UserController extends Controller
 	 * @return mixed
 	 */
 	 public function actionRegister(){
-			if($this->isMobile()){ 		
+			if(!$this->isMobile()){ 		
                return $this->render('social_signin');
 		}else{
                 $this->layout = 'mobile';
@@ -200,7 +200,7 @@ class UserController extends Controller
      * @return mixed
      */
     public function actionProfile(){ 	
-		if($this->isMobile()){ 		
+		if(!$this->isMobile()){ 		
               return $this->render('profile');
 		}else{
 			
