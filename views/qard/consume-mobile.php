@@ -12,8 +12,28 @@ $this->title = 'Consume Qard';
 //$this->meta_image = Yii::$app->homeUrl.'uploads/qards/'.$model['qard_id'].".png";
 
 
-?>    
+?> 
+   
 	<section class="consume-main content">
+					<div class="profile-header">
+
+                        <div class="col-xs-2 col-sm-3 col-md-3">
+                            <div class="left_nav">
+                                <img src="../images/arrow-left_icon.png" alt="" width="10px" height="15px">
+                            </div>
+                        </div>
+                        <div class="col-xs-8 col-sm-6 col-md-6">
+                            <ul class="view-list">
+                                <li class="edit-info col-xs-8"><img src="../images/deck-thumb.png" width="30px" height="30px" style="margin-right: 5px;float: left;" alt=""><span><strong>Tips and Tricks about Travelling</strong></span></li>
+                                <li class="col-xs-4"><img src="../images/qards_icon.png" alt="">3/20</li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-2 col-sm-3 col-md-3">
+                            <div class="right_nav">                                
+                                <img src="../images/arrow-right_icon.png" alt="" width="10px" height="15px">
+                            </div>
+                        </div>                        
+                    </div>
                     <div class="consume-header">
                        <span class="pull-left col-xs-2"><button type="button" class="close"><span aria-hidden="true">&times;</span></button></span>
                        <h4 class="col-xs-8"> <?=$model->title?> </h4>
