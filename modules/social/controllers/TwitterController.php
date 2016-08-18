@@ -79,11 +79,19 @@ class TwitterController extends \yii\web\Controller
             $user_info = json_decode(json_encode($connection->get('account/verify_credentials')),true); 
             $status=$this->insertRecord($user_info);
             if(!empty($status->errors)){
-                //pass errors status
+                //pass errors status	
                 return $this->redirect(['../site/index']);
             }else{
-                Yii::$app->user->login($status, '3600*24*30');                    
-                return $this->redirect(['../site/index']);
+				
+                Yii::$app->user->login($status, '3600*24*30');   							
+				$qard_id = Yii::$app->session['qard_id'];
+				if(isset($qard_id) && !empty($qard_id))
+				{
+					return $this->redirect(['../qard/preview-qard?qard_id='.$qard_id]);
+				} else{
+					return $this->redirect(['../site/index']);
+				}
+			   
             }
 	} else{	    
             Yii::$app->getSession()->setFlash('error', "error, try again later!");
@@ -159,6 +167,10 @@ class TwitterController extends \yii\web\Controller
     */
    
    public function actionRedirectUserurl() {
+	   
+	   echo "Error Block 1";
+	   exit;
+	   
      
        $session = Yii::$app->session;
        //Successful response returns oauth_token, oauth_token_secret, user_id, and screen_name

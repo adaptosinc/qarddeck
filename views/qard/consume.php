@@ -110,7 +110,7 @@ $this->title = 'Consume Qard';
 							<?php 	} ?>							
                             <h3><?=$model->title?>
 							<?php if(\Yii::$app->user->id == $model->user_id){?>
-							<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button></span>
+							<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button><button class="btn btn-grey conformdelete " ><i class="fa fa-trash"></i>&nbsp;Delete Qard</button></span>
 							<?php } ?>
 							</h3>
                             <div class="bottom-card col-sm-12 col-md-12">
@@ -785,6 +785,12 @@ $this->title = 'Consume Qard';
 			});
 
 	
+	
+			$(".conformdelete").click(function(){				
+				 if (confirm("Are you sure to Delete this Qard?")) {
+						window.location="<?=\Yii::$app->homeUrl?>qard/delete-qard?id=<?=$model->qard_id?>'";
+					}				
+			});
 	});
 			
 	</script>

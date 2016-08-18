@@ -6,6 +6,7 @@ use Yii;
 use app\models\Qard;
 
 use app\models\User;
+use app\models\UserProfile as Profile;
 use app\models\Theme;
 use app\models\Deck;
 use app\models\QardDeck;
@@ -356,7 +357,7 @@ class QardController extends Controller
 					'switch_theme' => $switch_theme,
 					'tags'=>$tags
                 ]);
-            }else{
+            }else{			
                 $this->layout = 'mobilelayout';
                 return $this->render('mobile/create', [
                     'model' => $model,
@@ -374,14 +375,25 @@ class QardController extends Controller
 	 */
 	 public function actionPreviewQard($qard_id,$theme_id=null){
 		 
+		$user = "";
 		$qard = $this->findModel($qard_id);
 		$theme = $qard->qardTheme;
 		$blocks = $qard->blocks;
+	
+		
+		if(empty($qard->user_id))
+		{
+			\Yii::$app->session['qard_id']= $qard_id;	
+			$user = Profile::find()->where(['user_id' =>\Yii::$app->user->id])->one();			
+		}
+	
 		//print_r($theme);die;
 		return $this->render('preview', [
 			'model' => $qard,
 			'theme' => $theme,
 			'blocks' => $blocks,
+			'user' => $user,
+			
 		]); 		
 	 }
 	 
@@ -506,7 +518,7 @@ class QardController extends Controller
 			
 		$id = Yii::$app->session['qard'];
 		$model = Qard::findOne($id);
-
+		
 		if ($model== null)
 			return $this->redirect(['site/index']);
 		$model->status = 1;
@@ -536,9 +548,8 @@ class QardController extends Controller
      * @return mixed
      */
     public function actionDelete($id)
-    {
+    {	
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 	/**
@@ -976,7 +987,16 @@ class QardController extends Controller
 		return $filepath;
 	} 
 	
-
+ public function actionDeleteQard($id)
+    {	
+     $qard = $this->findModel($id);
+	  if($qard)
+	  {
+		  $qard->status = 2;
+		  $qard->save(false);
+	  }	  
+	  return $this->redirect(['index']); 	  
+    }
 	
 	
 	

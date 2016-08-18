@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use app\models\LoginForm;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -47,6 +48,11 @@ class UserController extends Controller
         ]);
     }
 
+	
+	 public function isMobile(){
+         return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+    }
+	
     /**
      * Displays a single User model.
      * @param integer $id
@@ -58,10 +64,31 @@ class UserController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-	public function actionSignUp(){
-
-            return $this->render('register');
+	public function actionSignUp(){	
 	
+		if(!$this->isMobile()){ 			
+            return $this->render('register');
+		}else{			
+			 $model = new LoginForm();				
+		 if ($model->load(Yii::$app->request->post()) && $model->login()) {
+			   echo Yii::$app->session['qard'];
+			if(isset(Yii::$app->session['qard']) && Yii::$app->session['qard'] != '' ){
+				\Yii::$app->controller->redirect(['qard/publish']);
+				return "";
+			}
+			if(isset(Yii::$app->session['ref-url']) && Yii::$app->session['ref-url'] != ''){
+				\Yii::$app->controller->redirect(Yii::$app->session['ref-url']);
+				return "";
+			}
+			else{
+				\Yii::$app->controller->goBack();
+				return "";				
+			}
+		 }else{		
+                $this->layout = 'mobile';
+                return $this->render('mobile/register'); 
+			 }	
+        }
 	}
 	/**
 	 * Handles user registration
@@ -69,9 +96,12 @@ class UserController extends Controller
 	 * @return mixed
 	 */
 	 public function actionRegister(){
-
-            return $this->render('social_signin');
-
+			if($this->isMobile()){ 		
+               return $this->render('social_signin');
+		}else{
+                $this->layout = 'mobile';
+                return $this->render('mobile/social_signin');                
+            }			
 	 }
     /**
      * Creates a new User model.
@@ -102,9 +132,7 @@ class UserController extends Controller
      * @return mixed
      */
     public function actionUpdate($id)
-    {
-		
-		
+    {				
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -171,9 +199,66 @@ class UserController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionProfile(){ 
+    public function actionProfile(){ 	
+		if($this->isMobile()){ 		
+              return $this->render('profile');
+		}else{
+			
+			 $id =  \Yii::$app->user->id;
+			 $model = User::find()->where(['id' => $id])->one();		
+			 $profile = Profile::find()->where(['user_id' => $id])->one();	
+        
+             if($profile->load(Yii::$app->request->post())){
+				 
+             $currentpwd = Yii::$app->request->post()['cur_password'];
+		  
+		   
+            $newProfile = Profile::find()->where(['user_id' => $id])->one();
+			$profile->profile_photo = \Yii::$app->homeUrl.$newProfile->temp_image; 			
+            //$profile->validate();
+            if($profile->errors || $model->errors){
+                    foreach($model->errors as $error){
+                            \Yii::$app->getSession()->setFlash('profile_update_error', $error[0]);
+                    }
+                    foreach($profile->errors as $error){
+                            \Yii::$app->getSession()->setFlash('profile_update_error', $error[0]);
+                    }
+                    
+                    $this->layout = 'mobile';
+					return $this->render('mobile/profile', [
+                             'model' => $model,
+                             'profile' => $profile
+                     ]);
+            }
 	
-        return $this->render('profile');
+			if(!empty($currentpwd))
+			{
+				if(!empty($profile->password_profile) && !empty($profile->verify_password_profile) && ($profile->password_profile == $profile->verify_password_profile ))
+				{
+					if($model->validatePassword($currentpwd))
+					{										
+						$model->password = $profile->password_profile;
+						$model->setPassword($model->password);										
+						$model->generateAuthKey();
+						$model->save(false);
+					
+					}
+				}
+			}			
+           
+            $profile->save(false);    
+            \Yii::$app->controller->goBack();
+
+         } 
+         else 
+         { 
+                $this->layout = 'mobile';
+                return $this->render('mobile/profile',[
+                    'model' => $model,
+                    'profile' => $profile
+            ]);  
+		 }			
+            }						
 	}	
     /**
      * Uploads the Profile Picture
@@ -249,4 +334,12 @@ class UserController extends Controller
              
           }                                  
    }
+   
+    public function actionMobileRegister(){
+		if(!$this->isMobile()){ 	
+              $this->layout = 'mobile';
+              return $this->render('mobile/mobileregister');                
+		} 			
+	 }
+	 
 }
