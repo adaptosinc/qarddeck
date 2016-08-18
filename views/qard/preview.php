@@ -71,16 +71,43 @@ $this->title = 'Preview Qard';
 		</div>
 		<div class="row">
 			<div class="col-sm-8 col-md-8">
-				<h3><span class="pull-left"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button></span><?=$model->title?></h3>
+				<h3><span class="pull-left"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button>
+				
+				<button class="btn btn-grey conformdelete" ><i class="fa fa-trash"></i>&nbsp;Delete Qard</button>
+				
+				</span><?=$model->title?></h3>
 				<div class="bottom-card col-sm-12 col-md-12">
 					<ul>
 						<li>
 							   <div class="comment-img">
-								   <img src="<?=$model->userProfile->profile_photo?>" alt="">
+								   <img src="<?php if(isset($model->userProfile) && !empty($model->userProfile)){  echo $model->userProfile->profile_photo;  }
+										else if(isset($user) && !empty($user)){  echo $user->profile_photo;  }
+
+								   ?>" alt="">
 							   </div>
 							   <div class="comment-txt">
-								   <h5><strong><?=$model->userProfile->fullname?></strong></h5>
-								   <p class="post-date">3 days ago</p>
+								   <h5><strong><?php if(isset($model->userProfile) && !empty($model->userProfile)){ echo $model->userProfile->fullname; }
+
+									else if(isset($user) && !empty($user)){  echo $user->fullname;  }
+
+								   ?></strong></h5>
+								   
+								   <?php 
+								  $datetime = $model->last_updated_at;
+								  $date = date('M j Y g:i A', strtotime($datetime));
+								  $date = new DateTime($date);
+								  $datetime1 = new DateTime("now"); 
+								  $diff = $datetime1->diff($date)->format("%a");
+								  if($diff == 0){
+									  $diff = 'Today';
+								  }else if($diff==1){
+									  $diff = '1 day ago';
+								  }else{
+									  $diff = $diff.' days ago';
+								  }
+								  ?>
+								  
+								   <p class="post-date"><?=$diff?></p>
 							   </div>
 						</li>
 						<?php 
@@ -620,4 +647,12 @@ $this->title = 'Preview Qard';
 			$("#img_show").html(img);
 		}	
 	/***************************/
+	
+	
+	$(".conformdelete").click(function(){				
+				 if (confirm("Are you sure to Delete this Qard?")) {
+						window.location="<?=\Yii::$app->homeUrl?>qard/delete-qard?id=<?=$model->qard_id?>'";
+					}				
+			});
+			
 	</script>

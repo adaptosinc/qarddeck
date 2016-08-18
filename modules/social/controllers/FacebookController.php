@@ -12,6 +12,8 @@ class FacebookController extends \yii\web\Controller
     public $client_id,$client_secret,$callback_url,$callback_fb_url,$servername,$base_url;    
     public function init() {
 	$this->client_id= '1142793035779809';//1054501381284066;//app id of facebook//
+	//$this->client_id= '1734828660110694'; //ARIVAZHAGAN app id of facebook//
+	//$this->client_secret= '908ee91b6c17587a55d60eab81bd0e97'; //ARIVAZHAGAN app secret key of facebook//
 	$this->client_secret= '8dc64cf509704e2cd4e2dcd5ed1a1aea';//b4e61fed905c6866bfd1bf2a99fd3e2d;//app secret key of facebook//
 	$this->base_url=Yii::$app->request->baseUrl; 
 	//\Yii::$app->request->BaseUrl 
@@ -28,6 +30,8 @@ class FacebookController extends \yii\web\Controller
     public function actionIndex(){	
 	
 	$url='https://www.facebook.com/dialog/oauth?client_id='.$this->client_id.'&redirect_uri='.$this->callback_url.'&scope=email';
+	
+	
 	header('Location:'.$url);
 	exit(0);
 	
@@ -50,6 +54,8 @@ class FacebookController extends \yii\web\Controller
     public function actionGetToken($code)
     {	
 	$token_url = $this->requestForToken($code);
+	
+	
 	$response=$this->curlExecutionHttps($token_url);
 	$params = null;
 	
@@ -66,7 +72,13 @@ class FacebookController extends \yii\web\Controller
 	   return $this->redirect(['../site/index']);
 	}else{
 	    Yii::$app->user->login($status, '3600*24*30');
-	  return $this->redirect(['../site/index']);
+		$qard_id = Yii::$app->session['qard_id'];
+			if(isset($qard_id) && !empty($qard_id))
+			{
+				return $this->redirect(['../qard/preview-qard?qard_id='.$qard_id]);
+			} else{
+				return $this->redirect(['../site/index']);
+			}
 	}
     }
     

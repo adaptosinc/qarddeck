@@ -1622,7 +1622,7 @@ ul.profile-title li.tootip:hover:after {
 }
 .profile-content span {
     position: relative;
-   /* top: -17px; */
+    /*top: -17px;*/ 
     font-size: 13px;
 }
 .update {
@@ -3338,6 +3338,7 @@ section.search-main.content {
 }
 .mobile-screen .signback button {
     float: none !important;
+	padding: 5px 10px;
 }
 
 
@@ -4175,5 +4176,86 @@ section.theme-main.content .btn-default {
     opacity: 0;
 }
 
+.mobile-screen .main-profile .update {
+    background: #fff none repeat scroll 0 0;
+    bottom: 0;
+    padding: 20px 0;
+    position: fixed;
+    z-index: 9;
+}
+
+.mobile-screen .main-profile .update button {
+    border-radius: 3px;
+    font-size: 14px;
+    min-width: 100px;
+    text-transform: uppercase;
+}
+
+.mobile-screen .main-profile .update li {
+    margin: 0 !important;
+}
+.mobile-screen .main-profile hr {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.mobile-screen .main-profile label {
+    font-weight: 500;
+}
+
+.mobile-screen .main-profile .col-sm-4.col-md-4 {
+    margin: 20px;
+    padding: 15px;
+}
+.main-profile .col-sm-4.col-md-4 {
+    background: #fafafa none repeat scroll 0 0;
+    border: 1px solid #eaeaea;
+    border-radius: 3px;
+    margin-right: 40px;
+    padding: 0 40px 40px;
+}
+
+.mobile-screen .email-signin h3 {
+    color: #333;
+    font-weight: 300;
+    margin-bottom: 40px;
+}
 
 
+.mobile-screen form.signin-new button, .mobile-screen form.signup-new button {
+    margin-top: 20px;
+}
+
+
+p.login-link a {
+    color: #333;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.mobile-screen section.email-signin.content {
+    padding: 20px;
+}
+
+.mobile-screen .email-signin .col-sm-4.col-md-4 {
+    background: #fff none repeat scroll 0 0;
+    min-height: inherit;
+    padding: 20px;
+}
+
+.mobile-screen .email-signin img.col-sm-2.col-md-2.img-responsive {
+    height: 40px;
+    min-height: 30px;
+    padding: 8px;
+}
+.mobile-screen .profile-content span {
+    position: relative;
+    top: -17px; 
+    font-size: 13px;
+}
+
+.mobile-screen p.terms {
+    display: block;
+    float: left;
+    width: 100%;
+}

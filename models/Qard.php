@@ -163,6 +163,8 @@ class Qard extends \yii\db\ActiveRecord
 				<div id="add-block'.$this->qard_id.'" class="qard-div ">';
 			$blocks = $this->blocks;
 			
+			
+			
 			if(isset($blocks) && !empty($blocks)){
 			//	print_R($blocks);die;
 			foreach($blocks as $block){
@@ -217,6 +219,9 @@ class Qard extends \yii\db\ActiveRecord
 				$str .= '</div></div></div>';
 
 			}	
+			
+			
+			
 		$str .= '</div>
 					<div class="qard-overlay">
 						<div class="qard-share">
@@ -232,13 +237,15 @@ class Qard extends \yii\db\ActiveRecord
 				</div>
 				<div class="qard-bottom">
 					<ul class="qard-tags">
-					<li class="pull-left"><img src="'.$this->userProfile->profile_photo.'" alt="" width="15px" height="15px" style="border-radius:50%;">'.$this->userProfile->fullname.'</li>
+					<li class="pull-left"><img src="'.$this->userProfile['profile_photo'].'" alt="" width="15px" height="15px" style="border-radius:50%;">'.$this->userProfile['fullname'].'</li> 
 					<li class="pull-right">'.$diff.'</li>
-				</ul>
+					</ul>
 				<h3>'.$this->title.'</h3>
 				</div>
 				</div>';	
 				
+				 
+			
 		return $str;
 		
 			}	
