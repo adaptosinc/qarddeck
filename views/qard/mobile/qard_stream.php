@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 		$deck_class = 'active';	
 	?>         
 <script src="<?= Yii::$app->request->baseUrl?>/js/masonry.js" type="text/javascript"></script>	
-
+<script src="<?= Yii::$app->request->baseUrl?>/js/imagesloaded.js" type="text/javascript"></script>	
     
                 <section class="main-stream">
                     <div id="tabs">
@@ -79,9 +79,13 @@ $(window).load(function() {
 				data: {'page':page,'type':'<?=$type?>'},
 				success: function(html) {
 					var el = jQuery(html);
-					$(".grid").append(el).masonry( 'appended', el, true );
+					//$(".grid").append(el).masonry( 'appended', el, false );
 					$('#spinners').hide();
-					$container.masonry();					
+					var $newElems = $( html ).css({ opacity: 0 });
+					$newElems.imagesLoaded(function(){
+						$newElems.animate({ opacity: 1 });
+						$(".grid").append(el).masonry( 'appended', el, false );
+					});				
 				},
 				error:function(){
 					$('#spinners').hide();
