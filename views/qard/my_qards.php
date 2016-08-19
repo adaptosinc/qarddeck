@@ -17,6 +17,7 @@ use yii\widgets\ActiveForm;
 		$deck_class = 'qard';	
 	?>
     <script src="<?= Yii::$app->request->baseUrl?>/js/masonry.js" type="text/javascript"></script>	
+	<script src="<?= Yii::$app->request->baseUrl?>/js/imagesloaded.js" type="text/javascript"></script>	
 				<div class="profile-header">
 					<div class="col-sm-6 col-md-6">
 						<div class="user-details">
@@ -117,9 +118,13 @@ $(window).load(function() {
 				data: {'page':page,'type':'<?=$type?>'},
 				success: function(html) {
 					var el = jQuery(html);
-					$(".grid").append(el).masonry( 'appended', el, true );
-					$container.masonry();
+					//$(".grid").append(el).masonry( 'appended', el, false );
 					$('#spinners').hide();
+					var $newElems = $( html ).css({ opacity: 0 });
+					$newElems.imagesLoaded(function(){
+						$newElems.animate({ opacity: 1 });
+						$(".grid").append(el).masonry( 'appended', el, false );
+					});	
 				}
 			});
 			page = page+1;
