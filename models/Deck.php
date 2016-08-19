@@ -245,4 +245,20 @@ class Deck extends \yii\db\ActiveRecord
 		
     }
 	
+	public function getDeckCreatedAgo(){
+		$datetime = $this->created_at;								 
+		$date = date('M j Y g:i A', strtotime($datetime));
+		$date = new \DateTime($date);
+		$datetime1 = new \DateTime("now"); 
+		$diff = $datetime1->diff($date)->format("%a");
+		if($diff == 0){
+			$diff = 'Today';
+		}else if($diff==1){
+			$diff = '1 day ago';
+		}else{
+			$diff = $diff.' days ago';
+		}
+		return $diff;
+	}
+	
 }

@@ -385,4 +385,33 @@ class Qard extends \yii\db\ActiveRecord
 		}
 		return $diff;
 	}
+	
+	public function getLikeuserhits($userid){
+		$query = new Query;
+		//see if the row already exists or not
+		$query->select(['*'])
+			->from('qard_user_activity')
+			->where(['activity_type' => 'like',
+					'qard_id' => $this->qard_id,'user_id'=>$userid,
+					]);
+		$command = $query->createCommand();
+		$activities = $command->queryAll();
+		return $activities;					
+	}
+	
+
+	public function getBookuserhits($userid){
+		$query = new Query;
+		//see if the row already exists or not
+		$query->select(['*'])
+			->from('qard_user_activity')
+			->where(['activity_type' => 'bookmark',
+					'qard_id' => $this->qard_id,'user_id'=>$userid,
+					]);
+		$command = $query->createCommand();
+		$activities = $command->queryAll();
+		return $activities;					
+	}
+	
+	
 }

@@ -4688,3 +4688,16 @@ p.login-link a {
 section.consume-main.content .right-block ul.deck-list li.active a{
     background: #465360 !important;
 }
+
+.deck-details .popular-qards.profile .qard-contentmobile {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border-color: #fff #fff -moz-use-text-color;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 5px 5px 0;
+   
+}

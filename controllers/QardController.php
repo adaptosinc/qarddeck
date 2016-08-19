@@ -439,6 +439,8 @@ class QardController extends Controller
 		{			
 			$deck = Deck::findOne($deckrel->deck_id);
 			$deckcount  = $deck->getDeckqardCount();
+			
+		
 			$results = QardDeck::find()->where(['deck_id'=>$deck->deck_id])->orderBy('qard_id ASC')->asArray()->all();
 					
 			foreach( $results as $key=>$tmp)
@@ -462,6 +464,7 @@ class QardController extends Controller
 			}
 			
 		}
+		
 		
 		$theme = $qard->qardTheme;
 		$blocks = $qard->blocks;

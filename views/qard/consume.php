@@ -121,22 +121,8 @@ $this->title = 'Consume Qard';
                                            </div>
                                            <div class="comment-txt">
                                                <h5><strong><?=$model->userProfile->fullname?></strong></h5>
-											    <?php 
-								  $datetime = $model->last_updated_at;
-								  $date = date('M j Y g:i A', strtotime($datetime));
-								  $date = new DateTime($date);
-								  $datetime1 = new DateTime("now"); 
-								  $diff = $datetime1->diff($date)->format("%a");
-								  if($diff == 0){
-									  $diff = 'Today';
-								  }else if($diff==1){
-									  $diff = '1 day ago';
-								  }else{
-									  $diff = $diff.' days ago';
-								  }
-								  ?>
-								  
-                                               <p class="post-date"><?=$diff?></p>
+											    
+                                               <p class="post-date"><?=$model->getCreatedAgo();?></p>
                                            </div>
                                     </li>
 									<?php 
@@ -229,13 +215,10 @@ $this->title = 'Consume Qard';
 			<?php
 						$qard_id = $model['qard_id'];			
 						$userid = \Yii::$app->user->id;
+						
 					//*************  like check ***********//
-						$query = new Query;
-						$hquery = $query->select('*')
-							->from('qard_user_activity')
-							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'like']);
-						$command = $hquery->createCommand();
-						$data = $command->queryAll();
+						
+						$data = $model->getLikeuserhits($userid);
 						$hact = "";
 						if(empty($data)){
 							$himg = '<img id="like-img" src="'.Yii::$app->request->baseUrl.'/images/heart_icon.png" class="image-activity" alt="">';
@@ -246,11 +229,7 @@ $this->title = 'Consume Qard';
 						
 						//*************  bookmark check ***********//
 						
-						$bkquery = $query->select('*')
-							->from('qard_user_activity')
-							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'bookmark']);
-						$command = $bkquery->createCommand();
-						$data = $command->queryAll();
+						$data = $model->getBookuserhits($userid);
 						$bkact = "";
 						if(empty($data)){
 							$bkimg = '<img id="book-img" style="width:15px;margin:0 auto;" src="'.Yii::$app->request->baseUrl.'/images/bookmark_icon.png" class="image-activity" alt="" style="width:15px;">';
@@ -259,22 +238,15 @@ $this->title = 'Consume Qard';
 							$bkimg = '<img id="book-img"  style="width:15px;margin:0 auto;" src="'.Yii::$app->request->baseUrl.'/images/bookmark_icon_light.png" class="image-activity" alt="">';
 						}
 						
-					//*************  share count check ***********//
+				
 					
-					$shquery = $query->select('count(*) as sharecount ')
-							->from('qard_user_activity')
-							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'share']);
-						$command = $shquery->createCommand();
-						$data = $command->queryOne();
-						$count = $data;
-					;
 						
 						
 		?>
 		<?//=$count[0]['sharecount']?>
 		<li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab"><img class="image-default" src="<?=Yii::$app->homeUrl;?>images/comments_icon.png" alt=""> <img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li> 
 		
-		<li role="presentation"><span style="display:none;" id="share-count" class="cartdisplay" ><?=$count['sharecount']?></span><a href="#shareblock" aria-controls="shareblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/share_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>  
+		<li role="presentation"><span style="display:none;" id="share-count" class="cartdisplay" ><?=$model->shareCount?></span><a href="#shareblock" aria-controls="shareblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl;?>images/share_icon.png" class="image-default" alt=""><img class="image-close" src="<?=Yii::$app->homeUrl;?>images/close_icon_light.png" alt=""></a></li>  
 		
 		<li role="presentation" class="activity_card <?=$bkact;?>" id="book-msg" act-type="bookmark" act-id="<?=$model->qard_id?>" for="" ><span class="arrow-left"></span><a  aria-controls="favblock" role="tab" data-toggle="tab" ><?=$bkimg?>
 		

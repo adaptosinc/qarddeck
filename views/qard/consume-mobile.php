@@ -23,12 +23,13 @@ $this->title = 'Consume Qard';
 						$qard_id = $model['qard_id'];			
 						$userid = \Yii::$app->user->id;
 					//*************  like check ***********//
-						$query = new Query;
+					/* 	$query = new Query;
 						$hquery = $query->select('*')
 							->from('qard_user_activity')
 							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'like']);
 						$command = $hquery->createCommand();
-						$data = $command->queryAll();
+						$data = $command->queryAll(); */
+						$data = $model->getLikeuserhits($userid);
 						$hact = "";
 						if(empty($data)){
 							$himg = '<img id="like-img" src="'.Yii::$app->request->baseUrl.'/images/heart_icon.png" class="image-activity" alt="">';
@@ -39,11 +40,13 @@ $this->title = 'Consume Qard';
 						
 						//*************  bookmark check ***********//
 						
-						$bkquery = $query->select('*')
+						/* $bkquery = $query->select('*')
 							->from('qard_user_activity')
 							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'bookmark']);
 						$command = $bkquery->createCommand();
-						$data = $command->queryAll();
+						$data = $command->queryAll(); */
+						
+						$data = $model->getBookuserhits($userid);
 						$bkact = "";
 						if(empty($data)){
 							$bkimg = '<img id="book-img" style="width:15px;margin:0 auto;" src="'.Yii::$app->request->baseUrl.'/images/bookmark_icon.png" class="image-activity" alt="" style="width:15px;">';
@@ -52,40 +55,39 @@ $this->title = 'Consume Qard';
 							$bkimg = '<img id="book-img"  style="width:15px;margin:0 auto;" src="'.Yii::$app->request->baseUrl.'/images/bookmark_icon_light.png" class="image-activity" alt="">';
 						}
 						
-					//*************  share count check ***********//
-					
-					$shquery = $query->select('count(*) as sharecount ')
-							->from('qard_user_activity')
-							->where(['user_id'=>$userid,'qard_id'=>$qard_id,'activity_type'=>'share']);
-						$command = $shquery->createCommand();
-						$data = $command->queryOne();
-						$count = $data;
-					;
-						
-						
 		?>
 		
 
 	<section class="consume-main content">
+	<?php if(isset($deck) && !empty($deck)){ ?>
 					<div class="profile-header">
 
                         <div class="col-xs-2 col-sm-3 col-md-3">
                             <div class="left_nav">
-                                <img src="../images/arrow-left_icon.png" alt="" width="10px" height="15px">
+							<?php if(isset($prevpostion) && !empty($prevpostion)) { ?>	
+								<a href="<?=Yii::$app->homeUrl?>qard/consume?qard_id=<?= $prevpostion ?>" >
+                                <img src="<?=Yii::$app->homeUrl?>/images/arrow-left_icon.png" alt="" width="10px" height="15px">
+								</a>	
+								<?php } ?>
                             </div>
                         </div>
                         <div class="col-xs-8 col-sm-6 col-md-6">
                             <ul class="view-list">
-                                <li class="edit-info col-xs-8"><img src="../images/deck-thumb.png" width="30px" height="30px" style="margin-right: 5px;float: left;" alt=""><span><strong>Tips and Tricks about Travelling</strong></span></li>
-                                <li class="col-xs-4"><img src="../images/qards_icon.png" alt="">3/20</li>
+                                <li class="edit-info col-xs-8"><img src="<?= $deck->bg_image; ?>" width="30px" height="30px" style="margin-right: 5px;float: left;" alt=""><span><strong><?= $deck->title; ?></strong></span></li>
+                                <li class="col-xs-4"><img src="<?=Yii::$app->homeUrl?>/images/qards_icon.png" alt=""><?=$viewcurrent;?>/<?=$deckcount; ?></li>
                             </ul>
                         </div>
                         <div class="col-xs-2 col-sm-3 col-md-3">
-                            <div class="right_nav">                                
-                                <img src="../images/arrow-right_icon.png" alt="" width="10px" height="15px">
+                            <div class="right_nav">   
+							<?php if(isset($nextpostion) && !empty($nextpostion)) { ?>		
+							 <a href="<?=Yii::$app->homeUrl?>qard/consume?qard_id=<?= $nextpostion ?>" >									
+                                <img src="<?=Yii::$app->homeUrl?>images/arrow-right_icon.png" alt="" width="10px" height="15px">
+							</a>
+							<?php } ?>
                             </div>
                         </div>                        
                     </div>
+	<?php } ?>		
                     <div class="consume-header">
                        <span class="pull-left col-xs-2"><button type="button" class="close"><span aria-hidden="true">&times;</span></button></span>
                        <h4 class="col-xs-8"> <?=$model->title?> </h4>
@@ -97,8 +99,8 @@ $this->title = 'Consume Qard';
                             <div id="cardtabs " class="right-block col-xs-12 col-sm-6 col-md-6">
                                 <ul class="nav-tabs deck-list" role="tablist">
                                     <li id="shareclick" role="presentation" ><a id="img-span" ><img  src="<?=Yii::$app->request->baseUrl?>/images/share_icon.png" alt=""></a><button style="display:none" id="x-span" class="close" type="button">
-<span aria-hidden="true">×</span>
-</button><span id="share-count"><?=$model->shareCount?></span></li>
+									<span aria-hidden="true">×</span>
+										</button><span id="share-count"><?=$model->shareCount?></span></li>
                                     <li  role="presentation" class="activity_card <?=$bkact;?>" id="book-msg" act-type="bookmark" act-id="<?=$model->qard_id?>"  for="" ><a href="" aria-controls="favblock" role="tab" data-toggle="tab" ><?=$bkimg?></a><span id="ch-book-count" ><?=$model->bookmarkCount?></span></li>
                                     <li  role="presentation" class="activity_card <?=$hact;?>"  id="like-msg" act-type="like" act-id="<?=$model->qard_id?>" for="" ><a href="" aria-controls="favblock" role="tab" data-toggle="tab" ><?=$himg?></a><span id="ch-like-count" ><?=$model->likeCount?></span></li>
                                 </ul>
@@ -127,21 +129,8 @@ $this->title = 'Consume Qard';
 							<?php if(isset($model->userProfile)){
 								echo $model->userProfile->fullname;
 							} ?>
-							<?php 							
-							 $datetime = $model->last_updated_at;
-								  $date = date('M j Y g:i A', strtotime($datetime));
-								  $date = new DateTime($date);
-								  $datetime1 = new DateTime("now"); 
-								  $diff = $datetime1->diff($date)->format("%a");
-								  if($diff == 0){
-									  $diff = 'Today';
-								  }else if($diff==1){
-									  $diff = '1 day ago';
-								  }else{
-									  $diff = $diff.' days ago';
-								  }								  
-							?>
-							<br /><span><?=$diff?></span></strong>                                
+						
+							<br /><span><?=$model->getCreatedAgo();?></span></strong>                                
                         </div>                             
                         <ul class="deck-tags">
 									<?php 
