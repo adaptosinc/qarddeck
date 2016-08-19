@@ -210,7 +210,7 @@ class DeckController extends Controller
 	$count_liked  = $model->deckqardlikeCount;
 	$count_qard  = $model->deckqardCount;
 	
-	if($this->isMobile()){
+	if(!$this->isMobile()){
 		
 	return $this->render('view', [
             'model' =>$model ,"count_bookmark" =>$count_bookmark,"count_share" =>$count_share,"count_liked" =>$count_liked,"count_qard"=>$count_qard
