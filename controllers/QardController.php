@@ -66,7 +66,7 @@ class QardController extends Controller
     public function actionIndex($page=null,$type=null){ 
 		if(!$type)
 			$type = 'both';
-		$limit = 3;
+		$limit = 6;
 		if(!$page)
 			$page = 0;
 		$offset = $page*$limit;
@@ -74,7 +74,7 @@ class QardController extends Controller
 		//	print_r($feed);die;
 		
 		
-		$decks =  $this->getDecksfeed($offset,2);
+		$decks =  $this->getDecksfeed($offset,3);
 		//$decks =  "";
 		if($type == 'both'){
 			//joining the dec+qard array
