@@ -7,7 +7,9 @@ use yii\widgets\ActiveForm;
 <style>
 .grid-item { width: 350px; }
 </style>
+	
     <?php 
+
 	$all_class = $qard_class = $deck_class= '';
 	if($type =="both")
 		$all_class = 'active';
@@ -67,17 +69,21 @@ use yii\widgets\ActiveForm;
 $(window).load(function() {
 	var win = $(window);
 	var page = 1;
+	
+	
 	var $container = $('.grid');
 	$container.masonry();
 	// Each time the user scrolls
 	win.scroll(function() {
 		// End of the document reached?
 		if ($(document).height() - win.height() == win.scrollTop()) {
-			$('#spinners').show();		
+			$('#spinners').show();
+
+			var searchid = $("#searchid").val();	
 			$.ajax({
 				url: '<?=Url::to(['qard/index'], true);?>',
 				dataType: 'html',
-				data: {'page':page,'type':'<?=$type?>'},
+				data: {'page':page,'type':'<?=$type?>','search':searchid},
 				success: function(html) {
 					var el = jQuery(html);
 					//$(".grid").append(el).masonry( 'appended', el, false );

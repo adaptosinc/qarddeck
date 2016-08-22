@@ -142,6 +142,8 @@ class Qard extends \yii\db\ActiveRecord
 	
 	public function getQardHtml($type=null){
 		
+		
+
 		$datetime = $this->last_updated_at;								 
 		$date = date('M j Y g:i A', strtotime($datetime));
 		$date = new \DateTime($date);
@@ -162,7 +164,6 @@ class Qard extends \yii\db\ActiveRecord
 				<div class="qard-content qardid" id="qard'.$this->qard_id.'">
 				<div id="add-block'.$this->qard_id.'" class="qard-div ">';
 			$blocks = $this->blocks;
-			
 			
 			
 			if(isset($blocks) && !empty($blocks)){

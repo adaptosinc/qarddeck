@@ -24,6 +24,9 @@ use yii\db\Connection;
 use lib\GrabzItClient;
 use yii\web\ForbiddenHttpException;
 
+
+use app\models\Tag;
+
 /**
  * QardController implements the CRUD actions for Qard model.
  */
@@ -63,19 +66,40 @@ class QardController extends Controller
      * Lists all Qard models.
      * @return mixed
      */
-    public function actionIndex($page=null,$type=null){ 
+    public function actionIndex($page=null,$type=null,$search=''){ 
 		if(!$type)
 			$type = 'both';
 		$limit = 6;
 		if(!$page)
 			$page = 0;
 		$offset = $page*$limit;
-		$qards = $this->getQardsfeed($offset,$limit,$type);
-		//	print_r($feed);die;
+		if(!empty($search))
+		{		
+			
+			
+		  $tagval = Tag::find()
+			->select(['name'])
+			->where(['tag_id'=>$search])
+			->asArray()
+			->one();	
+			
+			$searchval = $tagval['name'];	
+			Yii::$app->getSession()->setFlash('searchval',$searchval);
+			Yii::$app->getSession()->setFlash('searchid',$search);
+				
+			$qards = $this->getQardsfeedsearch($offset,$limit,$type,$search);
+							
+			$decks =  $this->getDecksfeedsearch($offset,3,$search);
+			
+		}
+		else {
 		
-		
-		$decks =  $this->getDecksfeed($offset,3);
-		//$decks =  "";
+			$qards = $this->getQardsfeed($offset,$limit,$type);
+				//	print_r($feed);die;				
+			$decks =  $this->getDecksfeed($offset,3);
+				//$decks =  "";
+		}
+	
 		if($type == 'both'){
 			//joining the dec+qard array
 			array_splice($qards, count($qards), 0, $decks);
@@ -100,7 +124,7 @@ class QardController extends Controller
 			else
 				return $this->render('qard_stream',[
 					'feed' => $feed,
-					'type' => $type
+					'type' => $type,					
 				]);		
 		}
 		else{
@@ -1021,6 +1045,64 @@ class QardController extends Controller
 	  return $this->redirect(['index']); 	  
     }
 	
+	
+	   /**
+     * Generate the qards feed html for a request.
+     * @param integer $offset and $limit
+     * @return html
+     */
+    public function getQardsfeedsearch($offset,$limit,$type,$search){
+		$feed = [];
+
+			 if(!empty($offset))
+				$offval =" OFFSET ".$offset;
+			else
+				$offval ="";
+			
+		$connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand('SELECT * FROM `qard` q, `qard_tags` qt WHERE q.qard_id = qt.qard_id and q.`status`=1 and qt.`tag_id`='.$search.' ORDER BY q.`last_updated_at` DESC limit '.$limit.$offval);
+		$qards = $command->queryAll(); 
+	
+		//get html feed
+		foreach($qards as $qard){
+			$model = Qard::findOne([$qard['qard_id']]);									 
+			$modelFeed = $model->getQardHtml($type);				
+			if( $modelFeed != '')
+				$feed[] = $modelFeed;
+		}
+		
+		return	$feed;
+	}
+	/**
+	 * Deck feed function
+	 * @param integer $offset,$limit
+	 * @return html
+	 */	
+	public function getDecksfeedsearch($offset,$limit,$search){
+		$feed = [];
+
+			 if(!empty($offset))
+				$offval =" OFFSET ".$offset;
+			else
+				$offval =""; 
+		
+		$connection = Yii::$app->getDb(); 						
+		$command = $connection->createCommand('SELECT * FROM `deck` d, `deck_tags` dt where d.`deck_id` = dt.`deck_id` and dt.`tag_id`='.$search.' ORDER BY d.`created_at` DESC limit '.$limit.$offval);
+		$decks = $command->queryAll(); 
+						
+		//get html feed
+		foreach($decks as $deck){
+			$model = Deck::findOne([$deck['deck_id']]);
+			$modelFeed = $model->getDeckHtml();
+			if( $modelFeed != '')
+				$feed []= $modelFeed;
+		}
+		return $feed;		
+	}
+    /**
+     * Lists all Qard models.
+     * @return mixed
+     */
 	
 	
 }
