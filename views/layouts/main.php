@@ -8,6 +8,9 @@
 use yii\helpers\Html;
 use app\assets\AppAsset;
 use yii\widgets\ActiveForm;
+
+
+
 AppAsset::register($this);
 
 ?>
@@ -52,6 +55,7 @@ AppAsset::register($this);
 </style> 
 <body>
 <?php $this->beginBody() ?>
+
 <div class="container-fluid desktop-view">    
     <!-- header -->
 		<header>
@@ -60,7 +64,19 @@ AppAsset::register($this);
 			</div>
 			<div class="search col-sm-5 col-md-5 col-md-offset-1">
 				<div class="col-sm-12 col-md-12">
-					<input type="text" name="search" class="form-control" placeholder="Search QardDeck">
+					<!--<input type="text" name="search2" id="search2" class="form-control" placeholder="Search QardDeck" >-->
+		
+		
+		<?php
+					use app\components\SearchWidget;					
+						echo SearchWidget::widget();
+					?>
+					
+	 	
+				
+
+  
+	 
 				</div>
 				<div class="search_icon">
 					<img src="<?=\Yii::$app->homeUrl?>images/search_icon.png" alt="">
@@ -191,3 +207,5 @@ AppAsset::register($this);
 ?>
 </html>
 <?php $this->endPage() ?>
+
+
