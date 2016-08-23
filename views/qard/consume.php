@@ -109,9 +109,12 @@ $this->title = 'Consume Qard';
                             </nav> 
 							<?php 	} ?>							
                             <h3><?=$model->title?>
+							
 							<?php if(\Yii::$app->user->id == $model->user_id){?>
 							<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button><button class="btn btn-grey conformdelete " ><i class="fa fa-trash"></i>&nbsp;Delete Qard</button></span>
-							<?php } ?>
+							<?php } else { ?><span class="pull-right"> <button id='follow' <?php if($follow == 1){ echo "style='display:none'"; } ?>name="follow" class="btn btn-grey followopt" ><i class="fa fa-user-plus"></i>&nbsp;Follow</button>
+							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Following </button> 
+							 </span><?php } ?>
 							</h3>
                             <div class="bottom-card col-sm-12 col-md-12">
                                 <ul>
@@ -350,9 +353,9 @@ $this->title = 'Consume Qard';
 						  </div>
 						  <div class="comment-txt col-sm-11 col-md-11">
 							  <p><strong><?=$comment->userProfile->fullname ?></strong><?=$comment['text']?></p>
-							   <?=$comment->createdAgo?>
+							   
 								  
-							  <p class="post-date"><?=$diff?></p>
+							  <p class="post-date"><?=$comment->createdAgo?></p>
 						  </div>
 						
 					  </li>
@@ -762,6 +765,44 @@ $this->title = 'Consume Qard';
 				 if (confirm("Are you sure to Delete this Qard?")) {
 						window.location="<?=\Yii::$app->homeUrl?>qard/delete-qard?id=<?=$model->qard_id?>'";
 					}				
+			});
+			
+			$('.followopt').on('click',function(){
+					var id = $(this).attr("id");
+					var userid = <?=Yii::$app->user->id?>;
+					var followuserid = <?=$model->user_id?>;
+					
+					if(id=="follow")
+					{
+						$.ajax({
+						url: '<?=Url::to(['qard/followuser'], true);?>',
+						type: "POST",
+						data: {
+							'userid': userid,'followuserid':followuserid 
+						},
+						success: function(data) {							
+							$("#"+id).hide();
+							$("#following").show();
+						}
+					});
+					
+						
+					}
+					else if(id=="following")
+					{
+						$.ajax({
+						url: '<?=Url::to(['qard/unfollowuser'], true);?>',
+						type: "POST",
+						data: {
+							'userid': userid,'followuserid':followuserid 
+						},
+						success: function(data) {
+							$("#"+id).hide();
+							$("#follow").show();
+							}
+						});
+					
+					}
 			});
 	});
 			

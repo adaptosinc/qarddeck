@@ -414,5 +414,22 @@ class Qard extends \yii\db\ActiveRecord
 		return $activities;					
 	}
 	
+	public function getFindfollowuser($followerid,$userid)
+    {			
+		if(isset($followerid) && !empty($followerid))
+		{
+			$query = new Query;			
+			$query->select(['*'])
+				->from('follower')
+				->where(['follower_id' =>$followerid,'user_id'=>$userid ]);
+			$command = $query->createCommand();
+			$activities = $command->queryAll();
+		}
+		
+		if(!empty($activities) && isset($activities))
+			return 1;
+		else
+			return 0;
+    }
 	
 }

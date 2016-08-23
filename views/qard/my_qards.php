@@ -38,8 +38,8 @@ use yii\widgets\ActiveForm;
 					<div class="col-sm-3 col-md-3">
 						<ul class="view-list">
 							<li class="edit-info"><button class="btn btn-grey" onclick="location.href='<?=Yii::$app->homeUrl?>user/profile';"><i class="fa fa-pencil"></i>Edit info</button></li>
-							<li>117 Following</li>
-							<li>23 Followers</li>
+							<li><?=$followercount;?> Following</li>
+							<li><?=$followingcount;?> Followers</li>
 						</ul>
 					</div>
 					<div class="profile-action col-sm-3 col-md-3">

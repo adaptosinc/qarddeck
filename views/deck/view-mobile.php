@@ -36,7 +36,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             <p><?=$model->description?></p>
 							
                             <div class="user-info">
-                                <img src="<?=$model->userProfile->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;float: left;"><strong><?=$model->userProfile->fullname?><br /><span><?=$model->getDeckCreatedAgo();?></span></strong>                                
+                                <img src="<?=$model->userProfile->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;float: left;"><strong><?=$model->userProfile->fullname?></strong><br /><span><?=$model->getDeckCreatedAgo();?></span><br />                   
+								<?php if(\Yii::$app->user->id != $model->user_id){?>
+									
+									<button id='follow' <?php if($follow == 1){ echo "style='display:none'"; } ?>name="follow" class="btn btn-grey followopt" ><i class="fa fa-user-plus"></i>&nbsp;Follow</button>
+							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Following </button> 
+									<?php } ?>
+									
                             </div>                             
                            <ul class="deck-tags">
 							<?=$model->getTagsHtml();?>
@@ -78,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             </div>
                                             <div class="qard-bottom">
                                                 <ul class="qard-tags">
-                                                    <li class="pull-left"><img src="<?= \Yii::$app->homeUrl?>images/deck-thumb.png" alt="" width="15px" height="15px" style="border-radius:50%;"><?=$model->userProfile->fullname; ?></li>
+                                                    <li class="pull-left"><img src="<?=$qardval->userProfile->profile_photo; ?>" alt="" width="15px" height="15px" style="border-radius:50%;"><?=$qardval->userProfile->fullname; ?></li>
                                                     <li class="pull-right"><?=$qardval->getCreatedAgo();?></li>
                                                 </ul>
                                                 <h3><?=$qardval->title; ?></h3>
@@ -102,4 +108,44 @@ $this->params['breadcrumbs'][] = $this->title;
 		var url = '<?=Url::to(['qard/consume'], true);?>';
 		window.location.href = url+"?qard_id="+id;
 	});
+	
+	$('.followopt').on('click',function(){
+					var id = $(this).attr("id");
+					var userid = <?=Yii::$app->user->id?>;
+					var followuserid = <?=$model->user_id?>;
+					
+					if(id=="follow")
+					{
+						$.ajax({
+						url: '<?=Url::to(['qard/followuser'], true);?>',
+						type: "POST",
+						data: {
+							'userid': userid,'followuserid':followuserid 
+						},
+						success: function(data) {							
+							$("#"+id).hide();
+							$("#following").show();
+						}
+					});
+					
+						
+					}
+					else if(id=="following")
+					{
+						$.ajax({
+						url: '<?=Url::to(['qard/unfollowuser'], true);?>',
+						type: "POST",
+						data: {
+							'userid': userid,'followuserid':followuserid 
+						},
+						success: function(data) {
+							$("#"+id).hide();
+							$("#follow").show();
+							}
+						});
+					
+					}
+			});
+			
+			
 </script>

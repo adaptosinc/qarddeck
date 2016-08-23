@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Deck;
+use app\models\Qard;
+
 use app\models\QardDeck;
 use \app\models\Tag;
 use app\models\search\SearchDeck;
@@ -210,16 +212,21 @@ class DeckController extends Controller
 	$count_liked  = $model->deckqardlikeCount;
 	$count_qard  = $model->deckqardCount;
 	
+	$userid = \Yii::$app->user->id;
+	$followerid = $model->user_id;
+		
+	$follow = Qard::getFindfollowuser($followerid,$userid);
+	
 	if(!$this->isMobile()){
 		
 	return $this->render('view', [
-            'model' =>$model ,"count_bookmark" =>$count_bookmark,"count_share" =>$count_share,"count_liked" =>$count_liked,"count_qard"=>$count_qard
+            'model' =>$model ,"count_bookmark" =>$count_bookmark,"count_share" =>$count_share,"count_liked" =>$count_liked,"count_qard"=>$count_qard,"follow"=>$follow,
         ]);
 		
 	} else {
 		$this->layout = "mobile";
 		return $this->render('view-mobile', [
-            'model' =>$model ,"count_bookmark" =>$count_bookmark,"count_share" =>$count_share,"count_liked" =>$count_liked,"count_qard"=>$count_qard
+            'model' =>$model ,"count_bookmark" =>$count_bookmark,"count_share" =>$count_share,"count_liked" =>$count_liked,"count_qard"=>$count_qard,"follow"=>$follow,
 			]);
 		}
     }

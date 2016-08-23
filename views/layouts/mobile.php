@@ -43,9 +43,11 @@
 	<title><?= Html::encode($this->title) ?></title>
 	<?php $this->head() ?>
 	</head>
-        <body class="mobile-screen">     
+        <body class="mobile-screen"> 
+			<div class="container-fluid">		
 		<?php $this->beginBody() ?>		
                 <!-- header -->
+				
                 <header>
                     <div class="logo col-xs-5 col-sm-3 col-md-3 pull-left">
                         <a href="<?=\Yii::$app->homeUrl?>"><img src="<?=\Yii::$app->homeUrl?>images/logo.png" alt="Home"><span>QardDeck</span></a>
@@ -72,7 +74,15 @@
                                  </li>
                               </ul>
                             </div>                             
-                        </li>                      
+                        </li>         
+							 <li class="menu_icon">
+							 
+							 <button class="btn btn-default qard" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/index';">
+							
+								<img style="width:18px; height:18px; margin-top: -10px; margin-left: 4px; !important "   src="<?=\Yii::$app->homeUrl?>images/qard-stream_icon.png" alt=""></button>
+							 
+							 
+							 </li>
                         <li class="menu_icon">
                             <nav class="navbar">
                             <div class="navbar-header">
@@ -159,6 +169,7 @@
                 </footer>           <!-- Footer End -->                    
                 </div>
 		<?php $this->endBody(); ?>
+			</div>
         </body>
 
         <script type="text/javascript">

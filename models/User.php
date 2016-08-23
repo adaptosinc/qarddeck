@@ -292,4 +292,27 @@ class User extends ActiveRecord implements IdentityInterface
 		return $usersharecount  = $activities['share'];
 		
     }
+	
+	public function getFollowingCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand("SELECT count(*) as count FROM follower where `user_id` = '".$this->id."' ");
+	
+		$activities = $command->queryOne();	
+		return $usersharecount  = $activities['count'];
+		
+    }
+	
+	public function getFollowerCount()
+    {
+		
+		 $connection = Yii::$app->getDb(); 
+		$command = $connection->createCommand("SELECT count(*) as count FROM follower where `follower_id` = '".$this->id."' ");
+	
+		$activities = $command->queryOne();	
+		return $usersharecount  = $activities['count'];
+		
+    }
+	
 }

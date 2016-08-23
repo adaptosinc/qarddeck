@@ -202,6 +202,8 @@ class QardController extends Controller
 		$likecount = $user->getUserlikeCount();		
 		$bookmarkcount = $user->getUserbookmarkCount();		
 		$sharecount = $user->getUsershareCount();
+		$followercount = $user->getFollowerCount();
+		$followingcount = $user->getFollowingCount();
 
 		if($type == 'both'){
 			//joining the dec+qard array
@@ -226,6 +228,8 @@ class QardController extends Controller
 					'sharecount'=>$sharecount,
 					'bookmarkcount'=>$bookmarkcount,
 					'likecount'=>$likecount,
+					'followercount'=>$followercount,
+					'followingcount'=>$followingcount,
 				]);
 			}
 			else	
@@ -236,6 +240,8 @@ class QardController extends Controller
 					'sharecount'=>$sharecount,
 					'bookmarkcount'=>$bookmarkcount,
 					'likecount'=>$likecount,
+					'followercount'=>$followercount,
+					'followingcount'=>$followingcount,
 				]);		
 		}
 		else{
@@ -488,7 +494,13 @@ class QardController extends Controller
 			}
 			
 		}
+		$userid = \Yii::$app->user->id;
+		$followerid = $qard->user_id;
+		$follow = $qard->getFindfollowuser($followerid,$userid);
 		
+		/* echo "<pre>";
+		print_r($follow);
+		exit; */
 		
 		$theme = $qard->qardTheme;
 		$blocks = $qard->blocks;
@@ -505,7 +517,8 @@ class QardController extends Controller
 				"curpostion"=>$curpostion,
 				"prevpostion"=>$prevpostion,
 				"viewcurrent"=>$viewcurrent,
-				"qards" => $results,			
+				"qards" => $results,	
+				"follow"=> $follow,	
 			]);
 		}else{
 			$this->layout = "mobile";
@@ -519,7 +532,8 @@ class QardController extends Controller
 				"curpostion"=>$curpostion,
 				"prevpostion"=>$prevpostion,
 				"viewcurrent"=>$viewcurrent,
-				"qards" => $results,			
+				"qards" => $results,
+				"follow"=> $follow,					
 			]);
 		}		
 	 }	 
@@ -1103,6 +1117,46 @@ class QardController extends Controller
      * Lists all Qard models.
      * @return mixed
      */
+	
+	
+	
+	public function actionFollowuser()
+    {			
+	
+	 $userid = $_POST['userid'];
+	 $followerid = $_POST['followuserid'];
+		if(!empty($userid) && !empty($followerid))
+		{
+		$connection = Yii::$app->getDb();
+		
+		$connection->createCommand()
+		->insert('follower', [
+				'user_id' => $userid,
+				'follower_id' =>$followerid,])
+		->execute();
+			return true;
+		}		
+    }
+	
+	
+	public function actionUnfollowuser()
+    {			
+	
+	 $userid = $_POST['userid'];
+	 $followerid = $_POST['followuserid'];
+		if(!empty($userid) && !empty($followerid))
+		{
+		$connection = Yii::$app->getDb();		
+		$connection	->createCommand()
+			->delete('follower',  [
+				'user_id' => $userid,
+				'follower_id' =>$followerid,] )
+			->execute();
+			return true;
+		}		
+    }
+	
+	
 	
 	
 }
