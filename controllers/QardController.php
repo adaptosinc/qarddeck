@@ -351,6 +351,7 @@ class QardController extends Controller
 			}
             return $this->redirect(['view', 'id' => $model->qard_id]);
         } else {
+			
 			$tags=\app\models\Tag::find()->all();
             if(!$this->isMobile()){ 
                 return $this->render('create', [

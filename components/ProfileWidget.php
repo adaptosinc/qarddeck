@@ -53,7 +53,8 @@ class ProfileWidget extends Widget
 				if(!empty($profile->password_profile) && !empty($profile->verify_password_profile) && ($profile->password_profile == $profile->verify_password_profile ))
 				{
 					if($model->validatePassword($currentpwd))
-					{										
+					{			
+						\Yii::$app->getSession()->setFlash('pwd_success', '<div style="text-align:center" class="text-danger" >Your Password Has Been Changed Successfully...</div>');				
 						$model->password = $profile->password_profile;
 						$model->setPassword($model->password);										
 						$model->generateAuthKey();

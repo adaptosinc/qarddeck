@@ -8,6 +8,8 @@ use dosamigos\fileupload\FileUpload;
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
 $this->title = 'Create Qard';
+
+
 ?>
 
     <!-- requiered for tag -->
@@ -19,12 +21,11 @@ $this->title = 'Create Qard';
             var r = e.querySelectorAll("html")[0];
             r.className = r.className.replace(/(^|\s)no-js(\s|$)/, "$1js$2")
         })(document, window, 0);
+		
     </script>
 <!--for tags-->
     <link href="<?= Yii::$app->request->baseUrl?>/css/select2.css" rel="stylesheet">
-    <!--<link href="<?= Yii::$app->request->baseUrl?>/css/bootstrap-tagsinput.css" rel="stylesheet">
-<script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-tagsinput.min.js" type="text/javascript"></script>
-<script src="<?= Yii::$app->request->baseUrl?>/js/typeahead.js" type="text/javascript"></script>-->
+
     <!--only for this page-->
     <link href="<?= Yii::$app->request->baseUrl?>/css/custom.css" rel="stylesheet">
 
@@ -45,7 +46,6 @@ $this->title = 'Create Qard';
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <!-- requiered for drop down of an image -->
-    <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
 	
 	<!--for quick tour-->
 	<link rel="stylesheet" href="<?= Yii::$app->request->baseUrl?>/css/joyride-2.1.css">
@@ -100,16 +100,7 @@ $this->title = 'Create Qard';
 						$theme_properties = unserialize($theme['theme_properties']);
 						//print_r($theme_properties);
 						?>
-                        <!--		<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: yellowgreen" style="height:75px;">
-						<div class="bgoverlay-block" style="height:75px;">
-						<div class="text-block current_blk" data-height="2" style="height:75px;"></div>                                    
-						</div>                                
-						</div>
-						<div id="blk_2"class="bgimg-block parent_current_blk" style="background-color: #0055cc" style="height:150px;">
-						<div class="bgoverlay-block" style="height:150px;">
-						<div class="text-block current_blk" data-height="4" style="height:150px;"></div>                                    
-						</div>                                
-						</div>-->
+                      
 
                         <div id="working_div" class="working_div block active">
                             <div id="blk_1" class="bgimg-block parent_current_blk">
@@ -247,17 +238,11 @@ $this->title = 'Create Qard';
 								<div id="extra_text" name="desc"  disabled="true"  placeholder="Enter The Text" contenteditable="true"></div>
 							</div>
 						 </div>
-							<!---<div class="col-sm-6 col-md-6 on-off">
-								<div class="switch">
-									<input id="cmn-toggle-9" class="cmn-toggle cmn-toggle-round" type="checkbox">
-									<label for="cmn-toggle-9"></label>
-								</div>  <span>Link this text</span> 
-							</div>--->
+						
 						</div>
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
-                            <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
-							<h4 id="reflink" >Add Image<span id="reset_image" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove File</span></h4>
+                       	<h4 id="reflink" >Add Image<span id="reset_image" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove File</span></h4>
 							<div class="img_preview" style="display:none"></div>
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
@@ -266,24 +251,7 @@ $this->title = 'Create Qard';
                                     </div>
                                 </form>
                             </div>
-                            <!--		    </form>-->
-                            <!--<div class="form-group image-elements">
-                                <div class="col-sm-3 col-md-3">
-                                    <input type="text" id="image_opc" class="form-control" placeholder="Image Opacity (%)">
-                                </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <input type="text" id="overlay_color" class="form-control" placeholder="Overlay Color (#fff)">
-                                </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <input type="text" id="overlay_opc" class="form-control" placeholder="Overlay Opacity (%)">
-                                </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <ul>
-                                        <li><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/place.png" alt=""></a></li>
-                                        <li id="reset_image"><a href="#"><img src="<?=Yii::$app->request->baseUrl?>/images/refresh.png" alt=""></a></li>
-                                    </ul>
-                                </div>
-                            </div>-->
+                          
 							<div class="form-group image-elements">
 								<div class="col-sm-3 col-md-3 on-off">
 									<span>Fit</span>
@@ -305,14 +273,7 @@ $this->title = 'Create Qard';
 										</div>  <span>Display as background Image</span> 
 								</div>                                       
                             </div>
-                            <!--<ul class="on-off pull-right">
-                                <li id="file_id">
-                                    <div class="switch" >
-                                        <input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
-                                        <label for="cmn-toggle-3"></label>
-                                    </div> <span>Display as Background Image</span>
-                                </li>
-                            </ul>-->
+                           
                         </div>
 						
                         <div role="tabpanel" class="tab-pane" id="linkblock">
@@ -323,7 +284,6 @@ $this->title = 'Create Qard';
 							<!--<h4>&nbsp;</h4>-->
 							<div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="paste">
-									<!--<h4 id="reflink">Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>-->
 									<h4 id="reflink">Add Url<span id="remove_extra_text" class="trash pull-right"><div class="col-sm-12 col-md-12 on-off">
 											<div class="switch">
 												<input id="cmn-toggle-21" class="cmn-toggle cmn-toggle-round" type="checkbox">
@@ -362,17 +322,7 @@ $this->title = 'Create Qard';
 
 								</div>
 								<div role="tabpanel" class="tab-pane" id="embed">
-								<!--<div class="row">
-									<h4>
-										<span id="remove_extra_link" class="trash pull-right" >
-											<button id="btnembed_code"  class="btn btn-warning pull-right">Link Embed Code</button>
-											
-											
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										</span>
-									</h4>	
-								</div>-->
-							
+								
 									<h4 id="reflink">Add Embed Code
 									<span class="trash pull-right">
 								
@@ -386,7 +336,7 @@ $this->title = 'Create Qard';
 								</div>  <span>Link This Code</span> 
 							</div>
 								
-								<!---<i class="fa fa-trash"></i>&nbsp;Remove Extra Text-->  </span>
+								 </span>
 									
 									</h4>
 									<div class="form-group" id="embedCode">
@@ -399,7 +349,7 @@ $this->title = 'Create Qard';
 									
 									<span id="rmembed_code" style="display:none;  cursor: pointer; cursor: hand; " class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>
 									
-									<!--<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>-->
+								
 								</div>  
 
 							</div>
@@ -417,7 +367,7 @@ $this->title = 'Create Qard';
 												<label for="cmn-toggle-56" class="victim"></label>
 											</div>  <span>Link this Document</span>
 							</div>
-											<!--<i class="fa fa-trash"></i> &nbsp;Remove File --></span></h4>
+										</span></h4>
                             
 							<div class="form-group extra-content" id="drop-image" style="margin-bottom: 60px;  padding-top: 10px;" >
 									<input type="text" id="url-filename" name="filename" class="col-sm-5 col-md-5" placeholder="Enter Title">
@@ -557,19 +507,14 @@ $this->title = 'Create Qard';
 					</li>
 
 					<li class="pull-right"><button class="btn btn-warning" name="preview" onclick="addSaveCard(event)">Preview Card</button></li>
-					<!--<li><button class="btn btn-warning" name="preview">Save</button></li>-->
+				
 				</ul>
 			</div>
 		</div> 
 
     </section>
     <!-- block_error popup -->
-	<?php
-/* 		yii\bootstrap\Modal::begin([
-		'id' =>'deck-style'
-		]);
-		yii\bootstrap\Modal::end(); */
-	?>
+	
 	
 <div id="deck-style" class="fade modal in" role="dialog" tabindex="-1">
 	<div class="modal-dialog ">
@@ -844,7 +789,8 @@ $this->title = 'Create Qard';
 		</div>          <!-- Modal --> 
 		<!--- Tutorial Ends Here-->	
 
-    <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
+
+    <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js"  type="text/javascript" ></script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.caret.js" type="text/javascript"></script>
 
@@ -902,10 +848,13 @@ $this->title = 'Create Qard';
     <script type="text/javascript" src="<?= Yii::$app->request->baseUrl?>/js/tour/jquery.joyride-2.1.js"></script>	
 
 
+
+
 	<script type="text/javascript">
 
 	/** Tip Content Only for create**/
       $(window).load(function() {
+		
         $('#joyRideTipContent').joyride({
           autoStart : true,
 		  modal:true,
@@ -920,9 +869,10 @@ $this->title = 'Create Qard';
 	/**
 	  * Script re-written by Dency G B 
 	 **/
-	 $(".js-example-basic-multiple").select2({
+	  $(".js-example-basic-multiple").select2({
 		 placeholder: "Add some tags",
 	 });
+	
 	/**** Handle the main work space ******/
 	$('.dropzone').html5imageupload({
 		ghost: false,
@@ -954,4 +904,3 @@ $this->title = 'Create Qard';
 
 	</script>
 	<script src="<?= Yii::$app->request->baseUrl?>/js/qard_file_handler.js" type="text/javascript"></script>
-

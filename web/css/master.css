@@ -531,6 +531,9 @@ input[name="search"] {
     border: 1px solid #ccc;
     height: 40px;
 }
+
+
+
 header button.qard {
     border-radius: 0;
     background: transparent;

@@ -19,6 +19,22 @@ $data = Tag::find()
     ->asArray()
     ->all();
 	
+/* $data = [                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+    [                                                                                                                                                    
+        "value" => "Val 1",                                                                                                                                
+        "label" => "Label 1",
+        "id" => 1
+    ],
+    [
+        "value" => "Val 2",
+        "label" => "Label 2",
+        "id" => 2
+    ]
+];
+
+ */
+ 
+
 $serachval = Yii::$app->session->getFlash("searchval");		
 $serachid = Yii::$app->session->getFlash("searchid");	
 
@@ -26,7 +42,7 @@ echo AutoComplete::widget([
 	'name' => 'search',    
 	'id' => 'search',	
 	'value'=> $serachval,
-	'options' => ['class' => 'form-control','placeholder'=>'Search QardDeck'],
+	'options' => ['class' => 'form-control','placeholder'=>'Searchwe QardDeck'],
 	'clientOptions' => [
 		'source' => $data, 
 		'autoFill'=>true,
@@ -40,7 +56,7 @@ echo AutoComplete::widget([
 	  
 ?> 
 				
-<input type="hidden" name="searchid" id="searchid" value="<?php echo $serachid; ?>"  >
+<input type="text" name="searchid" id="searchid" value="<?php echo $serachid; ?>"  >
 
 
 <script>

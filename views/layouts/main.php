@@ -66,17 +66,11 @@ AppAsset::register($this);
 				<div class="col-sm-12 col-md-12">
 					<!--<input type="text" name="search2" id="search2" class="form-control" placeholder="Search QardDeck" >-->
 		
-		
-		<?php
+				<?php
 					use app\components\SearchWidget;					
 						echo SearchWidget::widget();
 					?>
 					
-	 	
-				
-
-  
-	 
 				</div>
 				<div class="search_icon">
 					<img src="<?=\Yii::$app->homeUrl?>images/search_icon.png" alt="">
@@ -146,7 +140,18 @@ AppAsset::register($this);
                                 <li class="col-sm-3 col-md-3"><img src="<?=\Yii::$app->user->identity->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;"></li>
                                 <li class="col-sm-9 col-md-9">
                                     <ul>
-                                        <li><span><?=\Yii::$app->user->identity->firstname?><br><?=\Yii::$app->user->identity->showEmail?></span></li>
+										<?php if(!empty(\Yii::$app->user->identity->firstname) || !empty(\Yii::$app->user->identity->showEmail)){ ?>
+                                        <li>
+											
+											<span><?=\Yii::$app->user->identity->firstname?>
+											<?php if(!empty(\Yii::$app->user->identity->firstname) && !empty(\Yii::$app->user->identity->showEmail)){ ?>
+											<br>
+											<?php } ?>
+											
+											<?=\Yii::$app->user->identity->showEmail?></span>
+											
+										</li>
+										<?php } ?>
                                         <li><a href="<?=\Yii::$app->homeUrl?>qard/my-qards">My Profile</a></li>
                                         <li><a href="<?=\Yii::$app->homeUrl?>user/profile">Edit Account Info</a></li>
                                         <li><a href="index.html">						

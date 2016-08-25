@@ -21,6 +21,9 @@ $this->params['breadcrumbs'][] = 'Edit';
 	<div class="modal-body">
 		<h3>Edit Account Info</h3>
 		<div class="row">
+		
+		 <?= Yii::$app->session->getFlash('pwd_success'); ?>
+		  </br>
 			<?php $form = ActiveForm::begin([
 					  //'id' => 'edit_form_profile',
 					  'options' => ['enctype' => 'multipart/form-data']
@@ -61,20 +64,19 @@ $this->params['breadcrumbs'][] = 'Edit';
 										'template' => "{label}\n{input}\n{hint}\n{error}"
 								])->textInput(['class' => 'form-control','placeholder'=>'Last Name']) ?>    
 						</div>
-						<!--<div class="form-group">    
-						 <!-- < ?= 
-								  //$form->field($profile, 'profile_photo')->fileInput() //? >
-						  < ?= $form->field($profile, 'profile_bg_image')->fileInput() ?> 
-						</div>-->
+						
 						<div class="form-group">
 							<div class="">
-							<!--img src="<?= Yii::$app->request->baseUrl?>/images/email-trans.png" alt=""-->
+							
 							<?= $form->field($profile, 'display_email', [
 										'template' => "{label}\n{input}\n{hint}\n{error}"
 							])->textInput(['class' => 'form-control','placeholder'=>'Email Adddress']) ?>
+							<span id="emailerr" style="display:none"  class="text-danger">Invalid email Address </span>
+							</br>
 							</div>
+							
 							<div class="">
-								<div class="switch">                                      
+								<div class="switch" style="float: left;">                                      
 								  <?php if($profile->isEmailEnabled==0){?>
 								  <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
 								  <?php }?>
@@ -82,23 +84,30 @@ $this->params['breadcrumbs'][] = 'Edit';
 								  <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round"  checked="checked" type="checkbox">
 								  <?php }?>                                      
 								  <label for="cmn-toggle-4"></label>
-								</div>  <span>Display email on public profile</span>                                          
+								</div>  <span style="float: left; margin-left: 15px; margin-top: 7px; " >Display email on public profile</span>                                          
 							</div>                                            
 						</div>
 					    <div class="form-group">
 					        <?= $form->field($profile, 'short_description', [
 									  'template' => "{label}\n{input}\n{hint}\n{error}"
-							  ])->textarea(['class' => 'form-control','placeholder'=>'Something about yourself (x char max)']) ?>
+							  ])->textarea(['class' => 'form-control','placeholder'=>'Something about yourself (x char max)','onkeyup'=>"countChar(this)"]) ?>
+							  <div id="charNum" class="text-danger" ></div>
+							  </br>
+							  
 					        <?= $form->field($profile, 'profile_url', [
 									  'template' => "{label}\n{input}\n{hint}\n{error}"
-							  ])->textInput(['class' => 'form-control link','placeholder'=>'Link Optional']) ?>               
-					    </div>       
+							  ])->textInput(['class' => 'form-control','placeholder'=>'Link Optional']) ?>               
+					    </div>     
+						
 				    </div>
 			    </div>
 		    </div>         
 			<!-- public profile -->
 			<!-- Change Your Password and social account -->
 		    <?php //if(\Yii::$app->user->identity->login_type == 'email'){  ?>
+			
+			
+			 
 			    <div class="col-sm-4 col-md-4">
 				    <h3 class="main-title">Change Your Password</h3>
 				    <div class="form-group">
@@ -190,6 +199,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                 $(".updatebtn").removeAttr("disabled");      
             }
         });
+		
         $('#link').change(function(e){
            var val = $('#link').val();            
            if (val && !val.match(/^http([s]?):\/\/.*/)) {
@@ -200,6 +210,7 @@ $this->params['breadcrumbs'][] = 'Edit';
                 $(".updatebtn").removeAttr("disabled");
            }
         });
+		
         function checkPassword(){
         
             var file_data = $('#cur_password').val();   
@@ -226,6 +237,28 @@ $this->params['breadcrumbs'][] = 'Edit';
                         });
       }
         
+		
+		function ValidateEmail(email) {
+        var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        return expr.test(email);
+		};
+	
+	 $("#userprofile-display_email").on("change", function () {
+		 if($.trim($("#userprofile-display_email").val()) !="" )
+		 {
+			if (!ValidateEmail($("#userprofile-display_email").val())) 
+				{
+					$("#emailerr").show();
+					return false;
+				}				
+			else 
+				$("#emailerr").hide();
+		 }else 
+			$("#emailerr").hide();
+			
+    });
+	
+	
     $('.verify_password').on('blur', function() {
         var password = $('.password').val();
         var verify_password = $('.verify_password').val();
@@ -294,5 +327,54 @@ $this->params['breadcrumbs'][] = 'Edit';
                     });
 	 });
 	 
+	 
+			$( "#w0" ).submit(function( event ) {
+					if($.trim($("#userprofile-display_email").val()) !="" )
+					 {
+						if (!ValidateEmail($("#userprofile-display_email").val())) 
+							{
+								$("#emailerr").show();
+								$(".field-userprofile-display_email").removeClass("has-success");
+								$(".field-userprofile-display_email").addClass("has-error");
+								return false;
+							}				
+							else 
+								$("#emailerr").hide();
+					 }else 
+						$("#emailerr").hide();
+				  
+			});
+
+			
+				
+		$('#userprofile-short_description').keyup(function () {
+			  var max = 250;
+			  var len = $(this).val().length;
+			  if (len >= max) {
+				$('#charNum').text(' You have reached the limit');
+			  } else {
+				var char = max - len;
+				$('#charNum').text(char + ' characters left');
+			  }
+		});
+
+		
+		$('#userprofile-short_description').bind("cut copy paste",function(e) {
+          e.preventDefault();
+      });
+	  
+		$('#userprofile-short_description').keypress(function (event) {
+			var max = 250;
+			var len = $(this).val().length;
+			if (event.which < 0x20) {			
+				return; 
+			}
+			if (len >= max) {
+			event.preventDefault();
+			}
+
+		});
+  
+
    });    
 </script>               

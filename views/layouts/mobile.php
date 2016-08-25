@@ -61,16 +61,21 @@
                                 <span class="menu-close"><i class="fa fa-times-thin"></i></span>
                               </a>
                             
-                              <ul class="dropdown-menu mobile-search" aria-labelledby="dLabel">
+                              <ul class="dropdown-menu mobile-search" style="z-index:1 !important"  aria-labelledby="dLabel">
                                 <li>
                                     <h3>Search</h3>
-                                    <div class="col-sm-12 col-md-12">
-
-                                        <input type="text" name="search" class="form-control" placeholder="Search Qard">
+                                    <div class="col-sm-12 col-md-12" >
+											
+					
+                                       <!-- <input type="text" name="search" class="form-control" placeholder="Search Qard">-->
+										<?php
+												use app\components\SearchWidget;					
+													echo SearchWidget::widget();
+											?>
                                     </div>
-                                    <div class="search_icon">
-                                        <img src="<?=\Yii::$app->homeUrl?>images/search_icon.png" alt="">
-                                    </div>                                               
+									<div class="search_icon">
+                                        <img style="margin-top:-15px" src="<?=\Yii::$app->homeUrl?>images/search_icon.png" alt="">
+                                    </div>                                             
                                  </li>
                               </ul>
                             </div>                             
@@ -121,7 +126,17 @@
                                 <li class="col-xs-3 col-sm-3 col-md-3"><img src="<?=\Yii::$app->user->identity->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;"></li>
                                 <li class="col-xs-9 col-sm-9 col-md-9">
                                     <ul>
-                                        <li><span><?=\Yii::$app->user->identity->firstname?><br><?=\Yii::$app->user->identity->showEmail?></span></li>
+									<?php if(!empty(\Yii::$app->user->identity->firstname) || !empty(\Yii::$app->user->identity->showEmail)){ ?>
+                                        <li><span><?=\Yii::$app->user->identity->firstname?>
+										
+											<?php if(!empty(\Yii::$app->user->identity->firstname) && !empty(\Yii::$app->user->identity->showEmail)){ ?>
+											<br>
+											<?php } ?>
+										
+										<?=\Yii::$app->user->identity->showEmail?></span></li>
+										
+											<?php } ?>
+											
                                         <li><a href="<?=\Yii::$app->homeUrl?>qard/my-qards">My Profile</a></li>
                                         <li><a href="<?=\Yii::$app->homeUrl?>user/profile">Edit Account Info</a></li>
                                         <li><a href="index.html">						

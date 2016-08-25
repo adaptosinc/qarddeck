@@ -14,7 +14,8 @@ $this->params['breadcrumbs'][] = 'Edit';
                 <section class="main-profile">                    
                         <h3 class="modal-title">Edit Your Account Info</h3>
                         <div class="row">
-						
+						 <?= Yii::$app->session->getFlash('pwd_success'); ?>
+						 </br>
 						<?php $form = ActiveForm::begin([
 					  //'id' => 'edit_form_profile',
 					  'options' => ['enctype' => 'multipart/form-data']
@@ -60,7 +61,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 								<?= $form->field($profile, 'display_email', [
 										'template' => "{label}\n{input}\n{hint}\n{error}"
 							])->textInput(['class' => 'form-control','placeholder'=>'Email Adddress'])->label('Email') ?>
-
+							<span id="emailerr" style="display:none"  class="text-danger">Invalid email Address </span>
 							
                                         <div class="form-group">
                                        
@@ -81,7 +82,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 									  'template' => "{label}\n{input}\n{hint}\n{error}"
 							  ])->textarea(['class' => 'form-control','placeholder'=>'Something about yourself (x char max)'])->label('Something about yourself'); ?>
 							  
-							  
+							   <div id="charNum" class="text-danger" ></div>
                                     
 							<?= $form->field($profile, 'profile_url', [
 									  'template' => "{label}\n{input}\n{hint}\n{error}"
@@ -91,8 +92,11 @@ $this->params['breadcrumbs'][] = 'Edit';
                                     </div>
                                 </div>
                             </div>          <!-- public profile -->
+							
                             <div class="col-sm-4 col-md-4 col-md-offset-1">
                                 <h3 class="main-title">Change Your Password</h3>
+								
+								 
                                 <div class="form-group">
                                     <label>Current Password</label>
                                     <input type="password" id="cur_password" class="form-control" name="cur_password" placeholder="Current Password" >
@@ -221,6 +225,30 @@ $this->params['breadcrumbs'][] = 'Edit';
                         });
       }
         
+		
+		
+		function ValidateEmail(email) {
+        var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        return expr.test(email);
+		};
+	
+	 $("#userprofile-display_email").on("change", function () {
+		 if($.trim($("#userprofile-display_email").val()) !="" )
+		 {
+			if (!ValidateEmail($("#userprofile-display_email").val())) 
+				{
+					$("#emailerr").show();
+					return false;
+				}				
+			else 
+				$("#emailerr").hide();
+		 }else 
+			$("#emailerr").hide();
+			
+    });
+	
+	
+	
     $('.verify_password').on('blur', function() {
         var password = $('.password').val();
         var verify_password = $('.verify_password').val();
@@ -289,6 +317,55 @@ $this->params['breadcrumbs'][] = 'Edit';
                     });
 	 });
 	 
+	 
+	 
+			$( "#w0" ).submit(function( event ) {
+					if($.trim($("#userprofile-display_email").val()) !="" )
+					 {
+						if (!ValidateEmail($("#userprofile-display_email").val())) 
+							{
+								$("#emailerr").show();
+								$(".field-userprofile-display_email").removeClass("has-success");
+								$(".field-userprofile-display_email").addClass("has-error");
+								return false;
+							}				
+							else 
+								$("#emailerr").hide();
+					 }else 
+						$("#emailerr").hide();
+				  
+			});
+
+			
+				
+		$('#userprofile-short_description').keyup(function () {
+			  var max = 250;
+			  var len = $(this).val().length;
+			  if (len >= max) {
+				$('#charNum').text(' You have reached the limit');
+			  } else {
+				var char = max - len;
+				$('#charNum').text(char + ' characters left');
+			  }
+		});
+
+		$('#userprofile-short_description').bind("cut copy paste",function(e) {
+          e.preventDefault();
+      });
+		
+		$('#userprofile-short_description').keypress(function (event) {
+			var max = 250;
+			var len = $(this).val().length;
+			if (event.which < 0x20) {			
+				return; 
+			}
+			if (len >= max) {
+			event.preventDefault();
+			}
+
+		});
+  
+  
    });    
 </script>   				
              

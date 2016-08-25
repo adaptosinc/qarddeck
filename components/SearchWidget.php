@@ -23,12 +23,12 @@ class SearchWidget extends Widget
     public function run()
     {
         $id =  \Yii::$app->user->id;
-     
-			if(!$this->isMobile()){ 	 
-				return $this->render('search');
-			} else {			  
+     return $this->render('search');
+			/* if($this->isMobile()){ 	 
+				return $this->render('search');		
+			  } else {			  
                 return $this->render('mobile/search');  
-			}	
+			}	 */  
         
     }
 }
