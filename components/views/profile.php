@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 								$arr = explode('_',\Yii::$app->user->identity->username);
 								$f_id = $arr[1];
 							  ?>
-							  <img id="profImg" class="profImg" src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=large">
+							  
 							  <?php } ?>
 							  <input id="profile-image-upload" name="image" class="hidden" type="file">
 						  </div>
