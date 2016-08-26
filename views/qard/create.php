@@ -220,13 +220,13 @@ $this->title = 'Create Qard';
 								
 							<div class="col-sm-12 col-md-12 on-off" id="link-extra" style="display:none; "  >
 								<div class="switch">
-									<input id="cmn-toggle-9" class="cmn-toggle cmn-toggle-round" type="checkbox">
+									<input id="cmn-toggle-9"  class="cmn-toggle cmn-toggle-round" type="checkbox">
 									<label for="cmn-toggle-9"></label>
 								</div>  <span>Link This Text</span> 
 							</div>
 								
 								<!---<i class="fa fa-trash"></i>&nbsp;Remove Extra Text-->  </span></h4>
-								<input type="textbox" name="extra-text" id="extra-list" disabled="disabled" placeholder="Enter an optional text" class="form-control">
+								<input type="textbox" name="extra-text" id="extra-list" disabled="disabled" placeholder="Enter an optional text" class="form-control extracheck">
 								<ul class="editable-elements">
 									<li id="text_area_bold"><a href="#"><i class="fa fa-bold"></i></a></li>
 									<li id="text_area_italics"><a href="#"><i class="fa fa-italic"></i></li>
@@ -235,7 +235,7 @@ $this->title = 'Create Qard';
 								</ul>
 							</div>
 							<div id="extrafield">
-								<div id="extra_text" name="desc"  disabled="true"  placeholder="Enter The Text" contenteditable="true"></div>
+								<div id="extra_text" name="desc" class="extracheck"  disabled="true"  placeholder="Enter The Text" contenteditable="true"></div>
 							</div>
 						 </div>
 						

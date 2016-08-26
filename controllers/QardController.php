@@ -47,11 +47,6 @@ class QardController extends Controller
                 'class' => AccessControl::className(),
                 'only' => ['publish','activity','edit','my-qards'],
                 'rules' => [
-/*                  [
-                        'allow' => true,
-                        'actions' => ['login', 'signup'],
-                        'roles' => ['?'],
-                    ], */
                     [
                         'allow' => true,
                         'actions' => ['publish','activity','edit','my-qards'],

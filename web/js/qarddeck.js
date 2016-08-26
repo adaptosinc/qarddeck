@@ -853,22 +853,21 @@ function setHeightBlock(elem,offset){
 /** Embed code preview **/
 function embedCode(videoLink){
 	var eUrl = $(videoLink).attr('data-value');
-//	console.log(eUrl);
+
 	var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 	$('.preview-image').html(html);
 	$('.nav-tabs a[href="#linkblock"]').tab('show');
 	$('.nav-tabs a[href="#embed"]').tab('show');
 	
 	//// ARIVAZAHGAN CODE //////////////////
-	// var spantext = $("#working_div .text-block").find("span").html();
+	
 	var linkhtml ='<span class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="/qarddeck/web/images/video_icon.png" alt=""></span>';
 	$("#paste").hide();
 	$("#embed").show();
 	$("#embed_code").val(html);
-	//$("#emcode_hid").val(spantext);
 	$("#emcode_hidimg").val(linkhtml);
 	
-	//$("#link-ecode").show();
+
 	$("#rmembed_code").show();
 	$("#cmn-toggle-57").prop("checked",true);	
 	
@@ -1238,6 +1237,7 @@ function add_block(event,new_block){
 		//added by dency
 		if(new_block){
 			$(".url_reset_link").trigger("click");
+			$("#extra_text").html('');
 		}
 }
 function addSaveCard() {
@@ -1692,14 +1692,11 @@ $("#extra_text").on("paste",function(event){
 		} 		
 });
 $("#remove_extra_text").click(function(){
-	$("#extra_text").html('');
+	//$("#extra_text").html('');
 	$("input[name=extra-text]").val('');
 	$('#cmn-toggle-9').prop("checked",false);
 }); 
 $('#cmn-toggle-9').click(function(){
-	//check selected block first
-	//setTimeout("add_block(true,false);",1000);
-	////console.log($("#working_div .current_blk").attr('data-block_id'));
 	if($(this).prop('checked')){
 		add_block(true,false);
 		$(window).data('qardDeck').addExtraText();
@@ -2054,8 +2051,6 @@ $(document).on('click', '.add-another', function(){
 	$("#link-extra").hide();	
 	$("#add_extra_text").show();
 	$('#embed_div').html("<div class='preview-image'></div>");
-	//$('#btnembed_code').show();
-	//$('#link-ecode').hide();	
 	$('#rmembed_code').hide();	
 	
 });	
@@ -2065,7 +2060,7 @@ $(document).on('click', '#add_extra_text', function(){
 	$("#extra-word").removeAttr( "style" );	
 	$("#link-extra").show();	
 	$("#add_extra_text").hide();	
-	
+	checkextratext();
 });
 
 
@@ -2096,9 +2091,20 @@ $(document).on('click', '#rmembed_code', function(){
 	$('#emcode_hid').val("");  
 	$('#emcode_hidimg').val("");  
 	$("#cmn-toggle-57").prop("checked",false);	
-	//$('#link-ecode').hide(); 
-	$('#rmembed_code').hide(); 
-	//$('#btnembed_code').show(); 
+	$('#rmembed_code').hide(); 	
 });	
 
+function checkextratext()
+{
+	var text1 =$("#extra-list").val();
+	var text2 =$("#extra_text").text();		
+	if(($.trim(text1) !="" ) || (($.trim(text2) !="") ))
+		$("#cmn-toggle-9").attr( "disabled",false );
+	else 
+		$("#cmn-toggle-9").attr( "disabled",true );
+}
+
+$(document).on('keyup keypress blur change click', '.extracheck', function(){ 
+	checkextratext();
+});	
 
