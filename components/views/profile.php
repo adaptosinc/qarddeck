@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 							  <br>
 							<button type="button" class="btn  btn-warning remImg"><span class="glyphicon glyphicon-trash">RemoveImage</span></button>
 							  <?php } ?>
-							
+
 							  <input id="profile-image-upload" name="image" class="hidden" type="file">
 						  </div>
 						  <div class="col-sm-8 col-md-8">
