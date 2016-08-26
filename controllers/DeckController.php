@@ -5,7 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Deck;
 use app\models\Qard;
-
+use app\models\User;
 use app\models\QardDeck;
 use \app\models\Tag;
 use app\models\search\SearchDeck;
@@ -215,8 +215,11 @@ class DeckController extends Controller
 	$userid = \Yii::$app->user->id;
 	$followerid = $model->user_id;
 		
-	$Qard = new Qard();
-	$follow = Qard::getFindfollowuser($followerid,$userid);
+	$user = User::findOne($userid);
+	if(!$user)
+		$follow = "2";
+	else
+		$follow = $user->getFindfollowuser($followerid);
 	
 	
 	if(!$this->isMobile()){

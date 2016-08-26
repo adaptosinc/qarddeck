@@ -22,24 +22,34 @@ use yii\widgets\ActiveForm;
 					<div class="col-sm-6 col-md-6">
 						<div class="user-details">
 							<div class="col-sm-2 col-md-2">
-								<img src="<?=\Yii::$app->user->identity->profile_photo?>" width="80px" height="80px" style="border-radius: 50%;" alt="">
+								<img src="<?=$user->profile->profile_photo?>" width="80px" height="80px" style="border-radius: 50%;" alt="">
 							</div>
 							<div class="col-sm-10 col-md-10">
-								<h4><?=\Yii::$app->user->identity->firstname?></h4>
+								<h4><?=$user->profile->firstname?></h4>
 								<ul>
-									<li><a href="">@<?=\Yii::$app->user->identity->username?></a></li>
-									<li><a href=""><i class="fa fa-envelope"></i>&nbsp;<?=\Yii::$app->user->identity->showEmail?></a></li>
-									<li><a href=""><i class="fa fa-chain"></i>&nbsp;<?=\Yii::$app->user->identity->website?></a></li>
+									<li><a href="">@<?=$user->username?></a></li>
+									<li><a href=""><i class="fa fa-envelope"></i>&nbsp;<?=$user->showEmail?></a></li>
+									<li><a href=""><i class="fa fa-chain"></i>&nbsp;<?=$user->website?></a></li>
 								</ul>
 							</div>
-							<p><?=\Yii::$app->user->identity->bio?></p>
+							<p><?=$user->profile->short_description?></p>
 						</div>
 					</div>
 					<div class="col-sm-3 col-md-3">
 						<ul class="view-list">
-							<li class="edit-info"><button class="btn btn-grey" onclick="location.href='<?=Yii::$app->homeUrl?>user/profile';"><i class="fa fa-pencil"></i>Edit info</button></li>
-							<li><?=$followercount;?> Following</li>
-							<li><?=$followingcount;?> Followers</li>
+							<li class="edit-info">
+							<?php if(\Yii::$app->user->id == $user->id){?>
+							<button class="btn btn-grey" onclick="location.href='<?=Yii::$app->homeUrl?>user/profile';"><i class="fa fa-pencil"></i>Edit info</button>
+							<?php } else if(($follow != 2) &&(\Yii::$app->user->id != $user->id)){ ?>
+							
+							<button id='follow' <?php if($follow == 1){ echo "style='display:none'"; } ?>name="follow" class="btn btn-grey followopt" ><i class="fa fa-user-plus"></i>&nbsp;Follow</button>
+							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Unfollow </button> 
+							
+							<?php } ?>
+							
+							</li>
+								<li><?=$followingcount;?>  Following</li>
+							<li><span id='ctfollower'><?=$followercount;?></span> Followers</li>
 						</ul>
 					</div>
 					<div class="profile-action col-sm-3 col-md-3">
@@ -158,4 +168,46 @@ $(document).on('click','.deckid',function(){
 	window.location.href = url+"?id="+id; 
 });
 
+	$('.followopt').on('click',function(){
+					var id = $(this).attr("id");
+					var userid = <?=Yii::$app->user->id?>;
+					var followuserid = <?=$user->id?>;
+					var countfollower =$("#ctfollower").html();
+					
+					if(id=="follow")
+					{
+						$.ajax({
+						url: '<?=Url::to(['qard/followuser'], true);?>',
+						type: "POST",
+						data: {
+							'userid': userid,'followuserid':followuserid 
+						},
+						success: function(data) {							
+							$("#"+id).hide();
+							$("#following").show();
+							var newcountfollower = parseInt(countfollower)+parseInt(1);
+							$("#ctfollower").html(newcountfollower);
+						}
+					});
+					
+					}
+					else if(id=="following")
+					{
+						$.ajax({
+						url: '<?=Url::to(['qard/unfollowuser'], true);?>',
+						type: "POST",
+						data: {
+							'userid': userid,'followuserid':followuserid 
+						},
+						success: function(data) {
+							$("#"+id).hide();
+							$("#follow").show();
+							var newcountfollower = parseInt(countfollower)-parseInt(1);
+							$("#ctfollower").html(newcountfollower);
+							}
+						});
+					
+					}
+			});
+			
 </script>

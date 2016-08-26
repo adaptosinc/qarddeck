@@ -35,20 +35,18 @@ $this->params['breadcrumbs'][] = 'Edit';
 				    <div class="profile-content">
 						<div class="form-group">
 							<div class="profile-img col-sm-4 col-md-4">
+							<p id="loading" align="center" style="display:none" >
+									<img src="<?php echo \Yii::$app->homeUrl; ?>images/loading7.gif" width="100px" height="35px" alt="Loading…" />
+								</p>
 							  <?php if($profile->profile_photo==''){?>
 							  <img id="profImg" class="profImg" src="<?= Yii::$app->request->baseUrl?>/images/avatar-lg.png" alt=""> 
+							  
 							  <?php }else { ?>
-							  <img id="profImg" class="profImg" src="<?= $profile->profile_photo?> " alt="">
+							  <img id="profImg" class="profImg" src="<?= $profile->profile_photo?> " alt="">							  
 							  <br>
 							<button type="button" class="btn  btn-warning remImg"><span class="glyphicon glyphicon-trash">RemoveImage</span></button>
 							  <?php } ?>
-							  <?php if(\Yii::$app->user->identity->login_type == 'facebook') {
-								//fetch id here
-								$arr = explode('_',\Yii::$app->user->identity->username);
-								$f_id = $arr[1];
-							  ?>
-							  <img id="profImg" class="profImg" src="//graph.facebook.com/<?php echo $f_id;?>/picture?type=large">
-							  <?php } ?>
+							
 							  <input id="profile-image-upload" name="image" class="hidden" type="file">
 						  </div>
 						  <div class="col-sm-8 col-md-8">
@@ -104,7 +102,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 		    </div>         
 			<!-- public profile -->
 			<!-- Change Your Password and social account -->
-		    <?php //if(\Yii::$app->user->identity->login_type == 'email'){  ?>
+		    <?php if(\Yii::$app->user->identity->login_type == 'email'){  ?>
 			
 			
 			 
@@ -147,7 +145,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 						</div>	
 					</div>
 			    </div>					  
-			<?php  //} ?>
+			<?php  } ?>
 		<!-- Change Your Password and social account -->
 	    </div>          <!-- row -->
 	    <div class="update col-md-9 col-md-offset-2">
@@ -173,6 +171,8 @@ $this->params['breadcrumbs'][] = 'Edit';
         //$('input[type=file]').change(function(e){
         $('input[id=profile-image-upload]').change(function(e){
            // $('#profile-image-upload').click();
+		  $('#loading').show();
+		  $('#profImg').hide();
                var file_data = $('#profile-image-upload').prop('files')[0];   
                var form_data = new FormData();                  
                form_data.append('file', file_data);
@@ -188,7 +188,13 @@ $this->params['breadcrumbs'][] = 'Edit';
                                console.log(response);
                                $('#profImg').attr('src', '<?= Yii::$app->request->baseUrl?>/uploads/'+response.code);
                                count++;
-                           }
+							   $('#loading').hide();
+							   $('#profImg').show();
+                           },
+						error:function(){
+							$('#loading').hide();
+							$('#profImg').show();
+						}
                     });
         }); 
         $('#cur_password').change(function(e){
@@ -348,7 +354,7 @@ $this->params['breadcrumbs'][] = 'Edit';
 			
 				
 		$('#userprofile-short_description').keyup(function () {
-			  var max = 250;
+			  var max = 100;
 			  var len = $(this).val().length;
 			  if (len >= max) {
 				$('#charNum').text(' You have reached the limit');
@@ -364,7 +370,7 @@ $this->params['breadcrumbs'][] = 'Edit';
       });
 	  
 		$('#userprofile-short_description').keypress(function (event) {
-			var max = 250;
+			var max = 100;
 			var len = $(this).val().length;
 			if (event.which < 0x20) {			
 				return; 

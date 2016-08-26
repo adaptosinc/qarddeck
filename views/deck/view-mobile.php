@@ -37,10 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
 							
                             <div class="user-info">
                                 <img src="<?=$model->userProfile->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;float: left;"><strong><?=$model->userProfile->fullname?></strong><br /><span><?=$model->getDeckCreatedAgo();?></span><br />                   
-								<?php if(\Yii::$app->user->id != $model->user_id){?>
+								<?php if(($follow!=2) && (\Yii::$app->user->id != $model->user_id)){??>
 									
 									<button id='follow' <?php if($follow == 1){ echo "style='display:none'"; } ?>name="follow" class="btn btn-grey followopt" ><i class="fa fa-user-plus"></i>&nbsp;Follow</button>
-							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Following </button> 
+							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Unfollow </button> 
 									<?php } ?>
 									
                             </div>                             
