@@ -34,7 +34,7 @@ $this->title = 'Create Qard';
 
     <!--for image crop-->
     <link href="<?= Yii::$app->request->baseUrl?>/css/html5imageupload.css" rel="stylesheet">
-    <link href="<?= Yii::$app->request->baseUrl?>/css/custom.css" rel="stylesheet">
+    <!--<link href="<?= Yii::$app->request->baseUrl?>/css/custom.css" rel="stylesheet">-->
 
     <script src="<?= Yii::$app->request->baseUrl?>/js/bootstrap-colorpicker.js" type="text/javascript"></script>
 
@@ -588,13 +588,6 @@ $this->title = 'Create Qard';
 				
 			</div>
 			
-							
-				
-				
-				
-			
-			
-				
 				</div>
 				
 		</div>
@@ -791,6 +784,16 @@ $this->title = 'Create Qard';
 
 
     <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js"  type="text/javascript" ></script>
+	<script type="text/javascript">
+	/**
+	  * Script re-written by Dency G B 
+	 **/
+	 
+		$(".js-example-basic-multiple").select2({
+		 placeholder: "Add some tags",
+	 });
+	</script>
+	
     <script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
     <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.caret.js" type="text/javascript"></script>
 
@@ -869,9 +872,9 @@ $this->title = 'Create Qard';
 	/**
 	  * Script re-written by Dency G B 
 	 **/
-	  $(".js-example-basic-multiple").select2({
+/* 	  $(".js-example-basic-multiple").select2({
 		 placeholder: "Add some tags",
-	 });
+	 }); */
 	
 	/**** Handle the main work space ******/
 	$('.dropzone').html5imageupload({

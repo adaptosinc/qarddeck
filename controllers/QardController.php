@@ -185,8 +185,10 @@ class QardController extends Controller
      * Lists all Qard models.
      * @return mixed
      */
-    public function actionMyQards($page=null,$type=null){ 
+    public function actionMyQards($page=null,$type=null,$id=null){ 
 
+	if(!$id)
+		$id=Yii::$app->user->id;
 		
 		if(!$type)
 			$type = 'both';
@@ -194,17 +196,24 @@ class QardController extends Controller
 		if(!$page)
 			$page = 0;
 		$offset = $page*$limit;
-		$qards = $this->getMyQardsfeed($offset,$limit,$type);
+		$qards = $this->getMyQardsfeed($offset,$limit,$type,$id);
 		//	print_r($feed);die;
-		$decks =  $this->getMyDecksfeed($offset,2);
-		$user = User::findOne(\Yii::$app->user->id);
+		$decks =  $this->getMyDecksfeed($offset,2,$id);
+		$user = User::findOne($id);
+		if(!$user)
+			return $this->redirect(['index']); 
+		
+		
 		$qardcount = $user->getUserqardCount();		
 		$likecount = $user->getUserlikeCount();		
 		$bookmarkcount = $user->getUserbookmarkCount();		
 		$sharecount = $user->getUsershareCount();
 		$followercount = $user->getFollowerCount();
 		$followingcount = $user->getFollowingCount();
-
+		$followerid = $id;			
+		$follow = $user->getFindfollowuser($followerid);
+		
+		
 		if($type == 'both'){
 			//joining the dec+qard array
 			array_splice($qards, count($qards), 0, $decks);
@@ -230,6 +239,8 @@ class QardController extends Controller
 					'likecount'=>$likecount,
 					'followercount'=>$followercount,
 					'followingcount'=>$followingcount,
+					'user'=>$user,
+					'follow'=>$follow,
 				]);
 			}
 			else	
@@ -242,6 +253,8 @@ class QardController extends Controller
 					'likecount'=>$likecount,
 					'followercount'=>$followercount,
 					'followingcount'=>$followingcount,
+					'user'=>$user,
+					'follow'=>$follow,
 				]);		
 		}
 		else{
@@ -254,12 +267,12 @@ class QardController extends Controller
      * @param integer $offset and $limit
      * @return html
      */
-    public function getMyQardsfeed($offset,$limit,$type){
+    public function getMyQardsfeed($offset,$limit,$type,$id){
 		$feed = [];
 		$Query = new Query;
 		$Query->select(['*'])
 			->from('qard')
-			->where(['user_id'=>\Yii::$app->user->id])
+			->where(['user_id'=>$id])
 			->andWhere(['<>','status', 2])
 			->limit($limit)
 			->offset($offset)
@@ -280,12 +293,12 @@ class QardController extends Controller
 	 * @param integer $offset,$limit
 	 * @return html
 	 */	
-	public function getMyDecksfeed($offset,$limit){
+	public function getMyDecksfeed($offset,$limit,$id){
 		$feed = [];
 		$Query = new Query;
 		$Query->select(['*'])
 			->from('deck')
-			->where(['user_id'=>\Yii::$app->user->id])
+			->where(['user_id'=>$id])
 			->limit($limit)
 			->offset($offset)
 			->orderBy(['created_at' => SORT_DESC]);	
@@ -507,13 +520,15 @@ class QardController extends Controller
 			
 		}
 		$userid = \Yii::$app->user->id;
-		$followerid = $qard->user_id;
-		$follow = $qard->getFindfollowuser($followerid,$userid);
+		$followerid = $qard->user_id;	
 		
-		/* echo "<pre>";
-		print_r($follow);
-		exit; */
-		
+		$user = User::findOne($userid);
+	if(!$user)
+		$follow = "2";
+	else
+		$follow = $user->getFindfollowuser($followerid);
+	
+	
 		$theme = $qard->qardTheme;
 		$blocks = $qard->blocks;
 

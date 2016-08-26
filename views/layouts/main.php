@@ -210,6 +210,7 @@ AppAsset::register($this);
 		echo '<script>$(document).ready(function(){$("#myModaledit").modal("show");});</script>';
 	}
 ?>
+
 </html>
 <?php $this->endPage() ?>
 

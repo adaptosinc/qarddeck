@@ -27,7 +27,9 @@ class ProfileWidget extends Widget
         $profile = Profile::find()->where(['user_id' => $id])->one();	
         
         if($profile->load(Yii::$app->request->post())){
-          $currentpwd = Yii::$app->request->post()['cur_password'];
+			
+			if($model->login_type == 'email')
+				$currentpwd = Yii::$app->request->post()['cur_password'];
 		  
 		   
             $newProfile = Profile::find()->where(['user_id' => $id])->one();
@@ -48,7 +50,7 @@ class ProfileWidget extends Widget
 					}	
             };
 	
-			if(!empty($currentpwd))
+			if(!empty($currentpwd) && isset($currentpwd))
 			{
 				if(!empty($profile->password_profile) && !empty($profile->verify_password_profile) && ($profile->password_profile == $profile->verify_password_profile ))
 				{

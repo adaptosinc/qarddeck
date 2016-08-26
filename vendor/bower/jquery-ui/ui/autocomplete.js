@@ -82,7 +82,7 @@ $.widget( "ui.autocomplete", {
 		this.element
 			.addClass( "ui-autocomplete-input" )
 			.attr( "autocomplete", "off" );
-
+			
 		this._on( this.element, {
 			keydown: function( event ) {
 				if ( this.element.prop( "readOnly" ) ) {

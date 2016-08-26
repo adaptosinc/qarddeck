@@ -901,7 +901,15 @@ $this->title = 'Edit Qard';
 	</div>          <!-- Modal --> 
 	<!--- Tutorial Ends Here-->	
 <script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
-
+<script type="text/javascript">
+/**
+	  * Script re-written by Dency G B 
+	 **/
+	 $(".js-example-basic-multiple").select2({
+		 placeholder: "Add some tags",
+	 });
+	 </script>
+	 
 <script src="<?= Yii::$app->request->baseUrl?>/js/html5imageupload.js" type="text/javascript"></script>
 <script src="<?= Yii::$app->request->baseUrl?>/js/jquery.caret.js" type="text/javascript"></script>
 
@@ -911,12 +919,7 @@ $this->title = 'Edit Qard';
 
 <script type="text/javascript">
 
-	/**
-	  * Script re-written by Dency G B 
-	 **/
-	 $(".js-example-basic-multiple").select2({
-		 placeholder: "Add some tags",
-	 });
+	
 	/**** Handle the main work space ******/
 	$('.dropzone').html5imageupload({
 		ghost: false,

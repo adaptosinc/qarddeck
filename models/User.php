@@ -8,6 +8,8 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use app\models\UserProfile;
+use yii\db\Query;
+use yii\db\Command;
 /**
  * User model
  *
@@ -313,6 +315,31 @@ class User extends ActiveRecord implements IdentityInterface
 		$activities = $command->queryOne();	
 		return $usersharecount  = $activities['count'];
 		
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfile()
+    {
+        return $this->hasOne(UserProfile::className(), ['user_id' => 'id']);
+    }	
+	
+	public function getFindfollowuser($followerid)
+    {			
+		if(isset($followerid) && !empty($followerid))
+		{
+			$query = new Query;			
+			$query->select(['*'])
+				->from('follower')
+				->where(['follower_id' =>$followerid,'user_id'=>Yii::$app->user->id ]);
+			$command = $query->createCommand();
+			$activities = $command->queryAll();
+		}
+		
+		if(!empty($activities) && isset($activities))
+			return 1;
+		else
+			return 0;
     }
 	
 }

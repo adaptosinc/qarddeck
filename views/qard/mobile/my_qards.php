@@ -46,9 +46,19 @@ use yii\widgets\ActiveForm;
 						<p><?=\Yii::$app->user->identity->bio?></p>    
 						<div class="col-xs-12 col-sm-3 col-md-3">
 							<ul class="view-list">
-								<li class="edit-info"><button class="btn btn-grey"><i class="fa fa-pencil"></i>Edit info</button></li>
-								<li><?=$followercount;?> Following</li>
-								<li><?=$followingcount;?> Followers</li>
+								<li class="edit-info">	<?php if(\Yii::$app->user->id == $user->id){?>
+							<button class="btn btn-grey" onclick="location.href='<?=Yii::$app->homeUrl?>user/profile';"><i class="fa fa-pencil"></i>Edit info</button>
+							<?php } else if(($follow != 2) &&(\Yii::$app->user->id != $user->id)){ ?>
+							
+							<button id='follow' <?php if($follow == 1){ echo "style='display:none'"; } ?>name="follow" class="btn btn-grey followopt" ><i class="fa fa-user-plus"></i>&nbsp;Follow</button>
+							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Unfollow </button> 
+							
+							<?php } ?>
+							
+							</li>
+								<li><?=$followingcount;?>  Following</li>
+							<li><span id='ctfollower'><?=$followercount;?></span> Followers</li>
+							
 							</ul>
 						</div> 
 					</div>
@@ -167,4 +177,47 @@ $(document).on('click','.deckid',function(){
 	window.location.href = url+"?id="+id; 
 });
 
+
+$('.followopt').on('click',function(){
+					var id = $(this).attr("id");
+					var userid = <?=Yii::$app->user->id?>;
+					var followuserid = <?=$user->id?>;
+					var countfollower =$("#ctfollower").html();
+					
+					if(id=="follow")
+					{
+						$.ajax({
+						url: '<?=Url::to(['qard/followuser'], true);?>',
+						type: "POST",
+						data: {
+							'userid': userid,'followuserid':followuserid 
+						},
+						success: function(data) {							
+							$("#"+id).hide();
+							$("#following").show();
+							var newcountfollower = parseInt(countfollower)+parseInt(1);
+							$("#ctfollower").html(newcountfollower);
+						}
+					});
+					
+					}
+					else if(id=="following")
+					{
+						$.ajax({
+						url: '<?=Url::to(['qard/unfollowuser'], true);?>',
+						type: "POST",
+						data: {
+							'userid': userid,'followuserid':followuserid 
+						},
+						success: function(data) {
+							$("#"+id).hide();
+							$("#follow").show();
+							var newcountfollower = parseInt(countfollower)-parseInt(1);
+							$("#ctfollower").html(newcountfollower);
+							}
+						});
+					
+					}
+			});
+			
 </script>

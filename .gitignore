@@ -13,10 +13,11 @@
 Thumbs.db
 
 # composer vendor dir
-vendor
+#vendor
 runtime/*
 config/db.php
 web/uploads
+web/img/temp
 
 # database config file
 #config

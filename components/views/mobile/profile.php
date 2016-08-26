@@ -92,7 +92,9 @@ $this->params['breadcrumbs'][] = 'Edit';
                                     </div>
                                 </div>
                             </div>          <!-- public profile -->
-							
+						
+			<?php if(\Yii::$app->user->identity->login_type == 'email'){  ?>
+ 
                             <div class="col-sm-4 col-md-4 col-md-offset-1">
                                 <h3 class="main-title">Change Your Password</h3>
 								
@@ -139,6 +141,8 @@ $this->params['breadcrumbs'][] = 'Edit';
                                     
                                 </div>                                
                             </div>
+							
+			<?php } ?>	
                             <div class="update col-xs-12 col-md-9 col-md-offset-1">
                                 <ul>
                                     <li class="pull-left col-xs-6"><button class="btn btn-lg btn-grey">Cancel</button></li>
@@ -336,10 +340,8 @@ $this->params['breadcrumbs'][] = 'Edit';
 				  
 			});
 
-			
-				
 		$('#userprofile-short_description').keyup(function () {
-			  var max = 250;
+			  var max = 100;
 			  var len = $(this).val().length;
 			  if (len >= max) {
 				$('#charNum').text(' You have reached the limit');
@@ -354,7 +356,7 @@ $this->params['breadcrumbs'][] = 'Edit';
       });
 		
 		$('#userprofile-short_description').keypress(function (event) {
-			var max = 250;
+			var max = 100;
 			var len = $(this).val().length;
 			if (event.which < 0x20) {			
 				return; 

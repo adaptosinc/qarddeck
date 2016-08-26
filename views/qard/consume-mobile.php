@@ -134,8 +134,8 @@ $this->title = 'Consume Qard';
 <br />
 						<?php if(\Yii::$app->user->id == $model->user_id){?>
 							<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>qard/edit?id=<?=$model->qard_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Qard</button><button class="btn btn-grey conformdelete " ><i class="fa fa-trash"></i>&nbsp;Delete Qard</button></span>
-							<?php } else { ?><span class="pull-right"> <button id='follow' <?php if($follow == 1){ echo "style='display:none'"; } ?>name="follow" class="btn btn-grey followopt" ><i class="fa fa-user-plus"></i>&nbsp;Follow</button>
-							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Following </button> 
+							<?php } else if(($follow != 2) &&(\Yii::$app->user->id != $model->user_id)) { ?><span class="pull-right"> <button id='follow' <?php if($follow == 1){ echo "style='display:none'"; } ?>name="follow" class="btn btn-grey followopt" ><i class="fa fa-user-plus"></i>&nbsp;Follow</button>
+							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Unfollow </button> 
 							 </span><?php } ?>
 							 
                         </div>                             
