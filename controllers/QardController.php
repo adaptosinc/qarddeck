@@ -317,6 +317,17 @@ class QardController extends Controller
         ]);
     }
 
+	/**
+	 * Action for selecting the template
+	 * params null
+	 * @return mixed
+	 */
+	public function actionSelectTemplate(){
+		$qards = Qard::find()->where(['status'=>3])->all();
+        return $this->render('template', [
+            'qards' => $qards,
+        ]);		
+	}
     /**
      * Creates a new Qard model.
      * If creation is successful, the browser will be redirected to the 'view' page.
