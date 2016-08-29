@@ -49,11 +49,12 @@ class ThemeController extends Controller
 	 * Used for selecting the theme
      * @return mixed
      */	
-	 public function actionSelectTheme()
+	 public function actionSelectTheme($qard_id=null)
 	 {
 		$models = Theme::find()->where(['theme_type'=>1])->all();
 		return $this->render('index_theme',[
-			'models' => $models
+			'models' => $models,
+			'qard_id' => $qard_id
 		]);
 	 }
 	 

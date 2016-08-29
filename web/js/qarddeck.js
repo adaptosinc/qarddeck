@@ -268,8 +268,9 @@
 							
 							
 						}
+						console.log(data.data_bgcolor_id);
 						//creating parent block or img-block
-						var new_div = '<div data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
+						var new_div = '<div data-bgcolor-id="'+data.data_bgcolor_id+'" data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
 						//creating overlay-block or middel block
 						//console.log(plugin.settings.overlay_color);
 						//console.log(hexToRgb(data.div_overlaycolor,data.div_opacity));
@@ -1193,6 +1194,7 @@ function add_block(event,new_block){
 		
 		//addded data bgcolor id and font color id
 		var data_bgcolor_id = $("#working_div .bgimg-block").attr("data-bgcolor-id") || 0;
+		console.log(data_bgcolor_id);//return;
 		data.push({
 			name: 'data_bgcolor_id',
 			value: data_bgcolor_id

@@ -18,7 +18,7 @@ use yii\filters\AccessControl;
 use yii\db\Query;
 use yii\db\Command;
 use yii\db\Connection;
-
+use yii\web\ForbiddenHttpException;
 /**
  * DeckController implements the CRUD actions for Deck model.
  */
@@ -245,7 +245,10 @@ class DeckController extends Controller
         $model = $this->findModel($id);
 		$model->cover_image = $model->bg_image;
 		$tags = Tag::find()->all();
-
+		if($model->user_id != \Yii::$app->user->id){
+			//throw new NotFoundHttpException();
+			throw new ForbiddenHttpException();
+		}
         if (Yii::$app->request->post()) {
 			$model->title = Yii::$app->request->post()['title'];
 			$model->description = Yii::$app->request->post()['description'];
