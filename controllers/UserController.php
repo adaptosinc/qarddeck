@@ -11,7 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use app\models\LoginForm;
-
+use yii\filters\AccessControl;
 /**
  * UserController implements the CRUD actions for User model.
  */
@@ -30,6 +30,17 @@ class UserController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+			 'access' => [
+			   'class' => AccessControl::className(),
+			   'only' => ['profile'],
+			   'rules' => [ 
+			    [
+                        'allow' => true,
+                        'actions' => ['profile'],
+						'roles' => ['@'],
+                    ],
+                 ],
+			],
         ];
     }
 
