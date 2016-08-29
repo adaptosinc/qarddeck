@@ -769,8 +769,8 @@ $this->title = 'Consume Qard';
 			
 			$('.followopt').on('click',function(){
 					var id = $(this).attr("id");
-					var userid = <?=Yii::$app->user->id?>;
-					var followuserid = <?=$model->user_id?>;
+					var userid = '<?=Yii::$app->user->id?>';
+					var followuserid = '<?=$model->user_id?>';
 					
 					if(id=="follow")
 					{
