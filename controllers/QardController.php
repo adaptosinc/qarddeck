@@ -68,9 +68,14 @@ class QardController extends Controller
 		if(!$page)
 			$page = 0;
 		$offset = $page*$limit;
+		
+		   $limit2 = 3;
+		 if(!$page)
+			$page = 0;					
+		$offset2 = $page*$limit2;	
+			
 		if(!empty($search))
 		{		
-			
 			
 		  $tagval = Tag::find()
 			->select(['name'])
@@ -83,16 +88,17 @@ class QardController extends Controller
 			Yii::$app->getSession()->setFlash('searchid',$search);
 				
 			$qards = $this->getQardsfeedsearch($offset,$limit,$type,$search);
-							
-			$decks =  $this->getDecksfeedsearch($offset,3,$search);
+								
+			$decks =  $this->getDecksfeedsearch($offset2,$limit2,$search);
 			
 		}
 		else {
-		
+			
 			$qards = $this->getQardsfeed($offset,$limit,$type);
-				//	print_r($feed);die;				
-			$decks =  $this->getDecksfeed($offset,3);
-				//$decks =  "";
+								
+			$decks =  $this->getDecksfeed($offset2,$limit2);
+			
+		
 		}
 	
 		if($type == 'both'){
@@ -102,6 +108,8 @@ class QardController extends Controller
 		}
 		if($type == 'decks'){
 			$qards = $decks;
+			
+			
 		}
 			//print_r($qards);die;
 		$feed = '';
@@ -193,7 +201,13 @@ class QardController extends Controller
 		$offset = $page*$limit;
 		$qards = $this->getMyQardsfeed($offset,$limit,$type,$id);
 		//	print_r($feed);die;
-		$decks =  $this->getMyDecksfeed($offset,2,$id);
+		
+		$limit2 = 2;
+		 if(!$page)
+			$page = 0;					
+		$offset2 = $page*$limit2;		
+			
+		$decks =  $this->getMyDecksfeed($offset2,$limit2,$id);
 		$user = User::findOne($id);
 		if(!$user)
 			return $this->redirect(['index']); 

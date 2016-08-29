@@ -180,10 +180,12 @@ $(document).on('click','.deckid',function(){
 
 $('.followopt').on('click',function(){
 					var id = $(this).attr("id");
-					var userid = <?=Yii::$app->user->id?>;
+					var userid = <?php echo $checkuserid = (isset(Yii::$app->user->id) && !empty(Yii::$app->user->id)) ? Yii::$app->user->id :"0";  ?>;
 					var followuserid = <?=$user->id?>;
 					var countfollower =$("#ctfollower").html();
-					
+				
+				if(($.trim(userid) != "" ) && ($.trim(userid) != "0" )  && ($.trim(followuserid) != ""))
+				{				
 					if(id=="follow")
 					{
 						$.ajax({
@@ -218,6 +220,7 @@ $('.followopt').on('click',function(){
 						});
 					
 					}
+				}
 			});
 			
 </script>
