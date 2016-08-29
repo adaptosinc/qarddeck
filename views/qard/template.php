@@ -9,11 +9,19 @@
                         <div class="row">
 							<div class="col-sm-12 col-md-12">
                                 <div class="grid row">
+								 <div class="grid-item" id="blank">                             
+									<div class="qard-content">
+                                    
+									</div>
+									<div class="qard-top">
+                                    <h4>Blank Canvas</h4>
+									</div>                                 
+                            </div>  
 						<?php 		
 							foreach($qards as $model){
 								$theme= $model->qardTheme;
 								$theme_properties = unserialize($theme['theme_properties']);
-								$str = '<div class="grid-item" ><div id="add-block'.$model->qard_id.'" class="qard-content">';
+								$str = '<div class="grid-item" id="'.$model->qard_id.'"><div id="add-block'.$model->qard_id.'" class="qard-content">';
 								$blocks = $model->blocks;
 								if(isset($blocks) && !empty($blocks)){
 								//	print_R($blocks);die;
@@ -77,14 +85,7 @@
 							?>
 
   
-                            <div class="grid-item" >                             
-                                 <a href="theme-selection.html"><div class="qard-content">
-                                    
-                                </div></a>
-                                <div class="qard-top">
-                                    <h4>Blank Canvas</h4>
-                                </div>                                 
-                            </div>  
+
 							</div>
 							</div>							
                         </div>      <!-- row  -->
@@ -92,3 +93,10 @@
                     
                  
                 </section>
+<script>
+$(".grid-item").on("click",function(){
+	var id=$(this).attr('id');
+	console.log(id);
+	window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/select-template?selected='+id;
+});
+</script>

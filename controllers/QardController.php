@@ -92,13 +92,9 @@ class QardController extends Controller
 			$decks =  $this->getDecksfeedsearch($offset2,$limit2,$search);
 			
 		}
-		else {
-			
-			$qards = $this->getQardsfeed($offset,$limit,$type);
-								
-			$decks =  $this->getDecksfeed($offset2,$limit2);
-			
-		
+		else {			
+			$qards = $this->getQardsfeed($offset,$limit,$type);								
+			$decks =  $this->getDecksfeed($offset2,$limit2);		
 		}
 	
 		if($type == 'both'){
@@ -342,8 +338,43 @@ class QardController extends Controller
 	 * params null
 	 * @return mixed
 	 */
-	public function actionSelectTemplate(){
+	public function actionSelectTemplate($selected=null){
 		$qards = Qard::find()->where(['status'=>3])->all();
+		if($selected){
+			//selected template
+			if($selected == "blank")
+				return $this->redirect(['create']);
+			$template = Qard::findOne($selected);
+			if(!isset($template))
+				return $this->redirect(['select-template']);
+			//LOAD TEMPLATE
+			$qard = new Qard();
+			$qard->attributes = $template->attributes;
+			$qard->status = 0;
+			$qard->user_id = NULL;
+			$qard->title = '';
+			if(\Yii::$app->user->id)
+				$qard->user_id = \Yii::$app->user->id;
+			$qard->save(false);
+			//print_r($qard->qard_id);die;
+			$blocks = $template->blocks;
+			foreach($blocks as $block){
+				$qard_block = new Block();
+				//$block = Block::findOne($block->block_id);
+				$qard_block->attributes = $block->attributes;
+				//print_r($qard_block);die;
+				$qard_block['qard_id'] = $qard->qard_id;
+					$theme = $block->theme;
+						$block_theme = new Theme();
+						$block_theme->attributes = $theme->attributes;
+						$block_theme->save(false);
+					
+				$qard_block['theme_id'] = $block_theme->theme_id;
+				//print_R($qard_block);die;
+				$qard_block->save(false);
+			}
+			return $this->redirect(['theme/select-theme','qard_id'=>$qard->qard_id]);
+		}
         return $this->render('template', [
             'qards' => $qards,
         ]);		
@@ -451,7 +482,57 @@ class QardController extends Controller
 	    
         }
 	}
-	
+	public function actionEditTemplate($id,$theme_id=null){
+
+		$switch_theme = false;
+		$model = $this->findModel($id);
+		if(is_null($model->user_id) && $id == \Yii::$app->session['qard_id']){
+			//save the qard with current user
+			$model->user_id = \Yii::$app->user->id;
+			$model->save(false);
+		}
+		if($model->user_id != \Yii::$app->user->id){
+			//throw new NotFoundHttpException();
+			throw new ForbiddenHttpException();
+		}
+		if($theme_id)
+			$switch_theme = true;
+		if(!$theme_id)
+			$theme_id = $model->qard_theme;
+		$theme = Theme::findOne($theme_id);
+        if ($model->load(Yii::$app->request->post())) {
+			
+			$model->save(false);
+			if(!\Yii::$app->user->id){
+				//save false here with out user id and status as draft
+				//$model->save(false);
+				//aftersave take the qard-id as a param and send to login page
+				\Yii::$app->session['qard']= $model->qard_id;
+				return $this->redirect(['user/login','qard_id'=>$q_id]);
+				//at login/sign-up,check if qard-id is there,if yes assign the user to the same qard once logged in
+			}
+            return $this->redirect(['view', 'id' => $model->qard_id]);
+        } else {
+			
+			
+			$tags=\app\models\Tag::find()->all();
+            if(!$this->isMobile()){ 
+			
+                return $this->render('edit', [
+                    'model' => $model,
+					'theme' => $theme,
+					'switch_theme' => $switch_theme,
+					'tags'=>$tags
+                ]);
+            }else{			
+                $this->layout = 'mobilelayout';
+                return $this->render('mobile/create', [
+                    'model' => $model,
+                ]);                
+            }
+	    
+        }
+	}	
 	/**
 	 * To preview the qard while creating/editing
 	 * Idea is to reload the saved/drafed qard with the selected theme
