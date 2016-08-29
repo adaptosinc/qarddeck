@@ -389,11 +389,14 @@ class QardController extends Controller
 	
     }
 	public function actionEdit($id,$theme_id=null){
-		
-		
-		
+
 		$switch_theme = false;
 		$model = $this->findModel($id);
+		if(is_null($model->user_id) && $id == \Yii::$app->session['qard_id']){
+			//save the qard with current user
+			$model->user_id = \Yii::$app->user->id;
+			$model->save(false);
+		}
 		if($model->user_id != \Yii::$app->user->id){
 			//throw new NotFoundHttpException();
 			throw new ForbiddenHttpException();
