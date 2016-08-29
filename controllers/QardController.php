@@ -679,12 +679,12 @@ class QardController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-	public function actionPublish($q_id=null){
+	public function actionPublish($q_id=null,$status=0){
 		
 		if($q_id){
 			//handle this as ajax request from share qard button, preview page
 			$model = Qard::findOne($q_id);
-			$model->status = 1;
+			$model->status = $status;
 			$model->user_id = \Yii::$app->user->id;
 			$model->qard_image_url = $this->generateQardImage($q_id);
 			if($model->save(false)){
@@ -700,7 +700,7 @@ class QardController extends Controller
 		
 		if ($model== null)
 			return $this->redirect(['site/index']);
-		$model->status = 1;
+		$model->status = $status;
 		$model->user_id = \Yii::$app->user->id;
 		$model->qard_image_url = $this->generateQardImage($id);
 		if($model->save(false)){
@@ -1231,12 +1231,11 @@ class QardController extends Controller
 		}
 		return $feed;		
 	}
-    /**
-     * Lists all Qard models.
+  
+	 /**
+     * Follow the User
      * @return mixed
      */
-	
-	
 	
 	public function actionFollowuser()
     {			
@@ -1256,7 +1255,11 @@ class QardController extends Controller
 		}		
     }
 	
-	
+	  /**
+     * Unfollow the User
+     * @return mixed
+     */
+	 
 	public function actionUnfollowuser()
     {			
 	
@@ -1273,8 +1276,6 @@ class QardController extends Controller
 			return true;
 		}		
     }
-	
-	
 	
 	
 }
