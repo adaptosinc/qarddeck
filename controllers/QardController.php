@@ -69,7 +69,7 @@ class QardController extends Controller
 			$page = 0;
 		$offset = $page*$limit;
 		
-		   $limit2 = 3;
+		   $limit2 = 1;
 		 if(!$page)
 			$page = 0;					
 		$offset2 = $page*$limit2;	
@@ -107,9 +107,7 @@ class QardController extends Controller
 			shuffle($qards);			
 		}
 		if($type == 'decks'){
-			$qards = $decks;
-			
-			
+			$qards = $decks;			
 		}
 			//print_r($qards);die;
 		$feed = '';
