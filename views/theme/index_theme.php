@@ -69,8 +69,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		var q_id = $(this).attr('data-qid');
 		var template = <?=$template ?>;
 		if(q_id!=''){
-			if(template =="true")
-				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit-template?theme_id='+id+'&id='+q_id;
+			if(template ==true)
+				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit-template?theme_id='+id+'&id='+q_id;				
 			else
 				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?theme_id='+id+'&id='+q_id;
 		}
