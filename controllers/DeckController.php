@@ -137,18 +137,18 @@ class DeckController extends Controller
 			
 			$declqardcount = $deck->getDeckqardCount();	
 			
-			$html .= '<div class="grid-item" id="'.$deck->deck_id.'" onClick="addToDeck(this)">';
-				$html.= '<div class="grid-img">'; //grif image
+			$html .= '<div class="grid-item" >';
+				$html.= '<div class="grid-img" id="'.$deck->deck_id.'" onClick="addToDeck(this)" >'; //grif image
 					$html.= '<img src="'.$deck->bg_image.'" alt="">';
 				$html.= '</div>'; //grif image
 				$html.='<div class="grid-content">'; //grid-content
 					$html.='<h4>'.$deck->title.'</h4>';
-					$html.='<div class="col-sm-4 col-md-4">
+					$html.='<div class="col-sm-4 col-md-4"  >
                                 <img src="'.Yii::$app->request->baseUrl.'/images/qards_icon.png" alt="">
 								'.$declqardcount.'
                             </div>
                             <div class="col-sm-8 col-md-8">
-                                <button class="btn btn-grey"><img src="'.Yii::$app->request->baseUrl.'/images/preview_icon.png" alt="">Preview</button>
+                                <a href="'.Yii::$app->request->baseUrl.'/deck/view?id='.$deck->deck_id.'" class="btn btn-grey" target="_blank" style="color:black !important; background-color:#F1F1F1 !important"><img src="'.Yii::$app->request->baseUrl.'/images/preview_icon.png" alt="">Preview</a>
                             </div>';
 				$html.='</div>';//grid-content
 			$html .= '</div>'; //grid item
