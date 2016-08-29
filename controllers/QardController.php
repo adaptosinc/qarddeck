@@ -69,7 +69,7 @@ class QardController extends Controller
 			$page = 0;
 		$offset = $page*$limit;
 		
-		   $limit2 = 1;
+		   $limit2 = 4;
 		 if(!$page)
 			$page = 0;					
 		$offset2 = $page*$limit2;	
