@@ -1572,11 +1572,22 @@ $('#add-block').sortable({
 /** For deleting the block **/
 $(document).delegate("#deleteblock", "click", function() {
 	var block_id = $("#working_div .current_blk").attr("data-block_id");
-	if (typeof block_id !== 'undefined') {
-		$(window).data('qardDeck').deleteBlock(block_id);
-	} else {
-		alert("first select/create block first");
+	if($('.bgimg-block').length > 1)
+		{
+			if (typeof block_id !== 'undefined') {
+				$(window).data('qardDeck').deleteBlock(block_id);
+			} else {
+				console.log($("#working_div").prev('.bgimg-block').html());
+					var temp = $("#working_div").prev(".bgimg-block");
+					$("#working_div").remove();
+					temp.trigger("dblclick");
+				//alert("first select/create block first");			
+			}			
+		}
+	else{
+		alert("You can not delete all the blocks");
 	}
+
 });
 /** Block height control **/
 $(document).delegate("#blk_size", "keyup keydown", function() {
