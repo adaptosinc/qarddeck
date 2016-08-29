@@ -368,8 +368,8 @@ $this->title = 'Preview Qard';
 				</div>
 				<div class="col-sm-4 col-md-4">
 					<ul class="help-list"> 
-						<li><button class="btn qard" name="preview">Save as Template</button></li>
-						<li><button class="btn btn-warning" name="share" id="share_qard">Share Qard</button></li>
+						<li><button class="btn qard saveqard" name="preview" id="preview_qard" data-id='3'>Save as Template</button></li>
+						<li><button class="btn btn-warning saveqard" name="share" id="share_qard" data-id='1'>Share Qard</button></li>
 					</ul>
 				</div>
 				
@@ -402,11 +402,29 @@ $this->title = 'Preview Qard';
 				  </div>
 				</div>          <!-- Modal Share -->                            
 				
+				
+				<div class="modal fade" id="myTemplateshare" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+				  <div class="modal-dialog" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<h4 class="modal-title" id="myModalLabel">Your Qard Has Been Saved as a Template Succesfully !</h4>
+					  </div>
+					  <div class="modal-body">
+						
+					  </div>
+					  <div class="modal-footer">
+					
+					  </div>
+					</div>
+				  </div>
+				</div>     
+				
 			</div> <!--bottom row ends -->
     </section>
     <!-- block_error popup -->
 
-    <div class="modal fade" tabindex="-1" id="Block_error" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" tabindex="-1" id="asdasd" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -437,21 +455,27 @@ $this->title = 'Preview Qard';
                 $('.tab-content').css('display','block');            
             });
         });
-		$("#share_qard").click(function(e){
+		
+		$(".saveqard").click(function(e){
 			e.preventDefault();
 			//save to public status here
 			$("#wait").show();
+			var status = $(this).attr('data-id');
 			$.ajax({
 				url : "<?=Url::to(['qard/publish'], true)?>",
 				type : "GET",
-				data : {'q_id' : '<?= $model->qard_id?>'},
+				data : {'q_id' : '<?= $model->qard_id?>','status': status},
 				success: function(response){
 						$("#wait").hide();
-						$('#myModalshare').modal('show');
-					
+						if(parseInt(status) == 1)
+						  $('#myModalshare').modal('show');
+						else
+						 $('#myTemplateshare').modal('show');
 				}
 			});			
 		});
+		
+
 		$('#cardtabs a').click(function (e) {
 		  e.preventDefault();
 		  $(this).tab('show');
