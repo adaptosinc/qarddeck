@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <ul class="deck-tags">
 									<?=$model->getTagsHtml();?>
                                     </ul>
+									<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>deck/manage?id=<?=$model->deck_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Deck</button>
                                 </div>
                             </div>
                             <div class="right-block col-sm-4 col-md-4">
