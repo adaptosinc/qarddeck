@@ -183,7 +183,25 @@ AppAsset::register($this);
 		<div align="center" style="color:green"><!--Showing success -->
 			<?= Yii::$app->session->getFlash('success');?>
 		</div>
-		<?= $content ?>     
+		<section class="error-main content">
+				<div class="row">
+					<?php
+						if(Yii::$app->errorHandler->exception->statusCode == "404"){
+							echo "<img src='".Yii::$app->homeUrl."/images/404-small.png' />";
+							echo "<h3><div style='display: inline-block;font-weight: 900;'>Oops!</div>&nbsp;The page you are looking is no longer here.</h3>";
+						}
+						if(Yii::$app->errorHandler->exception->statusCode == "403"){
+							echo "<img src='".Yii::$app->homeUrl."/images/403-small.png' />";
+							echo "<h3><div style='display: inline-block;font-weight: 900;'>Oops! </div>&nbsp;You don't have permission to access this page.</h3>";
+						}else{
+							
+						}
+					?>
+				</div>
+				<div class="row">
+					<button class="btn btn-warning" onclick="location.href='/qarddeck/web/';">GO TO HOMEPAGE</button>
+				</div>
+		</section>
 		<!-- Footer -->
 		<footer class="container-fluid">
 				<div class="col-sm-6 col-md-6">
