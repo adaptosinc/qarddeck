@@ -17,8 +17,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
+<style>
+.grid-item { width: 100%; height: auto;}
+</style>
 
- <section class="deck-details">
+<script src="<?= Yii::$app->request->baseUrl?>/js/masonry.js" type="text/javascript"></script>	
+<script src="<?= Yii::$app->request->baseUrl?>/js/imagesloaded.js" type="text/javascript"></script>	
+
+
+ <section class="deck-details main-stream">
                     <div class="deck-header">
                         <div class="col-xs-12 col-sm-6 col-md-6">
                             <div class="user-details">
@@ -37,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							
                             <div class="user-info">
                                 <img src="<?=$model->userProfile->profile_photo?>" alt="" width="50px" height="50px" style="border-radius: 50%;float: left;"><strong><?=$model->userProfile->fullname?></strong><br /><span><?=$model->getDeckCreatedAgo();?></span><br />                   
-								<?php if(($follow!=2) && (\Yii::$app->user->id != $model->user_id)){??>
+								<?php if(($follow!=2) && (\Yii::$app->user->id != $model->user_id)){ ?>
 									
 									<button id='follow' <?php if($follow == 1){ echo "style='display:none'"; } ?>name="follow" class="btn btn-grey followopt" ><i class="fa fa-user-plus"></i>&nbsp;Follow</button>
 							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Unfollow </button> 
@@ -68,8 +75,8 @@ $this->params['breadcrumbs'][] = $this->title;
 						$qards[] = $qardDeck->qard_id;
 					}
 				?>					
-                    <div class="main-content">
-                        <div class="popular-qards profile">     <!-- popular qard list -->
+                    <!--<div class="main-content">
+                        <div class="popular-qards profile">     
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
                                     <div class="grid row">
@@ -78,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
 											if(isset($qard)){
 										?>
 										
-                                        <div class="grid-item">     <!-- qard -->
+                                        <div class="grid-item">     
                                             <div class="qard-contentmobile qard1">
 												<?php print_r($qardval->getQardHtmlSingle()); ?>
                                             </div>
@@ -94,11 +101,34 @@ $this->params['breadcrumbs'][] = $this->title;
                                             
 										<?php }} ?> 
 										
-                                    </div>  <!-- row -->
+                                    </div>  
                                 </div>
-                            </div>          <!-- row -->                           
+                            </div>                                 
                         </div>
-                    </div>
+                    </div>-->
+					
+					 <div class="main-content">
+                        <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
+										<?php foreach($qards as $qard) {										
+											$qardval = 	Qard::findOne($qard);
+											if(isset($qard)){
+												
+											
+										?>
+										<?php print_r($qardval->getQardHtml()); ?>
+										
+										<?php } 
+											} ?>  
+											
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
                 </section>
 				
 <script>

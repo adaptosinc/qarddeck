@@ -17,7 +17,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="deck-view">
 
-<section class="deck-details">
+<style>
+.grid-item { width: 350px; }
+</style>
+
+<script src="<?= Yii::$app->request->baseUrl?>/js/masonry.js" type="text/javascript"></script>	
+<script src="<?= Yii::$app->request->baseUrl?>/js/imagesloaded.js" type="text/javascript"></script>	
+
+<section class="deck-details main-stream">
                     <div class="deck-header" style="display: block;">
                         <div class="row">
                             <div class="col-sm-8 col-md-8">
@@ -62,18 +69,21 @@ $this->params['breadcrumbs'][] = $this->title;
 					
 					
 					?>
-                    <div class="main-content">
-                        <div class="popular-qards">     <!-- popular qard list -->
+                  <!--  <div class="main-content">
+                        <div class="popular-qards">     
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
                                     <div class="deckgrid">
 										<?php foreach($qards as $qard) {										
 											$qardval = 	Qard::findOne($qard);
 											if(isset($qard)){
+												
+											
 										?>
-											<div class="deckgrid-item">     <!-- qard -->
+											
+											<div class="deckgrid-item">     
 												<div class="qard-content">
-													<?php print_r($qardval->getQardHtmlSingle()); ?>
+													<?php print_r($qardval->getQardHtml()); ?>
 												</div>
 												<div class="qard-bottom">
 													<ul class="qard-tags">
@@ -82,13 +92,37 @@ $this->params['breadcrumbs'][] = $this->title;
 													</ul>
 													<h4><?=$qardval->title; ?></h4>
 												</div>                                              
-											</div>										
-											<?php }} ?>                                      
-                                    </div>  <!-- row -->
+											</div>									
+											<?php } 
+											} ?>                                      
+                                    </div>  
                                 </div>
-                            </div>          <!-- row -->
+                            </div>         
                         </div>
-                    </div>
+                    </div>-->
+					
+					  <div class="main-content">
+                        <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
+										<?php foreach($qards as $qard) {										
+											$qardval = 	Qard::findOne($qard);
+											if(isset($qard)){
+												
+											
+										?>
+										<?php print_r($qardval->getQardHtml()); ?>
+										
+										<?php } 
+											} ?>  
+											
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
                 </section>
 
 </div>
