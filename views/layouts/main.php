@@ -121,7 +121,7 @@ AppAsset::register($this);
 							<li><a href="<?=\Yii::$app->homeUrl?>">Home</a></li>
 							<li><a href="<?=\Yii::$app->homeUrl?>qard/my-qards">My Profile</a></li>
 							<li><a href="<?=Yii::$app->homeUrl?>qard/select-template">Templates</a></li>
-							<li><a href="<?=\Yii::$app->homeUrl?>">Getting Started</a></li>
+							<li><a href="<?=\Yii::$app->homeUrl?>qard/create">Getting Started</a></li>
 							<li><a href="<?=\Yii::$app->homeUrl?>/qard/index">QardStream</a></li>
 							<li><a href="<?=\Yii::$app->homeUrl?>">About</a></li>
 							<li><a href="<?=\Yii::$app->homeUrl?>">Contact Us</a></li>

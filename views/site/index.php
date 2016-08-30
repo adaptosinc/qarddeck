@@ -14,7 +14,7 @@ if(isset($_GET['login']) && $_GET['login']=='true' && \Yii::$app->user->isGuest 
 	<section class="home-main content">
 		<h1>Share what you love, think, and know. Easily.</h1>
 		<div class="action-qard">
-			<button class="btn qard" onclick="location.href='<?php echo \Yii::$app->homeUrl;?>';">Qards in Action</button>
+			<button class="btn qard" onclick="location.href='<?php echo \Yii::$app->homeUrl;?>qard/index';">Qards in Action</button>
 			<button class="btn btn-warning" onclick="location.href='<?php echo \Yii::$app->homeUrl;?>qard/create';">Create a Qard</button>
 			<button class="btn btn-default">Watch the Video</button>
 		</div>
