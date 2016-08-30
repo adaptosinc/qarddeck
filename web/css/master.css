@@ -1120,6 +1120,7 @@ li.help-link a {
  */
 .text-block {
     padding: 8px !important;
+	word-break: break-word;
 }
 .text-block span{
    /* line-height: 0px !important; */
