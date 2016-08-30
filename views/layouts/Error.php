@@ -199,7 +199,7 @@ AppAsset::register($this);
 					?>
 				</div>
 				<div class="row">
-					<button class="btn btn-warning" onclick="location.href='/qarddeck/web/';">GO TO HOMEPAGE</button>
+					<button class="btn btn-warning" onclick="location.href='<?=Yii::$app->homeUrl?>';">GO TO HOMEPAGE</button>
 				</div>
 		</section>
 		<!-- Footer -->
