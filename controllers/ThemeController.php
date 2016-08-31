@@ -8,6 +8,8 @@ use app\models\search\SearchTheme;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * ThemeController implements the CRUD actions for Theme model.
@@ -24,6 +26,22 @@ class ThemeController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create','update'],
+                'rules' => [
+/*                  [
+                        'allow' => true,
+                        'actions' => ['login', 'signup'],
+                        'roles' => ['?'],
+                    ], */
+                    [
+                        'allow' => true,
+                        'actions' => ['create','update'],
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -78,6 +96,10 @@ class ThemeController extends Controller
      */
     public function actionCreate()
     {
+		if( !\Yii::$app->user->identity->isAdmin()){
+			//throw new NotFoundHttpException();
+			throw new ForbiddenHttpException();
+		}
         $model = new Theme();
 		$model->scenario = 'qard_theme';
 

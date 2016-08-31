@@ -1122,6 +1122,7 @@ li.help-link a {
 .text-block {
     padding: 8px !important;
 	word-wrap: break-word;
+
 }
 .text-block span{
    /* line-height: 0px !important; */
@@ -4708,5 +4709,17 @@ section.consume-main.content .right-block ul.deck-list li.active a{
     border-style: solid solid none;
     border-width: 5px 5px 0;
    
+}
+
+/** Error Screen **/
+section.error-main{
+	text-align: center;
+    padding: 100px 0;
+    display: block;
+    float: left;
+    width: 100%;		
+}
+section.error-main .row{
+padding: 20px;
 }
 

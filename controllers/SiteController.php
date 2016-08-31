@@ -132,8 +132,17 @@ class SiteController extends Controller
         
         if ($action->id == 'register') {
             $this->enableCsrfValidation = false;
+			return parent::beforeAction($action);
         }
-        return parent::beforeAction($action);
+        
+		if (parent::beforeAction($action)) {
+			// change layout for error action
+			if ($action->id=='error')
+				 $this->layout ='Error';
+			return true;
+		} else {
+			return false;
+		}
     } 
     
     public function isMobile(){

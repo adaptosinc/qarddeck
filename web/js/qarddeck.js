@@ -81,14 +81,15 @@
 				 *if qard is complete,preveny anything other than backspace and delete
 				 *and remove the last input or last child
 				**/
-				if(event.which != 8 && qard_height >= 17){
+				if(event.which != 8 && qard_height > 16){
 					event.preventDefault();
-					//console.log('stopped');
+					console.log(qard_height);
 					var last = $(this).children(':last-child');
 					var html = $(last).html();
 					$('#extra_text').html(html);
 					//pass this to extra text and remove from here
 					$(last).remove();
+					//alert("Space allowed for text is exhausted. We are copying the last typed to the extra text space. Please link the text from there.");
 					$('#extra_text').focus();
 				}
 				if ($(this).attr("data-resized")=='true') {
@@ -1064,8 +1065,9 @@ function hexToRgb(hex,opacity) {
 function add_block(event,new_block){
 	//save block
 	
-	
-		
+		//default some options
+		$("#text_size").val("");
+		/////////////////////
 		var data = $("#image_upload").serializeArray();
 		// getting opacity for image-block div
 		var image_opacity = parseFloat($("#working_div .bgimg-block").css("opacity")) || 0;
