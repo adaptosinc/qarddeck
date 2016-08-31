@@ -251,6 +251,7 @@ $this->title = 'Edit Qard';
 								<li class="size-element">
 									<label>Text Size</label>
 									<select id="text_size" class="form-control">
+										<option value="">Select</option>
 										<option value="3">Small</option>
 										<option value="5">Medium</option>
 										<option value="8">Large</option>
