@@ -285,4 +285,26 @@ class UserController extends Controller
 		} 			
 	 }
 	 
+	 public function actionUserMangement(){	
+	
+		if(!$this->isMobile()){ 			
+            return $this->render('admin_register');
+		}else{			
+			 $this->layout = 'mobile';
+             return $this->render('mobile/adminregister'); 
+				
+        }
+	}
+	
+	
+	 public function actionNewPassword(){	
+		
+		 if(!$this->isMobile()){ 			
+            return $this->render('newpassword');
+		}else{			
+			 $this->layout = 'mobile';
+            return $this->render('mobile/newpassword'); 				
+        } 
+	}
+	
 }

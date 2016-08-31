@@ -13,9 +13,17 @@ use app\models\UserProfile as Profile;
 
 class SiteController extends Controller
 {
-    public function behaviors()
+     public function behaviors()
     {
         return [
+		
+			'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],                   
+                ],
+            ],
+			
             'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['logout'],
@@ -27,15 +35,10 @@ class SiteController extends Controller
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+            
         ];
     }
-
+ 
     public function actions()
     {
         return [
@@ -151,4 +154,22 @@ class SiteController extends Controller
 
         return $this->render('upload', ['model' => $model]);
     }
+	
+	 public function actionSetPassword($key=null){
+        
+		$validUser = User::find()->where(['auth_key' => $key])->one();	
+				
+		
+		if (isset($validUser)) {
+				$profile = Profile::find()->where(['user_id' => $validUser->id])->one();
+				Yii::$app->user->login($validUser,'3600*24*30');		
+				Yii::$app->getSession()->setFlash('Success', 'Your Account Is Acivated Successfully');	
+				  return $this->redirect(array('/user/new-password'));
+					
+			
+		} else { return $this->redirect(array('/site/index')); }
+	 }
+	
+	
+	
 }

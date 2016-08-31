@@ -79,6 +79,7 @@ $this->title = 'Preview Qard';
 				<div class="bottom-card col-sm-12 col-md-12">
 					<ul>
 						<li>
+					
 							   <div class="comment-img">
 								   <img src="<?php if(isset($model->userProfile) && !empty($model->userProfile)){  echo $model->userProfile->profile_photo;  }
 										else if(isset($user) && !empty($user)){  echo $user->profile_photo;  }
@@ -368,7 +369,7 @@ $this->title = 'Preview Qard';
 				</div>
 				<div class="col-sm-4 col-md-4">
 					<ul class="help-list"> 
-						<li><button class="btn qard saveqard" name="preview" id="preview_qard" data-id='3'>Save as Template</button></li>
+						<li><button class="btn qard saveqard" name="preview" id="preview_qard" <?php if(isset($user->role) && !empty($user->role) && ($user->role =="admin")){  echo "data-id='5'";  } else { echo "data-id='3'"; } ?> >Save as Template</button></li>
 						<li><button class="btn btn-warning saveqard" name="share" id="share_qard" data-id='1'>Share Qard</button></li>
 					</ul>
 				</div>

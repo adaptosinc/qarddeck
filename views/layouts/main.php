@@ -121,6 +121,9 @@ AppAsset::register($this);
 							<li><a href="<?=\Yii::$app->homeUrl?>">Home</a></li>
 							<li><a href="<?=\Yii::$app->homeUrl?>qard/my-qards">My Profile</a></li>
 							<li><a href="#contact">Templates</a></li>
+							<?php if((\Yii::$app->user->id) && (\Yii::$app->user->identity->role == "admin")){ ?>
+							<li><a href="<?=\Yii::$app->homeUrl?>user/user-mangement">User Management</a></li>	
+							<?php } ?>
 							<li><a href="<?=\Yii::$app->homeUrl?>">Getting Started</a></li>
 							<li><a href="<?=\Yii::$app->homeUrl?>/qard/index">QardStream</a></li>
 							<li><a href="<?=\Yii::$app->homeUrl?>">About</a></li>

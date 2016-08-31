@@ -33,7 +33,7 @@ class User extends ActiveRecord implements IdentityInterface
     public $password;
     public $firstname;
     public $profile_photo;	
-
+   
     public $isPublicEmail;
     public $showEmail;
 	public $website;
@@ -63,11 +63,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules(){
         
         return [
+			['role', 'default', 'value' => 'user'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             [['username','email','password','verify_password'],'required'],
             [['username'],'unique'],
-            ['email', 'email'],
+            ['email', 'email'],            
             ['verify_password', 'compare', 'compareAttribute' => 'password'],
         ];
     }

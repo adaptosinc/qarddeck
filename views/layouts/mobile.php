@@ -107,6 +107,10 @@
                                     <li class="active"><a href="<?=\Yii::$app->homeUrl?>">Home</a></li>
                                     <li><a href="<?=\Yii::$app->homeUrl?>qard/my-qards">My Profile</a></li>
                                     <li><a href="#">Templates</a></li>
+									<?php if((\Yii::$app->user->id) && (\Yii::$app->user->identity->role == "admin")){ ?>
+									<li><a href="<?=\Yii::$app->homeUrl?>user/user-mangement">User Management</a></li>
+							
+							<?php } ?>
                                     <li><a href="#">Getting Started</a></li>
                                     <li><a href="<?=\Yii::$app->homeUrl?>qard/index">QardStream</a></li>
                                     <li><a href="#">About</a></li>

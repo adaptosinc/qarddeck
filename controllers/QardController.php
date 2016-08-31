@@ -551,8 +551,11 @@ class QardController extends Controller
 		{
 			\Yii::$app->session['qard_id']= $qard_id;	
 			$user = Profile::find()->where(['user_id' =>\Yii::$app->user->id])->one();			
+		}else
+		{
+			$user = User::find()->where(['id' =>\Yii::$app->user->id])->one();
 		}
-	
+			
 		//print_r($theme);die;
 		return $this->render('preview', [
 			'model' => $qard,

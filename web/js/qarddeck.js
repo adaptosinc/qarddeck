@@ -1705,7 +1705,6 @@ $("#extra_text").on("paste",function(event){
 		} 		
 });
 $("#remove_extra_text").click(function(){
-	//$("#extra_text").html('');
 	$("input[name=extra-text]").val('');
 	$('#cmn-toggle-9').prop("checked",false);
 }); 
@@ -1715,7 +1714,11 @@ $('#cmn-toggle-9').click(function(){
 		$(window).data('qardDeck').addExtraText();
 		
 	}else{
-		$("#working_div .current_blk").find(".icon-mark").remove();
+		var chksts = confirm ("Do you really like to unlink this text? ");
+		if(chksts == true)	
+			$("#working_div .current_blk").find(".icon-mark").remove();
+		else
+			return false;
 	}			
 
 });
@@ -2108,16 +2111,20 @@ $(document).on('click', '#rmembed_code', function(){
 });	
 
 function checkextratext()
-{
-	var text1 =$("#extra-list").val();
+{	
 	var text2 =$("#extra_text").text();		
-	if(($.trim(text1) !="" ) || (($.trim(text2) !="") ))
+	if($.trim(text2) !="")
 		$("#cmn-toggle-9").attr( "disabled",false );
 	else 
 		$("#cmn-toggle-9").attr( "disabled",true );
 }
 
-$(document).on('keyup keypress blur change click', '.extracheck', function(){ 
+$(document).on('keyup keypress blur change click', '#extra_text', function(){ 
 	checkextratext();
 });	
 
+$(document).on('keyup keypress blur change click', '#extra_text', function(){ 	
+	if($('#add_extra_text').is(':visible'))
+		$('#add_extra_text').trigger("click");  
+	
+});	
