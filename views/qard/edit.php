@@ -320,7 +320,7 @@ $this->title = 'Edit Qard';
 								<h4>Add Extra text <span id="remove_extra_text" class="trash pull-right">
 								
 								<div class="col-sm-12 col-md-12 on-off" id="link-extra" style="display:none; "  >
-								<div class="switch">
+								<div class="switch" id="sw-cmn-toggle-9">
 									<input id="cmn-toggle-9" class="cmn-toggle cmn-toggle-round" type="checkbox">
 									<label for="cmn-toggle-9"></label>
 								</div>  <span>Link This Text</span> 
@@ -340,6 +340,7 @@ $this->title = 'Edit Qard';
 							<div id="extrafield">
 								<div id="extra_text" name="desc" class="extracheck" placeholder="Enter The Text" contenteditable="true"></div>
 							</div>
+							<span class="extra_reset_link trash pull-right" style="padding-right:20px;cursor: pointer; cursor: hand; " ><i class="fa fa-trash"></i>&nbsp;Clear</span>
 						  </div>
 							<!--<div class="col-sm-6 col-md-6 on-off">
 								<div class="switch">
@@ -351,7 +352,7 @@ $this->title = 'Edit Qard';
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
                             <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
-							<h4 id="reflink" >Add Image<span id="reset_image" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Image</span></h4>
+							<h4 id="reflink" >Add Image<span id="reset_image" style="cursor: pointer; cursor: hand;" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Clear</span></h4>
 							<div class="img_preview" style="display:none"></div>
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
@@ -375,7 +376,7 @@ $this->title = 'Edit Qard';
 										</div>  <span>Display Preview</span> 
 								</div>
 								<div class="col-sm-6 col-md-6 on-off">
-										<div class="switch">
+										<div class="switch" id="sw-cmn-toggle-3">
 											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-3"></label>
 										</div>  <span>Display as background Image</span> 
@@ -427,7 +428,7 @@ $this->title = 'Edit Qard';
 												<label for="cmn-toggle-6"></label>
 											</div>  <span>Open Link in New Tab</span>                                                 
 										</div>
-										<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Url</span>
+										<span class="url_reset_link trash pull-right"  style="cursor: pointer; cursor: hand; "><i class="fa fa-trash"></i>&nbsp;Clear</span>
 									</div>
 
 								</div>

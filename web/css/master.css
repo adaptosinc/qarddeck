@@ -4723,4 +4723,13 @@ section.error-main{
 section.error-main .row{
 padding: 20px;
 }
+.active-text-preview{
+	word-wrap: break-word;
+}
 
+.loadimagediv {
+      background-image: url(../img/loading1.gif);
+      background-repeat: no-repeat;
+      background-position: right top;
+	  background-size: 40px 40px;      
+   }
