@@ -361,7 +361,9 @@
 		
 		plugin.addExtraText = function(){
 			$(".add-another").attr("style","pointer-events: none; opacity: 0.4;");
-				
+			$(".bgimg-block").not("#working_div .bgimg-block").css("pointer-events","none");
+		//	$("#working_div .bgimg-block").css("pointer-events","all");
+		//	return false;
 			$.ajax({
 				url : plugin.settings.addExtraTextUrl,
 				type: "POST",
@@ -397,9 +399,11 @@
 					}	
 						
 						$(".add-another").removeAttr("style");
+						$(".bgimg-block").css("pointer-events","all");
 				},
 				error: function () {
 					$(".add-another").removeAttr("style");
+					$(".bgimg-block").css("pointer-events","all");
 				}
 			});			
 		};
