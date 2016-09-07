@@ -364,13 +364,13 @@ $this->title = 'Edit Qard';
 							<div class="form-group image-elements">
 								<div class="col-sm-3 col-md-3 on-off">
 									<span>Fit</span>
-										<div class="switch">
-											<input id="cmn-toggle-8" class="cmn-toggle cmn-toggle-round" type="checkbox">
-											<label for="cmn-toggle-8"></label>
+										<div class="switch" id="sw-cmn-toggle-6">
+											<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-6"></label>
 										</div>  <span>Crop</span> 
 								</div>
 								<div class="col-sm-3 col-md-3 on-off">
-										<div class="switch">
+										<div class="switch" id="sw-cmn-toggle-7">
 											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-7"></label>
 										</div>  <span>Display Preview</span> 
@@ -400,10 +400,19 @@ $this->title = 'Edit Qard';
 							</ul>
 							<div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="paste">
-									<h4 id="reflink" >Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>
+								
+									<!--<h4 id="reflink" >Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>-->
+									
+									<h4 id="reflink">Add Url<span id="remove_extra_text" class="trash pull-right"><div class="col-sm-12 col-md-12 on-off">
+											<div class="switch" id="sw-cmn-toggle-21">
+												<input id="cmn-toggle-21" class="cmn-toggle cmn-toggle-round" type="checkbox">
+												<label for="cmn-toggle-21" ></label>
+											</div>  <span>Link URL</span> 
+									</div></span></h4> 
+									
 									<div class="form-group" id="showlinkUrl">
 										<input type="text" name="url" id="link_url" class="form-control pasteUrl" placeholder="Paste Url (Another qard deck,website,youtube video, images etc)">
-										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDech share URL</p>
+										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDeck share URL</p>
 									</div>
 									<div class="form-group extra-content" style="margin-bottom: 60px;">
 										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
@@ -417,15 +426,15 @@ $this->title = 'Edit Qard';
 										<input type="hidden" id="work_space_link_only" />									
 									<div class="form-group toggle-btn">
 										<div class="col-sm-4 col-md-4 on-off">
-											<div class="switch">
+											<div class="switch" id="sw-cmn-toggle-4">
 												<input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
 												<label for="cmn-toggle-4"></label>
 											</div>  <span>Display URL</span>                                                  
 										</div>                                            
 										<div class="col-sm-4 col-md-4 on-off">
-											<div class="switch">
-												<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
-												<label for="cmn-toggle-6"></label>
+											<div class="switch" id="sw-cmn-toggle-8">
+												<input id="cmn-toggle-8" class="cmn-toggle cmn-toggle-round" type="checkbox">
+												<label for="cmn-toggle-8"></label>
 											</div>  <span>Open Link in New Tab</span>                                                 
 										</div>
 										<span class="url_reset_link trash pull-right"  style="cursor: pointer; cursor: hand; "><i class="fa fa-trash"></i>&nbsp;Clear</span>

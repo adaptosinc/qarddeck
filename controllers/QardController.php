@@ -813,6 +813,7 @@ class QardController extends Controller
 			);
 			curl_setopt_array( $c, $options );
 			$html = curl_exec($c);
+			
 			$mimeType = curl_getinfo($c, CURLINFO_CONTENT_TYPE);
 			if($mimeType == 'application/pdf') {
 				$output_array['type'] = 'PDF';
@@ -923,7 +924,7 @@ class QardController extends Controller
 			/*****************************/
 			$output_array['url_title'] = '';
 			$output_array['url_description'] = '';	
-			if($block_id && $block_id!=0){
+			if($block_id && $block_id !=0 ){
 				$block = Block::findOne($block_id);
 				$data = [];
 				if($block){
