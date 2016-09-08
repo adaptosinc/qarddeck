@@ -375,12 +375,13 @@ $this->title = 'Edit Qard';
 											<label for="cmn-toggle-7"></label>
 										</div>  <span>Display Preview</span> 
 								</div>
-								<div class="col-sm-6 col-md-6 on-off">
+								<div class="col-sm-5 col-md-5 on-off">
 										<div class="switch" id="sw-cmn-toggle-3">
 											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-3"></label>
 										</div>  <span>Display as background Image</span> 
-								</div>                                       
+								</div> 
+									<span id="reset_image" style="cursor: pointer; cursor: hand;" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Clear</span>								
                             </div>
                             <!--<ul class="on-off pull-right">
                                 <li>
@@ -437,7 +438,7 @@ $this->title = 'Edit Qard';
 												<label for="cmn-toggle-8"></label>
 											</div>  <span>Open Link in New Tab</span>                                                 
 										</div>
-										<span class="url_reset_link trash pull-right"  style="cursor: pointer; cursor: hand; "><i class="fa fa-trash"></i>&nbsp;Clear</span>
+										<span class="url_reset_link trash pull-right"  style="cursor: pointer; cursor: hand; " for="samefield"><i class="fa fa-trash"></i>&nbsp;Clear</span>
 									</div>
 
 								</div>
@@ -456,7 +457,7 @@ $this->title = 'Edit Qard';
 									<h4 id="reflink">Add Embed Code
 									<span class="trash pull-right">
 										<div class="col-sm-12 col-md-12 on-off" id="link-ecode" >
-								<div class="switch">
+								<div class="switch" id="sw-cmn-toggle-57">
 								<input type="hidden" id="emcode_hid" name="emcode_hid" >
 								<input type="hidden" id="emcode_hidimg" name="emcode_hidimg" >
 									<input id="cmn-toggle-57" class="cmn-toggle cmn-toggle-round" type="checkbox">
@@ -476,7 +477,7 @@ $this->title = 'Edit Qard';
 										</div>  
 									</div>	
 									
-									<span id="rmembed_code" style="display:none;  cursor: pointer; cursor: hand; " class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>
+									<span id="rmembed_code" style="cursor: pointer; cursor: hand; " class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Clear</span>
 									
 									<!--<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>-->
 								</div>  
@@ -542,6 +543,9 @@ $this->title = 'Edit Qard';
 								</div> --->
 								
 							</form>	
+							
+						
+							
                           </div>
                         </div>
 						

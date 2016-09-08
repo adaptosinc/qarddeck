@@ -244,7 +244,7 @@ $this->title = 'Create Qard';
 						</div>
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
-                       	<h4 id="reflink" >Add Image<span id="reset_image" style="cursor: pointer; cursor: hand;" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Clear</span></h4>
+                       	<h4 id="reflink" >Add Image</h4>
 							<div class="img_preview" style="display:none"></div>
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
@@ -268,12 +268,13 @@ $this->title = 'Create Qard';
 											<label for="cmn-toggle-7"></label>
 										</div>  <span>Display Preview</span> 
 								</div>
-								<div class="col-sm-6 col-md-6 on-off">
+								<div class="col-sm-5 col-md-5 on-off">
 										<div class="switch" id="sw-cmn-toggle-3" >
 											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-3"></label>
 										</div>  <span>Display as background Image</span> 
-								</div>                                       
+								</div> 
+									<span id="reset_image" style="cursor: pointer; cursor: hand;" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Clear</span>							
                             </div>
                            
                         </div>
@@ -319,7 +320,7 @@ $this->title = 'Create Qard';
 												<label for="cmn-toggle-8"></label>
 											</div>  <span>Open Link in New Tab</span>                                                 
 										</div>
-										<span class="url_reset_link trash pull-right" style="cursor: pointer; cursor: hand; " ><i class="fa fa-trash"></i>&nbsp;Clear</span>
+										<span class="url_reset_link trash pull-right" style="cursor: pointer; cursor: hand; " for="samefield" ><i class="fa fa-trash"></i>&nbsp;Clear</span>
 									</div>
 
 								</div>
@@ -330,7 +331,7 @@ $this->title = 'Create Qard';
 								
 								
 							<div class="col-sm-12 col-md-12 on-off" id="link-ecode"   >
-								<div class="switch">
+								<div class="switch" id="sw-cmn-toggle-57" >
 								<input type="hidden" id="emcode_hid" name="emcode_hid" >
 								<input type="hidden" id="emcode_hidimg" name="emcode_hidimg" >
 									<input id="cmn-toggle-57" class="cmn-toggle cmn-toggle-round" type="checkbox">
@@ -349,7 +350,7 @@ $this->title = 'Create Qard';
 										</div>  
 									</div>	
 									
-									<span id="rmembed_code" style="display:none;  cursor: pointer; cursor: hand; " class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>
+									<span id="rmembed_code" style="cursor: pointer; cursor: hand; " class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Clear</span>
 									
 								
 								</div>  
@@ -364,7 +365,7 @@ $this->title = 'Create Qard';
 						 
 							<h4 id="reflink" >Add File<span class="trash pull-right" >
 							<div class="col-sm-12 col-md-12 on-off">
-							<div class="switch">
+							<div class="switch" id="sw-cmn-toggle-56" >
 												<input id="cmn-toggle-56" class="cmn-toggle cmn-toggle-round" type="checkbox">
 												<label for="cmn-toggle-56" class="victim"></label>
 											</div>  <span>Link this Document</span>
@@ -408,6 +409,7 @@ $this->title = 'Create Qard';
 								
 								
 							</form>	
+							
 						  </div>
                         </div>
 						

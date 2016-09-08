@@ -349,7 +349,7 @@
 					});
 					//remove image after stored in db
 					$(".dropzone .btn-del").trigger("click");                    
-					$("#url_reset_link").trigger("click");
+					//$("#url_reset_link").trigger("click");
 					$("#remove_extra_text").trigger("click"); 
 					$("#wait").hide();
 					return true;
@@ -476,12 +476,15 @@
 							$("input[id=work_space_link_only]").val(data.work_space_link_only);
 						}
 						$('#link_div').html(data.preview_html);
+						var chck = $('.url_reset_link').attr('for');
+						
 						//add here
-						if((data.url_title != "") || (data.url_description != ""))
+						if(((data.url_title != "") || (data.url_description != "") ) && ($.trim(chck) != 'clearfield'))
 						{ 
 							$("input[name=url-title]").val(data.url_title);
 							$("input[name=url-desc]").val(data.url_description);
 						}
+						
 						
 						$('#cmn-toggle-8').prop("checked",true).trigger("change");
 					}
@@ -496,6 +499,7 @@
 				error: function(data) {
 					alert('Invalid Url, Please Try Again!!!.');
 					$(".url_reset_link").trigger("click");
+					$('.url_reset_link').attr('for','samefield');
 				}
 			});			
 		};
@@ -731,14 +735,16 @@ if (ext == "pdf" ) {
 					$('#embed_div').html(data.iframelink);
 					//$('#btnembed_code').hide();
 					//$('#link-ecode').show();
-					$('#rmembed_code').show();
+					//$('#rmembed_code').show();
+			
 					$("#cmn-toggle-57").prop("checked",false);	
                 } ,
-			error: function (data) {
+			error: function (data) { 
 					$('#embed_div').html("<div class='preview-image'></div>");
 					//$('#btnembed_code').show();
 					//$('#link-ecode').hide();
-					$('#rmembed_code').hide();
+					//$('#rmembed_code').hide();
+					
 					} 
             });			
 		};
@@ -887,14 +893,15 @@ function embedCode(videoLink){
 	
 	//// ARIVAZAHGAN CODE //////////////////
 	
-	var linkhtml ='<span class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="/qarddeck/web/images/video_icon.png" alt=""></span>';
+	var linkhtml ='<span for="embedLink" class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="/qarddeck/web/images/video_icon.png" alt=""></span>';
 	$("#paste").hide();
 	$("#embed").show();
 	$("#embed_code").val(html);
 	$("#emcode_hidimg").val(linkhtml);
 	
 
-	$("#rmembed_code").show();
+	//$("#rmembed_code").show();
+	
 	$("#cmn-toggle-57").prop("checked",true);	
 	
 	/////////////////////////////////
@@ -1263,12 +1270,14 @@ function add_block(event,new_block){
 		//added by dency
 		if(new_block){ 
 			$(".url_reset_link").trigger("click");
+			$('.url_reset_link').attr('for','samefield');
 			$("#extra_text").html('');
 			$('.img_preview').html('');	
 			$('.img_preview').hide();
 			$('#cmn-toggle-6').prop("checked",false);	
 			$('#cmn-toggle-7').prop("checked",false);	
 			$('#cmn-toggle-3').prop("checked",false);	
+			$("#rmembed_code").trigger("click");
 		}
 }
 function addSaveCard() {
@@ -1522,8 +1531,14 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 	if($.trim(chktext) != 'showExtraText' )
 		clrextratext();
 	if($.trim(chktext) != 'previewLink')
+	{
 		$(".url_reset_link").trigger("click");
-	
+		$('.url_reset_link').attr('for','samefield');
+	}
+	if($.trim(chktext) !='embedLink')
+	 $("#rmembed_code").trigger("click");
+	if($.trim(chktext) !='showFilePrev')
+	 $(".removefile").trigger("click");	
 	
 });
 /**** for drag the block ******/
@@ -1630,12 +1645,13 @@ $(document).delegate("#deleteblock", "click", function() {
 					$("#working_div").remove();
 					temp.trigger("dblclick");
 				//alert("first select/create block first");			
+				alert("Deleted Successfully");			
 			}			
 		}
 	else{
 		alert("You can not delete all the blocks");
 	}
-
+		$(".add-another").show();
 });
 /** Block height control **/
 $(document).delegate("#blk_size", "keyup keydown", function() {
@@ -1825,6 +1841,7 @@ $('body').on('change', $('input[name=url_title]', 'textarea[name=url_content]'),
 	showUrlPreview();
 });
 $('.url_reset_link').on('click', function() {
+	$('.url_reset_link').attr('for','clearfield');
 	$('#link_div').html("<div class='preview-image'></div>");
 	$('#embed_div').html("<div class='preview-image'></div>");
 	$("input[id=link_url]").val('');
@@ -2096,8 +2113,15 @@ $('#cmn-toggle-56').click(function(){
 			$("input[name=filedesc]").val('');
 			
 	}else{	
-		  var spantextval =  $(this).attr("data-link");
+		var chksts = confirm ("Do you really like to unlink this File Attachment? ");
+		if(chksts == true)	
+		{
+			var spantextval =  $(this).attr("data-link");
 			$("#working_div .current_blk").html(spantextval); 
+		}
+		else
+			return false;
+		   
 	}				
 });
 		
@@ -2122,7 +2146,7 @@ $(document).on('click', '.add-another', function(){
 	$("#link-extra").hide();	
 	$("#add_extra_text").show();
 	$('#embed_div').html("<div class='preview-image'></div>");
-	$('#rmembed_code').hide();	
+	//$('#rmembed_code').hide();	
 	
 });	
 
@@ -2150,7 +2174,12 @@ $('#cmn-toggle-57').click(function(){
 			
 	}else{	
 		
-		  $("#working_div .current_blk").find('.icon-mark').remove();
+		var chksts = confirm ("Do you really like to unlink this Embed Code? ");
+		if(chksts == true)	
+			$("#working_div .current_blk").find('.icon-mark').remove();
+		else
+			return false;
+		  
 		  
 	}				
 });
@@ -2161,8 +2190,7 @@ $(document).on('click', '#rmembed_code', function(){
 	$('#embed_code').val(""); 
 	$('#emcode_hid').val("");  
 	$('#emcode_hidimg').val("");  
-	$("#cmn-toggle-57").prop("checked",false);	
-	$('#rmembed_code').hide(); 	
+	$("#cmn-toggle-57").prop("checked",false);		 	
 });	
 
 function checkextratext()
@@ -2271,8 +2299,7 @@ $(document).on('change keypress keydown blur', '#link_url', function(){
 });
 
 function checklinkfn()
-{
-	
+{	
     var url = $('#link_url').val();
     var RegExp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;  
 	if(RegExp.test($.trim(url))){
@@ -2288,3 +2315,44 @@ function checklinkfn()
 	   return false;
 	}
 }
+
+
+$(document).on('click', '#sw-cmn-toggle-57', function(){ 
+		if(checkvlinkfn() == false)	
+		alert("Add Embed Code First!!!.");
+});
+
+
+function checkvlinkfn()
+{	
+	  var vurl = $('#embed_code').val();
+	  var vlinkurl = $('#emcode_hid').val();
+	  if(($.trim(vurl) != "") && ($.trim(vlinkurl) != "")){
+	    $('#cmn-toggle-57').attr("disabled",false);			
+	   return true;
+	}
+	else{
+	   	$('#cmn-toggle-57').attr("disabled","disabled");			
+	   return false;
+	}
+}
+
+/* $(document).on('click', '#sw-cmn-toggle-56', function(){ 
+		//if(checkfilefn() == false)	
+		//alert("Please Attach File First!!!.");
+});
+
+
+function checkfilefn()
+{	
+	  var filename = $('#fileTitle').html();
+	 
+	  if($.trim(filename) != "FileName.psd" ){
+	    $('#cmn-toggle-56').attr("disabled",false);			
+	   return true;
+	}
+	else{
+	   	$('#cmn-toggle-56').attr("disabled","disabled");			
+	   return false;
+	}
+} */
