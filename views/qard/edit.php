@@ -57,7 +57,19 @@ $this->title = 'Edit Qard';
 
     <!-- requiered for drop down of an image -->
     <!--<script src="<?= Yii::$app->request->baseUrl?>/js/dropzone.js" type="text/javascript"></script>-->
-
+	  <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+	  <script>tinymce.init({ 
+		selector:'#extra_text',
+		plugins: "textcolor",
+		menu: {
+			file: false,
+			edit: false,
+			insert: false,
+			view: false,
+			formats: false
+		},
+		toolbar: ' bold italic underline| alignleft aligncenter alignright alignjustify | bullist numlist | forecolor | fontsizeselect',
+	  });</script>	
     <section class="create-card">
         <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
 		<div class="row">
