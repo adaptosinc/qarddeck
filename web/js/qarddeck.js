@@ -87,6 +87,8 @@
 					var last = $(this).children(':last-child');
 					var html = $(last).html();
 					$('#extra_text').html(html);
+					tinyMCE.activeEditor.setContent(html);
+					tinyMCE.activeEditor.focus();
 					//pass this to extra text and remove from here
 					$(last).remove();
 					//alert("Space allowed for text is exhausted. We are copying the last typed to the extra text space. Please link the text from there.");
@@ -128,7 +130,7 @@
 					var t=json.title; 
 					
 					//var html='';
-				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="/qarddeck/web/images/qards_icon.png" alt="">20</div> <div class="col-sm-8 col-md-8"> <button class="btn btn-grey"><img src="/qarddeck/web/images/preview_icon.png" alt="">Preview</button> </div></div></div>';
+				    var html='<div class="grid-item" id="6" onclick="addToDeck(this)"><div class="grid-img"><img src="'+img+'" alt=""></div><div class="grid-content"><h4>'+t+'</h4><div class="col-sm-4 col-md-4"><img src="'+plugin.settings.homeUrl+'images/qards_icon.png" alt="">20</div> <div class="col-sm-8 col-md-8"> <button class="btn btn-grey"><img src="'+plugin.settings.homeUrl+'images/preview_icon.png" alt="">Preview</button> </div></div></div>';
 					$('#add_to_deck').trigger('click');
 					$("input[id=deck-title]").val('');
 					$("input[id=deck-bg_image]").val('');
@@ -575,7 +577,7 @@ else
 
 	if (ext == "pdf" ) {
 	
-		var object = "<div class='active-file-preview'>   <h4 id='reflink'>"+filetitle+"</span></h4>  <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='/qarddeck/web/images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		var object = "<div class='active-file-preview'>   <h4 id='reflink'>"+filetitle+"</span></h4>  <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 			
 		object += "</object>";  					
 		$("#showFilePreview").html(object);
@@ -585,7 +587,7 @@ else
 	}	
 	if (ext == "doc" || ext == 'docx') {
 		 
-		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"</h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='/qarddeck/web/images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"</h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 		
 		object += "</object>";      
 		$("#showFilePreview").html(object); 
@@ -898,7 +900,7 @@ function embedCode(videoLink){
 	
 	//// ARIVAZAHGAN CODE //////////////////
 	
-	var linkhtml ='<span for="embedLink" class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="/qarddeck/web/images/video_icon.png" alt=""></span>';
+	var linkhtml ='<span for="embedLink" class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="'+plugin.settings.homeUrl+'images/video_icon.png" alt=""></span>';
 	$("#paste").hide();
 	$("#embed").show();
 	$("#embed_code").val(html);
@@ -1277,6 +1279,9 @@ function add_block(event,new_block){
 			$(".url_reset_link").trigger("click");
 			$('.url_reset_link').attr('for','samefield');
 			$("#extra_text").html('');
+			//for tinyMCE to load data
+			
+			tinyMCE.activeEditor.setContent('');
 			$('.img_preview').html('');	
 			$('.img_preview').hide();
 			$('#cmn-toggle-6').prop("checked",false);	
@@ -2226,10 +2231,9 @@ function clrextratext()
 	$("#add_extra_text").show();	
 	$('#extra-list').val("");  		
 	$('#extra_text').html(""); 	
+	
+	tinyMCE.activeEditor.setContent("");
 }
-$(document).on('keyup keypress blur change click', '#extra_text', function(){ 
-	checkextratext();
-});	
 
 $(document).on('click', '#sw-cmn-toggle-9', function(){ 
 	//var text2 = $("#extra_text").text();	
@@ -2241,7 +2245,10 @@ $(document).on('click', '#sw-cmn-toggle-9', function(){
 
 $(document).on('keyup keypress blur change click', '#extra_text', function(){ 	
 	if($('#add_extra_text').is(':visible'))
-		$('#add_extra_text').trigger("click");  
+		$('#add_extra_text').trigger("click");
+	else
+		checkextratext();
+			
 	
 });	
 //****** Clear the Extra Text ****//
@@ -2249,6 +2256,8 @@ $(document).on('keyup keypress blur change click', '#extra_text', function(){
 $(document).on('click', '.extra_reset_link', function(){ 
 	$('#extra-list').val("");  		
 	$('#extra_text').html(""); 
+	
+	tinyMCE.activeEditor.setContent("");
 	$('#cmn-toggle-9').prop("checked",false);	
 });
 
