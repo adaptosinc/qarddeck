@@ -368,7 +368,7 @@ $this->title = 'Create Qard';
 							<div class="switch" id="sw-cmn-toggle-56" >
 												<input id="cmn-toggle-56" class="cmn-toggle cmn-toggle-round" type="checkbox">
 												<label for="cmn-toggle-56" class="victim"></label>
-											</div>  <span>Link this Document</span>
+							</div>  <span>Link this Document</span>
 							</div>
 										</span></h4>
                             

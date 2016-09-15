@@ -352,7 +352,7 @@ $this->title = 'Edit Qard';
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
                             <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
-							<h4 id="reflink" >Add Image<span id="reset_image" style="cursor: pointer; cursor: hand;" class="trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Clear</span></h4>
+							<h4 id="reflink" >Add Image</h4>
 							<div class="img_preview" style="display:none"></div>
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">

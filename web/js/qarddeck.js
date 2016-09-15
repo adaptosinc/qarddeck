@@ -570,9 +570,9 @@ if(data1.file_title == "")
 else
 	filetitle = data1.file_title;
 
-if (ext == "pdf" ) {
+	if (ext == "pdf" ) {
 	
-		var object = "<div class='active-file-preview'> <h4><span id='file_title' >"+filetitle+"</span> <span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Remove This File </span></span></h4>  <hr class='divider' > <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='/qarddeck/web/images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: none;'></div> </div> </div>";
+		var object = "<div class='active-file-preview'>   <h4 id='reflink'>"+filetitle+"</span></h4>  <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='/qarddeck/web/images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 			
 		object += "</object>";  					
 		$("#showFilePreview").html(object);
@@ -582,12 +582,13 @@ if (ext == "pdf" ) {
 	}	
 	if (ext == "doc" || ext == 'docx') {
 		 
-		var object = "<div class='active-file-preview'>   <h4 id='file_title'>"+filetitle+"<span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Remove This File </span></span> </h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='/qarddeck/web/images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: none;'></div> </div> </div>";
-	
-	
+		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"</h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='/qarddeck/web/images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		
 		object += "</object>";      
 		$("#showFilePreview").html(object); 
-		$("#showFilePreview").show();		
+		$("#showFilePreview").show();
+		$("#dispIcon").hide();
+		$("#showFile").hide(); 		
 	} 
 	
 	
@@ -655,6 +656,7 @@ if (ext == "pdf" ) {
 		   
             $("#cmn-toggle-56").attr("data-url",span);
             $("#cmn-toggle-56").attr("data-link",spantextval);
+            $("#cmn-toggle-56").attr("data-file",fileName);
 			
 			  if($('#cmn-toggle-56').prop('checked')){	
 
@@ -2101,16 +2103,19 @@ $(document).on("mouseleave",".add-new-file",function(){
    $("#drop-file-bg").show();
   });
 
-$('#cmn-toggle-56').click(function(){	
 
+$(document).on('change', '#cmn-toggle-56', function(){ 
 	if($(this).prop('checked')){
 		 var linespan =  $(this).attr("data-url");
+		 var filename =  $(this).attr("data-file");
             $("#working_div .current_blk").html(linespan);				
 			add_block(true,false);
 			
 			$(window).data('qardDeck').useFileText();				
-			$("input[name=filename]").val('');
-			$("input[name=filedesc]").val('');
+			//$("input[name=filename]").val('');
+			//$("input[name=filedesc]").val('');
+			//$("#fileTitle").html('qweqweqwew');
+			showFilePrev(this,fileName);
 			
 	}else{	
 		var chksts = confirm ("Do you really like to unlink this File Attachment? ");
@@ -2120,8 +2125,11 @@ $('#cmn-toggle-56').click(function(){
 			$("#working_div .current_blk").html(spantextval); 
 		}
 		else
+		{
+			$('#cmn-toggle-56').prop('checked', true); 
 			return false;
-		   
+		}
+			
 	}				
 });
 		
@@ -2327,7 +2335,7 @@ function checkvlinkfn()
 {	
 	  var vurl = $('#embed_code').val();
 	  var vlinkurl = $('#emcode_hid').val();
-	  if(($.trim(vurl) != "") && ($.trim(vlinkurl) != "")){
+	  if(($.trim(vurl) != "")){
 	    $('#cmn-toggle-57').attr("disabled",false);			
 	   return true;
 	}
@@ -2337,16 +2345,28 @@ function checkvlinkfn()
 	}
 }
 
-/* $(document).on('click', '#sw-cmn-toggle-56', function(){ 
-		//if(checkfilefn() == false)	
-		//alert("Please Attach File First!!!.");
+ $(document).on('click', '#sw-cmn-toggle-56', function(){ 
+
+	  /* var filename = $('#fileTitle').html();
+		
+	  if($.trim(filename) != "FileName.psd" ){
+	    $('#cmn-toggle-56').attr("disabled",false);			
+	   return true;
+	}
+	else{
+	   	$('#cmn-toggle-56').attr("disabled","disabled");
+		alert("Please Attach File First!!!.");		
+	   return false;
+	} */
 });
 
-
+/* 
 function checkfilefn()
 {	
 	  var filename = $('#fileTitle').html();
-	 
+		alert(filename);
+		//return false;
+		
 	  if($.trim(filename) != "FileName.psd" ){
 	    $('#cmn-toggle-56').attr("disabled",false);			
 	   return true;
@@ -2355,4 +2375,4 @@ function checkfilefn()
 	   	$('#cmn-toggle-56').attr("disabled","disabled");			
 	   return false;
 	}
-} */
+}  */
