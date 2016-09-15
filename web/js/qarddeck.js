@@ -372,7 +372,7 @@
 			$.ajax({
 				url : plugin.settings.addExtraTextUrl,
 				type: "POST",
-				data: { 'extra_text':$("#extra_text").html(),
+				data: { 'extra_text':tinyMCE.activeEditor.getContent(),
 						'block_id':$("#working_div .current_blk").attr('data-block_id'),
 						'title' : $("input[name=extra-text]").val(),
 					  },
@@ -422,7 +422,10 @@
 				success: function(data){
 					$('.nav-tabs a[href="#cardblock"]').tab('show');
 					data = $.parseJSON(data);
+					console.log(data);
 					$("#extra_text").html(data.extra_text);
+					//for tinyMCE to load data
+					tinyMCE.activeEditor.setContent(data.extra_text);
 					$("input[name=extra-text]").val(data.title);
 					$('#cmn-toggle-9').prop("checked",true);
 					$('#cmn-toggle-9').removeAttr("disabled");
@@ -2203,9 +2206,11 @@ $(document).on('click', '#rmembed_code', function(){
 
 function checkextratext()
 {	
-	var text2 =$("#extra_text").text();		
-	if($.trim(text2) !="")
+	var text2 = tinyMCE.activeEditor.getContent();		
+	if($.trim(text2) !=""){
 		$("#cmn-toggle-9").attr( "disabled",false );
+	}
+		
 	else
 	{		
 		$("#cmn-toggle-9").attr( "disabled",true );		
@@ -2227,9 +2232,11 @@ $(document).on('keyup keypress blur change click', '#extra_text', function(){
 });	
 
 $(document).on('click', '#sw-cmn-toggle-9', function(){ 
-	var text2 =$("#extra_text").text();		
+	//var text2 = $("#extra_text").text();	
+	var text2 = tinyMCE.activeEditor.getContent();
 	if($.trim(text2) =="")
 		alert('First add some text');
+	checkextratext();
 });	
 
 $(document).on('keyup keypress blur change click', '#extra_text', function(){ 	
