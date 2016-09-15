@@ -1802,7 +1802,8 @@ $('#cmn-toggle-4').on('change', function() {
 			var str = '<span id="show_url_span">'+$("input[id=link_url]").val()+'</span>';
 			//$("#working_div .current_blk").find('#previewLink').prepend(str);	
 			$(str).insertBefore($("#working_div .current_blk").find('#previewLink'));
-			$("#previewLink").attr("data-showurl","true");						
+			$("#previewLink").attr("data-showurl","true");	
+			adjustHeight();
 		}
 	}else{
 		if($("#working_div .current_blk").find('#show_url_span').length != 0 && $("input[id=link_url]").val() != '')
