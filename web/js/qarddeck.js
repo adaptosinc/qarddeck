@@ -700,11 +700,11 @@ else
 					processData: false,
 					data: form_data,
 					type: 'post',
-					success: function(response) {
-						
+					success: function(response) {						
 						$(".fileName").val(response.code);
 						$(".victim").html('');
 						$("#fileTitle").html(response.code);
+						$("#file_att_name").val(response.code);
 						plugin.setLink($(this),response.code,1);
 					}
 				});
@@ -713,7 +713,11 @@ else
 				$("#extErr").show();
 				$("#showFile").hide();
 				///$(".fileName").val('');
+				$("#fileTitle").html('FileName.psd');
+				$("#file_att_name").val('');
 				$(".fileSwitch").show();
+				alert("Invalid File Format is not support, Please Attach .pdf, .doc, .docx Only!!!.");
+				$('#cmn-toggle-56').prop("checked",false);
 			};			
 		};
 		plugin.embedUrl = function(videoUrl){
@@ -1274,6 +1278,8 @@ function add_block(event,new_block){
 		//$(".desc").val('');
 	
 		$("#fileTitle").html('FileName.psd');
+		$("#file_att_name").val('');
+		$('#cmn-toggle-56').prop("checked",false);
 		//added by dency
 		if(new_block){ 
 			$(".url_reset_link").trigger("click");
@@ -1998,6 +2004,8 @@ $('input[id=qard-url-upload-click]').on('change',function(e) {
 $('#reflink').click(function(e) {
 	$("#qard-url-upload").trigger('reset');
 	$("#fileTitle").html('FileName.psd');
+	$("#file_att_name").val('');
+	$('#cmn-toggle-56').prop("checked",false);
 });		
 
 /** Embedd Video functions **/
@@ -2060,7 +2068,8 @@ $("#url-filename").val(File_title);
 $("#url-filedesc").val(File_desc); 
 
 $("#fileTitle").html('FileName.psd');
-
+$("#file_att_name").val('');
+$('#cmn-toggle-56').prop("checked",false);
 	
 });
 
@@ -2090,6 +2099,7 @@ $(document).on("click",".icon-mark",function(){
 		$("#editcheck").show();
 		$("#drop-file-bg").hide();
 		$("#fileTitle").html('FileName.psd');
+		$("#file_att_name").val('');
 		$("#cmn-toggle-56").attr("data-url","");
 		$('#cmn-toggle-56').prop('checked', false); 
 	}
@@ -2361,34 +2371,24 @@ function checkvlinkfn()
 	}
 }
 
- $(document).on('click', '#sw-cmn-toggle-56', function(){ 
+$(document).on('click', '#sw-cmn-toggle-56', function(){ 
 
-	  /* var filename = $('#fileTitle').html();
-		
-	  if($.trim(filename) != "FileName.psd" ){
-	    $('#cmn-toggle-56').attr("disabled",false);			
-	   return true;
-	}
-	else{
-	   	$('#cmn-toggle-56').attr("disabled","disabled");
-		alert("Please Attach File First!!!.");		
-	   return false;
-	} */
+	if(checkfilefn() == false)	
+	alert("Please Attach File First!!!.");
+
 });
 
-/* 
+
 function checkfilefn()
 {	
-	  var filename = $('#fileTitle').html();
-		alert(filename);
-		//return false;
-		
-	  if($.trim(filename) != "FileName.psd" ){
+	  var filename = $('#file_att_name').val();			
+	  if($.trim(filename) != "" ){
 	    $('#cmn-toggle-56').attr("disabled",false);			
-	   return true;
+		return true;
 	}
 	else{
 	   	$('#cmn-toggle-56').attr("disabled","disabled");			
-	   return false;
+	  	return false;
 	}
-}  */
+}   
+

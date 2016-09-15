@@ -524,7 +524,7 @@ $this->title = 'Edit Qard';
 									<input type="text" id="url-filedesc" name="filedesc" class="col-sm-6 col-md-6 col-md-offset-1 desc" placeholder="Add a description">
 								</div>-->
 								
-								
+								<input type="hidden" name='file_att_name' id='file_att_name' />
 							
 								<div class="add-new-file" style="padding-bottom: 10px;" >
 									<div class="drop-file form-group" id="drop-file-bg">
