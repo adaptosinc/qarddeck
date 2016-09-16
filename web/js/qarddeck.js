@@ -844,6 +844,20 @@ else
 			var bg_img_block = $("#working_div .bgimg-block");
 			var overlay_blk = $("#working_div .bgoverlay-block");
 			//save the current block and add new one
+			var qard_height= 0;
+			$('.current_blk').each(function(i, obj) {
+				var block_height = $(obj).attr('data-height');
+				//console.log('block-height:'+block_height);
+				qard_height =  parseInt(qard_height)+parseInt(block_height);
+			});
+			var currnt_blk_height = $("#working_div .current_blk").attr('data-height');
+			var future_height = parseInt(currnt_blk_height) + parseInt(qard_height);
+			
+			if(future_height > 16){
+				alert("Ooops! No more place in the qard!");
+				return false;
+			}
+			
 			add_block(true,true);
 			$("#working_div .current_blk").html(current_block.html());
 			//if backgorund image exists
