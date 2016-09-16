@@ -93,6 +93,11 @@
 				**/
 			//	if(event.which != 8 && qard_height > 16){
 				console.log($('#add-block')[0].scrollHeight);
+				if(event.which == 13  &&  $('#add-block')[0].scrollHeight > 603){
+					console.log("enter");
+					event.preventDefault();
+					return false;
+				}
 				if(event.which != 8  &&  $('#add-block')[0].scrollHeight > 604){
 					event.preventDefault();
 /* 					console.log(qard_height);
