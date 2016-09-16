@@ -444,6 +444,8 @@
 		};
 		
 		plugin.getExtraText = function(elem){
+			$("input[name=extra-text]").val('');
+			tinyMCE.activeEditor.setContent('');
 			$.ajax({
 				//url : "<?=Url::to(['block/get-text'], true)?>",
 				url: plugin.settings.getExtraTextUrl,
