@@ -110,7 +110,9 @@
 					//if(flag)
 						//alert("Ooops! No more place to type? Please use the extra text space to type.");
 					//flag = false;
-					
+					event.stopPropagation();
+					if(event.type === "keyup")
+						alert("Ooops! No more place to type? Please use the extra text space to type.");
 					console.log($('#add-block')[0].scrollHeight);
 					return false;
 				}
