@@ -34,11 +34,8 @@
 		  MAIN FUNCTION
 		 */
 		var workspace = function(){
-			$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {		
-				//select color and apply span
-				if (event.type === "input") {
-					//plugin.focusWorkspace();
-				}
+			$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {	
+
 				if(event.type === "paste"){
 					event.preventDefault();
 					// get text representation of clipboard
@@ -47,15 +44,28 @@
 					if (event.clipboardData || event.originalEvent.clipboardData) {
 						content = (event.originalEvent || event).clipboardData.getData('text/plain');
 
-						document.execCommand('insertText', false, content);
+						//document.execCommand('insertText', false, content);
 					}
 					else if (window.clipboardData) {
 						content = window.clipboardData.getData('Text');
-
-						document.selection.createRange().pasteHTML(content);
+						//document.selection.createRange().pasteHTML(content);
 					}   
-
-			
+					for (var i = 5; i <= content.length; i += 5){
+						console.log(content.substring(i, i-5));
+						var txt = content.substring(i, i-5);
+						if($('#add-block')[0].scrollHeight > 603){
+							alert("Ooops! No more place to type? Please use the extra text space to type.");
+							return false;
+						}else{
+							if (event.clipboardData || event.originalEvent.clipboardData) 
+									document.execCommand('insertText', false, txt);
+							else if (window.clipboardData)
+									document.selection.createRange().pasteHTML(txt);
+								
+						}	
+					}
+					console.log(content.length);
+		
 				}
 
 				/*
@@ -81,9 +91,26 @@
 				 *if qard is complete,preveny anything other than backspace and delete
 				 *and remove the last input or last child
 				**/
-				if(event.which != 8 && qard_height > 16){
+			//	if(event.which != 8 && qard_height > 16){
+				console.log($('#add-block')[0].scrollHeight);
+				if(event.which == 13  &&  $('#add-block')[0].scrollHeight > 603){
+					console.log("enter");
 					event.preventDefault();
-					console.log(qard_height);
+					return false;
+				}
+				if(event.which != 8  && event.which != 46 &&  $('#add-block')[0].scrollHeight > 603){
+					if(event.type === "resize"){
+						var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-0.5) / 37.5);
+						var setHeight =  $(this).attr("data-height");
+						if(scrollHeight > setHeight ){
+							$("#working_div .current_blk").attr('data-resized','false');	
+							setHeightBlock(this,scrollHeight);
+						}else{
+							event.preventDefault();
+						}						
+					}
+					event.preventDefault();
+/* 					console.log(qard_height);
 					var last = $(this).children(':last-child');
 					var html = $(last).html();
 					$('#extra_text').html(html);
@@ -92,8 +119,24 @@
 					//pass this to extra text and remove from here
 					$(last).remove();
 					//alert("Space allowed for text is exhausted. We are copying the last typed to the extra text space. Please link the text from there.");
-					$('#extra_text').focus();
+					//$(this).attr("contenteditable",false);
+					$('#extra_text').focus(); */
+					
+					//if(flag)
+						//alert("Ooops! No more place to type? Please use the extra text space to type.");
+					//flag = false;
+					event.stopPropagation();
+					if(event.type === "keyup"){
+						event.preventDefault();
+						//$(this).val($(this).val().replace(/\v+/g, ''));
+						//$(this).html($(this).html().substr(0,$(this).html().length-10));
+						alert("Ooops! No more place to type? Please use the extra text space to type.");
+					}
+						
+					//console.log($('#add-block')[0].height());
+					return false;
 				}
+				//$(this).attr("contenteditable",true);
 				if ($(this).attr("data-resized")=='true') {
 					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-0.5) / 37.5);
 					var setHeight =  $(this).attr("data-height");
@@ -395,9 +438,11 @@
 							var icon = $("#working_div .current_blk").find(".icon-mark").length;
 							if(icon == 0)
 								$("#working_div .current_blk").append(data.link_data);
-							$("#working_div .current_blk").attr("contenteditable","true");								
+							$("#working_div .current_blk").attr("contenteditable","true");	
+							adjustHeight();
 						}else{ 	
 							$("#working_div .current_blk").find(".icon-mark").remove();
+							adjustHeight();
 						}
 					
 					}
@@ -416,6 +461,8 @@
 		};
 		
 		plugin.getExtraText = function(elem){
+			$("input[name=extra-text]").val('');
+			tinyMCE.activeEditor.setContent('');
 			$.ajax({
 				//url : "<?=Url::to(['block/get-text'], true)?>",
 				url: plugin.settings.getExtraTextUrl,
@@ -814,6 +861,20 @@ else
 			var bg_img_block = $("#working_div .bgimg-block");
 			var overlay_blk = $("#working_div .bgoverlay-block");
 			//save the current block and add new one
+			var qard_height= 0;
+			$('.current_blk').each(function(i, obj) {
+				var block_height = $(obj).attr('data-height');
+				//console.log('block-height:'+block_height);
+				qard_height =  parseInt(qard_height)+parseInt(block_height);
+			});
+			var currnt_blk_height = $("#working_div .current_blk").attr('data-height');
+			var future_height = parseInt(currnt_blk_height) + parseInt(qard_height);
+			
+			if(future_height > 16){
+				alert("Ooops! No more place in the qard!");
+				return false;
+			}
+			
 			add_block(true,true);
 			$("#working_div .current_blk").html(current_block.html());
 			//if backgorund image exists
