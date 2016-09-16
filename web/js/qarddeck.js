@@ -44,15 +44,28 @@
 					if (event.clipboardData || event.originalEvent.clipboardData) {
 						content = (event.originalEvent || event).clipboardData.getData('text/plain');
 
-						document.execCommand('insertText', false, content);
+						//document.execCommand('insertText', false, content);
 					}
 					else if (window.clipboardData) {
 						content = window.clipboardData.getData('Text');
-
-						document.selection.createRange().pasteHTML(content);
+						//document.selection.createRange().pasteHTML(content);
 					}   
-
-			
+					for (var i = 10; i <= content.length; i += 10){
+						console.log(content.substring(i, i-10));
+						var txt = content.substring(i, i-10);
+						if($('#add-block')[0].scrollHeight > 604){
+							alert("Ooops! No more place to type? Please use the extra text space to type.");
+							return false;
+						}else{
+							if (event.clipboardData || event.originalEvent.clipboardData) 
+									document.execCommand('insertText', false, txt);
+							else if (window.clipboardData)
+									document.selection.createRange().pasteHTML(txt);
+								
+						}	
+					}
+					console.log(content.length);
+		
 				}
 
 				/*
@@ -80,7 +93,7 @@
 				**/
 			//	if(event.which != 8 && qard_height > 16){
 				console.log($('#add-block')[0].scrollHeight);
-				if(event.which != 8  &&  $('#add-block')[0].scrollHeight > 605){
+				if(event.which != 8  &&  $('#add-block')[0].scrollHeight > 604){
 					event.preventDefault();
 /* 					console.log(qard_height);
 					var last = $(this).children(':last-child');
