@@ -34,11 +34,8 @@
 		  MAIN FUNCTION
 		 */
 		var workspace = function(){
-			$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {		
-				//select color and apply span
-				if (event.type === "input") {
-					//plugin.focusWorkspace();
-				}
+			$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {	
+
 				if(event.type === "paste"){
 					event.preventDefault();
 					// get text representation of clipboard
@@ -81,9 +78,11 @@
 				 *if qard is complete,preveny anything other than backspace and delete
 				 *and remove the last input or last child
 				**/
-				if(event.which != 8 && qard_height > 16){
+			//	if(event.which != 8 && qard_height > 16){
+				console.log($('#add-block')[0].scrollHeight);
+				if(event.which != 8  &&  $('#add-block')[0].scrollHeight > 605){
 					event.preventDefault();
-					console.log(qard_height);
+/* 					console.log(qard_height);
 					var last = $(this).children(':last-child');
 					var html = $(last).html();
 					$('#extra_text').html(html);
@@ -92,8 +91,17 @@
 					//pass this to extra text and remove from here
 					$(last).remove();
 					//alert("Space allowed for text is exhausted. We are copying the last typed to the extra text space. Please link the text from there.");
-					$('#extra_text').focus();
+					//$(this).attr("contenteditable",false);
+					$('#extra_text').focus(); */
+					
+					//if(flag)
+						//alert("Ooops! No more place to type? Please use the extra text space to type.");
+					//flag = false;
+					
+					console.log($('#add-block')[0].scrollHeight);
+					return false;
 				}
+				//$(this).attr("contenteditable",true);
 				if ($(this).attr("data-resized")=='true') {
 					var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-0.5) / 37.5);
 					var setHeight =  $(this).attr("data-height");
