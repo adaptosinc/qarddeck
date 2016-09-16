@@ -34,7 +34,12 @@ class UserController extends Controller
 			   'class' => AccessControl::className(),
 			   'only' => ['profile'],
 			   'rules' => [ 
-			    [
+/* 					[
+                        'allow' => true,
+                        'actions' => ['sign-up','register'],
+						'roles' => ['?'],
+                    ], */
+					[
                         'allow' => true,
                         'actions' => ['profile'],
 						'roles' => ['@'],
@@ -76,7 +81,8 @@ class UserController extends Controller
         ]);
     }
 	public function actionSignUp(){	
-	
+		if(!\Yii::$app->user->isGuest)
+			return $this->redirect(['site/index']);
 		if(!$this->isMobile()){ 			
             return $this->render('register');
 		}else{			
@@ -91,7 +97,9 @@ class UserController extends Controller
 	 * @return mixed
 	 */
 	 public function actionRegister(){
-			if(!$this->isMobile()){ 		
+		if(!\Yii::$app->user->isGuest)
+			return $this->redirect(['site/index']);
+		if(!$this->isMobile()){ 		
                return $this->render('social_signin');
 		}else{
                 $this->layout = 'mobile';
