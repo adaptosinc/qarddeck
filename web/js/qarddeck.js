@@ -53,7 +53,7 @@
 					for (var i = 5; i <= content.length; i += 5){
 						console.log(content.substring(i, i-5));
 						var txt = content.substring(i, i-5);
-						if($('#add-block')[0].scrollHeight > 604){
+						if($('#add-block')[0].scrollHeight > 603){
 							alert("Ooops! No more place to type? Please use the extra text space to type.");
 							return false;
 						}else{
@@ -98,7 +98,17 @@
 					event.preventDefault();
 					return false;
 				}
-				if(event.which != 8  &&  $('#add-block')[0].scrollHeight > 604){
+				if(event.which != 8  && event.which != 46 &&  $('#add-block')[0].scrollHeight > 603){
+					if(event.type === "resize"){
+						var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-0.5) / 37.5);
+						var setHeight =  $(this).attr("data-height");
+						if(scrollHeight > setHeight ){
+							$("#working_div .current_blk").attr('data-resized','false');	
+							setHeightBlock(this,scrollHeight);
+						}else{
+							event.preventDefault();
+						}						
+					}
 					event.preventDefault();
 /* 					console.log(qard_height);
 					var last = $(this).children(':last-child');
@@ -116,9 +126,14 @@
 						//alert("Ooops! No more place to type? Please use the extra text space to type.");
 					//flag = false;
 					event.stopPropagation();
-					if(event.type === "keyup")
+					if(event.type === "keyup"){
+						event.preventDefault();
+						//$(this).val($(this).val().replace(/\v+/g, ''));
+						//$(this).html($(this).html().substr(0,$(this).html().length-10));
 						alert("Ooops! No more place to type? Please use the extra text space to type.");
-					console.log($('#add-block')[0].scrollHeight);
+					}
+						
+					//console.log($('#add-block')[0].height());
 					return false;
 				}
 				//$(this).attr("contenteditable",true);
@@ -423,9 +438,11 @@
 							var icon = $("#working_div .current_blk").find(".icon-mark").length;
 							if(icon == 0)
 								$("#working_div .current_blk").append(data.link_data);
-							$("#working_div .current_blk").attr("contenteditable","true");								
+							$("#working_div .current_blk").attr("contenteditable","true");	
+							adjustHeight();
 						}else{ 	
 							$("#working_div .current_blk").find(".icon-mark").remove();
+							adjustHeight();
 						}
 					
 					}
