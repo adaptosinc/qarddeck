@@ -50,9 +50,9 @@
 						content = window.clipboardData.getData('Text');
 						//document.selection.createRange().pasteHTML(content);
 					}   
-					for (var i = 10; i <= content.length; i += 10){
-						console.log(content.substring(i, i-10));
-						var txt = content.substring(i, i-10);
+					for (var i = 5; i <= content.length; i += 5){
+						console.log(content.substring(i, i-5));
+						var txt = content.substring(i, i-5);
 						if($('#add-block')[0].scrollHeight > 604){
 							alert("Ooops! No more place to type? Please use the extra text space to type.");
 							return false;
