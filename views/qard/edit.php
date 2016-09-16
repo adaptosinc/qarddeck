@@ -502,10 +502,10 @@ $this->title = 'Edit Qard';
 						 
 						 <div id="editcheck" >
 							<h4 id="reflink" >Add File<span class="trash pull-right" ><div class="col-sm-12 col-md-12 on-off">
-							<div class="switch">
+							<div class="switch" id="sw-cmn-toggle-56" >
 												<input id="cmn-toggle-56" class="cmn-toggle cmn-toggle-round" type="checkbox">
 												<label for="cmn-toggle-56" class="victim"></label>
-											</div>  <span>Link this Document</span>
+								</div>  <span>Link this Document</span>
 							</div>	<!--<i class="fa fa-trash"></i>&nbsp;Remove File--></span></h4>
 							
                            	<div class="form-group extra-content" id="drop-image" style="margin-bottom: 60px;  padding-top: 10px;" >

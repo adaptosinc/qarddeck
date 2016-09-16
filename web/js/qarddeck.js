@@ -577,7 +577,7 @@ else
 
 	if (ext == "pdf" ) {
 	
-		var object = "<div class='active-file-preview'>   <h4 id='reflink'>"+filetitle+"</span></h4>  <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		var object = "<div class='active-file-preview'>   <h4 id='file_title'>"+filetitle+" <span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span></h4> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 			
 		object += "</object>";  					
 		$("#showFilePreview").html(object);
@@ -587,7 +587,7 @@ else
 	}	
 	if (ext == "doc" || ext == 'docx') {
 		 
-		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"</h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"<span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span> </h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 		
 		object += "</object>";      
 		$("#showFilePreview").html(object); 
@@ -893,9 +893,19 @@ function setHeightBlock(elem,offset){
 		$("#working_div .bgoverlay-block").css("height", h);
 		//console.log(offset);
 } 
+
+
+
 /** Embed code preview **/
 function embedCode(videoLink){
+	/* var homeUrl = plugin.settings.homeUrl;
+	plugin.settings.blockCreateUrl */
+		
 	var eUrl = $(videoLink).attr('data-value');
+	
+	var cururl = window.location.href;
+	var ckindex = cururl.indexOf('/web/');
+	var baseurl	= cururl.substring(0,ckindex);
 
 	var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 	$('.preview-image').html(html);
@@ -904,14 +914,11 @@ function embedCode(videoLink){
 	
 	//// ARIVAZAHGAN CODE //////////////////
 	
-	var linkhtml ='<span for="embedLink" class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="'+plugin.settings.homeUrl+'images/video_icon.png" alt=""></span>';
+	var linkhtml ='<span for="embedLink" class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="'+baseurl+'/web/images/video_icon.png"/></span>';
 	$("#paste").hide();
 	$("#embed").show();
 	$("#embed_code").val(html);
 	$("#emcode_hidimg").val(linkhtml);
-	
-
-	//$("#rmembed_code").show();
 	
 	$("#cmn-toggle-57").prop("checked",true);	
 	
@@ -2056,18 +2063,17 @@ Edit Document view
 **/
 
 $(document).on('click', '#file_image', function(){ 
-//console.log("changed");
+
 $("#showFilePreview").hide();
 $("#editcheck").show();
 $(".drop-file").show();
 $("#drop-file-bg").hide();
 $(".fileSwitch").hide();
 $(".fileName").val('');
- var File_title = $("#file_title").html();
-$("#url-filename").val(File_title); 
+ var File_title = $("#file_title").text(); 
+$("#url-filename").val(File_title.slice(0, -22)); 
  var File_desc = $("#file_desc").html();
 $("#url-filedesc").val(File_desc); 
-
 $("#fileTitle").html('FileName.psd');
 $("#file_att_name").val('');
 $('#cmn-toggle-56').prop("checked",false);
@@ -2131,12 +2137,11 @@ $(document).on('change', '#cmn-toggle-56', function(){
 			add_block(true,false);
 			
 			$(window).data('qardDeck').useFileText();				
-			//$("input[name=filename]").val('');
-			//$("input[name=filedesc]").val('');
-			//$("#fileTitle").html('qweqweqwew');
-			showFilePrev(this,fileName);
 			
-	}else{	
+			$( "#working_div .icon-mark" ).trigger( "click" );
+			
+	}
+	/* else{	
 		var chksts = confirm ("Do you really like to unlink this File Attachment? ");
 		if(chksts == true)	
 		{
@@ -2149,7 +2154,7 @@ $(document).on('change', '#cmn-toggle-56', function(){
 			return false;
 		}
 			
-	}				
+	}	 */			
 });
 		
 
@@ -2393,3 +2398,25 @@ function checkfilefn()
 	}
 }   
 
+$(document).on('change', '#cmn-toggle-60', function(){ 
+	if($(this).prop('checked')){						
+		var fileName = $('#file_image').attr('file-name');
+		var click = "showFilePrev(this,'"+fileName+"')";
+		var linespan = '<span class="icon-mark pull-right" onclick='+click+' for="showFilePrev"> <img alt="" src="/qarddeck/web/images/file_icon.png" _moz_resizing="true" /> </span>';
+		$("#working_div .current_blk span").append(linespan);
+		
+			
+	}
+	 else{	
+		var chksts = confirm ("Do you really like to unlink this File Attachment? ");
+		if(chksts == true)	
+		{
+			$("#working_div .current_blk").find(".icon-mark").remove();			
+		}
+		else		
+		{	
+			$('#cmn-toggle-60').prop('checked', true); 
+			return false;					
+		}	
+	}	 		
+});
