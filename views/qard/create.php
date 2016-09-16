@@ -393,6 +393,7 @@ $this->title = 'Create Qard';
 							<form method="post" action="" id="qard-url-upload" enctype="multipart/form-data" novalidate class="box">
 							
 							
+								<input type="hidden" name='file_att_name' id='file_att_name' />
 								
 								<div class="add-new-file" style="padding-bottom: 10px;" >
 									<div class="drop-file form-group" id="drop-file-bg" >
