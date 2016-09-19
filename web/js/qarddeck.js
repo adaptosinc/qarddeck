@@ -275,7 +275,7 @@
 			});	
 			
 			 $(".add-another").attr("style","pointer-events: none; opacity: 0.4;");
-			 
+			
 			$.ajax({ 				
 				//url: "<?=Url::to(['block/create'], true)?>",
 				url: plugin.settings.blockCreateUrl,
@@ -405,7 +405,7 @@
 						return false;
 					}
 			});
-
+		
 				 $(".add-another").removeAttr("style");	
 		};
 		
@@ -557,6 +557,7 @@
 		};
 		plugin.useUrl = function(){
 			//save the title and description if set
+			
 			$.ajax({
 			//	url : "<?=Url::to(['block/add-text'], true)?>",
 				url : plugin.settings.addUrlDataUrl,
@@ -855,7 +856,7 @@ else
 			$("#working_div .current_blk").append(image_icon_span);
 			
 		};
-		plugin.copyBlock = function(){
+		plugin.copyBlock = function(){ 
 			//save the current block
 			var current_block = $("#working_div .current_blk");
 			var bg_img_block = $("#working_div .bgimg-block");
@@ -875,11 +876,14 @@ else
 				return false;
 			}
 			
-			add_block(true,true);
+			add_block(true,true); 
+			
+			
 			$("#working_div .current_blk").html(current_block.html());
 			//if backgorund image exists
 			var div_bgimage = bg_img_block.css("background-image");
 			//console.log(div_bgimage);
+			
 			if(div_bgimage != 'none'){
 				
 				//div_bgimage = div_bgimage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
@@ -895,6 +899,7 @@ else
 			var bg_color = bg_img_block.css("background-color");
 			$("#working_div .bgimg-block").css("background-color",bg_color);
 			//console.log(bg_color);
+		
 			add_block(true,false);
 			adjustHeight();
 			//add_block(true,true);
@@ -1718,23 +1723,27 @@ $('#add-block').sortable({
 });
 /** For deleting the block **/
 $(document).delegate("#deleteblock", "click", function() {
-	var block_id = $("#working_div .current_blk").attr("data-block_id");
-	if($('.bgimg-block').length > 1)
+	var chksts = confirm ("Do You Really Want To Delete This Block ? ");
+	if(chksts == true)	
 		{
-			if (typeof block_id !== 'undefined') {
-				$(window).data('qardDeck').deleteBlock(block_id);
-			} else {
-				console.log($("#working_div").prev('.bgimg-block').html());
-					var temp = $("#working_div").prev(".bgimg-block");
-					$("#working_div").remove();
-					temp.trigger("dblclick");
-				//alert("first select/create block first");			
-				alert("Deleted Successfully");			
-			}			
-		}
-	else{
-		alert("You can not delete all the blocks");
-	}
+			var block_id = $("#working_div .current_blk").attr("data-block_id");
+			if($('.bgimg-block').length > 1)
+				{
+					if (typeof block_id !== 'undefined') {
+						$(window).data('qardDeck').deleteBlock(block_id);
+					} else {
+						console.log($("#working_div").prev('.bgimg-block').html());
+							var temp = $("#working_div").prev(".bgimg-block");
+							$("#working_div").remove();
+							temp.trigger("dblclick");
+						//alert("first select/create block first");			
+						alert("Deleted Successfully");			
+					}			
+				}
+			else{
+				alert("You can not delete all the blocks");
+			}
+		}	
 		$(".add-another").show();
 });
 /** Block height control **/
