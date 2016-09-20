@@ -13,6 +13,9 @@ use app\models\Theme;
 use app\models\QardTags;
 use app\models\Tag;
 use yii\web\UploadedFile;
+use yii\db\Query;
+use yii\db\Command;
+use yii\db\Connection;
 
 /**
  * BlockController implements the CRUD actions for Block model.
@@ -173,7 +176,8 @@ class BlockController extends Controller
 				if($block->save(false)){
 					
 					$data['status'] = true;
-					$data['link_data'] = "<span block_id='".$block->block_id."' class='icon-mark pull-right' onclick='showExtraText(this);' for='showExtraText' ><img src='".Yii::$app->homeUrl."images/text_icon.png' alt=''></span>";
+					/* block_id='".$block->block_id."'  addded in link_data span tag */
+					$data['link_data'] = "<span  class='icon-mark pull-right' onclick='showExtraText(this);' for='showExtraText' ><img src='".Yii::$app->homeUrl."images/text_icon.png' alt=''></span>";
 					return json_encode($data);
 					die;
 				}
@@ -514,8 +518,7 @@ class BlockController extends Controller
 	    $post['link_image']=$image_name;
 	    $block->link_image=$post['link_image'];
 	    $is_true=true;
-//	    echo "vijay";
-//	    die;
+
 	}
 	
 	if($block->link_image =='' && strpos($post['div_bgimage'],'/')){
@@ -588,4 +591,29 @@ class BlockController extends Controller
 	
     }
     
+	 public function actionCopyBlock(){
+		$cpy_block_id=Yii::$app->request->post('cpy_block_id');
+		$newcpy_blockid=Yii::$app->request->post('newcpy_blockid');
+		if(isset($cpy_block_id) && !empty($cpy_block_id) && isset($newcpy_blockid) && !empty($newcpy_blockid))
+		{
+			$block = $this->findModel($cpy_block_id);
+			$data = [];
+			if($block){
+				$data['extra_text'] = $block->extra_text;
+				$data['extra_text_title'] = $block->extra_text_title;				
+				$data['link_title'] = $block->link_title;				
+				$data['link_description'] = $block->link_description;				
+				$data['file_title'] = $block->file_title;				
+				$data['file_description'] = $block->file_description;				
+				$data['link_image'] = $block->link_image;				
+			}
+			
+			$connection = Yii::$app->getDb(); 
+			$connection	->createCommand()
+			->update('qard_block',$data, 'block_id='.$newcpy_blockid)
+			->execute();
+			
+			echo "Successfully Copied!";
+		}
+	}
 }

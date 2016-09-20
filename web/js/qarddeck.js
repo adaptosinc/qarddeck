@@ -284,7 +284,7 @@
 				dataType: "json",
 				async: false,
 				success: function(data) {
-				$("#wait").hide();
+				$("#wait").hide(); 
 					if (callFrom === "add_block") {
 						//$("#wait").hide();
 						//var total_height = totalHeight();
@@ -467,7 +467,7 @@
 				//url : "<?=Url::to(['block/get-text'], true)?>",
 				url: plugin.settings.getExtraTextUrl,
 				type: "GET",
-				data: { 'block_id': $(elem).attr('block_id') },
+				data: { /* 'block_id': $(elem).attr('block_id')  */  'block_id': $(elem).parent().attr('data-block_id')  },
 				success: function(data){
 					$('.nav-tabs a[href="#cardblock"]').tab('show');
 					data = $.parseJSON(data);
@@ -875,11 +875,11 @@ else
 				alert("Ooops! No more place in the qard!");
 				return false;
 			}
-			
+			var cpy_blockid = $("#working_div .current_blk").attr("data-block_id");			
 			add_block(true,true); 
 			
-			
 			$("#working_div .current_blk").html(current_block.html());
+			
 			//if backgorund image exists
 			var div_bgimage = bg_img_block.css("background-image");
 			//console.log(div_bgimage);
@@ -894,15 +894,29 @@ else
 				$("#working_div .current_blk").attr("data-img-type",current_block.attr("data-img-type"));
 				//add_block(true,false);
 				//here we need to save this block
-			}	
+			}				
 			//check for background color
 			var bg_color = bg_img_block.css("background-color");
 			$("#working_div .bgimg-block").css("background-color",bg_color);
 			//console.log(bg_color);
-		
+			
 			add_block(true,false);
+			
+			var newcpy_blockid = $("#working_div .current_blk").attr("data-block_id");
+			
+			$.ajax( {
+				  url: plugin.settings.copyQardBlockUrl,
+				  type: 'POST',
+				  data: { 'cpy_block_id':cpy_blockid, 'newcpy_blockid':newcpy_blockid },				
+				  success:function(data){
+					  alert(data)
+				  }
+			});
+			
+			
 			adjustHeight();
 			//add_block(true,true);
+			
 		}
         // fire up the plugin!
         // call the "constructor" method
@@ -1210,7 +1224,6 @@ function add_block(event,new_block){
 		});
 */
 
-		//////image type/////
 		var data_img_type = $("#working_div .current_blk").attr("data-img-type")||'false';
 		data.push({
 			name: 'data-img-type',
@@ -2182,8 +2195,15 @@ $(document).on("click",".icon-mark",function(){
 	}
 	
 	 if(div_id == "showExtraText")
-		$('#add_extra_text').trigger("click");  			
-	 else 
+	 {
+		$('#add_extra_text').trigger("click"); 
+		
+		if($(".img_preview").is(':visible'))
+			$(".drop-image").hide();
+		else
+			$(".drop-image").show();
+	 }	
+	else 
 		clrextratext();	
 	
 	
