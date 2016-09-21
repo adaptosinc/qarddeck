@@ -581,14 +581,12 @@ class BlockController extends Controller
     
     public function actionChangePriority() {
 	
-	$priority_arr=Yii::$app->request->post();
-	foreach ($priority_arr as $value){
-	    $block=Block::findOne(['block_id'=>$value[1]]);
-	    $block->block_priority=$value[0];
-	    $block->save(false);
-	}
-	
-	
+		$priority_arr=Yii::$app->request->post();
+		foreach ($priority_arr as $value){
+			$block=Block::findOne(['block_id'=>$value[1]]);
+			$block->block_priority=$value[0];
+			$block->save(false);
+		}			
     }
     
 	 public function actionCopyBlock(){
@@ -613,7 +611,9 @@ class BlockController extends Controller
 			->update('qard_block',$data, 'block_id='.$newcpy_blockid)
 			->execute();
 			
-			echo "Successfully Copied!";
+			
 		}
+		
+		echo "Successfully Copied!";
 	}
 }

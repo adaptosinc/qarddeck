@@ -332,7 +332,7 @@ $this->title = 'Create Qard';
 												<label for="cmn-toggle-8"></label>
 											</div>  <span>Open Link in New Tab</span>                                                 
 										</div>
-										<span class="url_reset_link trash pull-right" style="cursor: pointer; cursor: hand; " for="samefield" ><i class="fa fa-trash"></i>&nbsp;Clear</span>
+										<span class="url_reset_link trash pull-right" style="cursor: pointer; cursor: hand; " for="samefield" data-id='create' ><i class="fa fa-trash"></i>&nbsp;Clear</span>
 									</div>
 
 								</div>
