@@ -256,7 +256,14 @@ $this->title = 'Create Qard';
 						</div>
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
-                       	<h4 id="reflink" >Add Image</h4>
+                       	<h4 id="reflink" >Add Image <span class="trash pull-right" >
+							<div class="col-sm-12 col-md-12 on-off">
+							<div class="switch" id="sw-cmn-toggle-7">
+											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-7"></label>
+										</div>  <span>Display Preview Icon</span> 
+							</div>
+										</span></h4>
 							<div class="img_preview" style="display:none"></div>
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
@@ -274,12 +281,7 @@ $this->title = 'Create Qard';
 											<label for="cmn-toggle-6"></label>
 										</div>  <span>Crop</span> 
 								</div>-->
-								<div class="col-sm-3 col-md-3 on-off">
-										<div class="switch" id="sw-cmn-toggle-7">
-											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
-											<label for="cmn-toggle-7"></label>
-										</div>  <span>Link Image</span> 
-								</div>
+								
 								<div class="col-sm-5 col-md-5 on-off">
 										<div class="switch" id="sw-cmn-toggle-3" >
 											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">

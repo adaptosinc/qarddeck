@@ -916,7 +916,7 @@ class QardController extends Controller
 			//$title = explode('.',$title);
 			/******************************/
 			//FORMAT THE OUTPUT IN JSON
-			$link_icon = '<span class="icon-mark pull-right" id="previewLink" data-open="same" contenteditable="false" onclick = "displayLink(this);" data-url="'.$url.'"><img src="'.Yii::$app->request->baseUrl.'/images/link_icon.png" alt=""></span>';
+			$link_icon = '<span class="icon-mark pull-right previewLink" id="previewLink" data-open="same" contenteditable="false" onclick = "displayLink(this);" data-url="'.$url.'"><img src="'.Yii::$app->request->baseUrl.'/images/link_icon.png" alt=""></span>';
 			$output_array['preview_html'] = $preview_html;
 			$output_array['work_space_link_only'] = $link_icon;
 			$output_array['work_space_text'] ='<span>'. substr($title,0,150).'...</span>'.$link_icon;//link_icon with onclik function
@@ -1127,7 +1127,7 @@ class QardController extends Controller
      * Uploads the document
      * @return uploaded file name
      */ 
-        public function actionSimple(){
+        public function actionSimple(){ 
            if (Yii::$app->request->isAjax) {                 
                   if($_FILES["file"]['name']){
 

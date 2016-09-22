@@ -513,6 +513,7 @@
 		plugin.fetchUrl = function(urlField,displayCheck){
 			var preview_url = $.trim($(urlField).val());
 			var homeUrl = plugin.settings.homeUrl;
+			$("#wait").show();
 			$.ajax({
 				url: plugin.settings.getUrlPreviewUrl,
 				type: "GET",
@@ -522,6 +523,7 @@
 					'block_id':$("#working_div .current_blk").attr('data-block_id'),
 				},
 				success: function(data) {
+					$("#wait").hide();
 					data = $.parseJSON(data);
 					if (data.type == 'PDF' || data.type == 'pdf') {
 						
@@ -568,6 +570,7 @@
 					}
 				},
 				error: function(data) {
+					$("#wait").hide();
 					alert('Invalid Url, Please Try Again!!!.');
 					$(".url_reset_link").trigger("click");
 					$('.url_reset_link').attr('for','samefield');
@@ -637,14 +640,19 @@ $(".fileSwitch").hide();
 $("#editcheck").hide();
 $('.nav-tabs a[href="#fileblock"]').tab('show');
 var ext = fileName.split('.').pop(); 
-if(data1.file_title == "")
-	filetitle = fileName;
+if((data1.file_title == "") || (data1.file_title == 'null') )
+	filetitle = fileName; 
 else
 	filetitle = data1.file_title;
 
+if((data1.file_description == "") || (data1.file_description == 'null') )
+	filedesc = "";
+else
+	filedesc = data1.file_description;
+
 	if (ext == "pdf" ) {
 	
-		var object = "<div class='active-file-preview'>   <h4 id='file_title'>"+filetitle+" <span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span></h4> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		var object = "<div class='active-file-preview'>   <h4 id='file_title'>"+filetitle+" <span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span></h4> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+filedesc+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <span>"+fileName+"</span><br> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 			
 		object += "</object>";  					
 		$("#showFilePreview").html(object);
@@ -654,7 +662,7 @@ else
 	}	
 	if (ext == "doc" || ext == 'docx') {
 		 
-		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"<span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span> </h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"<span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span> </h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+filedesc+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <span>"+fileName+"</span><br> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 		
 		object += "</object>";      
 		$("#showFilePreview").html(object); 
@@ -703,7 +711,8 @@ else
             var click = "showFilePrev(this,'"+fileName+"')";
             if(id!=3 && id!=1){
 					
-					var spantext = $("#working_div").find("span").html();
+					var spantext = $("#working_div .current_blk").text();
+					//var spantext = $("#working_div").find("span").html(); check for error
 					
 					 if($.trim(spantext) == "")
 						var spantext = 'Add Your Description Here!<br>';
@@ -711,7 +720,8 @@ else
 				  var spanicon = '<span for="showFilePrev" class="icon-mark pull-right" onclick='+click+'>'+fileName+'<img src='+plugin.settings.homeUrl+'"images/file_icon.png" alt=""></span>';
 				
               }else{
-				  var spantext = $("#working_div").find("span").html();
+				 var spantext = $("#working_div .current_blk").text();
+				  //var spantext = $("#working_div").find("span").html(); check for error
 				  
 				  if($.trim(spantext) == "")
 					var spantext = 'Add Your Description Here!<br>';
@@ -760,6 +770,7 @@ else
 					$('#dispIcon').attr('src', plugin.settings.homeUrl+'/images/doc.png');
 				}
 				var csrfToken = $('meta[name="csrf-token"]').attr("content");
+				$("#wait").show(); 
 				$.ajax({
 					url: plugin.settings.uploadSimpleFileUrl,
 					cache: false,
@@ -767,12 +778,18 @@ else
 					processData: false,
 					data: form_data,
 					type: 'post',
-					success: function(response) {						
+					success: function(response) {
+						$("#wait").hide(); 
 						$(".fileName").val(response.code);
 						$(".victim").html('');
 						$("#fileTitle").html(response.code);
 						$("#file_att_name").val(response.code);
 						plugin.setLink($(this),response.code,1);
+					},
+					error :function()
+					{
+						$("#wait").hide(); 
+						alert('Please Try Again Some Error Occurred');
 					}
 				});
 			} else {
@@ -789,6 +806,7 @@ else
 		};
 		plugin.embedUrl = function(videoUrl){
             var embedd_preview_url = $(videoUrl).val();
+			$("#wait").show();
             $.ajax({
                 url: plugin.settings.embedCodeUrl,
                 type: "POST",
@@ -797,7 +815,7 @@ else
                     'embed_code': embedd_preview_url
                 },
                 success: function(data) {
-					
+					$("#wait").hide();
 					data = $.parseJSON(data);
 					$("#drop-file  , .file_options").hide();
 						
@@ -818,6 +836,7 @@ else
 					$("#cmn-toggle-57").prop("checked",false);	
                 } ,
 			error: function (data) { 
+				$("#wait").hide();
 					$('#embed_div').html("<div class='preview-image'></div>");
 					//$('#btnembed_code').show();
 					//$('#link-ecode').hide();
@@ -1009,10 +1028,6 @@ function embedCode(videoLink){
 		
 	var eUrl = $(videoLink).attr('data-value');
 	
-	var cururl = window.location.href;
-	var ckindex = cururl.indexOf('/web/');
-	var baseurl	= cururl.substring(0,ckindex);
-
 	var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 	$('.preview-image').html(html);
 	$('.nav-tabs a[href="#linkblock"]').tab('show');
@@ -1020,7 +1035,7 @@ function embedCode(videoLink){
 	
 	//// ARIVAZAHGAN CODE //////////////////
 	
-	var linkhtml ='<span for="embedLink" class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="'+baseurl+'/web/images/video_icon.png"/></span>';
+	var linkhtml ='<span for="embedLink" class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="'+baseurlcheck()+'/web/images/video_icon.png"/></span>';
 	$("#paste").hide();
 	$("#embed").show();
 	$("#embed_code").val(html);
@@ -1927,26 +1942,26 @@ $('#cmn-toggle-4').on('change', function() {
 	if($(this).prop('checked')){
 		if($("input[id=link_url]").val() != '')
 		{
-			var str = '<span id="show_url_span">'+$("input[id=link_url]").val()+'</span>';
+			var str = '<span id="show_url_span" class="url_show" >'+$("input[id=link_url]").val()+'</span>';
 			//$("#working_div .current_blk").find('#previewLink').prepend(str);	
-			$(str).insertBefore($("#working_div .current_blk").find('#previewLink'));
-			$("#previewLink").attr("data-showurl","true");	
+			$(str).insertBefore($("#working_div .current_blk").find('.previewLink'));
+			$("#working_div .current_blk .previewLink").attr("data-showurl","true");	
 			adjustHeight();
 		}
-	}else{
-		if($("#working_div .current_blk").find('#show_url_span').length != 0 && $("input[id=link_url]").val() != '')
-			$('#show_url_span').remove();
-		$("#previewLink").attr("data-showurl","false");	
+  }else{
+	if($("#working_div .current_blk").find('.url_show').length != 0 && $("input[id=link_url]").val() != '')
+		$('#working_div .current_blk .url_show').remove();
+		   $("#working_div .current_blk .previewLink").attr("data-showurl","false");	
 	}
 });
 $('#cmn-toggle-8').on('change', function() {
 	if($(this).prop('checked')){
 		if($("input[id=link_url]").val() != '')
 		{
-			$("#previewLink").attr("data-open","new");				
+			$("#working_div .current_blk .previewLink").attr("data-open","new");				
 		}
 	}else{
-		$("#previewLink").attr("data-open","same");	
+		$("#working_div .current_blk .previewLink").attr("data-open","same");	
 	}
 });
  $('input[id=link_url]').on('change', function() {
@@ -1960,14 +1975,22 @@ $('#cmn-toggle-21').on('change', function() {
 		if($("input[id=link_url]").val() != '')
 		{
 			add_block(true,false);
-			$(window).data('qardDeck').useUrl();			
+			$(window).data('qardDeck').useUrl();
+			$('#cmn-toggle-4').attr("disabled",false);	
+			$('#cmn-toggle-8').attr("disabled",false);	
 		}
 	}else{
 		var chksts = confirm ("Do you really like to unlink this URL? ");
 		if(chksts == true)
 		{			
-			if($("#working_div .current_blk").find('#previewLink').length != 0 )
-			$("#working_div .current_blk").find('#previewLink').remove();
+			if($("#working_div .current_blk").find('.previewLink').length != 0 )
+			$("#working_div .current_blk").find('.previewLink').remove();
+			$('#cmn-toggle-8').prop("checked",false);
+			$('#cmn-toggle-4').prop("checked",false);
+			$("#cmn-toggle-8").trigger("change");
+			$("#cmn-toggle-4").trigger("change");
+			//$('#cmn-toggle-4').attr("disabled","disabled");	
+			//$('#cmn-toggle-8').attr("disabled","disabled");	
 		}
 		else
 		{   $('#cmn-toggle-21').prop('checked', true); 
@@ -1988,6 +2011,8 @@ $('.url_reset_link').on('click', function() {
 	$('#cmn-toggle-4').prop("checked",false);
 	$('#cmn-toggle-8').prop("checked",false);
 	$('#cmn-toggle-21').prop('checked', false); 
+	$('#cmn-toggle-4').attr("disabled","disabled");	
+	$('#cmn-toggle-8').attr("disabled","disabled");	
 	$("input[name=url-title]").val('');
 	$("input[name=url-desc]").val('');
 });
@@ -2012,7 +2037,15 @@ $('.drop-image').mouseleave(function(){
 	}
 }); */
 $(document).on("click", "#reset_image", function() {
-
+	
+	/* $("#working_div").removeClass("loadimagediv");   /// wait backgorund cancel
+	$("#working_div .parent_current_blk").removeAttr("style");
+	$("#working_div .parent_current_blk .bgoverlay-block").css("background-color","rgb(255, 255, 255)");
+	$("#working_div .parent_current_blk .bgoverlay-block").css("height","37.5px");
+	$("#working_div .current_blk").attr("data-img-type","none");
+	$("#working_div .current_blk").attr("data-img-url","");
+	$("#working_div .current_blk").attr("style","height: 37.5px"); */
+	
 	$(".dropzone .btn-cancel").trigger("click");
 	$(".img_preview").html('');
 	$(".img_preview").hide('');
@@ -2217,6 +2250,8 @@ $(document).on("click",".icon-mark",function(){
 	{		
 		$(".drop-file , .file_options").show();
 		$(".drop-image").hide();
+		
+		
 		$("#showFilePreview").empty();
 		$("#editcheck").show();
 		$("#drop-file-bg").hide();
@@ -2255,15 +2290,20 @@ $(document).on('change', '#cmn-toggle-56', function(){
 	if($(this).prop('checked')){ 
 		 var linespan =  $(this).attr("data-url");
 		 var filename =  $(this).attr("data-file");
+		 
             $("#working_div .current_blk").html(linespan);				
 			add_block(true,false);
 			
-			$(window).data('qardDeck').useFileText();				
-			$('#file_title').text($('#url-filename').val()); 
-			$('#file_desc').html($('#url-filedesc').val()); 
+			$(window).data('qardDeck').useFileText();
 			
-			$( "#working_div .icon-mark" ).trigger( "click" );
+			block_id = $('#working_div .current_blk').attr('data-block_id');
+			$(window).data('qardDeck').getExtrafile(block_id,filename);	
+			
+			/* $( "#working_div .current_blk .icon-mark" ).trigger( "click" ).delay( 800 );
 			  
+			$('#file_title').text($('#url-filename').val()); 
+			$('#file_desc').html($('#url-filedesc').val());  */
+			
 			
 	
 	}
@@ -2429,24 +2469,32 @@ function checkimagefn()
 
 
 $(document).on('click', '#sw-cmn-toggle-21', function(){ 
-	if(checklinkfn() == false)	
-	alert("Add URL First!!!.");
+		
+		if(checklinkfn() == false)	
+		alert("Add URL First!!!.");
+	
 });
 $(document).on('click', '#sw-cmn-toggle-4', function(){ 
-	if(checklinkfn() == false)	
-	alert("Add URL First!!!.");
+	if($('#cmn-toggle-21').is(':not(:checked)'))
+	{		
+	 alert("Link URL First!!!."); 
+	 return false;
+	}
 });
-$(document).on('click', '#sw-cmn-toggle-8', function(){ 
-	if(checklinkfn() == false)	
-	alert("Add URL First!!!.");
+$(document).on('click', '#sw-cmn-toggle-8', function(){ 	
+	if($('#cmn-toggle-21').is(':not(:checked)'))
+	{		
+	  alert("Link URL First!!!."); 
+	  return false;
+	}
 });
 
 $(document).on('change keypress keydown blur', '#link_url', function(){ 
-	 var url = $('#link_url').val();
+	   var url = $('#link_url').val();
 		if($.trim(url) == "" ){
 			$('#cmn-toggle-21').prop('checked', false); 
 			$('#cmn-toggle-8').prop('checked', false); 
-			$('#cmn-toggle-4').prop('checked', false); 
+			$('#cmn-toggle-4').prop('checked', false); 	
 			$('#link_div').html("<div class='preview-image'></div>");
 		}
 });
@@ -2455,7 +2503,8 @@ function checklinkfn()
 {	
     var url = $('#link_url').val();
     var RegExp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;  
-	if(RegExp.test($.trim(url))){
+	
+	if((RegExp.test($.trim(url)))  && ($('#link_div').find('.preview-image').length <= 0 ) ) {
 	    $('#cmn-toggle-21').attr("disabled",false);	
 		$('#cmn-toggle-4').attr("disabled",false);	
 		$('#cmn-toggle-8').attr("disabled",false);	
@@ -2471,8 +2520,11 @@ function checklinkfn()
 
 
 $(document).on('click', '#sw-cmn-toggle-57', function(){ 
-		if(checkvlinkfn() == false)	
-		alert("Add Embed Code First!!!.");
+		if($('#cmn-toggle-57').is(':not(:checked)'))
+		{
+			if(checkvlinkfn() == false)
+			alert("Add Valid Embed Code First!!!.");
+		}
 });
 
 
@@ -2480,7 +2532,8 @@ function checkvlinkfn()
 {	
 	  var vurl = $('#embed_code').val();
 	  var vlinkurl = $('#emcode_hid').val();
-	  if(($.trim(vurl) != "")){
+	
+	  if(($.trim(vurl) != "") && ($('#embed_div').find('.preview-image').length <= 0 )){
 	    $('#cmn-toggle-57').attr("disabled",false);			
 	   return true;
 	}
@@ -2512,10 +2565,11 @@ function checkfilefn()
 }   
 
 $(document).on('change', '#cmn-toggle-60', function(){ 
-	if($(this).prop('checked')){						
+	if($(this).prop('checked')){	
+	
 		var fileName = $('#file_image').attr('file-name');
 		var click = "showFilePrev(this,'"+fileName+"')";
-		var linespan = '<span class="icon-mark pull-right" onclick='+click+' for="showFilePrev"> <img alt="" src="/qarddeck/web/images/file_icon.png" _moz_resizing="true" /> </span>';
+		var linespan = '<span class="icon-mark pull-right" onclick='+click+' for="showFilePrev"> <img alt="" src="'+baseurlcheck()+'/web/images/file_icon.png" _moz_resizing="true" /> </span>';
 		$("#working_div .current_blk span").append(linespan);
 		
 			
@@ -2533,3 +2587,24 @@ $(document).on('change', '#cmn-toggle-60', function(){
 		}	
 	}	 		
 });
+
+function baseurlcheck()
+{	
+	var cururl = window.location.href;
+	var ckindex = cururl.indexOf('/web/');
+	return baseurl	= cururl.substring(0,ckindex);
+}
+$(document).on('click', '#imgblock_li', function(){ 
+
+	if($(".img_preview").is(':visible'))
+			$(".drop-image").hide();
+		else
+			$(".drop-image").show();
+		
+});
+
+$(document).on('click', '#linkblock_li', function(){ 
+		 $("#paste").show();
+		/* $("#link_div .preview-image").html(''); */
+});
+
