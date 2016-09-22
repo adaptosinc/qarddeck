@@ -640,7 +640,7 @@ $this->title = 'Preview Qard';
 			$.ajax({
 				url : "<?=Url::to(['block/get-text'], true)?>",
 				type: "GET",
-				data: { 'block_id': $(elem).attr('block_id') },
+				data: { 'block_id': $(elem).parent().attr('data-block-id') },
 				success: function(data){
 					data = $.parseJSON(data);
 					$("#extra_text_content").html(data.extra_text);

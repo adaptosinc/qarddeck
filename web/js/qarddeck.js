@@ -259,8 +259,9 @@
 			});			
 		};
 		
-		plugin.addBlock = function(postData,callFrom,new_block){
+		plugin.addBlock = function(postData,callFrom,new_block,cpy_lkimg){
 			////console.log(postData);return;
+			
 			if (callFrom == "save_block") {
 				$("#wait").show();
 			}
@@ -289,8 +290,8 @@
 				dataType: "json",
 				async: false,
 				success: function(data) {
-				$("#wait").hide();
-					if (callFrom === "add_block") {
+				$("#wait").hide(); 
+					if (callFrom === "add_block") { 
 						//$("#wait").hide();
 						//var total_height = totalHeight();
 						//	       checkHeight();
@@ -306,21 +307,29 @@
 						// if stored data contain image then true
 						var img = image_icon_span = '';
 						var data_img_type = false;
+						
 						if (data.link_image) {
 							/** Uncomment this for background image **/
 							data_img_type = $('#working_div .current_blk').attr("data-img-type");
+					
 							if(data_img_type == "background" || data_img_type == "both")
-								img = 'background-size:cover;background-image:url('+plugin.settings.homeUrl+'/uploads/block/' + data.link_image + ');';
+								img = 'background-size:cover;background-image:url('+plugin.settings.homeUrl+'uploads/block/' + data.link_image + ');';
 							/** ----------------------------------- **/
 							/** Make link icon **/
 							if(data_img_type == "preview" || data_img_type == "both")
-								var image_icon_span = '<span for="showImage" data-url = "'+plugin.settings.homeUrl+'/uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="'+plugin.settings.homeUrl+'images/image_icon.png" alt=""></span>';
+								var image_icon_span = '<span for="showImage" data-url = "'+plugin.settings.homeUrl+'uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="'+plugin.settings.homeUrl+'images/image_icon.png" alt=""></span>';
 							/** ----------------------------------- **/
 	/* 						if(data.div_bgimage_position != "null")
 								img = img+'background-position:'+data.div_bgimage_position+';' */
 							
 							
 						}
+						
+						if($.trim(cpy_lkimg) != '')
+						{	
+							var image_icon_span = '<span for="showImage" data-url = "'+cpy_lkimg+'" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="'+plugin.settings.homeUrl+'images/image_icon.png" alt=""></span>';
+						}
+						
 						console.log(data.data_bgcolor_id);
 						//creating parent block or img-block
 						var new_div = '<div data-bgcolor-id="'+data.data_bgcolor_id+'" data-style-qard = "'+data.data_style_qard+'" id="' + data.blk_id + '" class="bgimg-block parent_current_blk '+data.data_style_qard+'" style="background-color:' + data.div_bgcolor + '; height:' + data.height + 'px;' + img + '">';
@@ -343,13 +352,15 @@
 							$("#working_div").before(qard);
 							$("#working_div").html(theme + new_div);
 							//save the image url,opacity and background color for future use
-							$('#working_div .current_blk').attr("data-img-url",plugin.settings.homeUrl+'/uploads/block/' + data.link_image);
+							$('#working_div .current_blk').attr("data-img-url",plugin.settings.homeUrl+'uploads/block/' + data.link_image);
 							if(data.text == ''){
 								plugin.focusWorkspace();
 								$("#working_div .current_blk").html("<span>Add your comments here</span>");
 							}
+								
 							if($("#working_div .current_blk").find('.image_icon_span').length > 0)
 									$("#working_div .current_blk").find('.image_icon_span').remove();
+								
 							$("#working_div .current_blk").append(image_icon_span);
 							//$("#reset_image").trigger("click");
 							 return;
@@ -383,7 +394,7 @@
 								$("#add-block .parent_current_blk:last").after(new_div);
 						}
 					} 
-					else {
+					else { 
 					$("#" + data.blk_id).find(".current_blk").attr("data-block_id", data.block_id);
 					$("#" + data.blk_id).find(".current_blk").attr("data-theme_id", data.theme_id);
 					//var url = '<?=Url::to(['qard/preview-qard'], true);?>';
@@ -410,7 +421,7 @@
 						return false;
 					}
 			});
-
+		
 				 $(".add-another").removeAttr("style");	
 		};
 		
@@ -472,7 +483,7 @@
 				//url : "<?=Url::to(['block/get-text'], true)?>",
 				url: plugin.settings.getExtraTextUrl,
 				type: "GET",
-				data: { 'block_id': $(elem).attr('block_id') },
+				data: { /* 'block_id': $(elem).attr('block_id')  */  'block_id': $(elem).parent().attr('data-block_id')  },
 				success: function(data){
 					$('.nav-tabs a[href="#cardblock"]').tab('show');
 					data = $.parseJSON(data);
@@ -518,7 +529,9 @@
 				success: function(data) {
 					data = $.parseJSON(data);
 					if (data.type == 'PDF' || data.type == 'pdf') {
-						<!--ADDED BY DENCY -->
+						
+						//   ADDED BY DENCY 
+						
 						$('#dispIcon').attr('src', homeUrl+'images/pdf.png');
 					}
 					if (data.type == 'DOC' || data.type == 'DOCX') {
@@ -534,16 +547,22 @@
 						}
 						$('#link_div').html(data.preview_html);
 						var chck = $('.url_reset_link').attr('for');
+						var chstat = $('.url_reset_link').attr('data-id');
 						
 						//add here
 						if(((data.url_title != "") || (data.url_description != "") ) && ($.trim(chck) != 'clearfield'))
 						{ 
 							$("input[name=url-title]").val(data.url_title);
 							$("input[name=url-desc]").val(data.url_description);
+						} 
+						else if(($.trim(chstat) == 'edit') && ($.trim(chck) == 'samefield'))
+						{
+							$("input[name=url-title]").val(data.url_title);
+							$("input[name=url-desc]").val(data.url_description);
 						}
+						 
 						
-						
-						$('#cmn-toggle-8').prop("checked",true).trigger("change");
+						/** $('#cmn-toggle-8').prop("checked",true).trigger("change"); automatically */
 					}
 					else {
 						
@@ -562,6 +581,7 @@
 		};
 		plugin.useUrl = function(){
 			//save the title and description if set
+			
 			$.ajax({
 			//	url : "<?=Url::to(['block/add-text'], true)?>",
 				url : plugin.settings.addUrlDataUrl,
@@ -629,7 +649,7 @@ else
 
 	if (ext == "pdf" ) {
 	
-		var object = "<div class='active-file-preview'>   <h4 id='reflink'>"+filetitle+"</span></h4>  <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		var object = "<div class='active-file-preview'>   <h4 id='file_title'>"+filetitle+" <span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span></h4> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 			
 		object += "</object>";  					
 		$("#showFilePreview").html(object);
@@ -639,7 +659,7 @@ else
 	}	
 	if (ext == "doc" || ext == 'docx') {
 		 
-		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"</h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"<span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span> </h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+data1.file_description+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 		
 		object += "</object>";      
 		$("#showFilePreview").html(object); 
@@ -715,7 +735,7 @@ else
             $("#cmn-toggle-56").attr("data-link",spantextval);
             $("#cmn-toggle-56").attr("data-file",fileName);
 			
-			  if($('#cmn-toggle-56').prop('checked')){	
+			/*   if($('#cmn-toggle-56').prop('checked')){	
 
 				var linespan =  $("#cmn-toggle-56").attr("data-url");
 				$("#working_div .current_blk").html(linespan);
@@ -725,7 +745,7 @@ else
 			{	
 				//var spantextval =  $("#cmn-toggle-56").attr("data-link");
 				//$("#working_div .current_blk").html(spantextval); 
-			} 
+			}  */
 			
 
 		};
@@ -860,7 +880,7 @@ else
 			$("#working_div .current_blk").append(image_icon_span);
 			
 		};
-		plugin.copyBlock = function(){
+		plugin.copyBlock = function(){ 
 			//save the current block
 			var current_block = $("#working_div .current_blk");
 			var bg_img_block = $("#working_div .bgimg-block");
@@ -879,14 +899,16 @@ else
 				alert("Ooops! No more place in the qard!");
 				return false;
 			}
+			var cpy_blockid = $("#working_div .current_blk").attr("data-block_id");			
+			add_block(true,true); 
 			
-			add_block(true,true);
 			$("#working_div .current_blk").html(current_block.html());
+			
 			//if backgorund image exists
 			var div_bgimage = bg_img_block.css("background-image");
 			//console.log(div_bgimage);
+			
 			if(div_bgimage != 'none'){
-				
 				//div_bgimage = div_bgimage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 				$("#working_div .bgimg-block").css("background-image",div_bgimage);
 				$("#working_div .bgimg-block").css("background-size","cover");
@@ -895,14 +917,37 @@ else
 				$("#working_div .current_blk").attr("data-img-type",current_block.attr("data-img-type"));
 				//add_block(true,false);
 				//here we need to save this block
-			}	
+			}				
 			//check for background color
 			var bg_color = bg_img_block.css("background-color");
 			$("#working_div .bgimg-block").css("background-color",bg_color);
 			//console.log(bg_color);
-			add_block(true,false);
+			
+			var ck_linkimage = current_block.attr("data-img-type");
+			var cpy_lkimg = $("#working_div .current_blk .image_icon_span").attr("data-url");	
+			
+			 if($.trim(ck_linkimage) == 'preview')
+				add_block(true,false,cpy_lkimg);
+			else 
+				add_block(true,false);
+			
+			var newcpy_blockid = $("#working_div .current_blk").attr("data-block_id");
+			
+			$.ajax( {
+				  url: plugin.settings.copyQardBlockUrl,
+				  type: 'POST',
+				  data: { 'cpy_block_id':cpy_blockid, 'newcpy_blockid':newcpy_blockid },				
+				  success:function(data){
+					  alert(data)
+				  }
+			});
+			 if($.trim(ck_linkimage) == 'preview')
+				 $("#working_div .current_blk").attr("data-img-type",current_block.attr("data-img-type"));
+			 
+			 
 			adjustHeight();
 			//add_block(true,true);
+			
 		}
         // fire up the plugin!
         // call the "constructor" method
@@ -959,9 +1004,19 @@ function setHeightBlock(elem,offset){
 		$("#working_div .bgoverlay-block").css("height", h);
 		//console.log(offset);
 } 
+
+
+
 /** Embed code preview **/
 function embedCode(videoLink){
+	/* var homeUrl = plugin.settings.homeUrl;
+	plugin.settings.blockCreateUrl */
+		
 	var eUrl = $(videoLink).attr('data-value');
+	
+	var cururl = window.location.href;
+	var ckindex = cururl.indexOf('/web/');
+	var baseurl	= cururl.substring(0,ckindex);
 
 	var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 	$('.preview-image').html(html);
@@ -970,14 +1025,11 @@ function embedCode(videoLink){
 	
 	//// ARIVAZAHGAN CODE //////////////////
 	
-	var linkhtml ='<span for="embedLink" class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="'+plugin.settings.homeUrl+'images/video_icon.png" alt=""></span>';
+	var linkhtml ='<span for="embedLink" class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="'+baseurl+'/web/images/video_icon.png"/></span>';
 	$("#paste").hide();
 	$("#embed").show();
 	$("#embed_code").val(html);
 	$("#emcode_hidimg").val(linkhtml);
-	
-
-	//$("#rmembed_code").show();
 	
 	$("#cmn-toggle-57").prop("checked",true);	
 	
@@ -1126,6 +1178,8 @@ function displayLink(identifier){
 		$('#cmn-toggle-4').prop("checked",true);
 	if(dataopen == "new")
 		$('#cmn-toggle-8').prop("checked",true);
+	
+	$('.url_reset_link').attr('for','samefield');
 	return false;
 }
 function callEmbedUrl(videoUrl){
@@ -1169,7 +1223,7 @@ function hexToRgb(hex,opacity) {
 	return "rgba("+rgb.r+","+rgb.g+","+rgb.b+","+rgb.a+")";
 }
 
-function add_block(event,new_block){
+function add_block(event,new_block,cpy_lkimg){
 	//save block
 	
 		//default some options
@@ -1202,8 +1256,6 @@ function add_block(event,new_block){
 			value: div_bgcolor
 		});
 */
-
-		//////image type/////
 		var data_img_type = $("#working_div .current_blk").attr("data-img-type")||'false';
 		data.push({
 			name: 'data-img-type',
@@ -1322,7 +1374,7 @@ function add_block(event,new_block){
 		});			
 	
 		//var new_block = true;
-		$(window).data('qardDeck').addBlock(data, 'add_block',new_block);
+		$(window).data('qardDeck').addBlock(data, 'add_block',new_block,cpy_lkimg);
 		
 		//commanAjaxFun(data, 'add_block',new_block);
 		$("#working_div .current_blk").attr("contenteditable","true");
@@ -1361,6 +1413,11 @@ function add_block(event,new_block){
 			$('#cmn-toggle-3').prop("checked",false);	
 			$("#rmembed_code").trigger("click");
 		}
+		
+		
+		
+		
+		
 }
 function addSaveCard() {
 	
@@ -1716,23 +1773,27 @@ $('#add-block').sortable({
 });
 /** For deleting the block **/
 $(document).delegate("#deleteblock", "click", function() {
-	var block_id = $("#working_div .current_blk").attr("data-block_id");
-	if($('.bgimg-block').length > 1)
+	var chksts = confirm ("Do You Really Want To Delete This Block ? ");
+	if(chksts == true)	
 		{
-			if (typeof block_id !== 'undefined') {
-				$(window).data('qardDeck').deleteBlock(block_id);
-			} else {
-				console.log($("#working_div").prev('.bgimg-block').html());
-					var temp = $("#working_div").prev(".bgimg-block");
-					$("#working_div").remove();
-					temp.trigger("dblclick");
-				//alert("first select/create block first");			
-				alert("Deleted Successfully");			
-			}			
-		}
-	else{
-		alert("You can not delete all the blocks");
-	}
+			var block_id = $("#working_div .current_blk").attr("data-block_id");
+			if($('.bgimg-block').length > 1)
+				{
+					if (typeof block_id !== 'undefined') {
+						$(window).data('qardDeck').deleteBlock(block_id);
+					} else {
+						console.log($("#working_div").prev('.bgimg-block').html());
+							var temp = $("#working_div").prev(".bgimg-block");
+							$("#working_div").remove();
+							temp.trigger("dblclick");
+						//alert("first select/create block first");			
+						alert("Deleted Successfully");			
+					}			
+				}
+			else{
+				alert("You can not delete all the blocks");
+			}
+		}	
 		$(".add-another").show();
 });
 /** Block height control **/
@@ -2122,18 +2183,17 @@ Edit Document view
 **/
 
 $(document).on('click', '#file_image', function(){ 
-//console.log("changed");
+
 $("#showFilePreview").hide();
 $("#editcheck").show();
 $(".drop-file").show();
 $("#drop-file-bg").hide();
 $(".fileSwitch").hide();
 $(".fileName").val('');
- var File_title = $("#file_title").html();
-$("#url-filename").val(File_title); 
+ var File_title = $("#file_title").text(); 
+$("#url-filename").val(File_title.slice(0, -22)); 
  var File_desc = $("#file_desc").html();
 $("#url-filedesc").val(File_desc); 
-
 $("#fileTitle").html('FileName.psd');
 $("#file_att_name").val('');
 $('#cmn-toggle-56').prop("checked",false);
@@ -2172,8 +2232,15 @@ $(document).on("click",".icon-mark",function(){
 	}
 	
 	 if(div_id == "showExtraText")
-		$('#add_extra_text').trigger("click");  			
-	 else 
+	 {
+		$('#add_extra_text').trigger("click"); 
+		
+		if($(".img_preview").is(':visible'))
+			$(".drop-image").hide();
+		else
+			$(".drop-image").show();
+	 }	
+	else 
 		clrextratext();	
 	
 	
@@ -2190,32 +2257,22 @@ $(document).on("mouseleave",".add-new-file",function(){
 
 
 $(document).on('change', '#cmn-toggle-56', function(){ 
-	if($(this).prop('checked')){
+	if($(this).prop('checked')){ 
 		 var linespan =  $(this).attr("data-url");
 		 var filename =  $(this).attr("data-file");
             $("#working_div .current_blk").html(linespan);				
 			add_block(true,false);
 			
 			$(window).data('qardDeck').useFileText();				
-			//$("input[name=filename]").val('');
-			//$("input[name=filedesc]").val('');
-			//$("#fileTitle").html('qweqweqwew');
-			showFilePrev(this,fileName);
+			$('#file_title').text($('#url-filename').val()); 
+			$('#file_desc').html($('#url-filedesc').val()); 
 			
-	}else{	
-		var chksts = confirm ("Do you really like to unlink this File Attachment? ");
-		if(chksts == true)	
-		{
-			var spantextval =  $(this).attr("data-link");
-			$("#working_div .current_blk").html(spantextval); 
-		}
-		else
-		{
-			$('#cmn-toggle-56').prop('checked', true); 
-			return false;
-		}
+			$( "#working_div .icon-mark" ).trigger( "click" );
+			  
 			
-	}				
+	
+	}
+		 
 });
 		
 
@@ -2459,3 +2516,25 @@ function checkfilefn()
 	}
 }   
 
+$(document).on('change', '#cmn-toggle-60', function(){ 
+	if($(this).prop('checked')){						
+		var fileName = $('#file_image').attr('file-name');
+		var click = "showFilePrev(this,'"+fileName+"')";
+		var linespan = '<span class="icon-mark pull-right" onclick='+click+' for="showFilePrev"> <img alt="" src="/qarddeck/web/images/file_icon.png" _moz_resizing="true" /> </span>';
+		$("#working_div .current_blk span").append(linespan);
+		
+			
+	}
+	 else{	
+		var chksts = confirm ("Do you really like to unlink this File Attachment? ");
+		if(chksts == true)	
+		{
+			$("#working_div .current_blk").find(".icon-mark").remove();			
+		}
+		else		
+		{	
+			$('#cmn-toggle-60').prop('checked', true); 
+			return false;					
+		}	
+	}	 		
+});

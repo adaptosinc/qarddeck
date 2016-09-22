@@ -267,18 +267,18 @@ $this->title = 'Create Qard';
                             </div>
                           
 							<div class="form-group image-elements">
-								<div class="col-sm-3 col-md-3 on-off">
+								<!--<div class="col-sm-3 col-md-3 on-off">
 									<span>Fit</span>
 										<div class="switch" id="sw-cmn-toggle-6">
 											<input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-6"></label>
 										</div>  <span>Crop</span> 
-								</div>
+								</div>-->
 								<div class="col-sm-3 col-md-3 on-off">
 										<div class="switch" id="sw-cmn-toggle-7">
 											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
 											<label for="cmn-toggle-7"></label>
-										</div>  <span>Display Preview</span> 
+										</div>  <span>Link Image</span> 
 								</div>
 								<div class="col-sm-5 col-md-5 on-off">
 										<div class="switch" id="sw-cmn-toggle-3" >
@@ -332,7 +332,7 @@ $this->title = 'Create Qard';
 												<label for="cmn-toggle-8"></label>
 											</div>  <span>Open Link in New Tab</span>                                                 
 										</div>
-										<span class="url_reset_link trash pull-right" style="cursor: pointer; cursor: hand; " for="samefield" ><i class="fa fa-trash"></i>&nbsp;Clear</span>
+										<span class="url_reset_link trash pull-right" style="cursor: pointer; cursor: hand; " for="samefield" data-id='create' ><i class="fa fa-trash"></i>&nbsp;Clear</span>
 									</div>
 
 								</div>
@@ -920,6 +920,7 @@ $this->title = 'Create Qard';
 		'addUrlDataUrl'  : '<?=Url::to(['block/add-urldata'], true);?>',
 		'addFileDataUrl'  : '<?=Url::to(['block/add-filedata'], true);?>',
 		'getFileDataUrl'  : '<?=Url::to(['block/get-filedata'], true);?>',
+		'copyQardBlockUrl'  : '<?=Url::to(['block/copy-block'], true);?>',
 		
 	});
 
