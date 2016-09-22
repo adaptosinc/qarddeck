@@ -99,6 +99,14 @@
 					return false;
 				}
 				if(event.which != 8  && event.which != 46 &&  $('#add-block')[0].scrollHeight > 603){
+					var keyCode = (event.keyCode ? event.keyCode : event.which);
+					if(keyCode === "keydown"){
+						event.preventDefault();
+						//$(this).val($(this).val().replace(/\v+/g, ''));
+						$(this).children(':last-child').text($(this).children(':last-child').text().substr(0,$(this).children(':last-child').text().length-2));
+						alert("Ooops! No more place to type? Please use the extra text space to type.");
+						return false;
+					}					
 					if(event.type === "resize"){
 						var scrollHeight = Math.ceil(parseInt($(this)[0].scrollHeight-0.5) / 37.5);
 						var setHeight =  $(this).attr("data-height");
@@ -110,6 +118,7 @@
 						}						
 					}
 					event.preventDefault();
+					event.stopPropagation();
 /* 					console.log(qard_height);
 					var last = $(this).children(':last-child');
 					var html = $(last).html();
@@ -125,13 +134,9 @@
 					//if(flag)
 						//alert("Ooops! No more place to type? Please use the extra text space to type.");
 					//flag = false;
-					event.stopPropagation();
-					if(event.type === "keyup"){
-						event.preventDefault();
-						//$(this).val($(this).val().replace(/\v+/g, ''));
-						//$(this).html($(this).html().substr(0,$(this).html().length-10));
-						alert("Ooops! No more place to type? Please use the extra text space to type.");
-					}
+					
+					console.log(event.type);
+
 						
 					//console.log($('#add-block')[0].height());
 					return false;
