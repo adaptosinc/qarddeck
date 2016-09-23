@@ -237,11 +237,11 @@ $this->title = 'Edit Qard';
 					
                         <li role="presentation" class="active"><a href="#cardblock" aria-controls="cardblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/text_icon.png" alt="" class="dark" style="width:15px;margin:0 auto;"><img src="<?=Yii::$app->homeUrl?>images/text_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a href="#linkblock" class="pasteBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/link_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
+                        <li role="presentation"><a href="#linkblock"  aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/link_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/image_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
+                        <li role="presentation"><a id="imgblock_li" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/image_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a href="#linkblock" class="embedBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/video_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/video_icon_light.png" class="light" alt=""></a></li>
+                        <li role="presentation"><a href="#videoblock"  aria-controls="videoblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/video_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/video_icon_light.png" class="light" alt=""></a></li>
 						
 						<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" class="dark" alt="" style="width:15px;margin:0px auto;"><img src="<?=Yii::$app->homeUrl?>images/file_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
 						
@@ -408,13 +408,13 @@ $this->title = 'Edit Qard';
 
                         </div>
 						
-                        <div role="tabpanel" class="tab-pane" id="linkblock">
+                        <!--<div role="tabpanel" class="tab-pane" id="linkblock">
 							<ul class="nav nav-tabs" role="tablist">
 								<li role="presentation" class="active" style="display:none"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
 								<li role="presentation" style="display:none"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>                                       
 							</ul>
-							<div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="paste">
+							<div class="tab-content"> -->
+                                <div role="tabpanel" class="tab-pane" id="linkblock">
 								
 									<!--<h4 id="reflink" >Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>-->
 									
@@ -456,7 +456,7 @@ $this->title = 'Edit Qard';
 									</div>
 
 								</div>
-								<div role="tabpanel" class="tab-pane" id="embed">
+								<div role="tabpanel" class="tab-pane" id="videoblock">
 						
 								<!--<div class="row">
 									<h4>
@@ -496,8 +496,8 @@ $this->title = 'Edit Qard';
 									<!--<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>-->
 								</div>  
 
-							</div>
-						</div>
+							<!--</div>
+						</div>-->
 						<div role="tabpanel" class="tab-pane" id="fileblock">
 						
 						 <div id="showFilePreview" style="display:none"></div>
@@ -510,7 +510,7 @@ $this->title = 'Edit Qard';
 								</div>  <span>Link this Document</span>
 							</div>	<!--<i class="fa fa-trash"></i>&nbsp;Remove File--></span></h4>
 							
-                           	<div class="form-group extra-content" id="drop-image" style="margin-bottom: 60px;  padding-top: 10px;" >
+                           	<div class="form-group extra-content" id="drop-image23" style="margin-bottom: 60px;  padding-top: 10px;" >
 									<input type="text" id="url-filename" name="filename" class="col-sm-5 col-md-5" placeholder="Enter Title">
 									<input type="hidden"  class="filename fileName col-sm-5 col-md-5" >
 									<input type="text" id="url-filedesc" name="filedesc" class="col-sm-6 col-md-6 col-md-offset-1 desc" placeholder="Add a description">

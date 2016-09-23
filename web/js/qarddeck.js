@@ -34,7 +34,7 @@
 		  MAIN FUNCTION
 		 */
 		var workspace = function(){
-			$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {	
+			$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {	 
 
 				if(event.type === "paste"){
 					event.preventDefault();
@@ -137,7 +137,6 @@
 					
 					console.log(event.type);
 
-						
 					//console.log($('#add-block')[0].height());
 					return false;
 				}
@@ -311,13 +310,18 @@
 						if (data.link_image) {
 							/** Uncomment this for background image **/
 							data_img_type = $('#working_div .current_blk').attr("data-img-type");
-					
+							
 							if(data_img_type == "background" || data_img_type == "both")
+							{
 								img = 'background-size:cover;background-image:url('+plugin.settings.homeUrl+'uploads/block/' + data.link_image + ');';
+							}
+							
 							/** ----------------------------------- **/
 							/** Make link icon **/
 							if(data_img_type == "preview" || data_img_type == "both")
+							{
 								var image_icon_span = '<span for="showImage" data-url = "'+plugin.settings.homeUrl+'uploads/block/' + data.link_image + '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="'+plugin.settings.homeUrl+'images/image_icon.png" alt=""></span>';
+							}
 							/** ----------------------------------- **/
 	/* 						if(data.div_bgimage_position != "null")
 								img = img+'background-position:'+data.div_bgimage_position+';' */
@@ -536,7 +540,8 @@
 						
 						$('#dispIcon').attr('src', homeUrl+'images/pdf.png');
 					}
-					if (data.type == 'DOC' || data.type == 'DOCX') {
+					if (data.type == 'DOC' || data.type == 'DOCX' || data.type == 'doc' || data.type == 'docx' )
+					{
 						$('#dispIcon').attr('src', homeUrl+'images/doc.png');
 					}
 					if (data.type == 'web_page') {
@@ -644,7 +649,7 @@ $(".drop-file").hide();
 $(".fileSwitch").hide();
 $("#editcheck").hide();
 $('.nav-tabs a[href="#fileblock"]').tab('show');
-var ext = fileName.split('.').pop(); 
+var ext = fileName.split('.').pop().toLowerCase();; 
 if((data1.file_title == "") || (data1.file_title == 'null') )
 	filetitle = fileName; 
 else
@@ -655,9 +660,9 @@ if((data1.file_description == "") || (data1.file_description == 'null') )
 else
 	filedesc = data1.file_description;
 
-	if (ext == "pdf" ) {
+	if (ext == "pdf") {
 	
-		var object = "<div class='active-file-preview'>   <h4 id='file_title'>"+filetitle+" <span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span></h4> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+filedesc+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <span>"+fileName+"</span><br> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		var object = "<div class='active-file-preview'>   <h4 id='file_title'>"+filetitle+" <span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span></h4> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+filedesc+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <span>"+fileName+"</span><br><br> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 			
 		object += "</object>";  					
 		$("#showFilePreview").html(object);
@@ -667,7 +672,7 @@ else
 	}	
 	if (ext == "doc" || ext == 'docx') {
 		 
-		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"<span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span> </h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+filedesc+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <span>"+fileName+"</span><br> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
+		var object = "<div class='active-file-preview'><h4 id='file_title'>"+filetitle+"<span class='trash pull-right'> <div class='col-sm-12 col-md-12 on-off'> <div class='switch' ><input checked='checked' id='cmn-toggle-60' class='cmn-toggle cmn-toggle-round' type='checkbox'> <label for='cmn-toggle-60' ></label></div><span>Link this Document</span></div></span> </h4>  <hr class='divider'> <div class='active-preview-content' style='display: block;'> <p id='file_desc'>"+filedesc+"</p> <div id='file_controls'> <div class='file-download'> <img alt='' src='"+plugin.settings.homeUrl+"images/download_icon.png'> </div> <span>"+fileName+"</span><br><br> <button class='bnt qard' id='file_image' file-name='"+fileName+"'>Change To New File</button> </div> <div id='pdf_area' style='display: block;'><span  class='trash pull-right' ><span class ='removefile' style='cursor: pointer; cursor: hand;' ><i class='fa fa-trash'></i> &nbsp;Clear</span></span></div> </div> </div>";
 		
 		object += "</object>";      
 		$("#showFilePreview").html(object); 
@@ -765,7 +770,7 @@ else
 			var form_data = new FormData();
 			form_data.append('file', file_data);
 			var myfile = elem.val();
-			var ext = myfile.split('.').pop();
+			var ext = myfile.split('.').pop().toLowerCase();
 			if (ext == "pdf" || ext == "docx" || ext == "doc") {
 				$("#extErr").hide();
 				if (ext == "pdf") {
@@ -877,7 +882,7 @@ else
 			return true;			
 		};
 		
-		plugin.applyBGImage = function(){
+		plugin.applyBGImage = function(){ 
 			//console.log($("#working_div .current_blk").attr("data-img-url"));
 			var url = "url('"+$("#working_div .current_blk").attr("data-img-url")+"')";
 			$("#working_div .bgimg-block").css("background-image",url);	
@@ -888,8 +893,8 @@ else
 			//$("#working_div .bgoverlay-block").css("opacity",div_opacity);
 			$("#working_div .bgoverlay-block").css("background-color",div_overlaycolor);			
 		};
-	
-		plugin.applyPreviewImage = function(){
+	 
+		plugin.applyPreviewImage = function(){ 
 			var url = $("#working_div .current_blk").attr("data-img-url");
 			var image_icon_span = '<span for="showImage" data-url = "'+url+ '" class="icon-mark pull-right image_icon_span" onclick="showImage(this);"><img src="'+plugin.settings.homeUrl+'images/image_icon.png" alt=""></span>';
 			//remove all other spans
@@ -1034,15 +1039,15 @@ function embedCode(videoLink){
 	var eUrl = $(videoLink).attr('data-value');
 	
 	var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-	$('.preview-image').html(html);
-	$('.nav-tabs a[href="#linkblock"]').tab('show');
-	$('.nav-tabs a[href="#embed"]').tab('show');
+	$('#embed_div .preview-image').html(html);
+	//$('.nav-tabs a[href="#linkblock"]').tab('show');
+	$('.nav-tabs a[href="#videoblock"]').tab('show');
 	
 	//// ARIVAZAHGAN CODE //////////////////
 	
 	var linkhtml ='<span for="embedLink" class="icon-mark pull-right" id="embedHide" data-value="'+eUrl+'" onclick="embedCode(this);"><img src="'+baseurlcheck()+'/web/images/video_icon.png"/></span>';
-	$("#paste").hide();
-	$("#embed").show();
+	/* $("#paste").hide();
+	$("#embed").show(); */
 	$("#embed_code").val(html);
 	$("#emcode_hidimg").val(linkhtml);
 	
@@ -1182,7 +1187,9 @@ function displayLink(identifier){
 	
 	var dataurl = $(identifier).attr('data-url');	
 	$(identifier).trigger("dblclick");
-	$('.nav-tabs a[class="pasteBlock"]').tab('show');
+	//$('.nav-tabs a[class="pasteBlock"]').tab('show');
+	$('.nav-tabs a[href="#linkblock"]').tab('show');
+	
 	$('input[id=link_url]').val(dataurl).trigger("change");
 	//set link url to true
 	$('#cmn-toggle-21').prop('checked', true); 
@@ -1423,7 +1430,7 @@ function add_block(event,new_block,cpy_lkimg){
 			tinyMCE.activeEditor.setContent('');
 			$('.img_preview').html('');	
 			$('.img_preview').hide();
-			$('#cmn-toggle-6').prop("checked",false);	
+			//$('#cmn-toggle-6').prop("checked",false);	
 			$('#cmn-toggle-7').prop("checked",false);	
 			$('#cmn-toggle-3').prop("checked",false);	
 			$("#rmembed_code").trigger("click");
@@ -1434,8 +1441,7 @@ function add_block(event,new_block,cpy_lkimg){
 		
 		
 }
-function addSaveCard() {
-	
+function addSaveCard() {			
 	add_block(true,false);
 	var total_data_height = 0;
 	$('.current_blk').each(function(obj) {
@@ -1617,7 +1623,11 @@ function addSaveCard() {
 	//console.log(data);
 	dataP = JSON.stringify(data);
 	
-	
+		if($(".img_preview").is(':visible'))
+			$(".drop-image").hide();
+		else
+			$(".drop-image").show();
+		
 	$(window).data('qardDeck').saveQard(dataP);	
 	return;
 }
@@ -1666,7 +1676,7 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 		$('.img_preview').show();
 		$('.drop-image').hide();
 		$('#cmn-toggle-3').prop("checked",true);
-		$('#cmn-toggle-6').prop("checked",false);
+		//$('#cmn-toggle-6').prop("checked",false);
 		$('.nav-tabs a[href="#imgblock"]').tab('show');		
 		if($.trim(chktext) == 'showImage' )
 			$('#cmn-toggle-7').prop("checked",true);
@@ -1677,7 +1687,7 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 		$('.img_preview').hide();
 		$('.drop-image').show();
 		$(".dropzone .btn-cancel").trigger("click");
-		$('#cmn-toggle-6').prop("checked",false);	
+		//$('#cmn-toggle-6').prop("checked",false);	
 		$('#cmn-toggle-7').prop("checked",false);	
 		$('#cmn-toggle-3').prop("checked",false);	
 	}
@@ -1979,10 +1989,12 @@ $('#cmn-toggle-21').on('change', function() {
 	if($(this).prop('checked')){
 		if($("input[id=link_url]").val() != '')
 		{
+			$(".add-another").attr("style","pointer-events: none; opacity: 0.4;");
 			add_block(true,false);
 			$(window).data('qardDeck').useUrl();
 			$('#cmn-toggle-4').attr("disabled",false);	
-			$('#cmn-toggle-8').attr("disabled",false);	
+			$('#cmn-toggle-8').attr("disabled",false);
+			$(".add-another").removeAttr("style");			
 		}
 	}else{
 		var chksts = confirm ("Do you really like to unlink this URL? ");
@@ -1993,9 +2005,7 @@ $('#cmn-toggle-21').on('change', function() {
 			$('#cmn-toggle-8').prop("checked",false);
 			$('#cmn-toggle-4').prop("checked",false);
 			$("#cmn-toggle-8").trigger("change");
-			$("#cmn-toggle-4").trigger("change");
-			//$('#cmn-toggle-4').attr("disabled","disabled");	
-			//$('#cmn-toggle-8').attr("disabled","disabled");	
+			$("#cmn-toggle-4").trigger("change");			
 		}
 		else
 		{   $('#cmn-toggle-21').prop('checked', true); 
@@ -2055,17 +2065,18 @@ $(document).on("click", "#reset_image", function() {
 	$(".img_preview").html('');
 	$(".img_preview").hide('');
 	$(".drop-image").show();
-	$('#cmn-toggle-6').prop("checked",false);	
+	//$('#cmn-toggle-6').prop("checked",false);	
 	$('#cmn-toggle-7').prop("checked",false);	
 	$('#cmn-toggle-3').prop("checked",false);	
 });
 // on click image tab should increase block height
-$(document).on("click", "#cmn-toggle-3", function() {
+$(document).on("change", "#cmn-toggle-3", function() {
 		//alert($("#singlechatpanel-1").is(':visible'));
 		//alert($( "#for_image" ).attr( "style" ));
 		//alert($('#for_image').find('.cropWrapper'));
 		
-	if($(this).prop('checked')){		
+	if($(this).prop('checked')){	
+
 		if($("#working_div .current_blk").attr("data-img-type") == "preview")
 			$("#working_div .current_blk").attr("data-img-type",'both');
 		else
@@ -2083,37 +2094,52 @@ $(document).on("click", "#cmn-toggle-3", function() {
 	} else {
 		
 		$( "#working_div" ).removeClass( "loadimagediv" );
-		$("#working_div .bgimg-block").css("background-image","none");
+		$("#working_div .bgimg-block").css("background-image","none");	
 		$("#working_div .bgoverlay-block").css("background-color",'rgba(0,0,0,0)');
-		
-		if($("#working_div .current_blk").attr("data-img-type") == "both")
+		adjustHeight();
+				
+		/* if($("#working_div .current_blk").attr("data-img-type") == "both")
 			$("#working_div .current_blk").attr("data-img-type",'preview');
 		if($("#working_div .current_blk").attr("data-img-type") == "background")
-			$("#working_div .current_blk").attr("data-img-type",'false');
+			$("#working_div .current_blk").attr("data-img-type",'false');  */
 	}
 	
 });
-$(document).on("click", "#cmn-toggle-7", function() {
-	if($(this).prop('checked')){
+$(document).on("change", "#cmn-toggle-7", function() { 
+	if($(this).prop('checked')){ 
+			$("#working_div .current_blk").find('.icon-mark').remove();
+	
 		if($("#working_div .current_blk").attr("data-img-type") == "background")
 			$("#working_div .current_blk").attr("data-img-type",'both');
 		else
 			$("#working_div .current_blk").attr("data-img-type",'preview');
 		
 			//setHeightBlock($("#working_div .current_blk"),4);
+			
 			if($(".save-pic").length == 0){
 				$(window).data('qardDeck').applyPreviewImage();
-			}	
+			} 
 			$(".save-pic").trigger("click");
 
 	} else {
 		//removeBr();
-		$('#working_div .current_blk').find('.image_icon_span').remove();
-		adjustHeight();
-		if($("#working_div .current_blk").attr("data-img-type") == "both")
-			$("#working_div .current_blk").attr("data-img-type",'background');
-		if($("#working_div .current_blk").attr("data-img-type") == "preview")
-			$("#working_div .current_blk").attr("data-img-type",'false');
+		var chksts = confirm ("Do you really like to unlink this Image? ");
+		if(chksts == true)	
+		{
+			$('#working_div .current_blk').find('.icon-mark').remove();
+			adjustHeight();
+			
+			/* if($("#working_div .current_blk").attr("data-img-type") == "both")
+				$("#working_div .current_blk").attr("data-img-type",'background');
+				if($("#working_div .current_blk").attr("data-img-type") == "preview")
+				$("#working_div .current_blk").attr("data-img-type",'false'); */
+		}
+		else
+		{
+			$('#cmn-toggle-7').prop("checked",true);	
+			return false;
+		}
+		
 	}
 });
 	// for image
@@ -2360,6 +2386,7 @@ $('#cmn-toggle-57').click(function(){
 			else
 				$("#working_div .current_blk").html(video_img);						
 					
+			add_block(true,false);
 			adjustHeight();
 			
 	}else{	
@@ -2443,10 +2470,11 @@ $(document).on('click', '#sw-cmn-toggle-7', function(){
 	if(checkimagefn() == false)	
 	alert("First Drop Your Image!!!.");
 });
-$(document).on('click', '#sw-cmn-toggle-6', function(){ 
+
+/* $(document).on('click', '#sw-cmn-toggle-6', function(){ 
 	if(checkimagefn() == false)	
 	alert("First Drop Your Image!!!.");
-});
+}); */
 
 $(document).ready(function(){ 
 	checkimagefn();
@@ -2460,14 +2488,14 @@ function checkimagefn()
 	{
 		$('#cmn-toggle-3').attr("disabled",false);	
 		$('#cmn-toggle-7').attr("disabled",false);	
-		$('#cmn-toggle-6').attr("disabled",false);	
+		//$('#cmn-toggle-6').attr("disabled",false);	
 		return true;
 	}
 	else
 	{			
 		$('#cmn-toggle-3').attr("disabled","disabled");	
 		$('#cmn-toggle-7').attr("disabled","disabled");	
-		$('#cmn-toggle-6').attr("disabled","disabled");	
+		//$('#cmn-toggle-6').attr("disabled","disabled");	
 		return false;
 	} 	
 }
@@ -2484,6 +2512,8 @@ $(document).on('click', '#sw-cmn-toggle-4', function(){
 	{		
 	 alert("Link URL First!!!."); 
 	 return false;
+	}else{
+		$('#cmn-toggle-4').attr("disabled",false);	
 	}
 });
 $(document).on('click', '#sw-cmn-toggle-8', function(){ 	
@@ -2491,6 +2521,8 @@ $(document).on('click', '#sw-cmn-toggle-8', function(){
 	{		
 	  alert("Link URL First!!!."); 
 	  return false;
+	} else{
+		$('#cmn-toggle-8').attr("disabled",false);	
 	}
 });
 
