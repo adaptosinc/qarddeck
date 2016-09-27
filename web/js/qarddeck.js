@@ -35,8 +35,8 @@
 		 */
 		var workspace = function(){
 			$(document).delegate("#working_div .current_blk", "input blur keyup keydown resize paste", function(event) {	 
-
-				if(event.type === "paste"){
+					
+				if(event.type === "paste"){ 
 					event.preventDefault();
 					// get text representation of clipboard
 					
@@ -100,9 +100,8 @@
 				}
 				if(event.which != 8  && event.which != 46 &&  $('#add-block')[0].scrollHeight > 603){
 					var keyCode = (event.keyCode ? event.keyCode : event.which);
-				
-					
-					if(keyCode === "keydown"){
+									
+					if(event.type === "keydown"){
 						
 						event.preventDefault();
 						//$(this).val($(this).val().replace(/\v+/g, ''));
@@ -2659,6 +2658,7 @@ $(document).on('click', '#imgblock_li', function(){
 
 $(document).on('click', '#linkblock_li', function(){ 
 		 $("#paste").show();
-		/* $("#link_div .preview-image").html(''); */
 });
+
+
 

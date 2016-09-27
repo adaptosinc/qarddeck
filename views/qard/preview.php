@@ -265,7 +265,7 @@ $this->title = 'Preview Qard';
 				</div>
 			</div>
 			<div class="active-image-preview" style="display: none;">       <!-- image preview block -->
-				<h4 id="img_title">Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<h4 id="img_title">Attached Image <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
 					<div class="image-show" id="img_show" >

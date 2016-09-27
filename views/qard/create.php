@@ -527,7 +527,8 @@ $this->title = 'Create Qard';
 					<li class="help-link"><a href=""><img src="<?=Yii::$app->homeUrl?>images/need-help_icon.png" width="30px" height="30px" style="margin-right:5px;" alt="">Need Help?</a>
 					</li>
 
-					<li class="pull-right"><button class="btn btn-warning" name="preview" onclick="addSaveCard(event)">Preview Card</button></li>
+					<li class="pull-right"><button class="btn btn-warning" name="preview" id="previewclick" >Preview Card</button></li>
+					<!-- onclick="addSaveCard(event)"  check alert removed onclick function -->
 				
 				</ul>
 			</div>
@@ -620,7 +621,7 @@ $this->title = 'Create Qard';
 	<div class="modal fade" id="qard-style" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
-		  <div class="modal-header">
+		  <div class="modal-header" style="padding: 10px 0; width: 104%;">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
 		  </div>
 		  <div class="modal-body">
@@ -930,3 +931,13 @@ $this->title = 'Create Qard';
 
 	</script>
 	<script src="<?= Yii::$app->request->baseUrl?>/js/qard_file_handler.js" type="text/javascript"></script>
+<script>
+	$(document).on('click', '#previewclick', function(){ 
+		 if ($('.select2-selection__rendered').find( ".select2-selection__choice" ).length <= 0 ) { 		 
+			 alert('Please Add Tags!!!..');
+			 $('.select2-search__field').focus();
+			  return false;
+			 }		
+		addSaveCard();
+});
+</script>
