@@ -60,7 +60,7 @@ AppAsset::register($this);
                                 <li>
                                     <h3>Search</h3>
                                     <div class="col-sm-12 col-md-12">
-                                        <input type="text" name="search" class="form-control" placeholder="Search QardDeck">
+                                        <input type="text" name="search" class="form-control" placeholder="Search QardDeck By Tag Name">
                                     </div>
                                     <div class="search_icon">
                                         <img src="../images/search_icon.png" alt="">

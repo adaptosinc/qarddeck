@@ -258,7 +258,7 @@ $this->title = 'Preview Qard';
 							<div class="file-download">
 								<img  src="<?=Yii::$app->homeUrl;?>images/download_icon.png" alt="" >                                                
 							</div>
-							<span id="f_name" > </span><br>
+							<span id="f_name" > </span></br></br>
 							<button id="file_image" class="bnt qard">Download File</button>
 						</div>
 						<div id="pdf_area"></div>
@@ -597,7 +597,7 @@ $this->title = 'Preview Qard';
 			///$('#file_title').html(fileName);
 			$('#file_image').attr("file-name",fileName);
 			
-			//$('#f_name').text(fileName);
+			$('#f_name').text(fileName);
 			$('#file_controls').show();
 			$('#pdf_area').hide();
 			

@@ -26,7 +26,7 @@ echo AutoComplete::widget([
 	'name' => 'search',    
 	'id' => 'search',	
 	'value'=> $serachval,
-	'options' => ['class' => 'form-control','placeholder'=>'Search QardDeck'],
+	'options' => ['class' => 'form-control','placeholder'=>'Search QardDeck By Tag Name'],
 	'clientOptions' => [
 		'source' => $data, 
 		'autoFill'=>true,
