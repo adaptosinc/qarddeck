@@ -4731,7 +4731,7 @@ padding: 20px;
 .loadimagediv {
       background-image: url(../img/loading1.gif);
       background-repeat: no-repeat;
-      background-position: right top;
+      background-position: center;
 	  background-size: 40px 40px;      
    }
 #mceu_20{ display:none !important}

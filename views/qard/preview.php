@@ -2,6 +2,9 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+
+use app\models\Deck;
+use dosamigos\fileupload\FileUpload;
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
 $this->title = 'Preview Qard';
@@ -120,11 +123,15 @@ $this->title = 'Preview Qard';
 					</ul>
 				</div>                             
 			</div>
-			<div class="col-sm-4 col-md-4">
+			<div class="col-sm-4 col-md-4" > 
+			<?php 
+								if(!\Yii::$app->user->isGuest){						
+							?>
 				<ul class="pull-right">
-					<li><button class="btn btn-default">Add to Deck</button></li>
+					<li><button id="add_to_deck" class="btn btn-default" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" >Add to Deck</button></li>
 				</ul>
-			</div>                        
+			<?php } ?>
+			</div>                       
 		</div>
         <div class="row">
 
@@ -228,20 +235,21 @@ $this->title = 'Preview Qard';
 			</div>                                      
 			<div class="active-text-preview" style="display: none;">        <!-- extra text preview block -->
 				<h4><div id="extra_text_title"></div><span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<hr class="divider">
 				<div class="active-preview-content" id="extra_text_content">
 					<p></p>
 				</div>
 			</div>
 			<div class="active-video-preview" style="display: none;">           <!-- video preview block -->
-				<h4>Watch the video here<span class="pull-right"><quote id="#video_url">http://youtube.com/ahsdgu</quote><i class="fa fa-times-thin"></i></span></h4>
+				<h4>Watch the video here<span class="pull-right"><!--<quote id="#video_url">http://youtube.com/ahsdgu</quote>--><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.. <a href="">more</a> </p>
+					<!--<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.. <a href="">more</a> </p>-->
 					<div id="video_frame"><iframe height="315" src="https://www.youtube.com/embed/cqNmVJk7Zyg" frameborder="0" allowfullscreen=""></iframe></div>
 				</div>
 			</div>
 			<div class="active-link-preview" style="display: none;">        <!-- link preview block -->
-				<h4 id="title_and_url">Dribble <span class="pull-right"><quote>http://youtube.com/ahsdgu</quote><i class="fa fa-times-thin"></i></span></h4>
+				<h4 id="title_and_url">Link The Url <span class="pull-right"><!--<quote>http://youtube.com/ahsdgu</quote>--><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
 					<p id="url_desc">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. </p>
@@ -265,7 +273,7 @@ $this->title = 'Preview Qard';
 				</div>
 			</div>
 			<div class="active-image-preview" style="display: none;">       <!-- image preview block -->
-				<h4 id="img_title">Attached Image <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<h4 id="img_title">Attached Image Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
 					<div class="image-show" id="img_show" >
@@ -426,6 +434,27 @@ $this->title = 'Preview Qard';
     </section>
     <!-- block_error popup -->
 
+	
+	<?php 
+	$this->registerJs("$(function() {
+	   $('#add_to_deck').click(function(e) {
+		 e.preventDefault();
+		 //console.log($(this).attr('href'));
+		 var qard_id = $('#qard_id').val(); 
+		 if(typeof qard_id == 'undefined' || qard_id == '' || qard_id == 0)
+		 {
+			 //alert('You need to create atleast one block');
+			 $('#working_div .current_blk').text('Add your content here');
+			 $('.add-another').trigger('click');
+			// return;
+		 }
+		 $('#deck-style').modal('show').find('.load-pre').load($(this).attr('href'));
+	   });	 
+   
+	});");
+	?>
+	
+	
     <div class="modal fade" tabindex="-1" id="asdasd" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -445,6 +474,87 @@ $this->title = 'Preview Qard';
     </div>
     <!-- /.modal -->
 
+	<!---------Pop Up-------------->
+	<div id="deck-style" class="fade modal in" role="dialog" tabindex="-1">
+	<div class="modal-dialog ">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Select a Deck to Add Qard to :
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</h4>
+			</div>
+			<div class="modal-body">
+					<div class="grid">	
+					
+					
+						<div class='load-pre'> </div>
+						
+					<div class="grid-item">				
+					<div class="grid-img deck-img-pre col-sm-12 col-md-12">
+								<?php $form = ActiveForm::begin([
+									'id' => 'deck-form',
+									]); ?>
+								<?= FileUpload::widget([
+									'model' => new Deck(),
+									'attribute' => 'bg_image',
+									
+									'url' => ['deck/set-cover-image'], // your url, this is just for demo purposes,
+									'options' => ['accept' => 'image/*','class'=>'class'],
+									'clientOptions' => [
+										'maxFileSize' => 2000000
+									],
+								
+									'clientEvents' => [
+										'fileuploaddone' => 'function(e, data) {
+																var dat = JSON.parse(data.result);
+																thumbnailUrl = dat.files[0].thumbnailUrl;
+																var html = "<img width=200px height=200px src="+thumbnailUrl+" />";
+																
+																$(".deck-img-pre").css("background","#f1f1f1 url("+thumbnailUrl+")")
+																$(".deck-img-pre").css("background-size", "cover");
+															
+																$("#bg_image").val(thumbnailUrl);
+															
+															}',
+										'fileuploadfail' => 'function(e, data) {
+																alert("Oops! Something wrong happended.Please try gain later!");
+															}',
+									],
+								]);?>
+								<p>click to select file</p>
+								<div id="preview">
+								</div>
+								<?php ActiveForm::end(); ?>	
+				</div>
+				
+				
+				<div class="grid-content">
+					<form onSubmit="saveDeck(this);return false;" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
+					<input style="margin-top:10px"  type="text" name="title"  id="deck-title" placeholder="Untitle Deck"/>
+					<div class="col-sm-4 col-md-4"></div>
+					
+					<div class="col-sm-8 col-md-8">
+						<input type="hidden" id="bg_image" class="class" name="bg_image" />
+						<div id="ajaxDeckPreview"></div>
+						<button style="margin-top:10px" class="btn btn-grey">Add Deck</button>
+					</div>			
+				</form>		
+				</div>
+				
+
+				</div>
+				</div>
+				
+			</div>
+			
+				</div>
+				
+		</div>
+	</div>
+ <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
+ 
+<!----------------------------->
+	
     <script type="text/javascript">
         $(document).ready(function(){
             var avalue = "active";
@@ -527,6 +637,7 @@ $this->title = 'Preview Qard';
 			var block_id = $(identifier).parent('.text-block').attr('data-block-id');
             var preview_url = urlField;
             var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
+				$("#wait").show();
             $.ajax({
                 url: get_preview_url,
                 type: "GET",
@@ -568,7 +679,7 @@ $this->title = 'Preview Qard';
 					var l = data.url_title+'<span class="pull-right"><quote>'+preview_url+'</quote><i class="fa fa-times-thin"></i></span>';
 					$('#title_and_url').html(l);
 					$('#url_desc').html(data.url_description);
-
+					$("#wait").hide();
                 }
             });
         }
@@ -647,7 +758,7 @@ $this->title = 'Preview Qard';
 				success: function(data){
 					data = $.parseJSON(data);
 					$("#extra_text_content").html(data.extra_text);
-					console.log(data.extra_text);
+					//console.log(data.extra_text);
 					$("#extra_text_title").html(data.title);
 
 				}

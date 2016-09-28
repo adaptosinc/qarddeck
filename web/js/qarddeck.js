@@ -883,7 +883,7 @@ else
 			return true;			
 		};
 		
-		plugin.applyBGImage = function(){ 
+		plugin.applyBGImage = function(){  
 			//console.log($("#working_div .current_blk").attr("data-img-url"));
 			var url = "url('"+$("#working_div .current_blk").attr("data-img-url")+"')";
 			$("#working_div .bgimg-block").css("background-image",url);	
@@ -1247,7 +1247,7 @@ function hexToRgb(hex,opacity) {
 
 function add_block(event,new_block,cpy_lkimg){
 	//save block
-	
+			
 		//default some options
 		$("#text_size").val("");
 		/////////////////////
@@ -1278,6 +1278,7 @@ function add_block(event,new_block,cpy_lkimg){
 			value: div_bgcolor
 		});
 */
+	
 		var data_img_type = $("#working_div .current_blk").attr("data-img-type")||'false';
 		data.push({
 			name: 'data-img-type',
@@ -1291,9 +1292,10 @@ function add_block(event,new_block,cpy_lkimg){
 			name: 'div_bgcolor',
 			value: div_bgcolor
 		});
-		var div_bgimage = $("#working_div .bgimg-block").css("background-image");
+		var div_bgimage = $("#working_div .bgimg-block").css("background-image");		
 		if(div_bgimage !='none' || div_bgimage !='undefined')
 			div_bgimage = $("#working_div .bgimg-block").css("background-image").replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+	
 		////console.log(div_bgimage);
 		//return;
 		data.push({
@@ -1397,7 +1399,7 @@ function add_block(event,new_block,cpy_lkimg){
 	
 		//var new_block = true;
 		$(window).data('qardDeck').addBlock(data, 'add_block',new_block,cpy_lkimg);
-		
+			
 		//commanAjaxFun(data, 'add_block',new_block);
 		$("#working_div .current_blk").attr("contenteditable","true");
 		//create another working block(div)
@@ -1651,6 +1653,7 @@ $('#qard-style #themeorder .qard-content').click(function(){
  */
 $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 	//console.log($(this).attr("id"));		 		
+	
 	if ($(this).attr("id") !== 'working_div') {
 		$('#working_div .current_blk').removeAttr("unselectable");
 		$("#working_div .current_blk").removeAttr("contenteditable");
@@ -1985,9 +1988,8 @@ $('#cmn-toggle-8').on('change', function() {
 });
 
 $('#cmn-toggle-21').on('change', function() {
-	
-	checklinkfn();
 	$(".add-another").attr("style","pointer-events: none; opacity: 0.4;");
+	checklinkfn();	
 	if($(this).prop('checked')){
 		if($("input[id=link_url]").val() != '')
 		{
@@ -2075,12 +2077,8 @@ $(document).on("click", "#reset_image", function() {
 	$('#cmn-toggle-3').prop("checked",false);	
 });
 // on click image tab should increase block height
-$(document).on("change", "#cmn-toggle-3", function() {
-		//alert($("#singlechatpanel-1").is(':visible'));
-		//alert($( "#for_image" ).attr( "style" ));
-		//alert($('#for_image').find('.cropWrapper'));
-		
-	if($(this).prop('checked')){	
+$(document).on("change", "#cmn-toggle-3", function() {		
+	if($(this).prop('checked')){
 
 		if($("#working_div .current_blk").attr("data-img-type") == "preview")
 			$("#working_div .current_blk").attr("data-img-type",'both');
@@ -2091,14 +2089,26 @@ $(document).on("change", "#cmn-toggle-3", function() {
 		if (parseInt($("#working_div .current_blk").attr("data-height")) < 4) {
 			setHeightBlock($("#working_div .current_blk"),4);
 		}
-		if($(".save-pic").length == 0){
-			$(window).data('qardDeck').applyBGImage();
-		}	
-			$(".save-pic").trigger("click");
 			
+	var chk_preview = $(".img_preview").is(':visible');		
+		if(chk_preview == true)
+		{
+			var url = $(".img_preview .hover_me").attr('src');
+			$("#working_div .current_blk").attr("data-img-url",url);
+			$(window).data('qardDeck').applyBGImage(); 	
+						
+		}	
+		else { 
+			if($(".save-pic").length == 0){ 
+				$(window).data('qardDeck').applyBGImage();
+				}	
+				$(".save-pic").trigger("click");	
+		}
+		
+		
 	} else {
 		
-		var url = $('#working_div .bgimg-block').css("background-image").replace(/^url\(['"](.+)['"]\)/, '$1');;
+		var url = $('#working_div .bgimg-block').css("background-image").replace(/^url\(['"](.+)['"]\)/, '$1');
 		$("#working_div .current_blk").attr("data-img-url",url);
 			
 		$( "#working_div" ).removeClass( "loadimagediv" );
@@ -2265,8 +2275,14 @@ $(".drop-file").show();
 $("#drop-file-bg").hide();
 $(".fileSwitch").hide();
 $(".fileName").val('');
- var File_title = $("#file_title").text(); 
-$("#url-filename").val(File_title.slice(0, -22)); 
+var filename = $("#file_image").attr('file-name');
+var File_title = $("#file_title").text(); 
+var newfile_title = File_title.slice(0,-22);
+ if($.trim(newfile_title) == $.trim(filename) )
+	$("#url-filename").val("");
+else
+	$("#url-filename").val(newfile_title); 
+
  var File_desc = $("#file_desc").html();
 $("#url-filedesc").val(File_desc); 
 $("#fileTitle").html('FileName.psd');
