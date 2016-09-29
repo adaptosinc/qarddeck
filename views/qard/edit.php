@@ -978,7 +978,7 @@ $this->title = 'Edit Qard';
 		'addFileDataUrl'  : '<?=Url::to(['block/add-filedata'], true);?>',
 		'getFileDataUrl'  : '<?=Url::to(['block/get-filedata'], true);?>',
 		'copyQardBlockUrl'  : '<?=Url::to(['block/copy-block'], true);?>',
-			
+	
 	});
 
 </script>

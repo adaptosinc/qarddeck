@@ -99,14 +99,17 @@
 					return false;
 				}
 				if(event.which != 8  && event.which != 46 &&  $('#add-block')[0].scrollHeight > 603){
-					var keyCode = (event.keyCode ? event.keyCode : event.which);
-									
-					if(event.type === "keydown"){
+					//var keyCode = (event.keyCode ? event.keyCode : event.which);
+						console.log(event.type);	
+
 						
-						event.preventDefault();
+					 if(event.type === "keydown"){					
+						event.preventDefault();						
 						//$(this).val($(this).val().replace(/\v+/g, ''));
+						
 						$(this).children(':last-child').text($(this).children(':last-child').text().substr(0,$(this).children(':last-child').text().length-2));
 						alert("Ooops! No more place to type? Please use the extra text space to type.");
+						
 						return false;
 					}					
 					if(event.type === "resize"){
@@ -137,7 +140,7 @@
 						//alert("Ooops! No more place to type? Please use the extra text space to type.");
 					//flag = false;
 					
-					console.log(event.type);
+					//Arivu console.log(event.type);
 
 					//console.log($('#add-block')[0].height());
 					return false;
@@ -311,10 +314,12 @@
 						if (data.link_image) {
 							/** Uncomment this for background image **/
 							data_img_type = $('#working_div .current_blk').attr("data-img-type");
-							
+						
 							if(data_img_type == "background" || data_img_type == "both")
 							{
+								
 								img = 'background-size:cover;background-image:url('+plugin.settings.homeUrl+'uploads/block/' + data.link_image + ');';
+							
 							}
 							
 							/** ----------------------------------- **/
@@ -425,6 +430,9 @@
 						//console.log(data);
 						return false;
 					}
+					
+					
+					
 			});
 		
 				 $(".add-another").removeAttr("style");	
@@ -1251,7 +1259,11 @@ function add_block(event,new_block,cpy_lkimg){
 		//default some options
 		$("#text_size").val("");
 		/////////////////////
+		
 		var data = $("#image_upload").serializeArray();
+		
+			//return false;
+			
 		// getting opacity for image-block div
 		var image_opacity = parseFloat($("#working_div .bgimg-block").css("opacity")) || 0;
 		data.push({
@@ -1279,7 +1291,7 @@ function add_block(event,new_block,cpy_lkimg){
 		});
 */
 	
-		var data_img_type = $("#working_div .current_blk").attr("data-img-type")||'false';
+		var data_img_type = $("#working_div .current_blk").attr("data-img-type")||'false';		
 		data.push({
 			name: 'data-img-type',
 			value: data_img_type
@@ -1437,10 +1449,7 @@ function add_block(event,new_block,cpy_lkimg){
 			$('#cmn-toggle-3').prop("checked",false);	
 			$("#rmembed_code").trigger("click");
 		}
-		
-		
-		
-		
+		$('.final').val('');
 		
 }
 function addSaveCard() {			
@@ -1664,6 +1673,7 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 		$(this).find(".current_blk").addClass("working_div");
 		$(this).find(".current_blk").attr("unselectable", 'off');
 		$(this).find(".current_blk").attr("contenteditable", 'true');
+		$(".img_del").trigger('click');
 	}
 	
 	//var bg_img_block = $('#working_div .bgimg-block').
@@ -2077,7 +2087,8 @@ $(document).on("click", "#reset_image", function() {
 	$('#cmn-toggle-3').prop("checked",false);	
 });
 // on click image tab should increase block height
-$(document).on("change", "#cmn-toggle-3", function() {		
+$(document).on("change", "#cmn-toggle-3", function() {	
+			
 	if($(this).prop('checked')){
 
 		if($("#working_div .current_blk").attr("data-img-type") == "preview")
@@ -2103,9 +2114,8 @@ $(document).on("change", "#cmn-toggle-3", function() {
 				$(window).data('qardDeck').applyBGImage();
 				}	
 				$(".save-pic").trigger("click");	
-		}
-		
-		
+				$(".save-reset").trigger("click");	
+		}	
 	} else {
 		
 		var url = $('#working_div .bgimg-block').css("background-image").replace(/^url\(['"](.+)['"]\)/, '$1');
@@ -2675,6 +2685,3 @@ $(document).on('click', '#imgblock_li', function(){
 $(document).on('click', '#linkblock_li', function(){ 
 		 $("#paste").show();
 });
-
-
-

@@ -270,6 +270,7 @@ $this->title = 'Create Qard';
                                     <div class="dropzone" data-smaller="true" data-originalsize="false" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;" >
                                         <input type="file" name="thumb" id="thumb" required="required" />
                                     </div>
+										
                                 </form>
                             </div>
                           
@@ -927,6 +928,7 @@ $this->title = 'Create Qard';
 		'addFileDataUrl'  : '<?=Url::to(['block/add-filedata'], true);?>',
 		'getFileDataUrl'  : '<?=Url::to(['block/get-filedata'], true);?>',
 		'copyQardBlockUrl'  : '<?=Url::to(['block/copy-block'], true);?>',
+	
 		
 	});
 

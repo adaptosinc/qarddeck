@@ -458,7 +458,6 @@ class BlockController extends Controller
     
     
     public function createBlock($post,$qard_id,$theme_id){
-	
 	$block = false;
 	if(!empty($post['block_id'])){
 	    $block = Block::findOne($post['block_id']);
@@ -483,9 +482,9 @@ class BlockController extends Controller
 /* 	    $block->extra_text=$post['extra_text']; */
 	    $is_true=true;
 	}
+			
 	if(!empty($post['thumb_values'])){
-	    
-	    
+
 	    //upload path for image
 	    $file_path=Yii::$app->basePath.'/web/uploads/block/';
 	    // TO Remove previous image
@@ -616,4 +615,6 @@ class BlockController extends Controller
 		
 		echo "Successfully Copied!";
 	}
+	
+	
 }
