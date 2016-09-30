@@ -186,6 +186,7 @@
 					$('#add_to_deck').trigger('click');
 					$("input[id=deck-title]").val('');
 					$("input[id=deck-bg_image]").val('');
+					$("input[id=bg_image]").val('');
 					$(".deck-img-pre").removeAttr("style");
 					//$(".grid").prepend(html);
 					//$("#ajaxDeckPreview").html(''); // Clear the preview..	

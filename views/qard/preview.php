@@ -378,7 +378,7 @@ $this->title = 'Preview Qard';
 				</div>
 				<div class="col-sm-4 col-md-4">
 					<ul class="help-list"> 
-						<li><button class="btn qard saveqard" name="preview" id="preview_qard" <?php if(isset($user->role) && !empty($user->role) && ($user->role =="admin")){  echo "data-id='5'";  } else { echo "data-id='3'"; } ?> >Save as Template</button></li>
+						<li><button style='padding:6px !important' class="btn qard saveqard" name="preview" id="preview_qard" <?php if(isset($user->role) && !empty($user->role) && ($user->role =="admin")){  echo "data-id='5'";  } else { echo "data-id='3'"; } ?> >Save as Template</button></li>
 						<li><button class="btn btn-warning saveqard" name="share" id="share_qard" data-id='1'>Share Qard</button></li>
 					</ul>
 				</div>

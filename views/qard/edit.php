@@ -76,7 +76,7 @@ $this->title = 'Edit Qard';
 
 				<div class="col-sm-6 col-md-6">
 					<h2>
-						<input type="text" name="qard_title" id="qard_title" value="<?php echo $model->title;?>" placeholder="Enter a Title for this Qard">
+						<input type="text" name="qard_title" id="qard_title" value="<?php echo $model->title;?>" placeholder="Enter a Title for this Qard *">
 					</h2>                            
 				</div>
 		</div>
@@ -667,10 +667,11 @@ $this->title = 'Edit Qard';
     <!-- block_error popup -->
 	<div id="deck-style" class="fade modal in" role="dialog" tabindex="-1">
 		<div class="modal-dialog ">
+			<button style="margin: -25px -25px 0px 0px;" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">Select a Deck to Add Qard to :
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					
 					</h4>
 				</div>
 				<div class="modal-body">
@@ -722,8 +723,8 @@ $this->title = 'Edit Qard';
 			
 				
 				<div class="grid-content" >
-					<form onSubmit="saveDeck(this);return false;" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
-					<input style="margin-top:10px" type="text" name="title"  id="deck-title" placeholder="Untitle Deck"/>
+					<form onSubmit="saveDeck(this);return false;" id="ajaxDeck" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
+					<input style="margin-top:10px" type="text" name="title"   autocomplete="off" id="deck-title" placeholder="Untitle Deck"/>
 					<div class="col-sm-4 col-md-4"></div>
 					
 					<div class="col-sm-8 col-md-8">
@@ -994,4 +995,18 @@ $this->title = 'Edit Qard';
 			 }		
 		addSaveCard();
 });
+
+	$( "#ajaxDeck" ).submit(function( event ) {
+				if($.trim($("#deck-title").val()) == "")
+			{
+				alert("Please Enter The Deck Title!!!.");
+				return false;
+			}
+			else if($.trim($("#bg_image").val()) == "")
+			{
+				alert("Please Select the Backgound image For Deck!!!.");
+				return false;
+			}
+			
+	});
 </script>

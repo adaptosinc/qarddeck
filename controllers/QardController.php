@@ -1190,7 +1190,10 @@ class QardController extends Controller
 		  $qard->status = 2;
 		  $qard->save(false);
 	  }	  
-	  return $this->redirect(['index']); 	  
+	  if(\Yii::$app->user->id)
+			return $this->redirect(['my-qards']); 
+	  else
+			return $this->redirect(['index']); 
     }
 	
 	

@@ -119,6 +119,28 @@ $this->params['breadcrumbs'][] = $this->title;
 	<script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
 	<script>
 	$(".js-example-basic-multiple").select2();
+	
+	if($( ".select2-selection__rendered" ).find( ".select2-selection__choice" ).length <= 0)
+	{
+		$(".select2-search__field").attr("placeholder","Add Some Tag");
+		$(".select2-search__field").removeAttr("style");		
+	}
+	
+	$(document).on('click', '.select2-selection__choice__remove', function(){ 
+		if($( ".select2-selection__rendered" ).find( ".select2-selection__choice" ).length <= 0)
+		{
+			$(".select2-search__field").attr("placeholder","Add Some Tag");	
+			$(".select2-search__field").removeAttr("style");			
+		} else{
+			$(".select2-search__field").removeAttr("placeholder");		
+		}
+	 
+	});
+	
+	
+	/* $(".select2-search__field").attr("placeholder","Add Some Tag");
+	$(".select2-search__field").removeAttr("style"); */
+	
 	function saveDeck(){
 		//console.log("saved");
 		var $form = $("#ajaxDeck");
