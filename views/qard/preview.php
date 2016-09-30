@@ -672,7 +672,7 @@ $this->title = 'Preview Qard';
                         $(".link_options").show();
 						var data_to_show = data;
                         
-                    }
+                    }					
 					hideAll('active-link-preview');
 					$('.active-preview-content').show();
 					$('#url_data').html(data_to_show);
@@ -683,6 +683,7 @@ $this->title = 'Preview Qard';
                 }
             });
         }
+		
 		/** File preview **/
          function showFilePrev(identifier,fileName){
 			 
@@ -789,7 +790,7 @@ $this->title = 'Preview Qard';
 	
 	
 	$(".conformdelete").click(function(){				
-				 if (confirm("Are you sure to Delete this Qard?")) {
+				 if (confirm("Are you sure want to delete the qard?")) {
 						window.location="<?=\Yii::$app->homeUrl?>qard/delete-qard?id=<?=$model->qard_id?>'";
 					}				
 			});

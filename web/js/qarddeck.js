@@ -1982,16 +1982,18 @@ $('#cmn-toggle-4').on('change', function() {
 		   $("#working_div .current_blk .previewLink").attr("data-showurl","false");	
 	}
 });
+
 $('#cmn-toggle-8').on('change', function() {
 	if($(this).prop('checked')){
-		if($("input[id=link_url]").val() != '')
-		{
-			$("#working_div .current_blk .previewLink").attr("data-open","new");				
-		}
+	if($("input[id=link_url]").val() != '')
+	{
+		$("#working_div .current_blk .previewLink").attr("data-open","new");				
+	}
 	}else{
 		$("#working_div .current_blk .previewLink").attr("data-open","same");	
 	}
 });
+
  $('input[id=link_url]').on('change', function() {
 	checklinkfn();
 	callUrl(this,0);
