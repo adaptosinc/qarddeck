@@ -109,8 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
 										<?php foreach($qards as $qard) {										
 											$qardval = 	Qard::findOne($qard);
 											if(isset($qard)){
-												
-											
+																							
 										?>
 										<?php print_r($qardval->getQardHtml()); ?>
 										

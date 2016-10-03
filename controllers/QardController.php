@@ -1185,6 +1185,7 @@ class QardController extends Controller
  public function actionDeleteQard($id)
     {	
      $qard = $this->findModel($id);
+	 
 	  if($qard)
 	  {
 		  $qard->status = 2;
@@ -1296,5 +1297,20 @@ class QardController extends Controller
 		}		
     }
 	
+	public function actionRemoveQardDeck()
+    {			
+	
+	 $qard_deck_id = $_POST['qard_deck_id'];
+	 if(!empty($qard_deck_id))
+		{
+		$connection = Yii::$app->getDb();		
+		$connection	->createCommand()
+			->delete('qard_deck',  [
+				'qd_id' => $qard_deck_id,
+				] )
+			->execute();
+			return true;
+		}	 
+    }
 	
 }

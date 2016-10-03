@@ -66,6 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
 											'class'=>'desc'
 										]
 									] */
+									
+									'id' => 'deck-formcheck',
 								]); ?>
 								<?= $form->field($model, 'cover_image', 
 								[
@@ -91,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
 								</div>
 
 								<div class="form-group">	
-									<select class="js-example-basic-multiple form-control" id="deck-tags" name="tags[]" multiple="multiple" placeholder="Add some tags so you and others can find the deck easily">
+									<select class="js-example-basic-multiple form-control" id="deck-tags" name="tags[]" multiple="multiple" placeholder="Add some tags no working">
 
 									<?php 
 									if(!$model->isNewRecord){
@@ -146,9 +148,20 @@ $this->params['breadcrumbs'][] = $this->title;
 	<script src="<?= Yii::$app->request->baseUrl?>/js/select2.js" type="text/javascript"></script>
 	<script>
 	$(".js-example-basic-multiple").select2();
+	$(".select2-search__field").attr("placeholder","Add Some Tag");
+	$(".select2-search__field").removeAttr("style");
+	
 /* 	$(".qard-share").on("mouseover",function(){
 		console.log("hovered");
 
 	}); */
 
+		$( "#deck-formcheck" ).submit(function( event ) {
+				if($( ".select2-selection__rendered" ).find( ".select2-selection__choice" ).length <= 0)
+				{
+					alert("Please Add Some Tag!!!.");
+					return false;
+				}
+  
+		});
 	</script>

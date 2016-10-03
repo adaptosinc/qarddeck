@@ -106,9 +106,8 @@ $this->title = 'Edit Qard';
 								$qard_deck = $model->qardDecks;
 								if($qard_deck && $qard_deck->deck_id){
 									echo '<li><button id="add_to_deck" class="btn btn-default" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" >Change Deck</button></li>';						
-									echo '<li><button id="remove_from_deck" onClick="removeFromDeck()" class="btn btn-default">Remove From Deck</button></li>';
+									echo '<li><button id="remove_from_deck" onClick="removeFromDeck('.$qard_deck->qd_id.')" class="btn btn-default">Remove From Deck</button></li>';
 								}
-
 								else
 									echo '<li><button class="btn btn-default" id="add_to_deck" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" >Add to Deck</button></li>';	
 									
@@ -657,7 +656,7 @@ $this->title = 'Edit Qard';
 			<div class="col-sm-8 col-md-8 col-md-offset-1">
 				<ul class="help-list"> 
 					<li class="help-link"><a href=""><img src="<?=Yii::$app->homeUrl?>images/need-help_icon.png" width="30px" height="30px" style="margin-right:5px;" alt="">Need Help?</a></li>
-					<li class="pull-right"><button class="btn btn-warning" id="previewclick"  name="preview" >Preview Card</button></li>
+					<li class="pull-right"><button class="btn btn-warning" id="previewclick"  name="preview" >Preview Qard</button></li>
 					<!-- onclick="addSaveCard(event)"  check alert removed onclick function -->
 					<!--<li><button class="btn btn-warning" name="preview">Save</button></li>-->
 				</ul>
@@ -979,7 +978,7 @@ $this->title = 'Edit Qard';
 		'addFileDataUrl'  : '<?=Url::to(['block/add-filedata'], true);?>',
 		'getFileDataUrl'  : '<?=Url::to(['block/get-filedata'], true);?>',
 		'copyQardBlockUrl'  : '<?=Url::to(['block/copy-block'], true);?>',
-	
+		'removeQardDeckUrl' : '<?=Url::to(['qard/remove-qard-deck'], true);?>',
 	});
 
 </script>

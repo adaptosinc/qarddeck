@@ -528,7 +528,7 @@ $this->title = 'Create Qard';
 					<li class="help-link"><a href=""><img src="<?=Yii::$app->homeUrl?>images/need-help_icon.png" width="30px" height="30px" style="margin-right:5px;" alt="">Need Help?</a>
 					</li>
 
-					<li class="pull-right"><button class="btn btn-warning" name="preview" id="previewclick" >Preview Card</button></li>
+					<li class="pull-right"><button class="btn btn-warning" name="preview" id="previewclick" >Preview Qard</button></li>
 					<!-- onclick="addSaveCard(event)"  check alert removed onclick function -->
 				
 				</ul>

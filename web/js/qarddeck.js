@@ -196,6 +196,7 @@
 				return true;				
 		};	
 		plugin.addToDeck = function(deck){
+			add_block(true,false); 
 			var deck_id = $(deck).attr('id');
 			var qard_id = $('#qard_id').val()||0; 
 			$.ajax({
@@ -592,7 +593,7 @@
 				error: function(data) {
 					$("#wait").hide();
 					alert('Invalid Url, Please Try Again!!!.');
-					$(".url_reset_link").trigger("click");
+					//$(".url_reset_link").trigger("click");   Edit Option Clearing the data to check it
 					$('.url_reset_link').attr('for','samefield');
 				}
 			});			
@@ -914,6 +915,18 @@ else
 			$("#working_div .current_blk").append(image_icon_span);
 			
 		};
+		
+		plugin.removeQardDeck = function(qarddeckid){ 
+				 $.ajax({
+						url : plugin.settings.removeQardDeckUrl,
+						data: { "qard_deck_id" : qarddeckid },
+						type: "POST",						
+						success: function(data){
+								location.reload();	
+						}
+					});
+		};
+		
 		plugin.copyBlock = function(){ 
 			//save the current block
 			var current_block = $("#working_div .current_blk");
@@ -1663,6 +1676,8 @@ $('#qard-style #themeorder .qard-content').click(function(){
  */
 $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 	//console.log($(this).attr("id"));		 		
+
+	
 	
 	if ($(this).attr("id") !== 'working_div') {
 		$('#working_div .current_blk').removeAttr("unselectable");
@@ -1716,7 +1731,11 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 	if($.trim(chktext) !='embedLink')
 	 $("#rmembed_code").trigger("click");
 	if($.trim(chktext) !='showFilePrev')
-	 $(".removefile").trigger("click");	
+	{	
+		 $(".removefile").trigger("click");	
+	}
+	
+	
 	
 });
 /**** for drag the block ******/
@@ -2649,6 +2668,8 @@ function checkfilefn()
 $(document).on('change', '#cmn-toggle-60', function(){ 
 	if($(this).prop('checked')){	
 	
+		$("#working_div .current_blk").find(".icon-mark").remove();	
+		
 		var fileName = $('#file_image').attr('file-name');
 		var click = "showFilePrev(this,'"+fileName+"')";
 		var linespan = '<span class="icon-mark pull-right" onclick='+click+' for="showFilePrev"> <img alt="" src="'+baseurlcheck()+'/web/images/file_icon.png" _moz_resizing="true" /> </span>';
@@ -2688,3 +2709,17 @@ $(document).on('click', '#imgblock_li', function(){
 $(document).on('click', '#linkblock_li', function(){ 
 		 $("#paste").show();
 });
+
+function removeFromDeck(qarddeckid){
+	var checkval = confirm ("Are You Sure To Remove the Deck ?");
+		if(checkval == true)	
+		{
+			if(qarddeckid)			
+				$(window).data('qardDeck').removeQardDeck(qarddeckid);			 			
+		}
+		else	
+		{	
+			return false;					
+		}
+}
+	
