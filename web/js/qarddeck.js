@@ -1433,7 +1433,7 @@ function add_block(event,new_block,cpy_lkimg){
 		$(".drop-file , .drop-image , .file_options").show();
 		$("#drop-file-bg").hide();
 		$(".fileSwitch").hide();
-		$("input[id=embed_code]").val('');		
+		// video link url Clear //$("input[id=embed_code]").val('');		
 		$('input[id=qard-url-upload-click]').val('');
 		$("#showFile").hide();
 		$("#showFilePreview").empty();
@@ -2443,7 +2443,7 @@ $('#cmn-toggle-57').click(function(){
 	if($(this).prop('checked')){		
 		var video_img = $("#emcode_hid").val();
 		var video_link_only = $("#emcode_hidimg").val();
-		//if html is present in the working div, append after removing akll other icons
+		//if html is present in the working div, append after removing all other icons
 			$("#working_div .current_blk").find('.icon-mark').remove();
 			if($("#working_div .current_blk").html() != '')
 				$("#working_div .current_blk").append(video_link_only);						
@@ -2633,8 +2633,8 @@ function checkvlinkfn()
 {	
 	  var vurl = $('#embed_code').val();
 	  var vlinkurl = $('#emcode_hid').val();
-	
-	  if(($.trim(vurl) != "") && ($('#embed_div').find('.preview-image').length <= 0 )){
+
+	  if(($.trim(vurl) != "") && ($('#embed_div').find('.preview-image').length >= 0 )){ 
 	    $('#cmn-toggle-57').attr("disabled",false);			
 	   return true;
 	}

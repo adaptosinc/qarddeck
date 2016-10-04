@@ -61,7 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>                  
 					<?php 
-					$qardDecks = $model->qardDecks;					
+					$qardDecks = $model->qardDecks;				
+						
 					$qards = [];												
 					foreach($qardDecks as $qardDeck){
 						$qards[] = $qardDeck->qard_id;								
@@ -106,9 +107,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
                                     <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
-										<?php foreach($qards as $qard) {										
-											$qardval = 	Qard::findOne($qard);
-											if(isset($qard)){
+										<?php foreach($qards as $qard) {															
+								$qardval = 	Qard::findOne(['qard_id' => $qard,'status'=>!2]);
+											if(isset($qardval)){
 																							
 										?>
 										<?php print_r($qardval->getQardHtml()); ?>

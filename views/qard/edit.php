@@ -1008,4 +1008,13 @@ $this->title = 'Edit Qard';
 			}
 			
 	});
+	
+	 $(document).ready(function () {
+        $("#deck-bg_image").change(function() {
+			var loadingUrl = "<?=Yii::$app->request->baseUrl?>/img/loading1.gif";
+			$(".deck-img-pre").css("background","#f1f1f1 url("+loadingUrl+")")
+			$(".deck-img-pre").css("background-size", "cover");	
+		});
+	 });
+	 
 </script>

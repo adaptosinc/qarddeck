@@ -1,12 +1,12 @@
 <?php
-
+use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
 use app\models\DeckTags;
 /* @var $this yii\web\View */
 /* @var $model app\models\Deck */
-
+use dosamigos\fileupload\FileUpload;
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Decks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -18,8 +18,66 @@ $this->params['breadcrumbs'][] = $this->title;
 				<div class="row">                                
 					<div class="col-sm-8 col-md-8">
 						<div class="row">
-							<div class="col-sm-4 col-md-4">
-								<img src="<?=$model->bg_image?>" style="width:100%; background-size:cover" alt="">
+					
+						 
+							<div class="deck-img-pre col-sm-4 col-md-4" <?php if(isset($model->bg_image) && !empty($model->bg_image)){
+									echo 'style="background: rgb(241, 241, 241) url('.$model->bg_image.') repeat scroll 0 0 / cover"' ; 	
+								} ?> >
+								
+					<input type="hidden" name='deck-id' id="deck-id" value="<?php echo $model->deck_id; ?>" >
+				
+									<?php $form = ActiveForm::begin([
+									'id' => 'deck-form',
+									]); ?>
+									
+									<?= $form->field($model, 'cover_image', 
+								[
+									'template' => "{input}\n{hint}\n{error}"
+								])->hiddenInput() ?>
+								
+								<?= FileUpload::widget([
+									'model' => $model,
+									'attribute' => 'bg_image',
+									'url' => ['deck/set-cover-image'], // your url, this is just for demo purposes,
+									'options' => ['accept' => 'image/*','class'=>'class'],
+									'clientOptions' => [
+										'maxFileSize' => 2000000
+									],
+								
+									'clientEvents' => [ 
+										'fileuploaddone' => 'function(e, data) {							
+																console.log(e);
+																console.log(data.result);
+																var dat = JSON.parse(data.result);
+																thumbnailUrl = dat.files[0].thumbnailUrl;
+																console.log(thumbnailUrl);
+																var html = "<img width=200px height=200px src="+thumbnailUrl+" />";
+																var deckid = $("#deck-id").val();
+																$(".deck-img-pre").css("background","#f1f1f1 url("+thumbnailUrl+")")
+																$(".deck-img-pre").css("background-size", "cover");
+																$("#deck-cover_image").val(thumbnailUrl);
+																
+			$.ajax({
+			url: "'.Url::to(['deck/deck-image'], true).'",
+			data: { "deck-id": deckid,"deck-image": thumbnailUrl},
+			type: "POST",
+			success: function(data) {
+					alert("Deck Image Change Successfully!!!.");
+				
+			}
+		});
+															}',
+										'fileuploadfail' => 'function(e, data) {
+																console.log(e);
+																console.log(data);
+															}',
+									],
+								]);?>
+								<p>click to select file</p>
+								<div id="preview">
+								</div>
+								<?php ActiveForm::end(); ?>	
+								
 							</div>
 							<div class="col-sm-8 col-md-8">
 							<form name="ajaxDeck" id="ajaxDeck" onChange="saveDeck()">
@@ -178,4 +236,16 @@ $this->params['breadcrumbs'][] = $this->title;
 			$("#preview").html(html);
 		}
 	});
+	
+	 $(document).ready(function () {
+        $("#deck-bg_image").change(function() {
+			var loadingUrl = "<?=Yii::$app->request->baseUrl?>/img/loading1.gif";
+			$(".deck-img-pre").css("background","#f1f1f1 url("+loadingUrl+")")
+			$(".deck-img-pre").css("background-size", "cover");	
+
+				
+		});
+	 });
+	 
+			
 	</script>

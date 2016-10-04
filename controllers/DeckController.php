@@ -206,7 +206,7 @@ class DeckController extends Controller
      */
     public function actionView($id)
     {
-	$model= $this->findModel($id);
+	$model= $this->findModel($id);	
 	$count_bookmark  = $model->deckqardbookmarkCount;
 	$count_share  = $model->deckqardshareCount;
 	$count_liked  = $model->deckqardlikeCount;
@@ -358,7 +358,7 @@ class DeckController extends Controller
 	 * @return Json
 	 */		 
 	public function actionSetCoverImage(){
-		$imageFile = UploadedFile::getInstanceByName('Deck[bg_image]');
+		$imageFile = UploadedFile::getInstanceByName('Deck[bg_image]');		
 		$directory = \Yii::getAlias('@app/web/img/temp') . DIRECTORY_SEPARATOR . Yii::$app->session->id . DIRECTORY_SEPARATOR;
 		if (!is_dir($directory)) {
 			mkdir($directory);
@@ -380,6 +380,8 @@ class DeckController extends Controller
 						"deleteType" => "POST"
 					]]
 				]);
+				
+				
 			}
 		}
 		return '';		
@@ -455,4 +457,18 @@ class DeckController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+	
+	public function actionDeckImage()
+    {
+      $deckid = Yii::$app->request->post()['deck-id'];
+      $deckimg = Yii::$app->request->post()['deck-image'];
+	  
+	 $command = \Yii::$app->db->createCommand()->update('deck',
+						['bg_image'=> $deckimg],
+						['deck_id' => $deckid]);
+		$command->execute();
+			
+    }
+
+	
 }

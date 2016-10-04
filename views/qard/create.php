@@ -948,6 +948,13 @@ $this->title = 'Create Qard';
 $( "#ajaxDeck" ).submit(function( event ) {
 			if($.trim($("#deck-title").val()) == "")
 			{
+				/* if($.trim($("#bg_image").val()) != "")
+				{
+					var c_img = $.trim($("#bg_image").val());
+					var b_img = "background: rgb(241, 241, 241) url(".c_img.") 	repeat scroll 0% 0% / cover";
+					$(".deck-img-pre").attr("style",b_img);
+				
+				} */
 				alert("Please Enter The Deck Title!!!.");
 				return false;
 			}
@@ -959,4 +966,14 @@ $( "#ajaxDeck" ).submit(function( event ) {
 			
 	});
 	
+	
+	 $(document).ready(function () {
+        $("#deck-bg_image").change(function() {
+			var loadingUrl = "<?=Yii::$app->request->baseUrl?>/img/loading1.gif";
+			$(".deck-img-pre").css("background","#f1f1f1 url("+loadingUrl+")")
+			$(".deck-img-pre").css("background-size", "cover");	
+		});
+	 });
+	 
+	 
 </script>
