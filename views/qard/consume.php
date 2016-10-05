@@ -278,15 +278,16 @@ $this->title = 'Consume Qard';
 			</div>                                      
 			<div class="active-text-preview" style="display: none;">        <!-- extra text preview block -->
 				<h4><div id="extra_text_title"></div><span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<hr class="divider">
 				<div class="active-preview-content" id="extra_text_content">
 					<p></p>
 				</div>
 			</div>
 			<div class="active-video-preview" style="display: none;">           <!-- video preview block -->
-				<h4>Watch the video here<span class="pull-right"><quote id="#video_url">http://youtube.com/ahsdgu</quote><i class="fa fa-times-thin"></i></span></h4>
+				<h4>Watch the video here<span class="pull-right"><!--<quote id="#video_url">http://youtube.com/ahsdgu</quote>--><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.. <a href="">more</a> </p>
+					<!--<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.. <a href="">more</a> </p>-->
 					<div id="video_frame"><iframe height="315" src="https://www.youtube.com/embed/cqNmVJk7Zyg" frameborder="0" allowfullscreen=""></iframe></div>
 				</div>
 			</div>
@@ -308,13 +309,14 @@ $this->title = 'Consume Qard';
 							<div class="file-download">
 								<img  src="<?=Yii::$app->homeUrl;?>images/download_icon.png" alt="" >                                                
 							</div>
+							<span id="f_name" > </span></br></br>
 							<button id="file_image" class="bnt qard">Download File</button>
 						</div>
 						<div id="pdf_area"></div>
 				</div>
 			</div>
 			<div class="active-image-preview" style="display: none;">       <!-- image preview block -->
-				<h4 id="img_title">Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<h4 id="img_title">Attached Image Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
 					<div class="image-show" id="img_show" >
@@ -594,7 +596,7 @@ $this->title = 'Consume Qard';
             });
         }
 		/** File preview **/
-         function showFilePrev(fileName){
+        /*  function showFilePrev(fileName){
 
 			hideAll('active-file-preview');
 			$('.active-preview-content').show();
@@ -602,7 +604,44 @@ $this->title = 'Consume Qard';
 			$('#file_image').attr("file-name",fileName);
 			$('#file_controls').show();
 			$('#pdf_area').hide();
+          }   */
+		  
+		  /** File preview **/
+         function showFilePrev(identifier,fileName){
+			 
+			var block_id = $(identifier).parent().parent('.text-block').attr('data-block-id');			
+			
+		 		$.ajax({									
+				url : "<?=Url::to(['block/get-filedata'], true)?>",
+				type: "GET",
+				data: { 'block_id': block_id},
+				success: function(data){				
+					data1 = $.parseJSON(data);
+					if($.trim(data1.file_title) !=="" )
+						$('#file_title').text(data1.file_title);
+					else
+					$('#file_title').text(fileName);
+					$('#file_desc').html(data1.file_description);
+					
+					
+					$('#file_title').append("<span class='pull-right'><i class='fa fa-times-thin'></i></span>");
+					}
+				});  
+				
+			hideAll('active-file-preview');
+			$('.active-preview-content').show();
+			///$('#file_title').html(fileName);
+			
+			$('#file_image').attr("file-name",fileName);
+			
+			$('#f_name').text(fileName);
+			$('#file_controls').show();
+			$('#pdf_area').hide();
+			
+			
           }  
+		  
+		  
 		$('#file_image').on("click",function(e){
 			console.log("changed");
 			downloadFile(e,$(this).attr("file-name"));
@@ -643,7 +682,7 @@ $this->title = 'Consume Qard';
 			$.ajax({
 				url : "<?=Url::to(['block/get-text'], true)?>",
 				type: "GET",
-				data: { 'block_id': $(elem).attr('block_id') },
+				data: { 'block_id': $(elem).parent().attr('data-block-id') },
 				success: function(data){
 					data = $.parseJSON(data);
 					$("#extra_text_content").html(data.extra_text);

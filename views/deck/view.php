@@ -107,8 +107,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
                                     <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
-										<?php foreach($qards as $qard) {															
-								$qardval = 	Qard::findOne(['qard_id' => $qard,'status'=>!2]);
+										<?php foreach($qards as $qard) {								
+										
+									//$qardval = Qard::findOne($qard);  code check
+										$qardval = 	Qard::findOne(['qard_id' => $qard,'not',['status'=>2] ]);
+					
 											if(isset($qardval)){
 																							
 										?>

@@ -154,8 +154,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 							<div class="deckgrid-item">     <!-- qard -->
 								<div class="add-qard">
+									<a href="<?=\Yii::$app->homeUrl?>qard/create">
 									<img src="<?=\Yii::$app->homeUrl?>images/new-deck_icon.png" alt="">
-									<h4>Create New Qard</h4>
+									<h4>Create New Qard</h4></a>
 								</div>
 							</div>                                          
 						</div>  <!-- row -->                                    

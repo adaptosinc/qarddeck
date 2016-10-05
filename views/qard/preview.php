@@ -128,7 +128,20 @@ $this->title = 'Preview Qard';
 								if(!\Yii::$app->user->isGuest){						
 							?>
 				<ul class="pull-right">
-					<li><button id="add_to_deck" class="btn btn-default" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" >Add to Deck</button></li>
+				
+					<?php 
+								$qard_deck = $model->qardDecks;
+								if($qard_deck && $qard_deck->deck_id){
+									echo '<li><button id="add_to_deck" class="btn btn-default" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" >Change Deck</button></li>';						
+									echo '<li><button id="remove_from_deck" onClick="removeFromDeck('.$qard_deck->qd_id.')" class="btn btn-default">Remove From Deck</button></li>';
+								}
+								else
+									echo '<li><button class="btn btn-default" id="add_to_deck" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" >Add to Deck</button></li>';	
+									
+								
+							?>
+							
+					<!--<li><button id="add_to_deck" class="btn btn-default" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" >Add to Deck</button></li>-->
 				</ul>
 			<?php } ?>
 			</div>                       
@@ -437,20 +450,14 @@ $this->title = 'Preview Qard';
 	
 	<?php 
 	$this->registerJs("$(function() {
-	   $('#add_to_deck').click(function(e) {
+	     $('#add_to_deck').click(function(e) {
 		 e.preventDefault();
-		 //console.log($(this).attr('href'));
+		 console.log($(this).attr('href'));
 		 var qard_id = $('#qard_id').val(); 
-		 if(typeof qard_id == 'undefined' || qard_id == '' || qard_id == 0)
-		 {
-			 //alert('You need to create atleast one block');
-			 $('#working_div .current_blk').text('Add your content here');
-			 $('.add-another').trigger('click');
-			// return;
-		 }
+
 		 $('#deck-style').modal('show').find('.load-pre').load($(this).attr('href'));
-	   });	 
-   
+	   });	   
+	  
 	});");
 	?>
 	
@@ -529,8 +536,10 @@ $this->title = 'Preview Qard';
 				
 				
 				<div class="grid-content">
-					<form onSubmit="saveDeck(this);return false;" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
-					<input style="margin-top:10px"  type="text" name="title"  id="deck-title" placeholder="Untitle Deck"/>
+				<!-- onSubmit="saveDeck(this);return false;" -->
+				
+					<form  id="ajaxDeck" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
+					<input style="margin-top:10px"  type="text" name="title"  autocomplete="off" id="deck-title" placeholder="Untitle Deck"/>
 					<div class="col-sm-4 col-md-4"></div>
 					
 					<div class="col-sm-8 col-md-8">
@@ -696,10 +705,12 @@ $this->title = 'Preview Qard';
 				success: function(data){				
 					data1 = $.parseJSON(data);
 					if($.trim(data1.file_title) !=="" )
-						$('#file_title').html(data1.file_title);
+						$('#file_title').text(data1.file_title);
 					else
-					$('#file_title').html(fileName);
+					$('#file_title').text(fileName);
 					$('#file_desc').html(data1.file_description);
+					
+					$('#file_title').append("<span class='pull-right'><i class='fa fa-times-thin'></i></span>");
 					
 					}
 				});  
@@ -707,6 +718,7 @@ $this->title = 'Preview Qard';
 			hideAll('active-file-preview');
 			$('.active-preview-content').show();
 			///$('#file_title').html(fileName);
+			
 			$('#file_image').attr("file-name",fileName);
 			
 			$('#f_name').text(fileName);
@@ -795,4 +807,102 @@ $this->title = 'Preview Qard';
 					}				
 			});
 			
+			
+	/*********** Remove Deck Control Process *******/
+	
+	function removeFromDeck(qarddeckid){
+	var checkval = confirm ("Are You Sure To Remove the Deck ?");
+		if(checkval == true)	
+		{
+			if(qarddeckid)		
+			{				
+					$.ajax({						
+						url : "<?=Url::to(['qard/remove-qard-deck'], true)?>",
+						data: { "qard_deck_id" : qarddeckid },
+						type: "POST",						
+						success: function(data){
+								window.location="<?=\Yii::$app->homeUrl?>qard/preview-qard?qard_id=<?=$model->qard_id?>";
+						}
+					});	 
+			}
+						 			
+		}
+		else	
+		{	
+			return false;					
+		}
+}
+			
+			
+	$( "#ajaxDeck" ).submit(function( event ) {
+				if($.trim($("#deck-title").val()) == "")
+			{
+				alert("Please Enter The Deck Title!!!.");
+				return false;
+			}
+			else if($.trim($("#bg_image").val()) == "")
+			{
+				alert("Please Select the Backgound image For Deck!!!.");
+				return false;
+			}
+			else
+			{
+				saveDeck(this);
+				return false;
+			}
+			
+	});
+	
+	 $(document).ready(function () {
+        $("#deck-bg_image").change(function() {
+			var loadingUrl = "<?=Yii::$app->request->baseUrl?>/img/loading1.gif";
+			$(".deck-img-pre").css("background","#f1f1f1 url("+loadingUrl+")")
+			$(".deck-img-pre").css("background-size", "cover");	
+		});
+	 });
+	 
+	 /************* Select Deck and Change another Deck ******************/
+	 
+	 function addToDeck(deck){
+		 
+			var deck_id = $(deck).attr('id');
+			var qard_id = <?=$model->qard_id?>; 
+			
+		 $.ajax({
+				url : "<?=Url::to(['deck/add-qard'], true)?>",
+				type : 'POST',
+				data : {'qard_id':qard_id,'deck_id':deck_id},
+				success : function(data){
+					window.location="<?=\Yii::$app->homeUrl?>qard/preview-qard?qard_id=<?=$model->qard_id?>";
+				}				
+			}); 
+			
+}
+
+/***************** Add New Deck ********************************/
+
+
+function saveDeck(deck){
+			var formData = new FormData($(deck)[0]);
+			 $.ajax( {
+				  url: '<?=Url::to(['deck/create-ajax'], true)?>',
+				  type: 'POST',
+				  data: formData,
+				  processData: false,
+				  contentType: false,
+				  success:function(data){					 
+					$('#add_to_deck').trigger('click');
+					$("input[id=deck-title]").val('');
+					$("input[id=deck-bg_image]").val('');
+					$("input[id=bg_image]").val('');
+					$(".deck-img-pre").removeAttr("style");
+					
+ 			  	  }				  
+				}); 
+				return true;
+				
+				
+}
+
+
 	</script>

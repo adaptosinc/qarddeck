@@ -722,7 +722,8 @@ $this->title = 'Edit Qard';
 			
 				
 				<div class="grid-content" >
-					<form onSubmit="saveDeck(this);return false;" id="ajaxDeck" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
+				<!-- onSubmit="saveDeck(this);return false;" -->
+					<form  id="ajaxDeck" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
 					<input style="margin-top:10px" type="text" name="title"   autocomplete="off" id="deck-title" placeholder="Untitle Deck"/>
 					<div class="col-sm-4 col-md-4"></div>
 					
@@ -1004,6 +1005,11 @@ $this->title = 'Edit Qard';
 			else if($.trim($("#bg_image").val()) == "")
 			{
 				alert("Please Select the Backgound image For Deck!!!.");
+				return false;
+			}
+			else
+			{
+				saveDeck(this);
 				return false;
 			}
 			

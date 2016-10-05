@@ -594,12 +594,13 @@ $this->title = 'Create Qard';
 				
 				
 				<div class="grid-content">
-					<form onSubmit="saveDeck(this);return false;" id="ajaxDeck" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
+				<!-- onSubmit="saveDeck(this);return false;" -->
+				<form  id="ajaxDeck" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
 					<input style="margin-top:10px"  type="text" name="title"  id="deck-title" autocomplete="off" placeholder="Untitle Deck"/>
 					<div class="col-sm-4 col-md-4"></div>
 					
 					<div class="col-sm-8 col-md-8">
-						<input type="text" id="bg_image" class="class" name="bg_image" />
+						<input type="hidden" id="bg_image" class="class" name="bg_image" />
 						<div id="ajaxDeckPreview"></div>
 						<button style="margin-top:10px" class="btn btn-grey">Add Deck</button>
 					</div>			
@@ -948,19 +949,18 @@ $this->title = 'Create Qard';
 $( "#ajaxDeck" ).submit(function( event ) {
 			if($.trim($("#deck-title").val()) == "")
 			{
-				/* if($.trim($("#bg_image").val()) != "")
-				{
-					var c_img = $.trim($("#bg_image").val());
-					var b_img = "background: rgb(241, 241, 241) url(".c_img.") 	repeat scroll 0% 0% / cover";
-					$(".deck-img-pre").attr("style",b_img);
 				
-				} */
 				alert("Please Enter The Deck Title!!!.");
 				return false;
 			}
 			else if($.trim($("#bg_image").val()) == "")
 			{
 				alert("Please Select the Backgound image For Deck!!!.");
+				return false;
+			}
+			else
+			{
+				saveDeck(this);
 				return false;
 			}
 			
