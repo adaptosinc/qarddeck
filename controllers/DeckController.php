@@ -470,5 +470,14 @@ class DeckController extends Controller
 			
     }
 
+	 public function actionDeleteDeck()
+    {
+		$deckid = Yii::$app->request->post()['deckid'];
+		
+		$command = \Yii::$app->db->createCommand()->update('deck',
+						['status'=> 2],
+						['deck_id' => $deckid]);
+		$command->execute();
+	}
 	
 }

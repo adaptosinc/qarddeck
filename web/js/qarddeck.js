@@ -569,18 +569,24 @@
 						
 						//add here
 						if(((data.url_title != "") || (data.url_description != "") ) && ($.trim(chck) != 'clearfield'))
-						{ 
-							$("input[name=url-title]").val(data.url_title);
-							$("input[name=url-desc]").val(data.url_description);
+						{ 	
+							
+							if($("input[name=url-title]").attr("data-check") == "off")
+								$("input[name=url-title]").val(data.url_title);						
+							if($("input[name=url-desc]").attr("data-check") == "off")
+								$("input[name=url-desc]").val(data.url_description);
 						} 
 						else if(($.trim(chstat) == 'edit') && ($.trim(chck) == 'samefield'))
-						{
+						{						
 							$("input[name=url-title]").val(data.url_title);
 							$("input[name=url-desc]").val(data.url_description);
 						}
 						 
 						
 						/** $('#cmn-toggle-8').prop("checked",true).trigger("change"); automatically */
+						$("input[name=url-title]").attr("data-check","off");
+						$("input[name=url-desc]").attr("data-check","off");
+						
 					}
 					else {
 						
@@ -597,6 +603,7 @@
 					$('.url_reset_link').attr('for','samefield');
 				}
 			});			
+			
 		};
 		plugin.useUrl = function(){
 			//save the title and description if set
@@ -850,18 +857,13 @@ else
 						
 					
 					$('#embed_div').html(data.iframelink);
-					//$('#btnembed_code').hide();
-					//$('#link-ecode').show();
-					//$('#rmembed_code').show();
+					
 			
 					$("#cmn-toggle-57").prop("checked",false);	
                 } ,
 			error: function (data) { 
 				$("#wait").hide();
 					$('#embed_div').html("<div class='preview-image'></div>");
-					//$('#btnembed_code').show();
-					//$('#link-ecode').hide();
-					//$('#rmembed_code').hide();
 					
 					} 
             });			
@@ -1224,6 +1226,10 @@ function displayLink(identifier){
 		$('#cmn-toggle-8').prop("checked",true);
 	
 	$('.url_reset_link').attr('for','samefield');
+	
+	$("input[name=url-title]").attr("data-check","off");
+	$("input[name=url-desc]").attr("data-check","off");
+						
 	return false;
 }
 function callEmbedUrl(videoUrl){
@@ -1450,7 +1456,8 @@ function add_block(event,new_block,cpy_lkimg){
 		$('#cmn-toggle-56').prop("checked",false);
 		//added by dency
 		if(new_block){ 
-			$(".url_reset_link").trigger("click");
+			// changed the function $(".url_reset_link").trigger("click");
+			url_reset_linkfn();
 			$('.url_reset_link').attr('for','samefield');
 			$("#extra_text").html('');
 			//for tinyMCE to load data
@@ -1461,7 +1468,8 @@ function add_block(event,new_block,cpy_lkimg){
 			//$('#cmn-toggle-6').prop("checked",false);	
 			$('#cmn-toggle-7').prop("checked",false);	
 			$('#cmn-toggle-3').prop("checked",false);	
-			$("#rmembed_code").trigger("click");
+			// changed the function $("#rmembed_code").trigger("click");
+			rmembed_codefn();
 		}
 		$('.final').val('');
 		
@@ -1725,14 +1733,19 @@ $(document).delegate('.add-block-qard > div', "dblclick", function(event) {
 		clrextratext();
 	if($.trim(chktext) != 'previewLink')
 	{
-		$(".url_reset_link").trigger("click");
+		//changed the function $(".url_reset_link").trigger("click");
+		url_reset_linkfn();
 		$('.url_reset_link').attr('for','samefield');
 	}
 	if($.trim(chktext) !='embedLink')
-	 $("#rmembed_code").trigger("click");
+	{
+	 // changed the function $("#rmembed_code").trigger("click");
+	 rmembed_codefn();
+	}
 	if($.trim(chktext) !='showFilePrev')
 	{	
-		 $(".removefile").trigger("click");	
+		// changed the function $(".removefile").trigger("click");	
+		 removefilefn();
 	}
 	
 	
@@ -2020,7 +2033,7 @@ $('#cmn-toggle-8').on('change', function() {
 });
 
 $('#cmn-toggle-21').on('change', function() {
-	$(".add-another").attr("style","pointer-events: none; opacity: 0.4;");
+	$(".add-another").attr("style","pointer-events: none; opacity: 0.4;");	
 	checklinkfn();	
 	if($(this).prop('checked')){
 		if($("input[id=link_url]").val() != '')
@@ -2057,6 +2070,15 @@ $('body').on('change', $('input[name=url_title]', 'textarea[name=url_content]'),
 	showUrlPreview();
 });
 $('.url_reset_link').on('click', function() {
+	var chksts = confirm ("Are you sure to clear this Data ?");
+		if(chksts == true)	
+		{
+			url_reset_linkfn();
+		}
+});
+
+function url_reset_linkfn()
+{
 	$('.url_reset_link').attr('for','clearfield');
 	$('#link_div').html("<div class='preview-image'></div>");
 	$('#embed_div').html("<div class='preview-image'></div>");
@@ -2069,7 +2091,7 @@ $('.url_reset_link').on('click', function() {
 	$('#cmn-toggle-8').attr("disabled","disabled");	
 	$("input[name=url-title]").val('');
 	$("input[name=url-desc]").val('');
-});
+}
 
 /**** End of Link Block operations ******/
 		
@@ -2092,21 +2114,18 @@ $('.drop-image').mouseleave(function(){
 }); */
 $(document).on("click", "#reset_image", function() {
 	
-	/* $("#working_div").removeClass("loadimagediv");   /// wait backgorund cancel
-	$("#working_div .parent_current_blk").removeAttr("style");
-	$("#working_div .parent_current_blk .bgoverlay-block").css("background-color","rgb(255, 255, 255)");
-	$("#working_div .parent_current_blk .bgoverlay-block").css("height","37.5px");
-	$("#working_div .current_blk").attr("data-img-type","none");
-	$("#working_div .current_blk").attr("data-img-url","");
-	$("#working_div .current_blk").attr("style","height: 37.5px"); */
+var chksts = confirm ("Are you sure to clear this Data ?");
+   if(chksts == true)	
+   {
 	
 	$(".dropzone .btn-cancel").trigger("click");
 	$(".img_preview").html('');
 	$(".img_preview").hide('');
-	$(".drop-image").show();
-	//$('#cmn-toggle-6').prop("checked",false);	
+	$(".drop-image").show();	
 	$('#cmn-toggle-7').prop("checked",false);	
-	$('#cmn-toggle-3').prop("checked",false);	
+	$('#cmn-toggle-3').prop("checked",false);
+	
+   }
 });
 // on click image tab should increase block height
 $(document).on("change", "#cmn-toggle-3", function() {	
@@ -2407,13 +2426,22 @@ $(document).on('change', '#cmn-toggle-56', function(){
 		
 
 $(document).on('click', '.removefile', function(){ 
+	var chksts = confirm ("Are you sure to clear this Data ?");
+	if(chksts == true)	
+	{
+		removefilefn();
+	}
+});	
+
+function removefilefn()
+{	
 	$('#file_image').trigger('click');
 	$('#cmn-toggle-56').attr("data-url","");  
 	$('#url-filename').val("");  
 	$('#url-filedesc').val("");  
 	$('#cmn-toggle-56').attr("data-link","");  
 	$('#cmn-toggle-56').prop('checked', false); 
-});	
+}
 
 $(document).on('click', '.add-another', function(){ 
 	$('#cmn-toggle-56').attr("data-url","");  
@@ -2426,7 +2454,7 @@ $(document).on('click', '.add-another', function(){
 	$("#link-extra").hide();	
 	$("#add_extra_text").show();
 	$('#embed_div').html("<div class='preview-image'></div>");
-	//$('#rmembed_code').hide();	
+		
 	
 });	
 
@@ -2467,12 +2495,20 @@ $('#cmn-toggle-57').click(function(){
 
 
 $(document).on('click', '#rmembed_code', function(){ 
+  var chksts = confirm ("Are you sure to clear this Data ?");
+   if(chksts == true)	
+   {
+	  rmembed_codefn();
+   }	  
+});	
+function rmembed_codefn()
+{
 	$('#embed_div').html("<div class='preview-image'></div>");
 	$('#embed_code').val(""); 
 	$('#emcode_hid').val("");  
 	$('#emcode_hidimg').val("");  
-	$("#cmn-toggle-57").prop("checked",false);		 	
-});	
+	$("#cmn-toggle-57").prop("checked",false);	
+}
 
 function checkextratext()
 {	
@@ -2519,11 +2555,15 @@ $(document).on('keyup keypress blur change click', '#extra_text', function(){
 //****** Clear the Extra Text ****//
 
 $(document).on('click', '.extra_reset_link', function(){ 
+  var chksts = confirm ("Are you sure to clear this Data ?");
+  if(chksts == true)	
+  {		
 	$('#extra-list').val("");  		
-	$('#extra_text').html(""); 
-	
+	$('#extra_text').html(""); 	
 	tinyMCE.activeEditor.setContent("");
 	$('#cmn-toggle-9').prop("checked",false);	
+  }
+
 });
 
 $(document).on('click', '#sw-cmn-toggle-3', function(){ 
@@ -2711,7 +2751,7 @@ $(document).on('click', '#linkblock_li', function(){
 });
 
 function removeFromDeck(qarddeckid){
-	var checkval = confirm ("Are You Sure To Remove the Deck ?");
+	var checkval = confirm ("Are you sure want to remove qard from this Deck ?");
 		if(checkval == true)	
 		{
 			if(qarddeckid)			
@@ -2722,4 +2762,11 @@ function removeFromDeck(qarddeckid){
 			return false;					
 		}
 }
+
+$(document).on('change', 'input[name=url-title]', function(){ 
+	   $(this).attr("data-check","on");
+});
 	
+$(document).on('change', 'input[name=url-desc]', function(){
+	   $(this).attr("data-check","on");
+});

@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
 use app\models\DeckTags;
+use app\models\Qard;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Deck */
 use dosamigos\fileupload\FileUpload;
@@ -129,28 +131,33 @@ $this->params['breadcrumbs'][] = $this->title;
 						<?php 
 						//fetch qards of the screen
 						$qardDecks = $model->qardDecks;
-						$qards = [];
+						
+						$qards = [];	
 						foreach($qardDecks as $qardDeck){
-							$qards[] = $qardDeck->qard;
-						}						
+							$qards[] = $qardDeck->qard_id;
+						}
+						
 						?>
 						<div class="deckgrid">
 							<?php foreach($qards as $qard) {
-											if(isset($qard)){
+								
+								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
+								
+											if(isset($qardval)){
 										?>
 							<div class="deckgrid-item">     <!-- qard -->
 								<div class="qard-content">
-									<div class="qard-share" id="<?=$qard->qard_id;?>">
+									<div class="qard-share" id="<?=$qardval->qard_id;?>">
 										<h4><button class="btn btn-default">View Qard</button></h4>
 										<ul>
 											<li class="tootip warning" data-title="Remove from deck"><span class="arrow-bottom"></span><i class="fa fa-minus"></i></li>
 											<li class="danger"><img src="<?=\Yii::$app->homeUrl?>images/delete_icon_small.png" alt=""></li>                                                        
 										</ul>
 									</div>
-									<img src="<?=\Yii::$app->homeUrl?>uploads/qards/<?=$qard->qard_id;?>.png" alt="">									
+									<img src="<?=\Yii::$app->homeUrl?>uploads/qards/<?=$qardval->qard_id;?>.png" alt="">									
 								</div>                                                                                      
 							</div>
-							<?php }} ?>  
+							<?php } } ?>  
 
 							<div class="deckgrid-item">     <!-- qard -->
 								<div class="add-qard">
@@ -163,8 +170,8 @@ $this->params['breadcrumbs'][] = $this->title;
 						
 					</div>
 					<div class="col-sm-4 col-md-4">
-							<div class="sidebar-qard qard-manage" id="preview">     <!-- side qard -->
-								<div class="qard-content">
+							<div class="sidebar-qard qard-manage" id="qardpreview">     <!-- side qard -->
+								<div class="qard-content" style="text-align:center !important" >
 									<img src="<?=\Yii::$app->homeUrl?>images/preview_icon.png" alt="">
 									<h4>Qard Preview Area</h4>
 								</div>                                                                                  
@@ -226,15 +233,15 @@ $this->params['breadcrumbs'][] = $this->title;
 				type: "GET",
 				success: function(response) {
 					// do stuff with the result, if you want to 
-					$("#preview").html(response);	
+					$("#qardpreview").html(response);	
 				}
 			});
 					
 		},
 		mouseleave: function () {
 			//stuff to do on mouse leave
-			var html='<div class="sidebar-qard qard-manage" id="preview"><div class="qard-content"><img src="<?=\Yii::$app->homeUrl?>images/preview_icon.png" alt=""><h4>Qard Preview Area</h4></div></div>';
-			$("#preview").html(html);
+			var html='<div class="sidebar-qard qard-manage" id="qardpreview"><div class="qard-content" style="text-align:center !important" ><img src="<?=\Yii::$app->homeUrl?>images/preview_icon.png" alt=""><h4>Qard Preview Area</h4></div></div>';
+			$("#qardpreview").html(html);
 		}
 	});
 	

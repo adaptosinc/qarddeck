@@ -71,7 +71,7 @@ $this->title = 'Create Qard';
 
                         <div class="col-sm-6 col-md-6">
                             <h2>
-                                <input type="text" name="qard_title" id="qard_title" placeholder="Enter a Title for this Qard *">
+                                <input type="text" name="qard_title" id="qard_title" style="width:100% !important" placeholder="Enter a Title for this Qard *">
                             </h2>                            
                         </div>
 				</div>
@@ -314,8 +314,8 @@ $this->title = 'Create Qard';
 										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDeck share URL</p>
 									</div>
 									<div class="form-group extra-content" style="margin-bottom: 60px;">
-										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
-										<input type="text" name="url-desc" class="col-sm-6 col-md-6 col-md-offset-1" placeholder="Add a description">
+										<input type="text" data-check="off" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
+										<input type="text" data-check="off" name="url-desc" class="col-sm-6 col-md-6 col-md-offset-1" placeholder="Add a description">
 									</div>
 									<div id="link_div" style="padding-bottom: 10px;">
 										<div class="preview-image">                                       

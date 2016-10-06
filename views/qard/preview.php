@@ -811,7 +811,7 @@ $this->title = 'Preview Qard';
 	/*********** Remove Deck Control Process *******/
 	
 	function removeFromDeck(qarddeckid){
-	var checkval = confirm ("Are You Sure To Remove the Deck ?");
+	var checkval = confirm ("Are you sure want to remove qard from this Deck ?");
 		if(checkval == true)	
 		{
 			if(qarddeckid)		

@@ -327,6 +327,7 @@ class QardController extends Controller
 		$model = $this->findModel($id);
 		$single = true;
 		$modelFeed = $model->getQardHtmlSingle();	
+		
 		//print_r($modelFeed);die;
         return $this->render('view', [
             'model' => $modelFeed,
@@ -589,9 +590,10 @@ class QardController extends Controller
 			$deck = Deck::findOne($deckrel->deck_id);
 			$deckcount  = $deck->getDeckqardCount();
 			
+			$connection = Yii::$app->getDb(); 						
+			$command = $connection->createCommand('SELECT q.qard_id FROM `qard_deck` qd, `qard` q where qd.`deck_id` = '.$deck->deck_id.' and qd.`qard_id`= q.`qard_id` and q.`status` != 2 ORDER BY q.`qard_id` ASC');
+			$results = $command->queryAll(); 
 		
-			$results = QardDeck::find()->where(['deck_id'=>$deck->deck_id])->orderBy('qard_id ASC')->asArray()->all();
-					
 			foreach( $results as $key=>$tmp)
 			{
 				if($tmp['qard_id'] ==  $qard_id )

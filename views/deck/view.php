@@ -37,7 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <ul class="deck-tags">
 									<?=$model->getTagsHtml();?>
                                     </ul>
-									<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>deck/manage?id=<?=$model->deck_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Deck</button>
+									<?php if(Yii::$app->user->id == $model->user_id){ ?>
+										<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>deck/manage?id=<?=$model->deck_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Deck</button>
+										<button class="btn btn-grey deck-delete" data-id="<?=$model->deck_id?>" ><i class="fa fa-trash"></i>&nbsp;Delete Deck</button></span>
+									<?php } ?>
                                 </div>
                             </div>
                             <div class="right-block col-sm-4 col-md-4">
@@ -109,8 +112,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
 										<?php foreach($qards as $qard) {								
 										
-									//$qardval = Qard::findOne($qard);  code check
-										$qardval = 	Qard::findOne(['qard_id' => $qard,'not',['status'=>2] ]);
+							//$qardval = Qard::findOne($qard);  code check
+							//$qardval = 	Qard::findOne(['qard_id' => $qard,'status' => !2 ]);
+								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
 					
 											if(isset($qardval)){
 																							
@@ -178,4 +182,25 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			});
 			
+			
+	$('.deck-delete').on('click',function(){
+		var chksts = confirm ("Are you sure to delete this Deck ?");
+		if(chksts == true)	
+		{
+				var deckid = $(this).attr('data-id');
+				$.ajax({
+						url: '<?=Url::to(['deck/delete-deck'], true);?>',
+						type: "POST",
+						data: {
+							'deckid': deckid
+						},
+						success: function(data) {
+							alert("Deck has been Deleted Successfully!!!.");							
+							window.location.href = "<?=\Yii::$app->homeUrl?>qard/my-qards?type=decks";
+							}
+						});						
+		}
+	});
+	
+	
 </script>

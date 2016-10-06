@@ -3091,7 +3091,7 @@ span.btn.btn-success.fileinput-button {
     box-shadow: none;
     color: rgb(216, 216, 216);
     vertical-align: middle;
-    text-align: center;
+    /*text-align: center;  /*qard preview is changed */
     padding: 40px;
     min-height: 600px;
     background: #f1f1f1;
