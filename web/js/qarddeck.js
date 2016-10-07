@@ -103,12 +103,14 @@
 						console.log(event.type);	
 
 						
-					 if(event.type === "keydown"){					
-						event.preventDefault();						
+					 if(event.type === "keydown"){	
+						event.preventDefault();									
+						alert("Ooops! No more place to type? Please use the extra text space to type.");
+						//return false;
+						
 						//$(this).val($(this).val().replace(/\v+/g, ''));
 						
-						$(this).children(':last-child').text($(this).children(':last-child').text().substr(0,$(this).children(':last-child').text().length-2));
-						alert("Ooops! No more place to type? Please use the extra text space to type.");
+						/* $(this).children(':last-child').text($(this).children(':last-child').text().substr(0,$(this).children(':last-child').text().length-1));  */
 						
 						return false;
 					}					
@@ -1064,7 +1066,7 @@ function embedCode(videoLink){
 	var eUrl = $(videoLink).attr('data-value');
 	
 	var html = '<iframe src="'+eUrl+'" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-	$('#embed_div .preview-image').html(html);
+	$('#embed_div').html(html);
 	//$('.nav-tabs a[href="#linkblock"]').tab('show');
 	$('.nav-tabs a[href="#videoblock"]').tab('show');
 	
@@ -2672,9 +2674,8 @@ $(document).on('click', '#sw-cmn-toggle-57', function(){
 function checkvlinkfn()
 {	
 	  var vurl = $('#embed_code').val();
-	  var vlinkurl = $('#emcode_hid').val();
 
-	  if(($.trim(vurl) != "") && ($('#embed_div').find('.preview-image').length >= 0 )){ 
+	  if(($.trim(vurl) != "" ) && ($('#embed_div').find('.preview-image').length <= 0 )){ 
 	    $('#cmn-toggle-57').attr("disabled",false);			
 	   return true;
 	}

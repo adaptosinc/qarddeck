@@ -1381,7 +1381,7 @@ li.color {
     max-width: 100%;
     margin: 0 auto;
     max-height: 100%;
-    height: 300px;
+  /*  height: 300px; view as slider bar check (deck/view page) */
 }
 .carousel-indicators {
     bottom: -30px;

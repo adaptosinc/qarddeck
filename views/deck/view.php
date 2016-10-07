@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Unfollow </button> 
 									<?php } ?>
                                 </div>
-                                <button class="btn qard">View Deck as Slides</button>
+                                <button id="changetoslider" class="btn qard">View Deck as Slides</button>
                             </div>
                         </div>
                     </div>                  
@@ -105,7 +105,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>-->
 					
-					  <div class="main-content">
+					
+					
+					  <div class="main-content" id="generalview" >
                         <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
@@ -130,6 +132,133 @@ $this->params['breadcrumbs'][] = $this->title;
 						</div>
 					</div>
 					
+					<!-------------------------- Slider Function Start -------------------------------->
+					
+
+		
+		<!-- <div class="main-content" id="sliderview"  style="display:none;" >
+                        <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">    
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+								
+			<div class="col-sm-3 col-md-3">
+			
+				<div class="left_nav">	
+			
+					<a href="<?=Yii::$app->homeUrl?>qard/consume?qard_id=" >
+					<img src="<?=Yii::$app->homeUrl?>images/arrow-left_icon.png" alt="" width="20px" height="30px">
+					<span><strong>Prev</strong></span> </a>
+				
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-6">
+				<ul class="view-list">
+					<li class="edit-info"><img src="" width="65px" height="65px" alt=""><span><strong></strong></span></li>
+				
+					<li class="preview-button"  ><a class="btn btn-grey" style="background: #e4e4e4 none repeat scroll 0 0;border-radius: 50%;" href="<?=Yii::$app->homeUrl?>deck/view?id=" ><img src="<?=Yii::$app->homeUrl?>images/preview_icon.png" alt="" width="25px" height="15px" ></a></li>
+					<li class="preview-button"><a style="background: #e4e4e4 none repeat scroll 0 0;border-radius: 50%;" class="btn btn-grey" href="<?=Yii::$app->homeUrl?>deck/manage?id="><i class="fa fa-pencil"></i></a></li>
+				</ul>
+			</div>
+			<div class="col-sm-3 col-md-3">
+				<div class="right_nav">   
+			
+					<a href="<?=Yii::$app->homeUrl?>qard/consume?qard_id=" >			
+					<span><strong>Next</strong></span>
+					<img src="<?=Yii::$app->homeUrl?>images/arrow-right_icon.png" alt="" width="20px" height="30px">
+					</a>
+			
+				</div>
+			</div>                        
+        </div>		
+        </div>		
+        </div>		
+        </div>		--->
+	
+	
+	
+	<div class="container" id="sliderview"  style="display:none;" >
+  <br>
+  <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false" >
+    <!-- Indicators -->
+    <!---<ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+      <li data-target="#myCarousel" data-slide-to="3"></li>
+    </ol>  -->
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+	
+	
+      <!--<div class="item active">
+        <img src="img_chania.jpg" alt="Chania" width="460" height="345">
+      </div>
+
+      <div class="item">
+        <img src="img_chania2.jpg" alt="Chania" width="460" height="345">
+      </div>
+    
+      <div class="item">
+        <img src="img_flower.jpg" alt="Flower" width="460" height="345">
+      </div>
+
+      <div class="item">
+        <img src="img_flower2.jpg" alt="Flower" width="460" height="345">
+      </div>-->
+	  
+	  
+	    
+                        
+									
+	  	<?php 
+					$i = 0;
+				foreach($qards as $qard) {								
+						$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
+					
+				if(isset($qardval)){
+																							
+						?>
+						
+		  
+					<div class="item <?php if($i == 0){ echo "active"; } ?>" >	
+					
+					<div class="main-content" style="margin-left:25%" >
+			<div class="popular-qards profile tab-pane fade in active" role="tabpanel">  
+		  
+					<?php print_r($qardval->getQardHtml()); ?>
+					
+					
+						</div>
+						
+						</div>
+    </div>	
+					<?php $i= $i+1; } 
+								} ?> 
+											
+			 
+   
+    							
+   
+    </div>
+
+    <!-- Left and right controls -->
+	<?php if($i > 1) { ?>
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+	<?php } ?>
+  </div>
+</div>
+
+
+	<!-------------------------- Slider Function End -------------------------------->
+	
                 </section>
 
 </div>
@@ -202,5 +331,41 @@ $this->params['breadcrumbs'][] = $this->title;
 		}
 	});
 	
+	$('#changetoslider').on('click',function(){
+		var chaval = $("#changetoslider").html();
+			if($.trim(chaval) == "View Deck as Slides")
+				$("#changetoslider").html("View Deck as General");
+			else if($.trim(chaval) == "View Deck as General")
+				$("#changetoslider").html("View Deck as Slides");
+			
+		$("#sliderview").toggle();
+		$("#generalview").toggle();
+		
+	});
 	
+	
+
+	$( document ).ready(function() {
+		checkitem() ;
+		$('#myCarousel').on('slid.bs.carousel', checkitem);
+	});
+	
+function checkitem()                        // check function
+{
+   var $this = $('#myCarousel');
+  $this.children('.carousel-control').show();
+
+  if($('.carousel-inner .item:first').hasClass('active')) {
+    $this.children('.left.carousel-control').hide();
+  } else if($('.carousel-inner .item:last').hasClass('active')) {
+    $this.children('.right.carousel-control').hide();
+  }
+ 
+}
+
+
+
+	
+
 </script>
+
