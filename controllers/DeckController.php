@@ -474,10 +474,15 @@ class DeckController extends Controller
     {
 		$deckid = Yii::$app->request->post()['deckid'];
 		
-		$command = \Yii::$app->db->createCommand()->update('deck',
+		/* $command = \Yii::$app->db->createCommand()->update('deck',
 						['status'=> 2],
 						['deck_id' => $deckid]);
+		$command->execute(); */
+		
+		$this->findModel($deckid)->delete();
+		$command = \Yii::$app->db->createCommand()->delete('qard_deck',['deck_id' => $deckid]);
 		$command->execute();
+		
 	}
 	
 }

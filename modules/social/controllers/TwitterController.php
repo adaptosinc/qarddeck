@@ -13,8 +13,14 @@ class TwitterController extends \yii\web\Controller
     public $CONSUMER_KEY,$CONSUMER_SECRET,$OAUTH_CALLBACK,$servername,$base_url;
     
     public function init(){      
-        $this->CONSUMER_KEY='VJPyNIpFA3BxklMznstgmAYo1';// app id from twitter app
-        $this->CONSUMER_SECRET='XBAv492XUtDY4SnjbxGcysrHZPMbGzhkMCdz1M65ICEy7ogY5Q'; // app secret key from twitter app
+        //$this->CONSUMER_KEY='VJPyNIpFA3BxklMznstgmAYo1';// app id from twitter app
+        //$this->CONSUMER_SECRET='XBAv492XUtDY4SnjbxGcysrHZPMbGzhkMCdz1M65ICEy7ogY5Q'; // app secret key from twitter app
+		
+	  
+        $this->CONSUMER_KEY='xo4tPpREtcalKb2XheYxocB6P';// ARIVAZAHGAN app id from twitter app
+        $this->CONSUMER_SECRET='G8aEtlTCB1hMPqC2qyjKtGJQxhl7tlprrUqyFthp57FJNoE7wi'; //  ARIVAZAHGAN app secret key from twitter app
+		
+		
         $this->base_url=Yii::$app->request->baseUrl;  //base url
         //$this->servername=  filter_input(INPUT_SERVER, 'SERVER_NAME');  //server name of working server
         $this->servername = $_SERVER['HTTP_HOST']; 

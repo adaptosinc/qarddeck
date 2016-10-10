@@ -76,7 +76,7 @@ $this->title = 'Edit Qard';
 
 				<div class="col-sm-6 col-md-6">
 					<h2>
-						<input type="text" name="qard_title" id="qard_title" value="<?php echo $model->title;?>" placeholder="Enter a Title for this Qard *" style="width:100% !important" >
+						<input type="text" name="qard_title" id="qard_title" value="<?php echo $model->title;?>" placeholder="Enter a Title for this Qard" style="width:100% !important" >
 					</h2>                            
 				</div>
 		</div>

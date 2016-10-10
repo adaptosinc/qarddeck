@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					</div>
 					<div class="col-sm-4 col-md-4">
 							<div class="sidebar-qard qard-manage" id="preview">     <!-- side qard -->
-								<div class="qard-content">
+								<div class="qard-content" style="text-align:center !important" >
 									<img src="<?=\Yii::$app->homeUrl?>images/preview_icon.png" alt="">
 									<h4>Qard Preview Area</h4>
 								</div>                                                                                  
