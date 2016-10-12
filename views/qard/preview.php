@@ -873,7 +873,21 @@ $this->title = 'Preview Qard';
 				type : 'POST',
 				data : {'qard_id':qard_id,'deck_id':deck_id},
 				success : function(data){
-					window.location="<?=\Yii::$app->homeUrl?>qard/preview-qard?qard_id=<?=$model->qard_id?>";
+						// Qard Image Created  for Deck Control view process
+					$.ajax({
+					  url: "<?=Url::to(['qard/generate-qard-image'], true)?>",
+					  type: "GET",
+					  data: {'qard_id':qard_id},
+					  success: function(){
+						window.location="<?=\Yii::$app->homeUrl?>qard/preview-qard?qard_id=<?=$model->qard_id?>";
+					 },
+					 error: function() {
+						window.location="<?=\Yii::$app->homeUrl?>qard/preview-qard?qard_id=<?=$model->qard_id?>";
+					 }
+					});
+					
+					
+					
 				}				
 			}); 
 			

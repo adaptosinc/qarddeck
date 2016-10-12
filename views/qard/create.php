@@ -930,6 +930,7 @@ $this->title = 'Create Qard';
 		'addFileDataUrl'  : '<?=Url::to(['block/add-filedata'], true);?>',
 		'getFileDataUrl'  : '<?=Url::to(['block/get-filedata'], true);?>',
 		'copyQardBlockUrl'  : '<?=Url::to(['block/copy-block'], true);?>',
+		'genQardImage'  : '<?=Url::to(['qard/generate-qard-image'], true);?>',
 	
 		
 	});
@@ -942,8 +943,9 @@ $this->title = 'Create Qard';
 			 alert('Please Add Tags!!!..');
 			 $('.select2-search__field').focus();
 			  return false;
-			 }		
-		addSaveCard();
+			 }	
+			 
+		addSaveCard();		
 });
 
 $( "#ajaxDeck" ).submit(function( event ) {

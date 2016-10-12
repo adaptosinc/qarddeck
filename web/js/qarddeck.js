@@ -197,8 +197,8 @@
 				}); 
 				return true;				
 		};	
-		plugin.addToDeck = function(deck){
-			add_block(true,false); 
+		plugin.addToDeck = function(deck){ 	
+			add_block(true,false); 			
 			var deck_id = $(deck).attr('id');
 			var qard_id = $('#qard_id').val()||0; 
 			$.ajax({
@@ -210,9 +210,16 @@
 					//load the a new create page with a deckid included request
 					var red_url = plugin.settings.editQardUrl;
 					red_url = red_url+"?id="+qard_id;
-					//console.log(red_url);
+					//console.log(red_url);			
 					window.location.replace(red_url);
-					
+					// Qard Image Created  for Deck Control view process
+					$.ajax({
+						url: plugin.settings.genQardImage,
+						type: "GET",
+						data: {qard_id:qard_id},
+						success: function(){
+						}
+					});
 				}				
 			});
 			//console.log(deck_id);
@@ -527,7 +534,20 @@
 					$("#wait").hide();
 					var qard_id = $("#qard_id").val() || 0;
 					var url = plugin.settings.previewQardUrl;
+					
 					window.location.replace(url+"?qard_id="+qard_id);
+
+					
+					// Qard Image Created  for Deck Control view process
+					$.ajax({
+						url: plugin.settings.genQardImage,
+						type: "GET",
+						data: {qard_id:qard_id},
+						success: function(){
+						}
+					});
+					
+				
 				}
 			});			
 		}
@@ -1086,7 +1106,7 @@ function embedCode(videoLink){
 function saveDeck(deck){
 	$(window).data('qardDeck').saveDeck(deck);			
 }
-function addToDeck(deck){
+function addToDeck(deck){	
 	$(window).data('qardDeck').addToDeck(deck);		
 }
 function focusWorkspace(){

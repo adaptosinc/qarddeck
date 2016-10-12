@@ -980,6 +980,7 @@ $this->title = 'Edit Qard';
 		'getFileDataUrl'  : '<?=Url::to(['block/get-filedata'], true);?>',
 		'copyQardBlockUrl'  : '<?=Url::to(['block/copy-block'], true);?>',
 		'removeQardDeckUrl' : '<?=Url::to(['qard/remove-qard-deck'], true);?>',
+		'genQardImage'  : '<?=Url::to(['qard/generate-qard-image'], true);?>',
 	});
 
 </script>
@@ -992,8 +993,9 @@ $this->title = 'Edit Qard';
 			 alert('Please Add Tags!!!..');
 			 $('.select2-search__field').focus();
 			  return false;
-			 }		
-		addSaveCard();
+			 }	
+			 
+		addSaveCard();		
 });
 
 	$( "#ajaxDeck" ).submit(function( event ) {

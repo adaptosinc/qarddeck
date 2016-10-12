@@ -82,13 +82,13 @@ class TwitterController extends \yii\web\Controller
             $_SESSION['status'] = 'verified';
             $_SESSION['request_vars'] = $access_token;		
             //Insert user into the database
-            $user_info = json_decode(json_encode($connection->get('account/verify_credentials')),true); 
+            $user_info = json_decode(json_encode($connection->get('account/verify_credentials')),true);			
             $status=$this->insertRecord($user_info);
-            if(!empty($status->errors)){
+			
+            if(!empty($status->errors)){ 
                 //pass errors status	
                 return $this->redirect(['../site/index']);
-            }else{
-				
+            }else{				 
                 Yii::$app->user->login($status, '3600*24*30');   							
 				$qard_id = Yii::$app->session['qard_id'];
 				if(isset($qard_id) && !empty($qard_id))
@@ -120,8 +120,12 @@ class TwitterController extends \yii\web\Controller
 	//to check already present or not
 	 $user = User::find()->where(['username'=>$model->username])->one();
 	if($user){ //yes   
+		$profile = Profile::find()->where(['user_id'=>$user->id])->one();		
+		$profile->profile_photo = $result['profile_image_url'];
+		$profile->update();
 	    return $user;
 	}
+	 
 	$model->created_at=time();
 	$model->updated_at=time();
 	$model->verify_password=$result['id'];
@@ -129,7 +133,6 @@ class TwitterController extends \yii\web\Controller
 	$model->generateAuthKey();	
 	$model->login_type = "twitter";
 
-	
 	//if($model->validate()){
 	    if($model->save(false)){
 		$profile->user_id=$model->id;

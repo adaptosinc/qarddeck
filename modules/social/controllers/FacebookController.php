@@ -100,7 +100,10 @@ class FacebookController extends \yii\web\Controller
 	$model->password=$result['id'];
 	//to check already present or not
 	$user = User::find()->where(['username'=>$model->username])->one();
-	if($user){ //yes   
+	if($user){ //yes 
+		$profile = Profile::find()->where(['user_id'=>$user->id])->one();		
+		$profile->profile_photo = "//graph.facebook.com/".$result['id']."/picture?type=large";
+		$profile->update(); 		
 	    return $user;
 	}	
 	$model->created_at=time();

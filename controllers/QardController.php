@@ -691,7 +691,7 @@ class QardController extends Controller
 			$model = Qard::findOne($q_id);
 			$model->status = $status;
 			$model->user_id = \Yii::$app->user->id;
-			$model->qard_image_url = $this->generateQardImage($q_id);
+			$model->qard_image_url = $this->actionGenerateQardImage($q_id);
 			if($model->save(false)){
 				return true;
 			}else{
@@ -707,7 +707,7 @@ class QardController extends Controller
 			return $this->redirect(['site/index']);
 		$model->status = $status;
 		$model->user_id = \Yii::$app->user->id;
-		$model->qard_image_url = $this->generateQardImage($id);
+		$model->qard_image_url = $this->actionGenerateQardImage($id);
 		if($model->save(false)){
 			//generate the qard image here
 			unset(\Yii::$app->session['qard']);
@@ -1168,15 +1168,20 @@ class QardController extends Controller
      }}
            }
            
-    public function generateQardImage($qard_id){
+    public function actionGenerateQardImage($qard_id){
 	
 		include("lib/GrabzItClient.class.php");
 		$grabzIt = new GrabzItClient("NWFkMzlhNTExMGVmNDQ2MzkxZjIxZTA4ZDVhYjQxZTc=", "Jn0kaWU/QD8MFGNOaw8/Gmg/Pz8/BT8SMj8hHj8/U2Y=");
 		
 		// To take a image screenshot		//$grabzIt->SetImageOptions("http://wordpressmonks.com/works/qarddeck/web/qard/create?theme_id=2",null,-1,-1,null,null,'jpg',0,'add-block'); 	
-		 $grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard'.$qard_id, $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); 
 		
+		 $grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard'.$qard_id, $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); 
+	
+		
+		/* Arivazhagan Change Base Url Testing $grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard'.$qard_id, $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); 
+		 */
 		//$grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800);
+		
 		$directory = \Yii::$app->basePath."/web/uploads/qards";
 
 		$filepath = $directory."/".$qard_id.".png";
