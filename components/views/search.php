@@ -45,14 +45,15 @@ echo AutoComplete::widget([
 
 <script>
 $(document).ready(function(){
-	$('#search').on('blur', function(e) {
+	
+	/* $('#search').on('blur', function(e) {
 		var serachval = $(this).val();						
 		if($.trim(serachval) == "" )
 		{
 			$("#searchid").val('');
 			window.location.href = '<?=Yii::$app->homeUrl?>qard/index?type=both';
 		}	
-	});
+	}); */
 	
 	$('#search').keypress(function (e) {
  var key = e.which;

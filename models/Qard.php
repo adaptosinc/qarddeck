@@ -43,7 +43,7 @@ class Qard extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'qard_theme', 'qard_privacy', 'status', 'title', 'url'], 'required'],
+            [['user_id', 'qard_theme', 'qard_privacy', 'status'], 'required'],
             [['user_id', 'qard_theme', 'qard_privacy', 'status'], 'integer'],
             [['title', 'url', 'description', 'bg_image'], 'string'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -412,6 +412,19 @@ class Qard extends \yii\db\ActiveRecord
 		$command = $query->createCommand();
 		$activities = $command->queryAll();
 		return $activities;					
+	}
+	
+	
+	public function getQardDeckCount($deck_id,$deck_user_id){	
+		$connection = Yii::$app->getDb(); 
+		if(\Yii::$app->user->id == $deck_user_id){
+		$command = $connection->createCommand('SELECT q.qard_id FROM `qard_deck` qd, `qard` q where qd.`deck_id` = '.$deck_id.' and qd.`qard_id`= q.`qard_id` and q.`status` != 2 ORDER BY q.`qard_id` ASC');
+		} else {
+		$command = $connection->createCommand('SELECT q.qard_id FROM `qard_deck` qd, `qard` q where qd.`deck_id` = '.$deck_id.' and qd.`qard_id`= q.`qard_id` and q.`status` = 1 ORDER BY q.`qard_id` ASC');
+			
+		}
+		$results = $command->queryAll(); 
+		return $results;	
 	}
 	
 	

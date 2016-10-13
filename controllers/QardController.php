@@ -590,9 +590,12 @@ class QardController extends Controller
 			$deck = Deck::findOne($deckrel->deck_id);
 			$deckcount  = $deck->getDeckqardCount();
 			
-			$connection = Yii::$app->getDb(); 						
+			$results  = $qard->getQardDeckCount($deck->deck_id,$deck->user_id);
+			/* $connection = Yii::$app->getDb(); 
+			
 			$command = $connection->createCommand('SELECT q.qard_id FROM `qard_deck` qd, `qard` q where qd.`deck_id` = '.$deck->deck_id.' and qd.`qard_id`= q.`qard_id` and q.`status` != 2 ORDER BY q.`qard_id` ASC');
-			$results = $command->queryAll(); 
+			
+			$results = $command->queryAll();  */
 		
 			foreach( $results as $key=>$tmp)
 			{
@@ -692,6 +695,7 @@ class QardController extends Controller
 			$model->status = $status;
 			$model->user_id = \Yii::$app->user->id;
 			$model->qard_image_url = $this->actionGenerateQardImage($q_id);
+			
 			if($model->save(false)){
 				return true;
 			}else{
@@ -708,6 +712,8 @@ class QardController extends Controller
 		$model->status = $status;
 		$model->user_id = \Yii::$app->user->id;
 		$model->qard_image_url = $this->actionGenerateQardImage($id);
+		
+		
 		if($model->save(false)){
 			//generate the qard image here
 			unset(\Yii::$app->session['qard']);
@@ -1169,13 +1175,16 @@ class QardController extends Controller
            }
            
     public function actionGenerateQardImage($qard_id){
-	
+		
 		include("lib/GrabzItClient.class.php");
 		$grabzIt = new GrabzItClient("NWFkMzlhNTExMGVmNDQ2MzkxZjIxZTA4ZDVhYjQxZTc=", "Jn0kaWU/QD8MFGNOaw8/Gmg/Pz8/BT8SMj8hHj8/U2Y=");
 		
 		// To take a image screenshot		//$grabzIt->SetImageOptions("http://wordpressmonks.com/works/qarddeck/web/qard/create?theme_id=2",null,-1,-1,null,null,'jpg',0,'add-block'); 	
 		
-		 $grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard'.$qard_id, $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); 
+		
+		$url = 'http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id;
+		
+		$grabzIt->SetImageOptions($url, $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard'.$qard_id, $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); 
 	
 		
 		/* Arivazhagan Change Base Url Testing $grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard'.$qard_id, $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); 
@@ -1318,6 +1327,39 @@ class QardController extends Controller
 			->execute();
 			return true;
 		}	 
+    }
+	
+	public function actionCreateDeckQard($deck_id)
+    {					
+		return $this->redirect(['theme/select-theme?deck_id='.$deck_id]);
+    }
+	
+	public function actionDeckQardTheme($deck_id,$theme_id)
+    {							
+		$user_id = \Yii::$app->user->id;
+		$deck_id = $deck_id;
+		$theme_id = $theme_id;
+	
+		if($user_id)
+		{
+			$model = new Qard;
+			$model->qard_theme = $theme_id;
+			$model->user_id = $user_id;
+			$model->status = 0;
+			$model->qard_privacy = 1;	
+			$model->save();  
+			$qard_id = $model->qard_id;			
+			$model2 = new QardDeck;
+			$model2->qard_id = $qard_id;
+			$model2->deck_id = $deck_id;
+			$model2->save();			
+			return $this->redirect(['qard/edit?id='.$qard_id]); 						
+		} else 
+		{
+			return $this->redirect(['deck/manage?id='.$deck_id]);
+		}
+		
+		
     }
 	
 }

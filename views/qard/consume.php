@@ -58,7 +58,9 @@ $this->title = 'Consume Qard';
 					<li class="edit-info"><img src="<?= $deck->bg_image; ?>" width="65px" height="65px" alt=""><span><strong><?= $deck->title; ?></strong></span></li>
 					<li><img src="<?=Yii::$app->homeUrl?>images/qards_icon.png" alt=""><?=$viewcurrent;?>/<?=$deckcount; ?></li>
 					<li class="preview-button"  ><a class="btn btn-grey" style="background: #e4e4e4 none repeat scroll 0 0;border-radius: 50%;" href="<?=Yii::$app->homeUrl?>deck/view?id=<?= $deck->deck_id ?>" ><img src="<?=Yii::$app->homeUrl?>images/preview_icon.png" alt="" width="25px" height="15px" ></a></li>
+					<?php if(\Yii::$app->user->id == $deck->user_id){ ?>
 					<li class="preview-button"><a style="background: #e4e4e4 none repeat scroll 0 0;border-radius: 50%;" class="btn btn-grey" href="<?=Yii::$app->homeUrl?>deck/manage?id=<?= $deck->deck_id ?>"><i class="fa fa-pencil"></i></a></li>
+					<?php } ?>
 				</ul>
 			</div>
 			<div class="col-sm-3 col-md-3">

@@ -1,10 +1,10 @@
 <?php 
 
 $this->title = 'Themes';
-$this->params['breadcrumbs'][] = $this->title;
-
+$this->params['breadcrumbs'][] = $this->title;		
 ?>
 
+			
 	<section class="theme-main content">
 		<div class="action-qard">
 			<button class="btn btn-default pull-left" onclick="location.href='<?php echo \Yii::$app->homeUrl?>/qard/select-template';"><i class="fa fa-chevron-left"></i>&nbsp;Select Template</button>
@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				$template = 'true';
 			}
 				
+			
 			foreach($models as $model){
 				$theme_properties = unserialize($model->theme_properties);
 				echo '<div class="grid-item qard-bg" id="'.$model->theme_id.'" data-qid="'.$_REQUEST['q_id'].'">     <!-- qard -->
@@ -61,13 +62,18 @@ $this->params['breadcrumbs'][] = $this->title;
 		
      <!-- row  -->
 		</div>      <!-- template list -->
-		<h4 style="margin-top: 30px;">Select a Theme</h4>
+		<!--<h4 style="margin-top: 30px;">Select a Theme</h4>-->
 	</section>
 	<script>
 	$('.qard-bg').on('click',function(){
 		var id = $(this).attr('id');
 		var q_id = $(this).attr('data-qid');
 		var template = <?=$template ?>;
+		var deck_id ='';
+		<?php if(isset($deck_id) && !empty($deck_id)){ ?>
+			 deck_id = <?=$deck_id ?>;
+		<?php } ?>
+		
 		if(q_id!=''){
 			if(template ==true)
 				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit-template?theme_id='+id+'&id='+q_id;				
@@ -75,7 +81,12 @@ $this->params['breadcrumbs'][] = $this->title;
 				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/edit?theme_id='+id+'&id='+q_id;
 		}
 		else{
-			window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+id;
+			if($.trim(deck_id) != "")
+			{
+				window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/deck-qard-theme?deck_id='+deck_id+'&theme_id='+id;
+			}else{
+			 window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/create?theme_id='+id;
+			}
 		}
 	});
 

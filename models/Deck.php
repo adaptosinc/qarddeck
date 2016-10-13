@@ -197,14 +197,20 @@ class Deck extends \yii\db\ActiveRecord
 		$count = count($qard_decks); */
 		
 		$connection = Yii::$app->getDb(); 
+		
+		if(\Yii::$app->user->id == $this->user_id)
+		{
 		$command = $connection->createCommand('SELECT count(*) as qardcount FROM `qard_deck` `qd`, `qard` `q` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= q.`qard_id`) AND (q.`status` != 2 )');
-	
+		}
+		else
+		{
+			$command = $connection->createCommand('SELECT count(*) as qardcount FROM `qard_deck` `qd`, `qard` `q` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= q.`qard_id`) AND (q.`status` = 1 )');	
+		}
 		$activities = $command->queryOne();	
 		$count = $activities['qardcount'];
 		return $count;
 		
     }
-	
 	
 	 public function getDeckqardbookmarkCount()
     {

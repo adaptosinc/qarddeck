@@ -73,50 +73,22 @@ $this->params['breadcrumbs'][] = $this->title;
 					
 					
 					?>
-                  <!--  <div class="main-content">
-                        <div class="popular-qards">     
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="deckgrid">
-										<?php foreach($qards as $qard) {										
-											$qardval = 	Qard::findOne($qard);
-											if(isset($qard)){
-												
-											
-										?>
-											
-											<div class="deckgrid-item">     
-												<div class="qard-content">
-													<?php print_r($qardval->getQardHtml()); ?>
-												</div>
-												<div class="qard-bottom">
-													<ul class="qard-tags">
-														<li class="pull-left"><img src="<?=$qardval->userProfile->profile_photo; ?>" alt="" width="15px" height="15px" style="border-radius:50%;"><?=$qardval->userProfile->fullname; ?></li>
-														<li class="pull-right"><?=$qardval->getCreatedAgo();?></li>
-													</ul>
-													<h4><?=$qardval->title; ?></h4>
-												</div>                                              
-											</div>									
-											<?php } 
-											} ?>                                      
-                                    </div>  
-                                </div>
-                            </div>         
-                        </div>
-                    </div>-->
-					
-					
+               
 					
 					  <div class="main-content" id="generalview" >
                         <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
                                     <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
-										<?php foreach($qards as $qard) {								
-										
-							//$qardval = Qard::findOne($qard);  code check
-							//$qardval = 	Qard::findOne(['qard_id' => $qard,'status' => !2 ]);
+										<?php foreach($qards as $qard) {
+								if(\Yii::$app->user->id == $model->user_id)
+								{									
 								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
+								} else 
+								{
+									$qardval = 	Qard::find()->where('qard_id = :qard_id and status = :status', ['qard_id'=>$qard, 'status'=>1])->one();
+								}
+								
 					
 											if(isset($qardval)){
 																							
@@ -132,90 +104,32 @@ $this->params['breadcrumbs'][] = $this->title;
 						</div>
 					</div>
 					
-					<!-------------------------- Slider Function Start -------------------------------->
 					
-
-		
-		<!-- <div class="main-content" id="sliderview"  style="display:none;" >
-                        <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">    
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
-								
-			<div class="col-sm-3 col-md-3">
-			
-				<div class="left_nav">	
-			
-					<a href="<?=Yii::$app->homeUrl?>qard/consume?qard_id=" >
-					<img src="<?=Yii::$app->homeUrl?>images/arrow-left_icon.png" alt="" width="20px" height="30px">
-					<span><strong>Prev</strong></span> </a>
-				
-				</div>
-			</div>
-			<div class="col-sm-6 col-md-6">
-				<ul class="view-list">
-					<li class="edit-info"><img src="" width="65px" height="65px" alt=""><span><strong></strong></span></li>
-				
-					<li class="preview-button"  ><a class="btn btn-grey" style="background: #e4e4e4 none repeat scroll 0 0;border-radius: 50%;" href="<?=Yii::$app->homeUrl?>deck/view?id=" ><img src="<?=Yii::$app->homeUrl?>images/preview_icon.png" alt="" width="25px" height="15px" ></a></li>
-					<li class="preview-button"><a style="background: #e4e4e4 none repeat scroll 0 0;border-radius: 50%;" class="btn btn-grey" href="<?=Yii::$app->homeUrl?>deck/manage?id="><i class="fa fa-pencil"></i></a></li>
-				</ul>
-			</div>
-			<div class="col-sm-3 col-md-3">
-				<div class="right_nav">   
-			
-					<a href="<?=Yii::$app->homeUrl?>qard/consume?qard_id=" >			
-					<span><strong>Next</strong></span>
-					<img src="<?=Yii::$app->homeUrl?>images/arrow-right_icon.png" alt="" width="20px" height="30px">
-					</a>
-			
-				</div>
-			</div>                        
-        </div>		
-        </div>		
-        </div>		
-        </div>		--->
-	
-	
 	
 	<div class="container" id="sliderview"  style="display:none;" >
   <br>
   <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false" >
     <!-- Indicators -->
-    <!---<ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-      <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol>  -->
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
 	
 	
-      <!--<div class="item active">
-        <img src="img_chania.jpg" alt="Chania" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="img_chania2.jpg" alt="Chania" width="460" height="345">
-      </div>
-    
-      <div class="item">
-        <img src="img_flower.jpg" alt="Flower" width="460" height="345">
-      </div>
-
-      <div class="item">
-        <img src="img_flower2.jpg" alt="Flower" width="460" height="345">
-      </div>-->
-	  
-	  
-	    
                         
 									
 	  	<?php 
 					$i = 0;
 				foreach($qards as $qard) {								
-						$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
+				/* 		$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one(); */
 					
+					if(\Yii::$app->user->id == $model->user_id)
+								{									
+								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
+								} else 
+								{
+									$qardval = 	Qard::find()->where('qard_id = :qard_id and status = :status', ['qard_id'=>$qard, 'status'=>1])->one();
+								}
+								
 				if(isset($qardval)){
 																							
 						?>

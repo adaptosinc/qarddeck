@@ -224,8 +224,19 @@ $this->title = 'Edit Qard';
 					 echo $str;
 					
 					?>
-
-                        <h5 class="add-another" onclick="add_block(event,true)"><i class="fa fa-plus"></i>Add another block </h5>
+					<?php if(isset($blocks) && empty($blocks)){
+						?>
+                        
+						<div id="working_div" class="working_div block active">
+                            <div id="blk_1" class="bgimg-block parent_current_blk">
+                                <div class="bgoverlay-block">
+                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off" data-block_priority="1" style="overflow:hidden;margin:10px"></div>
+                                </div>
+                            </div>
+                        </div>
+						
+					<?php } ?>
+						<h5 class="add-another" onclick="add_block(event,true)"><i class="fa fa-plus"></i>Add another block </h5>
                 </div>
             </div>
             <div class="col-sm-9 col-md-9">
