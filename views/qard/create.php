@@ -78,7 +78,7 @@ $this->title = 'Create Qard';
 				</br>
 				<div class="row">
 						<div class="col-sm-8 col-md-8" style="padding: 0;">
-							<select class="js-example-basic-multiple form-control" id="tags" name="tags[]" multiple="multiple" placeholder="Add some tags">
+							<select class="js-example-basic-multiple form-control" id="tags" name="tags[]" multiple="multiple" placeholder="Add some tags" style="display:none">
 							<?php foreach($tags as $tag){
 							echo '<option value="'.$tag->tag_id.'">'.$tag->name.'</option>';
 							}?>
