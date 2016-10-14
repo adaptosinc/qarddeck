@@ -910,9 +910,9 @@ class QardController extends Controller
 				$image = $domain.$image;
 			//echo $domain;echo $result;
 			$preview_html = '<div id="review-qard-id" class="review-qard row" id="">';
-			/* if($this->isFrameAllowed($url)){
+			if($this->isFrameAllowed($url)){
 				$preview_html .= '<iframe src="'.$url.'" style="border:none"  width="100%" height="500px" ></iframe>';
-			}else{  */
+			}else{ 
 				$preview_html .= '
 				<div class="img-preview col-sm-3 col-md-3">';
 				if($image)
@@ -921,7 +921,7 @@ class QardController extends Controller
 					$preview_html .= '<i class="fa fa-file-image-o" style="font-size: 12em;" aria-hidden="true"></i>';
 /* 				$preview_html .= '<button id="url_img_remove" onClick="changePic(this)" class="btn btn-default btn-remove">Remove</button></div><div class="col-sm-9 col-md-9" id="title_desc_url"><div class="url-content"><h4><input name="url_title" type="text" class="form-control" value="'.$title.'" /></h4><div class="url-text"><p><textarea name="url_content" class="form-control">'.$content.'</textarea></p></div></div></div></div> ';	 */		
 				$preview_html .= '</div><div class="col-sm-9 col-md-9" id="title_desc_url"><div class="url-content"><h4><a href='.$url.' target="blank">'.$title.'</a></h4><div class="url-text"><p>'.$content.'</p></div></div></div>';	
-			//}
+			}
 			$preview_html .= '</div>';
 			
 			/**/
