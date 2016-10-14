@@ -980,8 +980,9 @@ class QardController extends Controller
 	public function isFrameAllowed($url){
 		$h = get_headers($url,1);
 		//print_r($h);die;
-		if(isset($h['X-Frame-Options'])){
-			if($h['X-Frame-Options'] == "sameorigin" || $h['X-Frame-Options'] =="SAMEORIGIN" ||  $h['X-Frame-Options'] == "DENY" || $h['X-Frame-Options'] == "deny")
+		if(isset($h['X-Frame-Options']) || $h['X-FRAME-OPTIONS']){
+			$option = $h['X-Frame-Options'] = $h['X-FRAME-OPTIONS'];
+			if($h['X-Frame-Options'] == 'sameorigin' || $h['X-Frame-Options'] =='SAMEORIGIN' ||  $h['X-Frame-Options'] == 'DENY' || $h['X-Frame-Options'] == 'deny')
 				return false;
 			else
 				return true;
