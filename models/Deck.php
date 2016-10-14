@@ -200,7 +200,7 @@ class Deck extends \yii\db\ActiveRecord
 		
 		if(\Yii::$app->user->id == $this->user_id)
 		{
-		$command = $connection->createCommand('SELECT count(*) as qardcount FROM `qard_deck` `qd`, `qard` `q` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= q.`qard_id`) AND (q.`status` != 2 )');
+		$command = $connection->createCommand('SELECT count(*) as qardcount FROM `qard_deck` `qd`, `qard` `q` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= q.`qard_id`) AND (q.`status` != 2 ) AND (q.`status` != 9 )');
 		}
 		else
 		{

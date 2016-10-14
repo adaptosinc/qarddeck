@@ -141,7 +141,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						<div class="deckgrid">
 							<?php foreach($qards as $qard) {
 								
-								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
+								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2, 'status'=>9])->one();
 								
 											if(isset($qardval)){
 										?>

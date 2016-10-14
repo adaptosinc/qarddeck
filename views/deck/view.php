@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
 										<?php foreach($qards as $qard) {
 								if(\Yii::$app->user->id == $model->user_id)
 								{									
-								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
+								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2, 'status'=>9])->one();
 								} else 
 								{
 									$qardval = 	Qard::find()->where('qard_id = :qard_id and status = :status', ['qard_id'=>$qard, 'status'=>1])->one();
@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					
 					if(\Yii::$app->user->id == $model->user_id)
 								{									
-								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
+								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2,'status'=>9])->one();
 								} else 
 								{
 									$qardval = 	Qard::find()->where('qard_id = :qard_id and status = :status', ['qard_id'=>$qard, 'status'=>1])->one();
