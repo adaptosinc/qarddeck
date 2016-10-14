@@ -911,7 +911,7 @@ class QardController extends Controller
 			//echo $domain;echo $result;
 			$preview_html = '<div id="review-qard-id" class="review-qard row" id="">';
 			if($this->isFrameAllowed($url)){
-				$preview_html .= '<iframe src="'.$url.'" style="border:none"  width="100%" height="500px" ></iframe>';
+				$preview_html .= '<iframe sandbox="" src="'.$url.'" style="border:none"  width="100%" height="500px" ></iframe>';
 			}else{ 
 				$preview_html .= '
 				<div class="img-preview col-sm-3 col-md-3">';
@@ -979,6 +979,7 @@ class QardController extends Controller
 	 */	
 	public function isFrameAllowed($url){
 		$h = get_headers($url,1);
+		//print_r($h);die;
 		if(isset($h['X-Frame-Options'])){
 			if($h['X-Frame-Options'] == "sameorigin" || $h['X-Frame-Options'] =="SAMEORIGIN" ||  $h['X-Frame-Options'] == "DENY" || $h['X-Frame-Options'] == "deny")
 				return false;
