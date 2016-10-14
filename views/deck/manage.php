@@ -13,6 +13,15 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Decks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+.sidebar-qard {
+   margin: 20px 0;
+   top: 70px;
+   position: fixed;
+   width: 30%;
+z-index:999;
+}
+</style>
 <link href="<?= Yii::$app->request->baseUrl?>/css/select2.css" rel="stylesheet">
 	<section class="manage-deck">
 		<div class="main-content">
@@ -254,6 +263,12 @@ $this->params['breadcrumbs'][] = $this->title;
 				
 		});
 	 });
-	 
+	$(window).scroll( function() {
+	   if($(this).scrollTop() == 0) {
+		   $('.sidebar-qard.qard-manage').css('top','70px');
+	   }else{
+	$('.sidebar-qard.qard-manage').css('top','0px');
+	}
+	});	 
 			
 	</script>
