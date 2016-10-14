@@ -193,18 +193,30 @@ class Deck extends \yii\db\ActiveRecord
      */
     public function getDeckqardCount()
     {
-		$qard_decks = $this->qardDecks;
-		$count = count($qard_decks);
+		/* $qard_decks = $this->qardDecks;
+		$count = count($qard_decks); */
+		
+		$connection = Yii::$app->getDb(); 
+		
+		if(\Yii::$app->user->id == $this->user_id)
+		{
+		$command = $connection->createCommand('SELECT count(*) as qardcount FROM `qard_deck` `qd`, `qard` `q` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= q.`qard_id`) AND (q.`status` != 2 )');
+		}
+		else
+		{
+			$command = $connection->createCommand('SELECT count(*) as qardcount FROM `qard_deck` `qd`, `qard` `q` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= q.`qard_id`) AND (q.`status` = 1 )');	
+		}
+		$activities = $command->queryOne();	
+		$count = $activities['qardcount'];
 		return $count;
 		
     }
-	
 	
 	 public function getDeckqardbookmarkCount()
     {
 		
 		$connection = Yii::$app->getDb(); 
-		$command = $connection->createCommand('SELECT count(*) as bookmark FROM `qard_deck` `qd`, `qard_user_activity` `qua` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= qua.`qard_id`) AND (`qua`.`activity_type`="bookmark")');
+		$command = $connection->createCommand('SELECT count(*) as bookmark FROM `qard_deck` `qd`, `qard_user_activity` `qua`,`qard` `q` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= qua.`qard_id`) AND (`qua`.`activity_type`="bookmark") AND (`qd`.`qard_id`= q.`qard_id`) AND (q.`status` != 2 )');
 	
 		$activities = $command->queryOne();	
 		return $count_bookmark  = $activities['bookmark'];
@@ -216,7 +228,7 @@ class Deck extends \yii\db\ActiveRecord
     {
 	
 		 $connection = Yii::$app->getDb(); 
-		$command = $connection->createCommand('SELECT count(*) as share FROM `qard_deck` `qd`, `qard_user_activity` `qua` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= qua.`qard_id`) AND (`qua`.`activity_type`="share")');
+		$command = $connection->createCommand('SELECT count(*) as share FROM `qard_deck` `qd`, `qard_user_activity` `qua`,`qard` `q` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= qua.`qard_id`) AND (`qua`.`activity_type`="share") AND (`qd`.`qard_id`= q.`qard_id`) AND (q.`status` != 2 )');
 	
 		$activities = $command->queryOne();	
 		return $count_bookmark  = $activities['share'];
@@ -227,7 +239,7 @@ class Deck extends \yii\db\ActiveRecord
     {
 		
 		 $connection = Yii::$app->getDb(); 
-		$command = $connection->createCommand('SELECT count(*) as liked FROM `qard_deck` `qd`, `qard_user_activity` `qua` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= qua.`qard_id`) AND (`qua`.`activity_type`="like")');
+		$command = $connection->createCommand('SELECT count(*) as liked FROM `qard_deck` `qd`, `qard_user_activity` `qua`,`qard` `q` WHERE (`qd`.`deck_id`='.$this->deck_id.') AND (`qd`.`qard_id`= qua.`qard_id`) AND (`qua`.`activity_type`="like") AND (`qd`.`qard_id`= q.`qard_id`) AND (q.`status` != 2 ) ');
 	
 		$activities = $command->queryOne();	
 		return $count_bookmark  = $activities['liked'];
@@ -238,7 +250,7 @@ class Deck extends \yii\db\ActiveRecord
     {
 		
 		 $connection = Yii::$app->getDb(); 
-		$command = $connection->createCommand('SELECT count(*) as comments FROM `qard_deck` qd, `qard_comments` qc WHERE qd.deck_id = '.$this->deck_id.' and qd.`qard_id` = qc.`qard_id`');
+		$command = $connection->createCommand('SELECT count(*) as comments FROM `qard_deck` qd, `qard_comments` qc ,`qard` `q` WHERE qd.deck_id = '.$this->deck_id.' and qd.`qard_id` = qc.`qard_id` AND (`qd`.`qard_id`= q.`qard_id`) AND (q.`status` != 2 ) ');
 	
 		$activities = $command->queryOne();	
 		return $count_comments  = $activities['comments'];

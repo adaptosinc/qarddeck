@@ -11,10 +11,12 @@ class FacebookController extends \yii\web\Controller
 {
     public $client_id,$client_secret,$callback_url,$callback_fb_url,$servername,$base_url;    
     public function init() {
-	$this->client_id= '1142793035779809';//1054501381284066;//app id of facebook//
-	//$this->client_id= '1734828660110694'; //ARIVAZHAGAN app id of facebook//
-	//$this->client_secret= '908ee91b6c17587a55d60eab81bd0e97'; //ARIVAZHAGAN app secret key of facebook//
-	$this->client_secret= '8dc64cf509704e2cd4e2dcd5ed1a1aea';//b4e61fed905c6866bfd1bf2a99fd3e2d;//app secret key of facebook//
+	//$this->client_id= '1142793035779809';//1054501381284066;//app id of facebook//
+	
+	$this->client_id= '1734828660110694'; //ARIVAZHAGAN app id of facebook//
+	$this->client_secret= '908ee91b6c17587a55d60eab81bd0e97'; //ARIVAZHAGAN app secret key of facebook//
+	
+	//$this->client_secret= '8dc64cf509704e2cd4e2dcd5ed1a1aea';//b4e61fed905c6866bfd1bf2a99fd3e2d;//app secret key of facebook//
 	$this->base_url=Yii::$app->request->baseUrl; 
 	//\Yii::$app->request->BaseUrl 
 	
@@ -98,7 +100,10 @@ class FacebookController extends \yii\web\Controller
 	$model->password=$result['id'];
 	//to check already present or not
 	$user = User::find()->where(['username'=>$model->username])->one();
-	if($user){ //yes   
+	if($user){ //yes 
+		$profile = Profile::find()->where(['user_id'=>$user->id])->one();		
+		$profile->profile_photo = "//graph.facebook.com/".$result['id']."/picture?type=large";
+		$profile->update(); 		
 	    return $user;
 	}	
 	$model->created_at=time();

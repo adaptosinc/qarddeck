@@ -37,7 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <ul class="deck-tags">
 									<?=$model->getTagsHtml();?>
                                     </ul>
-									<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>deck/manage?id=<?=$model->deck_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Deck</button>
+									<?php if(Yii::$app->user->id == $model->user_id){ ?>
+										<span class="pull-right"><button class="btn btn-grey" onclick="location.href='<?=\Yii::$app->homeUrl?>deck/manage?id=<?=$model->deck_id?>';"><i class="fa fa-pencil"></i>&nbsp;Edit Deck</button>
+										<button class="btn btn-grey deck-delete" data-id="<?=$model->deck_id?>" ><i class="fa fa-trash"></i>&nbsp;Delete Deck</button></span>
+									<?php } ?>
                                 </div>
                             </div>
                             <div class="right-block col-sm-4 col-md-4">
@@ -56,12 +59,13 @@ $this->params['breadcrumbs'][] = $this->title;
 							<button id='following' <?php if( $follow == 0) { echo "style='display:none'"; } ?> name="following" class="btn btn-grey followopt" >&nbsp;Unfollow </button> 
 									<?php } ?>
                                 </div>
-                                <button class="btn qard">View Deck as Slides</button>
+                                <button id="changetoslider" class="btn qard">View Deck as Slides</button>
                             </div>
                         </div>
                     </div>                  
 					<?php 
-					$qardDecks = $model->qardDecks;					
+					$qardDecks = $model->qardDecks;				
+						
 					$qards = [];												
 					foreach($qardDecks as $qardDeck){
 						$qards[] = $qardDeck->qard_id;								
@@ -69,48 +73,25 @@ $this->params['breadcrumbs'][] = $this->title;
 					
 					
 					?>
-                  <!--  <div class="main-content">
-                        <div class="popular-qards">     
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="deckgrid">
-										<?php foreach($qards as $qard) {										
-											$qardval = 	Qard::findOne($qard);
-											if(isset($qard)){
-												
-											
-										?>
-											
-											<div class="deckgrid-item">     
-												<div class="qard-content">
-													<?php print_r($qardval->getQardHtml()); ?>
-												</div>
-												<div class="qard-bottom">
-													<ul class="qard-tags">
-														<li class="pull-left"><img src="<?=$qardval->userProfile->profile_photo; ?>" alt="" width="15px" height="15px" style="border-radius:50%;"><?=$qardval->userProfile->fullname; ?></li>
-														<li class="pull-right"><?=$qardval->getCreatedAgo();?></li>
-													</ul>
-													<h4><?=$qardval->title; ?></h4>
-												</div>                                              
-											</div>									
-											<?php } 
-											} ?>                                      
-                                    </div>  
-                                </div>
-                            </div>         
-                        </div>
-                    </div>-->
+               
 					
-					  <div class="main-content">
+					  <div class="main-content" id="generalview" >
                         <div class="popular-qards profile tab-pane fade in active" role="tabpanel"  id="tab1">     <!-- popular qard list -->
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
                                     <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
-										<?php foreach($qards as $qard) {										
-											$qardval = 	Qard::findOne($qard);
-											if(isset($qard)){
-												
-											
+										<?php foreach($qards as $qard) {
+								if(\Yii::$app->user->id == $model->user_id)
+								{									
+								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
+								} else 
+								{
+									$qardval = 	Qard::find()->where('qard_id = :qard_id and status = :status', ['qard_id'=>$qard, 'status'=>1])->one();
+								}
+								
+					
+											if(isset($qardval)){
+																							
 										?>
 										<?php print_r($qardval->getQardHtml()); ?>
 										
@@ -123,6 +104,75 @@ $this->params['breadcrumbs'][] = $this->title;
 						</div>
 					</div>
 					
+					
+	
+	<div class="container" id="sliderview"  style="display:none;" >
+  <br>
+  <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false" >
+    <!-- Indicators -->
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+	
+	
+                        
+									
+	  	<?php 
+					$i = 0;
+				foreach($qards as $qard) {								
+				/* 		$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one(); */
+					
+					if(\Yii::$app->user->id == $model->user_id)
+								{									
+								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2])->one();
+								} else 
+								{
+									$qardval = 	Qard::find()->where('qard_id = :qard_id and status = :status', ['qard_id'=>$qard, 'status'=>1])->one();
+								}
+								
+				if(isset($qardval)){
+																							
+						?>
+						
+		  
+					<div class="item <?php if($i == 0){ echo "active"; } ?>" >	
+					
+					<div class="main-content" style="margin-left:25%" >
+			<div class="popular-qards profile tab-pane fade in active" role="tabpanel">  
+		  
+					<?php print_r($qardval->getQardHtml()); ?>
+					
+					
+						</div>
+						
+						</div>
+    </div>	
+					<?php $i= $i+1; } 
+								} ?> 
+											
+			 
+   
+    							
+   
+    </div>
+
+    <!-- Left and right controls -->
+	<?php if($i > 1) { ?>
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" style="color: black;" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" style="color: black;" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+	<?php } ?>
+  </div>
+</div>
+
+
+	<!-------------------------- Slider Function End -------------------------------->
+	
                 </section>
 
 </div>
@@ -175,4 +225,61 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			});
 			
+			
+	$('.deck-delete').on('click',function(){
+		var chksts = confirm ("Are you sure to delete this Deck ?");
+		if(chksts == true)	
+		{
+				var deckid = $(this).attr('data-id');
+				$.ajax({
+						url: '<?=Url::to(['deck/delete-deck'], true);?>',
+						type: "POST",
+						data: {
+							'deckid': deckid
+						},
+						success: function(data) {
+							alert("Deck has been Deleted Successfully!!!.");							
+							window.location.href = "<?=\Yii::$app->homeUrl?>qard/my-qards?type=decks";
+							}
+						});						
+		}
+	});
+	
+	$('#changetoslider').on('click',function(){
+		var chaval = $("#changetoslider").html();
+			if($.trim(chaval) == "View Deck as Slides")
+				$("#changetoslider").html("View Deck as General");
+			else if($.trim(chaval) == "View Deck as General")
+				$("#changetoslider").html("View Deck as Slides");
+			
+		$("#sliderview").toggle();
+		$("#generalview").toggle();
+		
+	});
+	
+	
+
+	$( document ).ready(function() {
+		checkitem() ;
+		$('#myCarousel').on('slid.bs.carousel', checkitem);
+	});
+	
+function checkitem()                        // check function
+{
+   var $this = $('#myCarousel');
+  $this.children('.carousel-control').show();
+
+  if($('.carousel-inner .item:first').hasClass('active')) {
+    $this.children('.left.carousel-control').hide();
+  } else if($('.carousel-inner .item:last').hasClass('active')) {
+    $this.children('.right.carousel-control').hide();
+  }
+ 
+}
+
+
+
+	
+
 </script>
+

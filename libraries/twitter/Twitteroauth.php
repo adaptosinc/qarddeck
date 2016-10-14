@@ -75,10 +75,15 @@ class Twitteroauth {
   function getRequestToken($oauth_callback) {
     $parameters = array();
     $parameters['oauth_callback'] = $oauth_callback; 
+	
     $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);
+	
     $token = OAuthUtil::parse_parameters($request);
     $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
     return $token;
+	
+	
+	
   }
 
   /**
@@ -88,7 +93,8 @@ class Twitteroauth {
    */
   function getAuthorizeURL($token, $sign_in_with_twitter = TRUE) {
     if (is_array($token)) {
-      $token = $token['oauth_token'];
+		$token = $token['oauth_token'];
+	
     }
     if (empty($sign_in_with_twitter)) {
       return $this->authorizeURL() . "?oauth_token={$token}";

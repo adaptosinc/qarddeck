@@ -2,6 +2,9 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+
+use app\models\Deck;
+use dosamigos\fileupload\FileUpload;
 /* @var $this yii\web\View */
 /* @var $model app\models\Qard */
 $this->title = 'Preview Qard';
@@ -120,11 +123,28 @@ $this->title = 'Preview Qard';
 					</ul>
 				</div>                             
 			</div>
-			<div class="col-sm-4 col-md-4">
+			<div class="col-sm-4 col-md-4" > 
+			<?php 
+								if(!\Yii::$app->user->isGuest){						
+							?>
 				<ul class="pull-right">
-					<li><button class="btn btn-default">Add to Deck</button></li>
+				
+					<?php 
+								$qard_deck = $model->qardDecks;
+								if($qard_deck && $qard_deck->deck_id){
+									echo '<li><button id="add_to_deck" class="btn btn-default" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" >Change Deck</button></li>';						
+									echo '<li><button id="remove_from_deck" onClick="removeFromDeck('.$qard_deck->qd_id.')" class="btn btn-default">Remove From Deck</button></li>';
+								}
+								else
+									echo '<li><button class="btn btn-default" id="add_to_deck" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" >Add to Deck</button></li>';	
+									
+								
+							?>
+							
+					<!--<li><button id="add_to_deck" class="btn btn-default" href="<?=Yii::$app->request->baseUrl?>/deck/select-deck" >Add to Deck</button></li>-->
 				</ul>
-			</div>                        
+			<?php } ?>
+			</div>                       
 		</div>
         <div class="row">
 
@@ -228,20 +248,21 @@ $this->title = 'Preview Qard';
 			</div>                                      
 			<div class="active-text-preview" style="display: none;">        <!-- extra text preview block -->
 				<h4><div id="extra_text_title"></div><span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<hr class="divider">
 				<div class="active-preview-content" id="extra_text_content">
 					<p></p>
 				</div>
 			</div>
 			<div class="active-video-preview" style="display: none;">           <!-- video preview block -->
-				<h4>Watch the video here<span class="pull-right"><quote id="#video_url">http://youtube.com/ahsdgu</quote><i class="fa fa-times-thin"></i></span></h4>
+				<h4>Watch the video here<span class="pull-right"><!--<quote id="#video_url">http://youtube.com/ahsdgu</quote>--><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.. <a href="">more</a> </p>
+					<!--<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.. <a href="">more</a> </p>-->
 					<div id="video_frame"><iframe height="315" src="https://www.youtube.com/embed/cqNmVJk7Zyg" frameborder="0" allowfullscreen=""></iframe></div>
 				</div>
 			</div>
 			<div class="active-link-preview" style="display: none;">        <!-- link preview block -->
-				<h4 id="title_and_url">Dribble <span class="pull-right"><quote>http://youtube.com/ahsdgu</quote><i class="fa fa-times-thin"></i></span></h4>
+				<h4 id="title_and_url">Link The Url <span class="pull-right"><!--<quote>http://youtube.com/ahsdgu</quote>--><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
 					<p id="url_desc">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. </p>
@@ -258,13 +279,14 @@ $this->title = 'Preview Qard';
 							<div class="file-download">
 								<img  src="<?=Yii::$app->homeUrl;?>images/download_icon.png" alt="" >                                                
 							</div>
+							<span id="f_name" > </span></br></br>
 							<button id="file_image" class="bnt qard">Download File</button>
 						</div>
 						<div id="pdf_area"></div>
 				</div>
 			</div>
 			<div class="active-image-preview" style="display: none;">       <!-- image preview block -->
-				<h4 id="img_title">Title Comes Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
+				<h4 id="img_title">Attached Image Here <span class="pull-right"><i class="fa fa-times-thin"></i></span></h4>
 				<hr class="divider">
 				<div class="active-preview-content">
 					<div class="image-show" id="img_show" >
@@ -369,7 +391,7 @@ $this->title = 'Preview Qard';
 				</div>
 				<div class="col-sm-4 col-md-4">
 					<ul class="help-list"> 
-						<li><button class="btn qard saveqard" name="preview" id="preview_qard" <?php if(isset($user->role) && !empty($user->role) && ($user->role =="admin")){  echo "data-id='5'";  } else { echo "data-id='3'"; } ?> >Save as Template</button></li>
+						<li><button style='padding:6px !important' class="btn qard saveqard" name="preview" id="preview_qard" <?php if(isset($user->role) && !empty($user->role) && ($user->role =="admin")){  echo "data-id='5'";  } else { echo "data-id='3'"; } ?> >Save as Template</button></li>
 						<li><button class="btn btn-warning saveqard" name="share" id="share_qard" data-id='1'>Share Qard</button></li>
 					</ul>
 				</div>
@@ -425,6 +447,21 @@ $this->title = 'Preview Qard';
     </section>
     <!-- block_error popup -->
 
+	
+	<?php 
+	$this->registerJs("$(function() {
+	     $('#add_to_deck').click(function(e) {
+		 e.preventDefault();
+		 console.log($(this).attr('href'));
+		 var qard_id = $('#qard_id').val(); 
+
+		 $('#deck-style').modal('show').find('.load-pre').load($(this).attr('href'));
+	   });	   
+	  
+	});");
+	?>
+	
+	
     <div class="modal fade" tabindex="-1" id="asdasd" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -444,6 +481,89 @@ $this->title = 'Preview Qard';
     </div>
     <!-- /.modal -->
 
+	<!---------Pop Up-------------->
+	<div id="deck-style" class="fade modal in" role="dialog" tabindex="-1">
+	<div class="modal-dialog ">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Select a Deck to Add Qard to :
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</h4>
+			</div>
+			<div class="modal-body">
+					<div class="grid">	
+					
+					
+						<div class='load-pre'> </div>
+						
+					<div class="grid-item">				
+					<div class="grid-img deck-img-pre col-sm-12 col-md-12">
+								<?php $form = ActiveForm::begin([
+									'id' => 'deck-form',
+									]); ?>
+								<?= FileUpload::widget([
+									'model' => new Deck(),
+									'attribute' => 'bg_image',
+									
+									'url' => ['deck/set-cover-image'], // your url, this is just for demo purposes,
+									'options' => ['accept' => 'image/*','class'=>'class'],
+									'clientOptions' => [
+										'maxFileSize' => 2000000
+									],
+								
+									'clientEvents' => [
+										'fileuploaddone' => 'function(e, data) {
+																var dat = JSON.parse(data.result);
+																thumbnailUrl = dat.files[0].thumbnailUrl;
+																var html = "<img width=200px height=200px src="+thumbnailUrl+" />";
+																
+																$(".deck-img-pre").css("background","#f1f1f1 url("+thumbnailUrl+")")
+																$(".deck-img-pre").css("background-size", "cover");
+															
+																$("#bg_image").val(thumbnailUrl);
+															
+															}',
+										'fileuploadfail' => 'function(e, data) {
+																alert("Oops! Something wrong happended.Please try gain later!");
+															}',
+									],
+								]);?>
+								<p>click to select file</p>
+								<div id="preview">
+								</div>
+								<?php ActiveForm::end(); ?>	
+				</div>
+				
+				
+				<div class="grid-content">
+				<!-- onSubmit="saveDeck(this);return false;" -->
+				
+					<form  id="ajaxDeck" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
+					<input style="margin-top:10px"  type="text" name="title"  autocomplete="off" id="deck-title" placeholder="Untitle Deck"/>
+					<div class="col-sm-4 col-md-4"></div>
+					
+					<div class="col-sm-8 col-md-8">
+						<input type="hidden" id="bg_image" class="class" name="bg_image" />
+						<div id="ajaxDeckPreview"></div>
+						<button style="margin-top:10px" class="btn btn-grey">Add Deck</button>
+					</div>			
+				</form>		
+				</div>
+				
+
+				</div>
+				</div>
+				
+			</div>
+			
+				</div>
+				
+		</div>
+	</div>
+ <div id="wait" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
+ 
+<!----------------------------->
+	
     <script type="text/javascript">
         $(document).ready(function(){
             var avalue = "active";
@@ -526,6 +646,7 @@ $this->title = 'Preview Qard';
 			var block_id = $(identifier).parent('.text-block').attr('data-block-id');
             var preview_url = urlField;
             var get_preview_url = "<?=Url::to(['qard/url-preview'], true);?>";
+				$("#wait").show();
             $.ajax({
                 url: get_preview_url,
                 type: "GET",
@@ -560,17 +681,18 @@ $this->title = 'Preview Qard';
                         $(".link_options").show();
 						var data_to_show = data;
                         
-                    }
+                    }					
 					hideAll('active-link-preview');
 					$('.active-preview-content').show();
 					$('#url_data').html(data_to_show);
 					var l = data.url_title+'<span class="pull-right"><quote>'+preview_url+'</quote><i class="fa fa-times-thin"></i></span>';
 					$('#title_and_url').html(l);
 					$('#url_desc').html(data.url_description);
-
+					$("#wait").hide();
                 }
             });
         }
+		
 		/** File preview **/
          function showFilePrev(identifier,fileName){
 			 
@@ -583,10 +705,12 @@ $this->title = 'Preview Qard';
 				success: function(data){				
 					data1 = $.parseJSON(data);
 					if($.trim(data1.file_title) !=="" )
-						$('#file_title').html(data1.file_title);
+						$('#file_title').text(data1.file_title);
 					else
-					$('#file_title').html(fileName);
+					$('#file_title').text(fileName);
 					$('#file_desc').html(data1.file_description);
+					
+					$('#file_title').append("<span class='pull-right'><i class='fa fa-times-thin'></i></span>");
 					
 					}
 				});  
@@ -594,7 +718,10 @@ $this->title = 'Preview Qard';
 			hideAll('active-file-preview');
 			$('.active-preview-content').show();
 			///$('#file_title').html(fileName);
+			
 			$('#file_image').attr("file-name",fileName);
+			
+			$('#f_name').text(fileName);
 			$('#file_controls').show();
 			$('#pdf_area').hide();
 			
@@ -644,7 +771,7 @@ $this->title = 'Preview Qard';
 				success: function(data){
 					data = $.parseJSON(data);
 					$("#extra_text_content").html(data.extra_text);
-					console.log(data.extra_text);
+					//console.log(data.extra_text);
 					$("#extra_text_title").html(data.title);
 
 				}
@@ -675,9 +802,121 @@ $this->title = 'Preview Qard';
 	
 	
 	$(".conformdelete").click(function(){				
-				 if (confirm("Are you sure to Delete this Qard?")) {
+				 if (confirm("Are you sure want to delete the qard?")) {
 						window.location="<?=\Yii::$app->homeUrl?>qard/delete-qard?id=<?=$model->qard_id?>'";
 					}				
 			});
 			
+			
+	/*********** Remove Deck Control Process *******/
+	
+	function removeFromDeck(qarddeckid){
+	var checkval = confirm ("Are you sure want to remove qard from this Deck ?");
+		if(checkval == true)	
+		{
+			if(qarddeckid)		
+			{				
+					$.ajax({						
+						url : "<?=Url::to(['qard/remove-qard-deck'], true)?>",
+						data: { "qard_deck_id" : qarddeckid },
+						type: "POST",						
+						success: function(data){
+								window.location="<?=\Yii::$app->homeUrl?>qard/preview-qard?qard_id=<?=$model->qard_id?>";
+						}
+					});	 
+			}
+						 			
+		}
+		else	
+		{	
+			return false;					
+		}
+}
+			
+			
+	$( "#ajaxDeck" ).submit(function( event ) {
+				if($.trim($("#deck-title").val()) == "")
+			{
+				alert("Please Enter The Deck Title!!!.");
+				return false;
+			}
+			else if($.trim($("#bg_image").val()) == "")
+			{
+				alert("Please Select the Backgound image For Deck!!!.");
+				return false;
+			}
+			else
+			{
+				saveDeck(this);
+				return false;
+			}
+			
+	});
+	
+	 $(document).ready(function () {
+        $("#deck-bg_image").change(function() {
+			var loadingUrl = "<?=Yii::$app->request->baseUrl?>/img/loading1.gif";
+			$(".deck-img-pre").css("background","#f1f1f1 url("+loadingUrl+")")
+			$(".deck-img-pre").css("background-size", "cover");	
+		});
+	 });
+	 
+	 /************* Select Deck and Change another Deck ******************/
+	 
+	 function addToDeck(deck){
+		 
+			var deck_id = $(deck).attr('id');
+			var qard_id = <?=$model->qard_id?>; 
+			
+		 $.ajax({
+				url : "<?=Url::to(['deck/add-qard'], true)?>",
+				type : 'POST',
+				data : {'qard_id':qard_id,'deck_id':deck_id},
+				success : function(data){
+						// Qard Image Created  for Deck Control view process
+					$.ajax({
+					  url: "<?=Url::to(['qard/generate-qard-image'], true)?>",
+					  type: "GET",
+					  data: {'qard_id':qard_id},
+					  success: function(){
+						window.location="<?=\Yii::$app->homeUrl?>qard/preview-qard?qard_id=<?=$model->qard_id?>";
+					 },
+					 error: function() {
+						window.location="<?=\Yii::$app->homeUrl?>qard/preview-qard?qard_id=<?=$model->qard_id?>";
+					 }
+					});
+					
+					
+					
+				}				
+			}); 
+			
+}
+
+/***************** Add New Deck ********************************/
+
+
+function saveDeck(deck){
+			var formData = new FormData($(deck)[0]);
+			 $.ajax( {
+				  url: '<?=Url::to(['deck/create-ajax'], true)?>',
+				  type: 'POST',
+				  data: formData,
+				  processData: false,
+				  contentType: false,
+				  success:function(data){					 
+					$('#add_to_deck').trigger('click');
+					$("input[id=deck-title]").val('');
+					$("input[id=deck-bg_image]").val('');
+					$("input[id=bg_image]").val('');
+					$(".deck-img-pre").removeAttr("style");
+					
+ 			  	  }				  
+				}); 
+				return true;
+				
+				
+}
+
+
 	</script>

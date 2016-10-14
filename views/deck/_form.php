@@ -41,7 +41,7 @@ $model->bg_image = "null.png";
 					])->textInput(['class'=>'','placeholder'=>'Tell us what this Deck is about']) ?>
 					
 				<div class="form-group">	
-					<select class="js-example-basic-multiple form-control" id="deck-tags" name="tags[]" multiple="multiple">
+					<select class="js-example-basic-multiple form-control"  id="deck-tags" name="tags[]" multiple="multiple">
 
 					<?php 
 					if(!$model->isNewRecord){

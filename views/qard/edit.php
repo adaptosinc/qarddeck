@@ -76,7 +76,7 @@ $this->title = 'Edit Qard';
 
 				<div class="col-sm-6 col-md-6">
 					<h2>
-						<input type="text" name="qard_title" id="qard_title" value="<?php echo $model->title;?>" placeholder="Enter a Title for this Qard">
+						<input type="text" name="qard_title" id="qard_title" value="<?php echo $model->title;?>" placeholder="Enter a Title for this Qard" style="width:100% !important" >
 					</h2>                            
 				</div>
 		</div>
@@ -106,9 +106,8 @@ $this->title = 'Edit Qard';
 								$qard_deck = $model->qardDecks;
 								if($qard_deck && $qard_deck->deck_id){
 									echo '<li><button id="add_to_deck" class="btn btn-default" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" >Change Deck</button></li>';						
-									echo '<li><button id="remove_from_deck" onClick="removeFromDeck()" class="btn btn-default">Remove From Deck</button></li>';
+									echo '<li><button id="remove_from_deck" onClick="removeFromDeck('.$qard_deck->qd_id.')" class="btn btn-default">Remove From Deck</button></li>';
 								}
-
 								else
 									echo '<li><button class="btn btn-default" id="add_to_deck" href="'.\Yii::$app->request->baseUrl.'/deck/select-deck" >Add to Deck</button></li>';	
 									
@@ -225,8 +224,19 @@ $this->title = 'Edit Qard';
 					 echo $str;
 					
 					?>
-
-                        <h5 class="add-another" onclick="add_block(event,true)"><i class="fa fa-plus"></i>Add another block </h5>
+					<?php if(isset($blocks) && empty($blocks)){
+						?>
+                        
+						<div id="working_div" class="working_div block active">
+                            <div id="blk_1" class="bgimg-block parent_current_blk">
+                                <div class="bgoverlay-block">
+                                    <div class="text-block current_blk" data-height="1" contenteditable="true" unselectable="off" data-block_priority="1" style="overflow:hidden;margin:10px"></div>
+                                </div>
+                            </div>
+                        </div>
+						
+					<?php } ?>
+						<h5 class="add-another" onclick="add_block(event,true)"><i class="fa fa-plus"></i>Add another block </h5>
                 </div>
             </div>
             <div class="col-sm-9 col-md-9">
@@ -237,11 +247,11 @@ $this->title = 'Edit Qard';
 					
                         <li role="presentation" class="active"><a href="#cardblock" aria-controls="cardblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/text_icon.png" alt="" class="dark" style="width:15px;margin:0 auto;"><img src="<?=Yii::$app->homeUrl?>images/text_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a href="#linkblock" class="pasteBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/link_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
+                        <li role="presentation"><a href="#linkblock"  aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/link_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/image_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
+                        <li role="presentation"><a id="imgblock_li" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/image_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a href="#linkblock" class="embedBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/video_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/video_icon_light.png" class="light" alt=""></a></li>
+                        <li role="presentation"><a href="#videoblock"  aria-controls="videoblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/video_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/video_icon_light.png" class="light" alt=""></a></li>
 						
 						<li role="presentation"><a href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" class="dark" alt="" style="width:15px;margin:0px auto;"><img src="<?=Yii::$app->homeUrl?>images/file_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
 						
@@ -364,7 +374,14 @@ $this->title = 'Edit Qard';
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
                             <!--<form  class="dropzone" id="imageupload" enctype="multipart/form-data" >-->
-							<h4 id="reflink" >Add Image</h4>
+							<h4 id="reflink" >Add Image <span class="trash pull-right" >
+							<div class="col-sm-12 col-md-12 on-off">
+							<div class="switch" id="sw-cmn-toggle-7">
+											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-7"></label>
+										</div>  <span>Display Preview Icon</span> 
+							</div>
+										</span> </h4>
 							<div class="img_preview" style="display:none"></div>
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
@@ -381,12 +398,7 @@ $this->title = 'Edit Qard';
 											<label for="cmn-toggle-6"></label>
 										</div>  <span>Crop</span> 
 								</div>-->
-								<div class="col-sm-3 col-md-3 on-off">
-										<div class="switch" id="sw-cmn-toggle-7">
-											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
-											<label for="cmn-toggle-7"></label>
-										</div>  <span>Link Image</span> 
-								</div>
+								
 								<div class="col-sm-5 col-md-5 on-off">
 										<div class="switch" id="sw-cmn-toggle-3">
 											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
@@ -406,13 +418,13 @@ $this->title = 'Edit Qard';
 
                         </div>
 						
-                        <div role="tabpanel" class="tab-pane" id="linkblock">
+                        <!--<div role="tabpanel" class="tab-pane" id="linkblock">
 							<ul class="nav nav-tabs" role="tablist">
 								<li role="presentation" class="active" style="display:none"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
 								<li role="presentation" style="display:none"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>                                       
 							</ul>
-							<div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="paste">
+							<div class="tab-content"> -->
+                                <div role="tabpanel" class="tab-pane" id="linkblock">
 								
 									<!--<h4 id="reflink" >Add Url<button id="link_url_button" class="btn btn-warning pull-right">Link URL</button></h4>-->
 									
@@ -454,7 +466,7 @@ $this->title = 'Edit Qard';
 									</div>
 
 								</div>
-								<div role="tabpanel" class="tab-pane" id="embed">
+								<div role="tabpanel" class="tab-pane" id="videoblock">
 						
 								<!--<div class="row">
 									<h4>
@@ -494,8 +506,8 @@ $this->title = 'Edit Qard';
 									<!--<span class="url_reset_link trash pull-right" ><i class="fa fa-trash"></i>&nbsp;Remove Embed Code</span>-->
 								</div>  
 
-							</div>
-						</div>
+							<!--</div>
+						</div>-->
 						<div role="tabpanel" class="tab-pane" id="fileblock">
 						
 						 <div id="showFilePreview" style="display:none"></div>
@@ -508,7 +520,7 @@ $this->title = 'Edit Qard';
 								</div>  <span>Link this Document</span>
 							</div>	<!--<i class="fa fa-trash"></i>&nbsp;Remove File--></span></h4>
 							
-                           	<div class="form-group extra-content" id="drop-image" style="margin-bottom: 60px;  padding-top: 10px;" >
+                           	<div class="form-group extra-content" id="drop-image23" style="margin-bottom: 60px;  padding-top: 10px;" >
 									<input type="text" id="url-filename" name="filename" class="col-sm-5 col-md-5" placeholder="Enter Title">
 									<input type="hidden"  class="filename fileName col-sm-5 col-md-5" >
 									<input type="text" id="url-filedesc" name="filedesc" class="col-sm-6 col-md-6 col-md-offset-1 desc" placeholder="Add a description">
@@ -655,7 +667,8 @@ $this->title = 'Edit Qard';
 			<div class="col-sm-8 col-md-8 col-md-offset-1">
 				<ul class="help-list"> 
 					<li class="help-link"><a href=""><img src="<?=Yii::$app->homeUrl?>images/need-help_icon.png" width="30px" height="30px" style="margin-right:5px;" alt="">Need Help?</a></li>
-					<li class="pull-right"><button class="btn btn-warning" name="preview" onclick="addSaveCard(event)">Preview Card</button></li>
+					<li class="pull-right"><button class="btn btn-warning" id="previewclick"  name="preview" >Preview Qard</button></li>
+					<!-- onclick="addSaveCard(event)"  check alert removed onclick function -->
 					<!--<li><button class="btn btn-warning" name="preview">Save</button></li>-->
 				</ul>
 			</div>
@@ -664,10 +677,11 @@ $this->title = 'Edit Qard';
     <!-- block_error popup -->
 	<div id="deck-style" class="fade modal in" role="dialog" tabindex="-1">
 		<div class="modal-dialog ">
+			<button style="margin: -25px -25px 0px 0px;" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">Select a Deck to Add Qard to :
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					
 					</h4>
 				</div>
 				<div class="modal-body">
@@ -719,8 +733,9 @@ $this->title = 'Edit Qard';
 			
 				
 				<div class="grid-content" >
-					<form onSubmit="saveDeck(this);return false;" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
-					<input style="margin-top:10px" type="text" name="title"  id="deck-title" placeholder="Untitle Deck"/>
+				<!-- onSubmit="saveDeck(this);return false;" -->
+					<form  id="ajaxDeck" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
+					<input style="margin-top:10px" type="text" name="title"   autocomplete="off" id="deck-title" placeholder="Untitle Deck"/>
 					<div class="col-sm-4 col-md-4"></div>
 					
 					<div class="col-sm-8 col-md-8">
@@ -750,7 +765,7 @@ $this->title = 'Edit Qard';
 		<div class="modal fade" id="qard-style" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		  <div class="modal-dialog" role="document">
 			<div class="modal-content">
-			  <div class="modal-header">
+			  <div class="modal-header" style="padding: 10px 0; width: 104%;" >
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
 			  </div>
 			  <div class="modal-body">
@@ -975,8 +990,50 @@ $this->title = 'Edit Qard';
 		'addFileDataUrl'  : '<?=Url::to(['block/add-filedata'], true);?>',
 		'getFileDataUrl'  : '<?=Url::to(['block/get-filedata'], true);?>',
 		'copyQardBlockUrl'  : '<?=Url::to(['block/copy-block'], true);?>',
-			
+		'removeQardDeckUrl' : '<?=Url::to(['qard/remove-qard-deck'], true);?>',
+		'genQardImage'  : '<?=Url::to(['qard/generate-qard-image'], true);?>',
 	});
 
 </script>
 <script src="<?= Yii::$app->request->baseUrl?>/js/qard_file_handler.js" type="text/javascript"></script>
+
+
+<script>
+	$(document).on('click', '#previewclick', function(){ 
+		 if ($('.select2-selection__rendered').find( ".select2-selection__choice" ).length <= 0 ) { 		 
+			 alert('Please Add Tags!!!..');
+			 $('.select2-search__field').focus();
+			  return false;
+			 }	
+			 
+		addSaveCard();		
+});
+
+	$( "#ajaxDeck" ).submit(function( event ) {
+				if($.trim($("#deck-title").val()) == "")
+			{
+				alert("Please Enter The Deck Title!!!.");
+				return false;
+			}
+			else if($.trim($("#bg_image").val()) == "")
+			{
+				alert("Please Select the Backgound image For Deck!!!.");
+				return false;
+			}
+			else
+			{
+				saveDeck(this);
+				return false;
+			}
+			
+	});
+	
+	 $(document).ready(function () {
+        $("#deck-bg_image").change(function() {
+			var loadingUrl = "<?=Yii::$app->request->baseUrl?>/img/loading1.gif";
+			$(".deck-img-pre").css("background","#f1f1f1 url("+loadingUrl+")")
+			$(".deck-img-pre").css("background-size", "cover");	
+		});
+	 });
+	 
+</script>

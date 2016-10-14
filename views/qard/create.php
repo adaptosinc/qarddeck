@@ -71,7 +71,7 @@ $this->title = 'Create Qard';
 
                         <div class="col-sm-6 col-md-6">
                             <h2>
-                                <input type="text" name="qard_title" id="qard_title" placeholder="Enter a Title for this Qard">
+                                <input type="text" name="qard_title" id="qard_title" style="width:100% !important" placeholder="Enter a Title for this Qard">
                             </h2>                            
                         </div>
 				</div>
@@ -133,11 +133,11 @@ $this->title = 'Create Qard';
 					
                         <li role="presentation" class="active"><a id="cardblock_li" href="#cardblock" aria-controls="cardblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/text_icon.png" alt="" class="dark" style="width:15px;margin:0 auto;"><img src="<?=Yii::$app->homeUrl?>images/text_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a id="linkblock_li" href="#linkblock" class="pasteBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/link_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
+                        <li role="presentation"><a id="linkblock_li" href="#linkblock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/link_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/link_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
 						
                         <li role="presentation"><a id="imgblock_li" id="imgblock_tab" href="#imgblock" aria-controls="imgblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/image_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/image_icon_light.png" class="light" alt="" style="margin:5px auto;"></a></li>
 						
-                        <li role="presentation"><a id="embedblock_li" href="#linkblock" class="embedBlock" aria-controls="linkblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/video_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/video_icon_light.png" class="light" alt=""></a></li>
+                        <li role="presentation"><a id="embedblock_li" href="#videoblock"  aria-controls="videoblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/video_icon.png" class="dark" alt=""><img src="<?=Yii::$app->homeUrl?>images/video_icon_light.png" class="light" alt=""></a></li>
 						
 						<li role="presentation"><a id="fileblock_li" href="#fileblock" aria-controls="fileblock" role="tab" data-toggle="tab"><img src="<?=Yii::$app->homeUrl?>images/file_icon.png" class="dark" alt="" style="width:15px;margin:0px auto;"><img src="<?=Yii::$app->homeUrl?>images/file_icon_light.png" class="light" alt="" style="width:15px;margin:5px auto;"></a></li>
 						
@@ -256,13 +256,21 @@ $this->title = 'Create Qard';
 						</div>
 
                         <div role="tabpanel" class="tab-pane" id="imgblock">
-                       	<h4 id="reflink" >Add Image</h4>
+                       	<h4 id="reflink" >Add Image <span class="trash pull-right" >
+							<div class="col-sm-12 col-md-12 on-off">
+							<div class="switch" id="sw-cmn-toggle-7">
+											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
+											<label for="cmn-toggle-7"></label>
+										</div>  <span>Display Preview Icon</span> 
+							</div>
+										</span></h4>
 							<div class="img_preview" style="display:none"></div>
                             <div class="drop-image">
                                 <form action="" id="image_upload" method="post" enctype="multipart/form-data">
                                     <div class="dropzone" data-smaller="true" data-originalsize="false" id="for_image" data-width="960" data-ajax="false" data-height="540" style="width: 100%;" >
-                                        <input type="file" name="thumb" required="required" />
+                                        <input type="file" name="thumb" id="thumb" required="required" />
                                     </div>
+										
                                 </form>
                             </div>
                           
@@ -274,12 +282,7 @@ $this->title = 'Create Qard';
 											<label for="cmn-toggle-6"></label>
 										</div>  <span>Crop</span> 
 								</div>-->
-								<div class="col-sm-3 col-md-3 on-off">
-										<div class="switch" id="sw-cmn-toggle-7">
-											<input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round" type="checkbox">
-											<label for="cmn-toggle-7"></label>
-										</div>  <span>Link Image</span> 
-								</div>
+								
 								<div class="col-sm-5 col-md-5 on-off">
 										<div class="switch" id="sw-cmn-toggle-3" >
 											<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
@@ -291,14 +294,15 @@ $this->title = 'Create Qard';
                            
                         </div>
 						
-                        <div role="tabpanel" class="tab-pane" id="linkblock">
+                        <!--<div role="tabpanel" class="tab-pane" id="linkblock">
+						
 							<ul class="nav nav-tabs" role="tablist">
 								<li role="presentation" class="active" style="display:none"><a href="#paste" aria-controls="paste" role="tab" data-toggle="tab"><button class="btn btn-warning">Paste URL</button></a></li>
 								<li role="presentation" style="display:none"><a href="#embed" aria-controls="embed" role="tab" data-toggle="tab"><button class="btn btn-grey">Embed Code</button></a></li>                                       
-							</ul>
-							<!--<h4>&nbsp;</h4>-->
-							<div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="paste">
+							</ul>						
+							<div class="tab-content">-->
+							
+                                <div role="tabpanel" class="tab-pane" id="linkblock">
 									<h4 id="reflink">Add Url<span id="remove_extra_text" class="trash pull-right"><div class="col-sm-12 col-md-12 on-off">
 											<div class="switch" id="sw-cmn-toggle-21">
 												<input id="cmn-toggle-21" class="cmn-toggle cmn-toggle-round" type="checkbox">
@@ -310,8 +314,8 @@ $this->title = 'Create Qard';
 										<p style="color: orange;">Link directly to another Qard or Deck by using its QardDeck share URL</p>
 									</div>
 									<div class="form-group extra-content" style="margin-bottom: 60px;">
-										<input type="text" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
-										<input type="text" name="url-desc" class="col-sm-6 col-md-6 col-md-offset-1" placeholder="Add a description">
+										<input type="text" data-check="off" name="url-title" class="col-sm-5 col-md-5" placeholder="Enter Title">
+										<input type="text" data-check="off" name="url-desc" class="col-sm-6 col-md-6 col-md-offset-1" placeholder="Add a description">
 									</div>
 									<div id="link_div" style="padding-bottom: 10px;">
 										<div class="preview-image">                                       
@@ -336,7 +340,8 @@ $this->title = 'Create Qard';
 									</div>
 
 								</div>
-								<div role="tabpanel" class="tab-pane" id="embed">
+								
+								<div role="tabpanel" class="tab-pane" id="videoblock">
 								
 									<h4 id="reflink">Add Embed Code
 									<span class="trash pull-right">
@@ -367,8 +372,8 @@ $this->title = 'Create Qard';
 								
 								</div>  
 
-							</div>
-						</div>
+							<!--</div>
+						</div>-->
 						<div role="tabpanel" class="tab-pane" id="fileblock">
 						
 						 <div id="showFilePreview" style="display:none"></div>
@@ -384,7 +389,7 @@ $this->title = 'Create Qard';
 							</div>
 										</span></h4>
                             
-							<div class="form-group extra-content" id="drop-image" style="margin-bottom: 60px;  padding-top: 10px;" >
+							<div class="form-group extra-content" id="drop-image23" style="margin-bottom: 60px;  padding-top: 10px;" >
 									<input type="text" id="url-filename" name="filename" class="col-sm-5 col-md-5" placeholder="Enter Title">
 									<input type="hidden"  class="filename fileName col-sm-5 col-md-5" >
 									<input type="text" id="url-filedesc" name="filedesc" class="col-sm-6 col-md-6 col-md-offset-1 desc" placeholder="Add a description">
@@ -523,7 +528,8 @@ $this->title = 'Create Qard';
 					<li class="help-link"><a href=""><img src="<?=Yii::$app->homeUrl?>images/need-help_icon.png" width="30px" height="30px" style="margin-right:5px;" alt="">Need Help?</a>
 					</li>
 
-					<li class="pull-right"><button class="btn btn-warning" name="preview" onclick="addSaveCard(event)">Preview Card</button></li>
+					<li class="pull-right"><button class="btn btn-warning" name="preview" id="previewclick" >Preview Qard</button></li>
+					<!-- onclick="addSaveCard(event)"  check alert removed onclick function -->
 				
 				</ul>
 			</div>
@@ -534,11 +540,12 @@ $this->title = 'Create Qard';
 	
 	
 <div id="deck-style" class="fade modal in" role="dialog" tabindex="-1">
+	
 	<div class="modal-dialog ">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Select a Deck to Add Qard to :
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		 <button style="margin: -25px -25px 0px 0px;" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>	
+		<div class="modal-content">		
+			<div class="modal-header"> 			
+				<h4 class="modal-title">Select a Deck to Add Qard to :				
 				</h4>
 			</div>
 			<div class="modal-body">
@@ -575,7 +582,7 @@ $this->title = 'Create Qard';
 															
 															}',
 										'fileuploadfail' => 'function(e, data) {
-																alert("Oops! Something wronh happended.Please try gain later!");
+																alert("Oops! Something wrong happended.Please try gain later!");
 															}',
 									],
 								]);?>
@@ -587,8 +594,9 @@ $this->title = 'Create Qard';
 				
 				
 				<div class="grid-content">
-					<form onSubmit="saveDeck(this);return false;" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
-					<input style="margin-top:10px"  type="text" name="title"  id="deck-title" placeholder="Untitle Deck"/>
+				<!-- onSubmit="saveDeck(this);return false;" -->
+				<form  id="ajaxDeck" enctype = "multipart/form-data"  method="POST" name="ajaxDeck">
+					<input style="margin-top:10px"  type="text" name="title"  id="deck-title" autocomplete="off" placeholder="Untitle Deck"/>
 					<div class="col-sm-4 col-md-4"></div>
 					
 					<div class="col-sm-8 col-md-8">
@@ -616,7 +624,7 @@ $this->title = 'Create Qard';
 	<div class="modal fade" id="qard-style" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
-		  <div class="modal-header">
+		  <div class="modal-header" style="padding: 10px 0; width: 104%;">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
 		  </div>
 		  <div class="modal-body">
@@ -701,6 +709,7 @@ $this->title = 'Create Qard';
    
 	});");
 	?>
+	
 	<!-- MODALS -->
     <div class="modal fade" tabindex="-1" id="Block_error" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
@@ -921,8 +930,52 @@ $this->title = 'Create Qard';
 		'addFileDataUrl'  : '<?=Url::to(['block/add-filedata'], true);?>',
 		'getFileDataUrl'  : '<?=Url::to(['block/get-filedata'], true);?>',
 		'copyQardBlockUrl'  : '<?=Url::to(['block/copy-block'], true);?>',
+		'genQardImage'  : '<?=Url::to(['qard/generate-qard-image'], true);?>',
+	
 		
 	});
 
 	</script>
 	<script src="<?= Yii::$app->request->baseUrl?>/js/qard_file_handler.js" type="text/javascript"></script>
+<script>
+	$(document).on('click', '#previewclick', function(){ 
+		 if ($('.select2-selection__rendered').find( ".select2-selection__choice" ).length <= 0 ) { 		 
+			 alert('Please Add Tags!!!..');
+			 $('.select2-search__field').focus();
+			  return false;
+			 }	
+			 
+		addSaveCard();		
+});
+
+$( "#ajaxDeck" ).submit(function( event ) {
+			if($.trim($("#deck-title").val()) == "")
+			{
+				
+				alert("Please Enter The Deck Title!!!.");
+				return false;
+			}
+			else if($.trim($("#bg_image").val()) == "")
+			{
+				alert("Please Select the Backgound image For Deck!!!.");
+				return false;
+			}
+			else
+			{
+				saveDeck(this);
+				return false;
+			}
+			
+	});
+	
+	
+	 $(document).ready(function () {
+        $("#deck-bg_image").change(function() {
+			var loadingUrl = "<?=Yii::$app->request->baseUrl?>/img/loading1.gif";
+			$(".deck-img-pre").css("background","#f1f1f1 url("+loadingUrl+")")
+			$(".deck-img-pre").css("background-size", "cover");	
+		});
+	 });
+	 
+	 
+</script>

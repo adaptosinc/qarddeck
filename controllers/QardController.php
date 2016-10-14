@@ -327,6 +327,7 @@ class QardController extends Controller
 		$model = $this->findModel($id);
 		$single = true;
 		$modelFeed = $model->getQardHtmlSingle();	
+		
 		//print_r($modelFeed);die;
         return $this->render('view', [
             'model' => $modelFeed,
@@ -589,9 +590,13 @@ class QardController extends Controller
 			$deck = Deck::findOne($deckrel->deck_id);
 			$deckcount  = $deck->getDeckqardCount();
 			
+			$results  = $qard->getQardDeckCount($deck->deck_id,$deck->user_id);
+			/* $connection = Yii::$app->getDb(); 
+			
+			$command = $connection->createCommand('SELECT q.qard_id FROM `qard_deck` qd, `qard` q where qd.`deck_id` = '.$deck->deck_id.' and qd.`qard_id`= q.`qard_id` and q.`status` != 2 ORDER BY q.`qard_id` ASC');
+			
+			$results = $command->queryAll();  */
 		
-			$results = QardDeck::find()->where(['deck_id'=>$deck->deck_id])->orderBy('qard_id ASC')->asArray()->all();
-					
 			foreach( $results as $key=>$tmp)
 			{
 				if($tmp['qard_id'] ==  $qard_id )
@@ -689,7 +694,8 @@ class QardController extends Controller
 			$model = Qard::findOne($q_id);
 			$model->status = $status;
 			$model->user_id = \Yii::$app->user->id;
-			$model->qard_image_url = $this->generateQardImage($q_id);
+			$model->qard_image_url = $this->actionGenerateQardImage($q_id);
+			
 			if($model->save(false)){
 				return true;
 			}else{
@@ -705,7 +711,9 @@ class QardController extends Controller
 			return $this->redirect(['site/index']);
 		$model->status = $status;
 		$model->user_id = \Yii::$app->user->id;
-		$model->qard_image_url = $this->generateQardImage($id);
+		$model->qard_image_url = $this->actionGenerateQardImage($id);
+		
+		
 		if($model->save(false)){
 			//generate the qard image here
 			unset(\Yii::$app->session['qard']);
@@ -813,8 +821,10 @@ class QardController extends Controller
 			);
 			curl_setopt_array( $c, $options );
 			$html = curl_exec($c);
-			
+		
 			$mimeType = curl_getinfo($c, CURLINFO_CONTENT_TYPE);
+		
+			
 			if($mimeType == 'application/pdf') {
 				$output_array['type'] = 'PDF';
 				echo json_encode($output_array);
@@ -830,7 +840,8 @@ class QardController extends Controller
 				echo json_encode($output_array);
 				die;
 			}
-                        
+             
+			
 			//echo $html;
 			/******************************/
 			if (curl_error($c))
@@ -845,6 +856,7 @@ class QardController extends Controller
 			$image = false;
 			/******************************/
 			//h2's first
+			
 			$titles = $doc->getElementsByTagName('title');
 			if($titles->length > 0){ 
 				foreach($titles as $title){
@@ -854,6 +866,7 @@ class QardController extends Controller
 			/******************************/
 			//get image and content from meta
 			$metas = $doc->getElementsByTagName('meta');
+			
 			if($metas->length > 0){
 				foreach($metas as $meta){
 					if($meta->getAttribute('property') == 'og:image' && $meta->getAttribute('content')!= '')
@@ -897,9 +910,9 @@ class QardController extends Controller
 				$image = $domain.$image;
 			//echo $domain;echo $result;
 			$preview_html = '<div id="review-qard-id" class="review-qard row" id="">';
-			if($this->isFrameAllowed($url)){
+			/* if($this->isFrameAllowed($url)){
 				$preview_html .= '<iframe src="'.$url.'" style="border:none"  width="100%" height="500px" ></iframe>';
-			}else{
+			}else{  */
 				$preview_html .= '
 				<div class="img-preview col-sm-3 col-md-3">';
 				if($image)
@@ -908,7 +921,7 @@ class QardController extends Controller
 					$preview_html .= '<i class="fa fa-file-image-o" style="font-size: 12em;" aria-hidden="true"></i>';
 /* 				$preview_html .= '<button id="url_img_remove" onClick="changePic(this)" class="btn btn-default btn-remove">Remove</button></div><div class="col-sm-9 col-md-9" id="title_desc_url"><div class="url-content"><h4><input name="url_title" type="text" class="form-control" value="'.$title.'" /></h4><div class="url-text"><p><textarea name="url_content" class="form-control">'.$content.'</textarea></p></div></div></div></div> ';	 */		
 				$preview_html .= '</div><div class="col-sm-9 col-md-9" id="title_desc_url"><div class="url-content"><h4><a href='.$url.' target="blank">'.$title.'</a></h4><div class="url-text"><p>'.$content.'</p></div></div></div>';	
-			}
+			//}
 			$preview_html .= '</div>';
 			
 			/**/
@@ -916,24 +929,31 @@ class QardController extends Controller
 			//$title = explode('.',$title);
 			/******************************/
 			//FORMAT THE OUTPUT IN JSON
-			$link_icon = '<span class="icon-mark pull-right" id="previewLink" data-open="same" contenteditable="false" onclick = "displayLink(this);" data-url="'.$url.'"><img src="'.Yii::$app->request->baseUrl.'/images/link_icon.png" alt=""></span>';
+			$link_icon = '<span class="icon-mark pull-right previewLink" id="previewLink" data-open="same" contenteditable="false" onclick = "displayLink(this);" data-url="'.$url.'"><img src="'.Yii::$app->request->baseUrl.'/images/link_icon.png" alt=""></span>';
+			
 			$output_array['preview_html'] = $preview_html;
 			$output_array['work_space_link_only'] = $link_icon;
-			$output_array['work_space_text'] ='<span>'. substr($title,0,150).'...</span>'.$link_icon;//link_icon with onclik function
+		
+			//$output_array['work_space_text'] ='<span>'.substr($title,0,150).'...</span>'.$link_icon;
+			$output_array['work_space_text'] = '<span>'.$title.'</span>'.$link_icon;
+			
+			//link_icon with onclick function
+			
 			$output_array['type'] = 'web_page';
 			/*****************************/
 			$output_array['url_title'] = '';
-			$output_array['url_description'] = '';	
-			if($block_id && $block_id !=0 ){
+			$output_array['url_description'] = '';
+
+			if($block_id && $block_id !=0 ){ 
 				$block = Block::findOne($block_id);
 				$data = [];
 				if($block){
 						$output_array['url_title'] = $block->link_title;
 						$output_array['url_description'] = $block->link_description;				
 				}
-		//return json_encode($data);
-			}
-			echo json_encode($output_array);
+		//return json_encode($data);		
+			}		
+			echo json_encode($output_array);					
 	}
 	
 	/**
@@ -1127,7 +1147,7 @@ class QardController extends Controller
      * Uploads the document
      * @return uploaded file name
      */ 
-        public function actionSimple(){
+        public function actionSimple(){ 
            if (Yii::$app->request->isAjax) {                 
                   if($_FILES["file"]['name']){
 
@@ -1154,15 +1174,23 @@ class QardController extends Controller
      }}
            }
            
-    public function generateQardImage($qard_id){
-	
+    public function actionGenerateQardImage($qard_id){
+		
 		include("lib/GrabzItClient.class.php");
 		$grabzIt = new GrabzItClient("NWFkMzlhNTExMGVmNDQ2MzkxZjIxZTA4ZDVhYjQxZTc=", "Jn0kaWU/QD8MFGNOaw8/Gmg/Pz8/BT8SMj8hHj8/U2Y=");
 		
 		// To take a image screenshot		//$grabzIt->SetImageOptions("http://wordpressmonks.com/works/qarddeck/web/qard/create?theme_id=2",null,-1,-1,null,null,'jpg',0,'add-block'); 	
-		 $grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard'.$qard_id, $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); 
 		
+		
+		$url = 'http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id;
+		
+		$grabzIt->SetImageOptions($url, $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard'.$qard_id, $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); 
+	
+		
+		/* Arivazhagan Change Base Url Testing $grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800, $width = null, $height = null, $format = 'png', $delay = null, $targetElement = 'qard'.$qard_id, $requestAs = 0, $customWaterMarkId = null, $quality = 100, $country = null); 
+		 */
 		//$grabzIt->SetImageOptions('http://wordpressmonks.com/works/qarddeck/web/qard/view?id='.$qard_id, $customId = null, $browserWidth = 400, $browserHeight = 800);
+		
 		$directory = \Yii::$app->basePath."/web/uploads/qards";
 
 		$filepath = $directory."/".$qard_id.".png";
@@ -1173,12 +1201,16 @@ class QardController extends Controller
  public function actionDeleteQard($id)
     {	
      $qard = $this->findModel($id);
+	 
 	  if($qard)
 	  {
 		  $qard->status = 2;
 		  $qard->save(false);
 	  }	  
-	  return $this->redirect(['index']); 	  
+	  if(\Yii::$app->user->id)
+			return $this->redirect(['my-qards']); 
+	  else
+			return $this->redirect(['index']); 
     }
 	
 	
@@ -1281,5 +1313,53 @@ class QardController extends Controller
 		}		
     }
 	
+	public function actionRemoveQardDeck()
+    {			
+	
+	 $qard_deck_id = $_POST['qard_deck_id'];
+	 if(!empty($qard_deck_id))
+		{
+		$connection = Yii::$app->getDb();		
+		$connection	->createCommand()
+			->delete('qard_deck',  [
+				'qd_id' => $qard_deck_id,
+				] )
+			->execute();
+			return true;
+		}	 
+    }
+	
+	public function actionCreateDeckQard($deck_id)
+    {					
+		return $this->redirect(['theme/select-theme?deck_id='.$deck_id]);
+    }
+	
+	public function actionDeckQardTheme($deck_id,$theme_id)
+    {							
+		$user_id = \Yii::$app->user->id;
+		$deck_id = $deck_id;
+		$theme_id = $theme_id;
+	
+		if($user_id)
+		{
+			$model = new Qard;
+			$model->qard_theme = $theme_id;
+			$model->user_id = $user_id;
+			$model->status = 0;
+			$model->qard_privacy = 1;	
+			$model->save();  
+			$qard_id = $model->qard_id;			
+			$model2 = new QardDeck;
+			$model2->qard_id = $qard_id;
+			$model2->deck_id = $deck_id;
+			$model2->save();			
+			return $this->redirect(['qard/edit?id='.$qard_id]); 						
+		} else 
+		{
+			return $this->redirect(['deck/manage?id='.$deck_id]);
+		}
+		
+		
+    }
 	
 }
