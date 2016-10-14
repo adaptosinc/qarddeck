@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
 								</div>
 
 								<div class="form-group">	
-									<select class="js-example-basic-multiple form-control" id="deck-tags" name="tags[]" multiple="multiple" placeholder="Add some tags no working">
+									<select class="js-example-basic-multiple form-control" id="deck-tags" name="tags[]" multiple="multiple" placeholder="Add some tags" style="display:none">
 
 									<?php 
 									if(!$model->isNewRecord){
