@@ -430,7 +430,7 @@ $this->title = 'Edit Qard';
 									
 									<h4 id="reflink">Add Url<span id="remove_extra_text" class="trash pull-right"><div class="col-sm-12 col-md-12 on-off">
 											<div class="switch" id="sw-cmn-toggle-21">
-												<input id="cmn-toggle-21" class="cmn-toggle cmn-toggle-round" type="checkbox">
+												<input id="cmn-toggle-21" data-id="1" class="cmn-toggle cmn-toggle-round" type="checkbox">
 												<label for="cmn-toggle-21" ></label>
 											</div>  <span>Link URL</span> 
 									</div></span></h4> 

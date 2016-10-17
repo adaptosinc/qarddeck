@@ -913,7 +913,9 @@ class QardController extends Controller
 			$preview_html = '<div id="review-qard-id" class="review-qard row" id="">';
 			if($this->isFrameAllowed($url)){
 				$preview_html .= '<iframe sandbox="" src="'.$url.'" style="border:none"  width="100%" height="500px" ></iframe>';
+				$framecheck =1;
 			}else{ 
+				$framecheck =2;
 				$preview_html .= '
 				<div class="img-preview col-sm-3 col-md-3">';
 				if($image)
@@ -934,6 +936,7 @@ class QardController extends Controller
 			
 			$output_array['preview_html'] = $preview_html;
 			$output_array['work_space_link_only'] = $link_icon;
+			$output_array['framecheck'] = $framecheck;
 		
 			//$output_array['work_space_text'] ='<span>'.substr($title,0,150).'...</span>'.$link_icon;
 			$output_array['work_space_text'] = '<span>'.$title.'</span>'.$link_icon;
