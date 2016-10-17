@@ -633,7 +633,7 @@
 			//	url : "<?=Url::to(['block/add-text'], true)?>",
 				url : plugin.settings.addUrlDataUrl,
 				type: "POST",
-				async : true,
+				//async : true,
 				data: { 'url_title':$("input[name=url-title]").val(),
 						'block_id':$("#working_div .current_blk").attr('data-block_id'),
 						'url_description' : $("input[name=url-desc]").val(),
