@@ -583,7 +583,8 @@ $this->title = 'Consume Qard';
 					hideAll('active-link-preview');
 					$('.active-preview-content').show();
 					$('#url_data').html(data_to_show);
-					var l = data.url_title+'<span class="pull-right"><quote>'+preview_url+'</quote><i class="fa fa-times-thin"></i></span>';
+					trimed_url = preview_url.slice(0,15)+'..';
+					var l = data.url_title+'<span class="pull-right"><quote>'+trimed_url+'</quote><i class="fa fa-times-thin"></i></span>';
 					$('#title_and_url').html(l);
 					$('#url_desc').html(data.url_description);
 					
