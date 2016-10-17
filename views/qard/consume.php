@@ -356,7 +356,7 @@ $this->title = 'Consume Qard';
 							  <img src="<?=$profile_photo?>" alt="">
 						  </div>
 						  <div class="comment-txt col-sm-11 col-md-11">
-							  <p><strong><?=$comment->userProfile->fullname ?></strong><?=$comment['text']?></p>
+							  <p><strong><?=$comment->userProfile->fullname ?></strong>&nbsp;<?=$comment['text']?></p>
 							   
 								  
 							  <p class="post-date"><?=$comment->createdAgo?></p>

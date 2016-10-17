@@ -563,7 +563,7 @@
 					'url': preview_url,
 					'block_id':$("#working_div .current_blk").attr('data-block_id'),
 				},
-				success: function(data) {
+				success: function(data) { 
 					$("#wait").hide();
 					data = $.parseJSON(data);
 					if (data.type == 'PDF' || data.type == 'pdf') {
@@ -594,6 +594,7 @@
 						} else 
 						{
 							$('#cmn-toggle-21').attr("data-id","1");	
+							///$('#cmn-toggle-8').prop("checked",false);
 						}
 						
 						$('#link_div').html(data.preview_html);

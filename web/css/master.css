@@ -1965,6 +1965,13 @@ span.icon-mark.pull-right img {
     width: 15px !important;
     margin-right: 10px !important;
 	display : block !important;
+
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
+	user-drag: none;
+
 }
 .qard-content.qard2 .style-block {
     box-shadow: 0px 5px 10px 0px #777777;
