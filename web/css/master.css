@@ -438,7 +438,7 @@ li.addnew ul li {
 button.close {
     opacity: 1;
     font-size: 38px;
-    font-weight: 300;
+    font-weight: 900; /* font-weight: 300;  change for Close Button */
 }
 .sign-buttons {
     padding-top: 60px;

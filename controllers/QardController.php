@@ -277,6 +277,7 @@ class QardController extends Controller
 			->from('qard')
 			->where(['user_id'=>$id])
 			->andWhere(['<>','status', 2])
+			->andWhere(['<>','status', 9])
 			->limit($limit)
 			->offset($offset)
 			->orderBy(['last_updated_at' => SORT_DESC]);	
@@ -980,8 +981,10 @@ class QardController extends Controller
 	public function isFrameAllowed($url){
 		$h = get_headers($url,1);
 		//print_r($h);die;
-		if(isset($h['X-Frame-Options']) || $h['X-FRAME-OPTIONS']){
+		if(isset($h['X-FRAME-OPTIONS']))
 			$option = $h['X-Frame-Options'] = $h['X-FRAME-OPTIONS'];
+			
+		if(isset($h['X-Frame-Options'])){		
 			if($h['X-Frame-Options'] == 'sameorigin' || $h['X-Frame-Options'] =='SAMEORIGIN' ||  $h['X-Frame-Options'] == 'DENY' || $h['X-Frame-Options'] == 'deny')
 				return false;
 			else
@@ -1347,7 +1350,7 @@ class QardController extends Controller
 			$model = new Qard;
 			$model->qard_theme = $theme_id;
 			$model->user_id = $user_id;
-			$model->status = 0;
+			$model->status = 9;
 			$model->qard_privacy = 1;	
 			$model->save();  
 			$qard_id = $model->qard_id;			

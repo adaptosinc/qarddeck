@@ -83,6 +83,7 @@ class UserController extends Controller
 	public function actionSignUp(){	
 		if(!\Yii::$app->user->isGuest)
 			return $this->redirect(['site/index']);
+		
 		if(!$this->isMobile()){ 			
             return $this->render('register');
 		}else{			

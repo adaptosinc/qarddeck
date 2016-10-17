@@ -86,7 +86,7 @@ class BlockController extends Controller
 				}
 				$theme=$this->createTheme($post);
 				if(empty($theme->errors) && !is_array($theme)){ 
-					$qard = $this->createQard($post, $post['qard_theme_id']);
+					$qard = $this->createQard($post, $post['qard_theme_id'],0);
 					if(empty($qard->errors) && !is_array($qard)){
 						$block=$this->createBlock($post,$qard->qard_id,$theme->theme_id);
 						if(!empty($post['tags']))
@@ -122,7 +122,7 @@ class BlockController extends Controller
 	 
 		if(empty($theme->errors) && !is_array($theme)){ 
 	    
-	    $qard = $this->createQard($post, $post['qard_theme_id']);
+	    $qard = $this->createQard($post, $post['qard_theme_id'],9);
 	   
 	    
 	    if(empty($qard->errors) && !is_array($qard)){
@@ -354,13 +354,18 @@ class BlockController extends Controller
     /*
      * to create Qard if created then update the qard
      */
-    public function createQard($post,$theme_id){
+    public function createQard($post,$theme_id,$status){
 		
 		$qard = false;
 		if(!empty($post['qard_id'])){
 			$qard = Qard::findOne($post['qard_id']);
+			if($qard->status == 9)
+			{
+				$qard->status = $status;
+			}
 		}else {
 			$qard=new Qard();
+			$qard->status = $status;
 		}
 		
 	//	print_r($qard);die;
@@ -372,6 +377,7 @@ class BlockController extends Controller
 		if(\Yii::$app->user->id){
 			$qard->user_id = Yii::$app->user->id;
 		}
+		
 		$qard->qard_privacy=1;
 		$qard->qard_theme=$theme_id;
 		$qard->save(false);

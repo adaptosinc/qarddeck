@@ -54,7 +54,7 @@
 						console.log(content.substring(i, i-5));
 						var txt = content.substring(i, i-5);
 						if($('#add-block')[0].scrollHeight > 603){
-							alert("Ooops! No more place to type? Please use the extra text space to type.");
+							alert("1 Ooops! No more place to type? Please use the extra text space to type.");
 							return false;
 						}else{
 							if (event.clipboardData || event.originalEvent.clipboardData) 
@@ -101,11 +101,10 @@
 				if(event.which != 8  && event.which != 46 &&  $('#add-block')[0].scrollHeight > 603){
 					//var keyCode = (event.keyCode ? event.keyCode : event.which);
 						console.log(event.type);	
-
-						
+		
 					 if(event.type === "keydown"){	
 						event.preventDefault();									
-						alert("Ooops! No more place to type? Please use the extra text space to type.");
+						alert("2 Ooops! No more place to type? Please use the extra text space to type.");
 						//return false;
 						
 						//$(this).val($(this).val().replace(/\v+/g, ''));
@@ -2057,7 +2056,28 @@ $('#cmn-toggle-8').on('change', function() {
 
 $('#cmn-toggle-21').on('change', function() {
 	$(".add-another").attr("style","pointer-events: none; opacity: 0.4;");	
-	checklinkfn();	
+		
+	//checklinkfn();
+	///////////////checklinkfn(); /// testing /
+	
+	 var url = $('#link_url').val();
+    var RegExp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;  
+	
+	if((RegExp.test($.trim(url)))  && ($('#link_div').find('.preview-image').length <= 0 ) ) {
+	    $('#cmn-toggle-21').attr("disabled",false);	
+		$('#cmn-toggle-4').attr("disabled",false);	
+		$('#cmn-toggle-8').attr("disabled",false);	
+		
+	}
+	else{
+	   	$('#cmn-toggle-21').attr("disabled","disabled");	
+		$('#cmn-toggle-4').attr("disabled","disabled");	
+		$('#cmn-toggle-8').attr("disabled","disabled");	
+		return false;
+	} 
+	
+	////////////////////
+		
 	if($(this).prop('checked')){
 		if($("input[id=link_url]").val() != '')
 		{
