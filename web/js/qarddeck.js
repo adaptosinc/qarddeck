@@ -641,7 +641,7 @@
 		};
 		plugin.useUrl = function(){
 			//save the title and description if set
-			
+			$(".add-another").attr("style","pointer-events: none; opacity: 0.4;");	
 			$.ajax({
 			//	url : "<?=Url::to(['block/add-text'], true)?>",
 				url : plugin.settings.addUrlDataUrl,
@@ -2069,7 +2069,7 @@ $('#cmn-toggle-8').on('change', function() {
 });
 
 $('#cmn-toggle-21').on('change', function() { 
-	$(".add-another").attr("style","pointer-events: none; opacity: 0.4;");	
+	
 		
 	//checklinkfn();
 	///////////////checklinkfn(); /// testing /
@@ -2123,11 +2123,11 @@ $('#cmn-toggle-21').on('change', function() {
 			}
 			$('#cmn-toggle-4').prop("checked",false);			
 			$("#cmn-toggle-4").trigger("change");	
-			$(".add-another").removeAttr("style");				
+							
 		}
 		else
 		{   $('#cmn-toggle-21').prop('checked', true); 
-			$(".add-another").removeAttr("style");	
+			
 			return false;
 		}
 		
