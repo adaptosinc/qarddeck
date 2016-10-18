@@ -54,7 +54,7 @@
 						console.log(content.substring(i, i-5));
 						var txt = content.substring(i, i-5);
 						if($('#add-block')[0].scrollHeight > 603){
-							alert("1 Ooops! No more place to type? Please use the extra text space to type.");
+							alert("Ooops! No more place to type? Please use the extra text space to type.");
 							return false;
 						}else{
 							if (event.clipboardData || event.originalEvent.clipboardData) 
@@ -93,24 +93,27 @@
 				**/
 			//	if(event.which != 8 && qard_height > 16){
 				console.log($('#add-block')[0].scrollHeight);
+			
 				if(event.which == 13  &&  $('#add-block')[0].scrollHeight > 603){
 					console.log("enter");
 					event.preventDefault();
 					return false;
 				}
+				
 				if(event.which != 8  && event.which != 46 &&  $('#add-block')[0].scrollHeight > 603){
 					//var keyCode = (event.keyCode ? event.keyCode : event.which);
 						console.log(event.type);	
 		
 					 if(event.type === "keydown"){	
+					
 						event.preventDefault();									
-						alert("2 Ooops! No more place to type? Please use the extra text space to type.");
+						alert("Ooops! No more place to type? Please use the extra text space to type.");
 						//return false;
 						
 						//$(this).val($(this).val().replace(/\v+/g, ''));
 						
 						/* $(this).children(':last-child').text($(this).children(':last-child').text().substr(0,$(this).children(':last-child').text().length-1));  */
-						
+				
 						return false;
 					}					
 					if(event.type === "resize"){
@@ -119,10 +122,11 @@
 						if(scrollHeight > setHeight ){
 							$("#working_div .current_blk").attr('data-resized','false');	
 							setHeightBlock(this,scrollHeight);
-						}else{
+						}else{ 
 							event.preventDefault();
 						}						
 					}
+					
 					event.preventDefault();
 					event.stopPropagation();
 /* 					console.log(qard_height);
