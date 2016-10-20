@@ -80,6 +80,7 @@
 											$text_block_style .= 'min-height:'.$theme['height'].'px;';
 											$text_block_style .='overflow:hidden;';
 											$text_block_style .='height:auto;';
+											$text_block_style .='text-align: left !important;';
 									}
 									///////////////////////////
 									if(!isset($theme['data_style_qard']))
@@ -174,6 +175,7 @@
 											$text_block_style .= 'min-height:'.$theme['height'].'px;';
 											$text_block_style .='overflow:hidden;';
 											$text_block_style .='height:auto;';
+											$text_block_style .='text-align: left !important;';
 									}
 									///////////////////////////
 									if(!isset($theme['data_style_qard']))

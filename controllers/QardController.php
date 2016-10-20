@@ -349,8 +349,14 @@ class QardController extends Controller
 			$userid = \Yii::$app->user->id;
 			$user = User::findOne($userid);
 			$userrole = $user->role;
-			$qards = Qard::find()->where(['status'=>3,'user_id'=>$userid])->all();
+			if($userrole == 'admin')
+				$ch_status = 5;
+			else 
+				$ch_status = 3;
+			
+			$qards = Qard::find()->where(['status'=>$ch_status,'user_id'=>$userid])->orderBy(['qard_id' => SORT_DESC])->all();
 		}
+		
 		
 		$adminuser = User::find()->where(['role'=>'admin'])->all();		
 		
@@ -363,7 +369,7 @@ class QardController extends Controller
 			
 		}
 		
-		$adminqards = Qard::find()->where(['in', 'user_id', $adminuserid])->andWhere('status = :status',[':status' => 3])->all();
+		$adminqards = Qard::find()->where(['in', 'user_id', $adminuserid])->andWhere('status = :status',[':status' => 5])->orderBy(['qard_id' => SORT_DESC])->all();
 		
 		if($selected){
 			//selected template
