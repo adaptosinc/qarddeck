@@ -341,7 +341,30 @@ class QardController extends Controller
 	 * @return mixed
 	 */
 	public function actionSelectTemplate($selected=null){
-		$qards = Qard::find()->where(['status'=>3])->all();
+		$adminuserid = "";
+		$qards ="";
+		$userrole = "";
+		if(\Yii::$app->user->id)
+		{
+			$userid = \Yii::$app->user->id;
+			$user = User::findOne($userid);
+			$userrole = $user->role;
+			$qards = Qard::find()->where(['status'=>3,'user_id'=>$userid])->all();
+		}
+		
+		$adminuser = User::find()->where(['role'=>'admin'])->all();		
+		
+		foreach($adminuser as $tmp)
+		{
+			if(!isset($userid))
+				$adminuserid[] = $tmp->id;
+			else if($tmp->id != $userid)
+				$adminuserid[] = $tmp->id;
+			
+		}
+		
+		$adminqards = Qard::find()->where(['in', 'user_id', $adminuserid])->andWhere('status = :status',[':status' => 3])->all();
+		
 		if($selected){
 			//selected template
 			if($selected == "blank")
@@ -378,7 +401,7 @@ class QardController extends Controller
 			return $this->redirect(['theme/select-theme','qard_id'=>$qard->qard_id]);
 		}
         return $this->render('template', [
-            'qards' => $qards,
+            'qards' => $qards,'adminqards' =>$adminqards,'userrole'=>$userrole
         ]);		
 	}
     /**

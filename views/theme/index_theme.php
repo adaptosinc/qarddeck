@@ -7,8 +7,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			
 	<section class="theme-main content">
 		<div class="action-qard">
-			<button class="btn btn-default pull-left" onclick="location.href='<?php echo \Yii::$app->homeUrl?>/qard/select-template';"><i class="fa fa-chevron-left"></i>&nbsp;Select Template</button>
-			<button class="btn btn-default pull-left" onClick="window.location = '<?php echo \Yii::$app->homeUrl?>/theme/create';"><i class="fa fa-chevron-left"></i>&nbsp;Create Theme</button>
+			<button class="btn btn-default pull-left" onclick="location.href='<?php echo \Yii::$app->homeUrl?>qard/select-template';"><i class="fa fa-chevron-left"></i>&nbsp;Select Template</button>
+			<button class="btn btn-default pull-left" onClick="window.location = '<?php echo \Yii::$app->homeUrl?>theme/create';"><i class="fa fa-chevron-left"></i>&nbsp;Create Theme</button>
 			<h2>Select a Theme</h2>
         </div>		
 		<!--<div class="action-qard">
