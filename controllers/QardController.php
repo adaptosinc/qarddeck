@@ -657,7 +657,6 @@ class QardController extends Controller
 	else
 		$follow = $user->getFindfollowuser($followerid);
 	
-	
 		$theme = $qard->qardTheme;
 		$blocks = $qard->blocks;
 
@@ -769,8 +768,8 @@ class QardController extends Controller
      */
     public function actionDelete($id)
     {	
-        $this->findModel($id)->delete();
-        return $this->redirect(['index']);
+         $this->findModel($id)->delete();
+        return $this->redirect(['index']); 
     }
 	/**
 	 * To record the user activity for a qard
@@ -1394,9 +1393,20 @@ class QardController extends Controller
 		} else 
 		{
 			return $this->redirect(['deck/manage?id='.$deck_id]);
-		}
-		
-		
+		}				
+    }
+	
+	public function actionTempdelete()
+    {	
+		 $id = Yii::$app->request->post('qardid');
+		 $qard = $this->findModel($id);		
+		if($qard)
+		{
+		  $qard->status = 2;
+		  $qard->save(false);
+		 
+		}	   
+		 echo "Deleted Successfully!!!."; 
     }
 	
 }

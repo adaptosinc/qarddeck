@@ -9,8 +9,9 @@
 					
                     </div>
 					
-				
-                    
+				 <div id="wait" style="display:none" class="waiting_logo"><img src='<?=Yii::$app->request->baseUrl?>/img/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
+				 
+                   
 					<!----------------- Standard Template --------------------->
 					
 							<div  class="templates-list container" id="standardtemp" >
@@ -33,13 +34,16 @@
 									</div>                                 
                             </div> -->
 							
+							
+							 
+							
 										<?php  
 						if(isset($adminqards) && !empty($adminqards))
 						{							
 							foreach($adminqards as $model){
 								$theme= $model->qardTheme;
 								$theme_properties = unserialize($theme['theme_properties']);
-								$str = '<div class="grid-item" id="'.$model->qard_id.'"><div id="add-block'.$model->qard_id.'" class="qard-content">';
+								$str = '<div class="grid-item" id="'.$model->qard_id.'"><div id="add-block'.$model->qard_id.'" class="qard-content qardclick" for="'.$model->qard_id.'" >';
 								$blocks = $model->blocks;
 								if(isset($blocks) && !empty($blocks)){
 								//	print_R($blocks);die;
@@ -101,6 +105,21 @@
 										<button class="btn btn-sm" data-toggle="modal" data-target="#myModaldiva">Qard Details</button>
 									</div></div>  ';
 							}
+						} else {
+							?>
+							<div class="grid-item" id="blank" >                             
+									
+									<div class="qard-top">
+                                    <h4>Sry, No More Templates!!!.</h4>
+									
+									<p style='height: 180px;'></p>
+									
+									
+										
+									</div>                                 
+                            </div>
+							
+							<?php 
 						}
 										?>
 									</div>
@@ -134,7 +153,7 @@
 								foreach($qards as $model){
 								$theme= $model->qardTheme;
 								$theme_properties = unserialize($theme['theme_properties']);
-								$str = '<div class="grid-item" id="'.$model->qard_id.'"><div id="add-block'.$model->qard_id.'" class="qard-content">';
+								$str = '<div class="grid-item" id="'.$model->qard_id.'"><div id="add-block'.$model->qard_id.'" class="qard-content qardclick" for="'.$model->qard_id.'" >';
 								$blocks = $model->blocks;
 								if(isset($blocks) && !empty($blocks)){
 								//	print_R($blocks);die;
@@ -193,7 +212,7 @@
 								echo '<div class="qard-top">
 										<h4>'.$model->title.'</h4>
 										<p><i class="fa fa-clock-o"></i>&nbsp; 2 min to create</p>
-										<button class="btn btn-sm" data-toggle="modal" data-target="#myModaldiva">Qard Details</button>
+										<a class="btn btn-sm removetmp"  id="'.$model->qard_id.'"><i class="fa fa-trash"></i>&nbsp; Remove</a>
 									</div></div>  ';
 							}
 							
@@ -207,8 +226,9 @@
                  
                 </section>
 <script>
-$(".grid-item").on("click",function(){
-	var id=$(this).attr('id');
+$(".qardclick").on("click",function(){
+	$("#wait").show();
+	var id=$(this).attr('for');
 	console.log(id);
 	window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/select-template?selected='+id;
 });
@@ -227,7 +247,58 @@ $("#mytemp").on("click",function(){
 	$("#standardtemp").hide();		
 });
 
+ <?php if(isset($_GET['page'])){ ?> 
+ $( "#mytemp" ).trigger( "click" );
+ <?php  } ?>
+ 
+$(".removetmp").on("click",function(){
+	
+	var qardid = $(this).attr('id');	
+	var rm1 = confirm("Do You Want to Remove this Templete?");
+	if(rm1 == true)
+	{
+		var rm2 = confirm("One More confirmation to Remove this Templete?");
+		if(rm2 == true)
+		{			
+			$.ajax({
+				  url: "<?=\Yii::$app->homeUrl?>qard/tempdelete",
+				  type: 'POST',
+				  data: { 'qardid':qardid },				  
+				  success:function(data){
+						alert(data);
+						 // return false;
+						 window.location = '<?php echo \Yii::$app->homeUrl; ?>qard/select-template?page=mytemplate';
+						
+					}
+				  });
+				
+				 //return false;  
+				  
+		} else {
+			return false;
+		}
+	
+	} else {
+		return false;
+	}
+});
 </script>
 <style>
 .grid-item { width: 350px; margin-left: 15px;}
+
+.waiting_logo {
+    background: rgba(0, 0, 0, 0.6) none repeat scroll 0 0;
+    border: 1px solid black;
+    display: none;
+    height: 100%;
+    left: 0;
+    min-height: 990px;
+    padding-top: 30%;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 50;
+}
+
 </style>
