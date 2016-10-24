@@ -341,7 +341,36 @@ class QardController extends Controller
 	 * @return mixed
 	 */
 	public function actionSelectTemplate($selected=null){
-		$qards = Qard::find()->where(['status'=>3])->all();
+		$adminuserid = "";
+		$qards ="";
+		$userrole = "";
+		if(\Yii::$app->user->id)
+		{
+			$userid = \Yii::$app->user->id;
+			$user = User::findOne($userid);
+			$userrole = $user->role;
+			if($userrole == 'admin')
+				$ch_status = 5;
+			else 
+				$ch_status = 3;
+			
+			$qards = Qard::find()->where(['status'=>$ch_status,'user_id'=>$userid])->orderBy(['qard_id' => SORT_DESC])->all();
+		}
+		
+		
+		$adminuser = User::find()->where(['role'=>'admin'])->all();		
+		
+		foreach($adminuser as $tmp)
+		{
+			if(!isset($userid))
+				$adminuserid[] = $tmp->id;
+			else if($tmp->id != $userid)
+				$adminuserid[] = $tmp->id;
+			
+		}
+		
+		$adminqards = Qard::find()->where(['in', 'user_id', $adminuserid])->andWhere('status = :status',[':status' => 5])->orderBy(['qard_id' => SORT_DESC])->all();
+		
 		if($selected){
 			//selected template
 			if($selected == "blank")
@@ -378,7 +407,7 @@ class QardController extends Controller
 			return $this->redirect(['theme/select-theme','qard_id'=>$qard->qard_id]);
 		}
         return $this->render('template', [
-            'qards' => $qards,
+            'qards' => $qards,'adminqards' =>$adminqards,'userrole'=>$userrole
         ]);		
 	}
     /**
@@ -628,7 +657,6 @@ class QardController extends Controller
 	else
 		$follow = $user->getFindfollowuser($followerid);
 	
-	
 		$theme = $qard->qardTheme;
 		$blocks = $qard->blocks;
 
@@ -740,8 +768,8 @@ class QardController extends Controller
      */
     public function actionDelete($id)
     {	
-        $this->findModel($id)->delete();
-        return $this->redirect(['index']);
+         $this->findModel($id)->delete();
+        return $this->redirect(['index']); 
     }
 	/**
 	 * To record the user activity for a qard
@@ -1365,9 +1393,20 @@ class QardController extends Controller
 		} else 
 		{
 			return $this->redirect(['deck/manage?id='.$deck_id]);
-		}
-		
-		
+		}				
+    }
+	
+	public function actionTempdelete()
+    {	
+		 $id = Yii::$app->request->post('qardid');
+		 $qard = $this->findModel($id);		
+		if($qard)
+		{
+		  $qard->status = 2;
+		  $qard->save(false);
+		 
+		}	   
+		 echo "Deleted Successfully!!!."; 
     }
 	
 }

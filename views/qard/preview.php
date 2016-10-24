@@ -629,7 +629,21 @@ $this->title = 'Preview Qard';
 	
 		/** link preview **/
 		function displayLink(identifier){
+			var dataopen = $(identifier).attr('data-open');
 			var dataurl = $(identifier).attr('data-url');
+			if($.trim(dataopen)=="new")
+			{
+								var win = window.open(dataurl, '_blank');
+				if (win) {
+					//Browser has allowed it to be opened
+					win.focus();
+				} else {
+					//Browser has blocked it
+					alert('Please allow popups for this website');
+				}
+			}
+			
+			
 			console.log(dataurl);
 			var checkit = $(identifier).find('#hiddenUrl');
 			var displayCheck = 1;
