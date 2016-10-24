@@ -18,9 +18,13 @@ Developer Instrucions:
  Now work on your feature. Once done, add the modified/created files and commit
  
  `git status`
+ 
  `git add <file_path>`
+ 
  `git commit -m "Feature delete user"`
+ 
  `git push -u origin delete_user_branch` 
+ 
  
 	status : shows the status of your work. 
 	add : Add the changed files. Use filepath so that only required files will be added
