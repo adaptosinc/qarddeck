@@ -82,10 +82,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 350, "gutter": 40 }' >	
 										<?php foreach($qards as $qard) {
 								if(\Yii::$app->user->id == $model->user_id)
-								{									
-								$qardval = 	Qard::find()->where('qard_id = :qard_id and status != :status', ['qard_id'=>$qard, 'status'=>2, 'status'=>9])->one();
+								{								
+								$qardval = 	Qard::find()->where('qard_id = :qard_id', ['qard_id'=>$qard])->andwhere(['Not in', 'status', [2,9]])->one();
 								} else 
-								{
+								{	
 									$qardval = 	Qard::find()->where('qard_id = :qard_id and status = :status', ['qard_id'=>$qard, 'status'=>1])->one();
 								}
 								
